@@ -1,0 +1,196 @@
+buildscript {
+    repositories {
+      mavenCentral()
+    }
+    dependencies {
+      classpath 'net.sf.proguard:proguard-gradle:5.2.1'
+      classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '3.1.1')
+    }
+}
+
+plugins {
+  id 'java'
+  id 'maven'
+  id 'com.github.johnrengelman.shadow' version '1.2.2'
+  id "com.jfrog.artifactory" version "3.1.0"
+}
+
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'eclipse'
+
+group = "com.jive.sip"
+version = currentVersion
+
+repositories {
+    mavenCentral()
+    maven {
+	    url 'https://getjive.artifactoryonline.com/getjive/libs-snapshot-local'
+	    credentials {
+	        username = 'theo'
+	        password = 'AP9vAJhmvqSytjG9DKe1omyR8Sj'
+	    }
+	}    
+}
+
+
+compileJava {
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
+}
+
+
+sourceSets.all { set ->
+
+    def jarTask = task("${set.name}Jar", type: Jar) {
+        baseName = baseName + "-$set.name"
+        from set.output
+    }
+
+    artifacts {
+        archives jarTask
+    }    
+    
+}
+
+
+sourceSets {
+    api
+    impl
+    stack
+}
+
+configurations {
+	provided
+}
+
+eclipse {
+
+	classpath {
+
+		plusConfigurations += [ configurations.provided ]
+
+	}
+}
+
+sourceSets {
+    api {
+        compileClasspath += configurations.provided 
+    }
+    impl {
+        compileClasspath += configurations.provided 
+    }
+    stack {
+        compileClasspath += configurations.provided 
+    }
+}
+
+
+dependencies {
+
+    provided 'org.projectlombok:lombok:1.16.6'
+
+    apiCompile 'com.google.guava:guava:18.0'
+    implCompile 'com.google.guava:guava:18.0'
+    
+
+    // test dependencies
+    testCompile 'junit:junit:4.12'
+    testCompile 'com.google.guava:guava:18.0'
+
+    implCompile sourceSets.api.output
+    
+    stackCompile 'com.google.guava:guava:18.0'
+	stackCompile 'io.netty:netty-all:4.1.0.Beta7'
+    provided 'org.slf4j:slf4j-api:1.7.12'
+    stackCompile sourceSets.api.output
+    stackCompile sourceSets.impl.output
+    stackCompile 'dnsjava:dnsjava:2.1.7'
+
+    testCompile sourceSets.api.output
+    testCompile sourceSets.impl.output
+    testCompile sourceSets.stack.output
+    
+    runtime configurations.apiRuntime
+    runtime configurations.stackRuntime
+    runtime configurations.implRuntime
+    
+}
+
+jar {
+    from sourceSets.api.output
+    from sourceSets.impl.output
+    from sourceSets.stack.output
+}
+
+
+shadowJar {
+
+  dependsOn apiClasses, stackClasses, implClasses
+  
+  from sourceSets.stack.output
+  
+  mergeServiceFiles()
+  
+  relocate('com.google.common.net.HostAndPort', 'com.jive.sip.HostAndPort') {
+  }
+  
+  relocate('com.google', 'com.jive.sip.shaded.google') {
+  }
+  
+  relocate('io.netty', 'com.jive.sip.shaded.netty') {
+  }
+  
+  relocate('org.xbill', 'com.jive.sip.shaded.xbill') {
+  }
+  
+}
+
+
+task proguard(type: proguard.gradle.ProGuardTask) {
+  dependsOn shadowJar
+  configuration 'proguard.txt'
+  injars shadowJar.outputs
+  outjars 'build/libs/${archivesBaseName}.out.jar'
+}
+
+
+publishing {
+	publications {
+		mavenJar(MavenPublication) {
+			artifact proguard.outputs.files.singleFile
+			artifactId "sip"
+		}
+	}
+}
+
+artifactory {
+
+    contextUrl = 'https://getjive.artifactoryonline.com/getjive/'
+ 
+    def ENV = System.getenv()
+    
+    publish {
+        repository {
+            repoKey = 'libs-snapshot-local'
+            username = ENV['ARTIFACTORY_USER']
+            password = ENV['ARTIFACTORY_API_KEY']
+            maven = true
+        }
+        
+	    defaults {
+		    publications('mavenJar')
+		    publishArtifacts = true
+		    properties = ['dev.team': 'rtc' ]
+		    publishPom = true
+	    }           
+        
+    }    
+    
+    clientConfig.publisher.repoKey = 'libs-snapshot-local'
+    clientConfig.publisher.username = ENV['ARTIFACTORY_USER'] 
+    clientConfig.publisher.password = ENV['ARTIFACTORY_API_KEY']
+        
+}
+
+
