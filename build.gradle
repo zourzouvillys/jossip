@@ -12,7 +12,7 @@ plugins {
 }
 
 apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
+apply plugin: 'maven'
 
 group = "com.jive.sip"
 version = currentVersion
