@@ -14,7 +14,7 @@ plugins {
 apply plugin: 'eclipse'
 apply plugin: 'maven'
 
-group = "com.jive.sip"
+group = "com.github.zourzouvillys.joss-sip"
 version = currentVersion
 
 repositories {
