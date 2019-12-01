@@ -112,6 +112,7 @@ jar {
 install {
     repositories.mavenInstaller {
 		addFilter('api') { artifact, file -> artifact.name.endsWith('api') }
+		addFilter('stack') { artifact, file -> artifact.name.endsWith('stack') }
 		addFilter('impl') { artifact, file -> artifact.name.endsWith('impl') }
     }
 }
