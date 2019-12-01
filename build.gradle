@@ -107,3 +107,11 @@ jar {
     from sourceSets.impl.output
     from sourceSets.stack.output
 }
+
+// this step is necessary when installing both jars in the local maven repository
+install {
+    repositories.mavenInstaller {
+		addFilter('api') { artifact, file -> artifact.name.endsWith('api') }
+		addFilter('impl') { artifact, file -> artifact.name.endsWith('impl') }
+    }
+}
