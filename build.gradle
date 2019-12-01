@@ -3,20 +3,14 @@ buildscript {
       mavenCentral()
     }
     dependencies {
-      classpath 'net.sf.proguard:proguard-gradle:5.2.1'
-      classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '3.1.1')
     }
 }
 
 plugins {
   id 'java'
-  id 'maven'
-  id 'com.github.johnrengelman.shadow' version '1.2.2'
-  id "com.jfrog.artifactory" version "3.1.0"
+  id "io.freefair.lombok" version "4.1.5"
 }
 
-apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'eclipse'
 
 group = "com.jive.sip"
@@ -24,13 +18,6 @@ version = currentVersion
 
 repositories {
     mavenCentral()
-    maven {
-	    url 'https://getjive.artifactoryonline.com/getjive/libs-snapshot-local'
-	    credentials {
-	        username = 'theo'
-	        password = 'AP9vAJhmvqSytjG9DKe1omyR8Sj'
-	    }
-	}    
 }
 
 
@@ -88,7 +75,9 @@ sourceSets {
 
 dependencies {
 
-    provided 'org.projectlombok:lombok:1.16.6'
+
+	// annotationProcessor 'org.projectlombok:lombok:1.18.10'
+    runtime 'org.projectlombok:lombok:1.18.10'
 
     apiCompile 'com.google.guava:guava:18.0'
     implCompile 'com.google.guava:guava:18.0'
@@ -124,73 +113,5 @@ jar {
 }
 
 
-shadowJar {
-
-  dependsOn apiClasses, stackClasses, implClasses
-  
-  from sourceSets.stack.output
-  
-  mergeServiceFiles()
-  
-  relocate('com.google.common.net.HostAndPort', 'com.jive.sip.HostAndPort') {
-  }
-  
-  relocate('com.google', 'com.jive.sip.shaded.google') {
-  }
-  
-  relocate('io.netty', 'com.jive.sip.shaded.netty') {
-  }
-  
-  relocate('org.xbill', 'com.jive.sip.shaded.xbill') {
-  }
-  
-}
-
-
-task proguard(type: proguard.gradle.ProGuardTask) {
-  dependsOn shadowJar
-  configuration 'proguard.txt'
-  injars shadowJar.outputs
-  outjars 'build/libs/${archivesBaseName}.out.jar'
-}
-
-
-publishing {
-	publications {
-		mavenJar(MavenPublication) {
-			artifact proguard.outputs.files.singleFile
-			artifactId "sip"
-		}
-	}
-}
-
-artifactory {
-
-    contextUrl = 'https://getjive.artifactoryonline.com/getjive/'
- 
-    def ENV = System.getenv()
-    
-    publish {
-        repository {
-            repoKey = 'libs-snapshot-local'
-            username = ENV['ARTIFACTORY_USER']
-            password = ENV['ARTIFACTORY_API_KEY']
-            maven = true
-        }
-        
-	    defaults {
-		    publications('mavenJar')
-		    publishArtifacts = true
-		    properties = ['dev.team': 'rtc' ]
-		    publishPom = true
-	    }           
-        
-    }    
-    
-    clientConfig.publisher.repoKey = 'libs-snapshot-local'
-    clientConfig.publisher.username = ENV['ARTIFACTORY_USER'] 
-    clientConfig.publisher.password = ENV['ARTIFACTORY_API_KEY']
-        
-}
 
 
