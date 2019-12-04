@@ -1,0 +1,48 @@
+
+plugins {
+  id 'java-library'
+  id "io.freefair.lombok" 
+}
+
+repositories {
+  jcenter()
+}
+
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+
+dependencies {
+  api project(':parser')
+  runtime 'org.projectlombok:lombok:1.18.10'
+  api 'com.google.guava:guava:28.1-jre'
+      
+  implementation 'dnsjava:dnsjava:2.1.7'
+  implementation 'io.netty:netty-all:4.1.43.Final'   
+  implementation 'org.slf4j:slf4j-api:1.7.26'
+}
+
+dependencies {
+  annotationProcessor 'com.google.auto.service:auto-service:1.0-rc5'
+  testRuntimeOnly 'ch.qos.logback:logback-classic:1.2.3'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter:5.5.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.2'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+}
+
+test {
+  useJUnitPlatform()
+  minHeapSize = "128m"
+  maxHeapSize = "2g"
+}
+
+
+tasks.withType(Javadoc) {
+  options.addStringOption('Xdoclint:none', '-quiet')
+}

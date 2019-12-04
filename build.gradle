@@ -1,121 +1,20 @@
-buildscript {
-    repositories {
-      mavenCentral()
-    }
-    dependencies {
-    }
-}
 
 plugins {
-  id 'java-library'
   id "io.freefair.lombok" version "4.1.5"
 }
 
 apply plugin: 'eclipse'
 apply plugin: 'maven'
 
-group = "com.github.zourzouvillys.joss-sip"
-version = currentVersion
 
-repositories {
-    mavenCentral()
-}
+allprojects {
 
+	group = 'com.github.zourzouvillys.joss-sip'
+	version = 'master-SNAPSHOT'
 
-java {
-    withSourcesJar()
-    withJavadocJar()
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-
-
-sourceSets.all { set ->
-
-    def jarTask = task("${set.name}Jar", type: Jar) {
-        baseName = baseName + "-$set.name"
-        from set.output
-    }
-
-    artifacts {
-        archives jarTask
-    }    
-    
-}
-
-
-sourceSets {
-    api
-    impl
-    stack
-}
-
-configurations {
-	provided
-}
-
-eclipse {
-	classpath {
-		plusConfigurations += [ configurations.provided ]
+	repositories {
+	    mavenCentral()
 	}
+
 }
 
-sourceSets {
-    api {
-        compileClasspath += configurations.provided 
-    }
-    impl {
-        compileClasspath += configurations.provided 
-    }
-    stack {
-        compileClasspath += configurations.provided 
-    }
-}
-
-
-dependencies {
-
-    runtime 'org.projectlombok:lombok:1.18.10'
-
-    apiCompile 'com.google.guava:guava:18.0'
-    implCompile 'com.google.guava:guava:18.0'
-    
-
-    // test dependencies
-    testCompile 'junit:junit:4.12'
-    testCompile 'com.google.guava:guava:18.0'
-
-    implCompile sourceSets.api.output
-    
-    stackCompile 'com.google.guava:guava:18.0'
-	stackCompile 'io.netty:netty-all:4.1.0.Beta7'
-    provided 'org.slf4j:slf4j-api:1.7.12'
-    stackCompile sourceSets.api.output
-    stackCompile sourceSets.impl.output
-    stackCompile 'dnsjava:dnsjava:2.1.7'
-
-    testCompile sourceSets.api.output
-    testCompile sourceSets.impl.output
-    testCompile sourceSets.stack.output
-    
-    runtime configurations.apiRuntime
-    runtime configurations.stackRuntime
-    runtime configurations.implRuntime
-    
-}
-
-jar {
-    from sourceSets.api.output
-    from sourceSets.impl.output
-    from sourceSets.stack.output
-}
-
-// this step is necessary when installing both jars in the local maven repository
-install {
-    repositories.mavenInstaller {
-		addFilter('api') { artifact, file -> artifact.name.endsWith('api') }
-		addFilter('stack') { artifact, file -> artifact.name.endsWith('stack') }
-		addFilter('impl') { artifact, file -> artifact.name.endsWith('impl') }
-    }
-}
