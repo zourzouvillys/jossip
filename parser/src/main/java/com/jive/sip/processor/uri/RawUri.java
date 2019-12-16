@@ -10,16 +10,21 @@ import com.jive.sip.parsers.core.DefaultParserContext;
 import com.jive.sip.uri.Uri;
 import com.jive.sip.uri.UriVisitor;
 
-import lombok.Value;
+import lombok.EqualsAndHashCode;
 
-@Value
-public class RawUri implements Uri {
+@EqualsAndHashCode
+public final class RawUri implements Uri {
 
   // TODO: this should be part of the context.
   private static final UriParserManager PARSER = UriParserManagerBuilder.build();
 
-  private String scheme;
-  private String opaque;
+  private final String scheme;
+  private final String opaque;
+
+  private RawUri(String scheme, String opaque) {
+    this.scheme = scheme;
+    this.opaque = opaque;
+  }
 
   @Override
   public String toString() {
@@ -48,4 +53,18 @@ public class RawUri implements Uri {
     }
     return visitor.visit(this);
   }
+
+  public String getOpaque() {
+    return this.opaque;
+  }
+
+  @Override
+  public String getScheme() {
+    return this.scheme;
+  }
+
+  public static Uri of(String scheme, String opaque) {
+    return new RawUri(scheme, opaque);
+  }
+
 }

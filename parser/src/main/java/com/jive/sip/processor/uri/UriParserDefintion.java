@@ -12,8 +12,10 @@ import lombok.Value;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
+
 @Value
 public class UriParserDefintion<T extends Uri> {
+
   private final UriSchemeParser<? extends T> parser;
   private final String name;
 
@@ -25,4 +27,5 @@ public class UriParserDefintion<T extends Uri> {
   public static <E extends Uri> UriParserDefintion<E> build(UriSchemeParser<E> parser, String name) {
     return new UriParserDefintion<E>(parser, name);
   }
+
 }

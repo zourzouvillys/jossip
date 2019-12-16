@@ -91,7 +91,7 @@ public class UriParser implements Parser<Uri> {
         }
 
         if (value != null) {
-          value.set(new RawUri(scheme.toString(), ctx.subSequence(start, ctx.position()).toString()));
+          value.set(RawUri.of(scheme.toString(), ctx.subSequence(start, ctx.position()).toString()));
         }
 
         return true;
@@ -146,7 +146,7 @@ public class UriParser implements Parser<Uri> {
       final CharSequence opaque = ctx.read(OPAQUE);
 
       if (value != null) {
-        value.set(new RawUri(scheme.toString(), opaque.toString()));
+        value.set(RawUri.of(scheme.toString(), opaque.toString()));
       }
 
       return true;

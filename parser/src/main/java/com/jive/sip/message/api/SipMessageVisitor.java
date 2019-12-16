@@ -5,6 +5,9 @@ package com.jive.sip.message.api;
 
 import java.io.IOException;
 
+import com.jive.sip.message.SipRequest;
+import com.jive.sip.message.SipResponse;
+
 /**
  * @author Jeff Hutchins <jhutchins@getjive.com>
  *

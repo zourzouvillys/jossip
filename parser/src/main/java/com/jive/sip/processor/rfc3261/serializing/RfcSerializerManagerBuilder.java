@@ -110,7 +110,4 @@ public class RfcSerializerManagerBuilder {
     manager.register(UnsignedInteger.class, new UnsignedIntegerSerializer());
   }
 
-  public static void main(final String[] args) {
-    new RfcSerializerManagerBuilder().build();
-  }
 }

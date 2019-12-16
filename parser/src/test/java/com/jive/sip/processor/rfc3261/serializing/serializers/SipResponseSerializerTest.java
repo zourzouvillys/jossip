@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import com.jive.sip.base.api.RawHeader;
 import com.jive.sip.base.api.RawMessage;
-import com.jive.sip.message.api.SipResponse;
+import com.jive.sip.message.SipResponse;
 import com.jive.sip.processor.rfc3261.RfcSipMessageManager;
 import com.jive.sip.processor.rfc3261.SipMessageManager;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManagerBuilder;

@@ -7,6 +7,8 @@ import java.util.Iterator;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
+import com.jive.sip.message.SipRequest;
+import com.jive.sip.message.SipResponse;
 import com.jive.sip.message.api.headers.CallId;
 
 import lombok.Value;

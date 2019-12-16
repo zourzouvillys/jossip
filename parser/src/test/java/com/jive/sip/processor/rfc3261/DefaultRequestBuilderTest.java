@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.net.HostAndPort;
 import com.google.common.primitives.UnsignedInteger;
+import com.jive.sip.message.SipRequest;
 import com.jive.sip.message.api.CSeq;
 import com.jive.sip.message.api.NameAddr;
 import com.jive.sip.message.api.RequestBuilder;
 import com.jive.sip.message.api.SipMethod;
-import com.jive.sip.message.api.SipRequest;
 import com.jive.sip.message.api.Via;
 import com.jive.sip.message.api.ViaProtocol;
 import com.jive.sip.message.api.headers.CallId;

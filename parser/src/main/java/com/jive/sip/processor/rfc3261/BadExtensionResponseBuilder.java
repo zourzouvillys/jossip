@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.google.common.base.Joiner;
 import com.jive.sip.base.api.RawHeader;
-import com.jive.sip.message.api.SipResponseStatus;
+import com.jive.sip.message.SipResponseStatus;
 import com.jive.sip.message.api.TokenSet;
 
 /**

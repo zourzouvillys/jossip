@@ -1,10 +1,13 @@
-package com.jive.sip.message.api;
+package com.jive.sip.message;
 
 import java.util.List;
 import java.util.Optional;
 
 import com.jive.sip.auth.headers.Authorization;
 import com.jive.sip.base.api.RawHeader;
+import com.jive.sip.message.api.NameAddr;
+import com.jive.sip.message.api.SipHeaderDefinition;
+import com.jive.sip.message.api.SipMethod;
 import com.jive.sip.message.api.headers.RValue;
 import com.jive.sip.uri.Uri;
 

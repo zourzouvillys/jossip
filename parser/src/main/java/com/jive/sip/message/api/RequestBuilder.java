@@ -1,5 +1,7 @@
 package com.jive.sip.message.api;
 
+import com.jive.sip.message.SipRequest;
+import com.jive.sip.message.SipResponse;
 import com.jive.sip.message.api.headers.CallId;
 import com.jive.sip.uri.Uri;
 

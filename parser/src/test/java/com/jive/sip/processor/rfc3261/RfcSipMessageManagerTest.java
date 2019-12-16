@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import com.jive.sip.message.SipRequest;
 import com.jive.sip.message.api.Replaces;
 import com.jive.sip.message.api.SipMethod;
-import com.jive.sip.message.api.SipRequest;
 import com.jive.sip.message.api.headers.CallId;
 import com.jive.sip.parsers.core.ParseFailureException;
 import com.jive.sip.processor.uri.parsers.SipUriParser;

@@ -1,4 +1,4 @@
-package com.jive.sip.message.api;
+package com.jive.sip.message;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -7,6 +7,18 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import com.jive.sip.base.api.RawHeader;
+import com.jive.sip.message.api.BranchId;
+import com.jive.sip.message.api.CSeq;
+import com.jive.sip.message.api.ContactSet;
+import com.jive.sip.message.api.ContentDisposition;
+import com.jive.sip.message.api.MinSE;
+import com.jive.sip.message.api.NameAddr;
+import com.jive.sip.message.api.SessionExpires;
+import com.jive.sip.message.api.SipHeaderDefinition;
+import com.jive.sip.message.api.SipMessageVisitor;
+import com.jive.sip.message.api.SipMethod;
+import com.jive.sip.message.api.TokenSet;
+import com.jive.sip.message.api.Via;
 import com.jive.sip.message.api.headers.CallId;
 import com.jive.sip.message.api.headers.HistoryInfo;
 import com.jive.sip.message.api.headers.MIMEType;

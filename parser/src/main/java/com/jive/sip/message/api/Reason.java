@@ -3,6 +3,7 @@ package com.jive.sip.message.api;
 import java.util.Optional;
 
 import com.jive.sip.base.api.Token;
+import com.jive.sip.message.SipResponseStatus;
 import com.jive.sip.parameters.api.BaseParameterizedObject;
 import com.jive.sip.parameters.api.Parameters;
 import com.jive.sip.parameters.api.QuotedString;

@@ -6,7 +6,7 @@ package com.jive.sip.processor.rfc3261.serializing.serializers;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.jive.sip.message.api.SipRequest;
+import com.jive.sip.message.SipRequest;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
 
 /**

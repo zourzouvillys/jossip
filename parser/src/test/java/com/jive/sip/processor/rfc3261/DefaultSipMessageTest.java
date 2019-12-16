@@ -15,11 +15,11 @@ import com.google.common.collect.Lists;
 import com.google.common.net.HostAndPort;
 import com.google.common.primitives.UnsignedInteger;
 import com.jive.sip.base.api.RawHeader;
+import com.jive.sip.message.SipMessage;
+import com.jive.sip.message.SipRequest;
 import com.jive.sip.message.api.ContactSet;
 import com.jive.sip.message.api.NameAddr;
-import com.jive.sip.message.api.SipMessage;
 import com.jive.sip.message.api.SipMethod;
-import com.jive.sip.message.api.SipRequest;
 import com.jive.sip.processor.uri.RawUri;
 import com.jive.sip.uri.SipUri;
 
@@ -51,7 +51,7 @@ public class DefaultSipMessageTest {
     assertFalse(contacts.get().isStar());
     assertEquals(1, contacts.get().size());
     for (final NameAddr addr : contacts.get()) {
-      assertEquals(new NameAddr(new RawUri("sip", value)), addr);
+      assertEquals(new NameAddr(RawUri.of("sip", value)), addr);
     }
 
     message =

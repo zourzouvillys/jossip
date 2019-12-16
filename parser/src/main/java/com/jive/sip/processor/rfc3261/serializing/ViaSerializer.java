@@ -7,12 +7,13 @@ import com.jive.sip.message.api.Via;
 import com.jive.sip.processor.rfc3261.serializing.serializers.AbstractRfcSerializer;
 import com.jive.sip.processor.rfc3261.serializing.serializers.RfcSerializationConstants;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
 public class ViaSerializer extends AbstractRfcSerializer<Via> {
 
   private final RfcSerializerManager manager;
+
+  ViaSerializer(RfcSerializerManager manager) {
+    this.manager = manager;
+  }
 
   @Override
   public void serialize(final Writer writer, final Via obj) throws IOException {

@@ -9,8 +9,8 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.BaseEncoding;
 import com.jive.sip.auth.headers.Authorization;
 import com.jive.sip.auth.headers.DigestCredentials;
+import com.jive.sip.message.SipRequest;
 import com.jive.sip.message.api.SipMethod;
-import com.jive.sip.message.api.SipRequest;
 
 public class DigestAuthUtils {
 

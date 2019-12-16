@@ -2,7 +2,7 @@ package com.jive.sip.processor.rfc3261.parsing;
 
 import java.nio.ByteBuffer;
 
-import com.jive.sip.message.api.SipMessage;
+import com.jive.sip.message.SipMessage;
 
 /**
  * Interface implemented by SIP messages parser implementations which takes raw bytes and converts

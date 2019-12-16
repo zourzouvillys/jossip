@@ -5,13 +5,13 @@ import java.util.List;
 
 import com.jive.sip.base.api.RawHeader;
 import com.jive.sip.base.api.RawMessage;
+import com.jive.sip.message.SipMessage;
+import com.jive.sip.message.SipRequest;
+import com.jive.sip.message.SipResponse;
+import com.jive.sip.message.SipResponseStatus;
 import com.jive.sip.message.api.NameAddr;
 import com.jive.sip.message.api.Reason;
-import com.jive.sip.message.api.SipMessage;
 import com.jive.sip.message.api.SipMethod;
-import com.jive.sip.message.api.SipRequest;
-import com.jive.sip.message.api.SipResponse;
-import com.jive.sip.message.api.SipResponseStatus;
 import com.jive.sip.parameters.api.Parameters;
 import com.jive.sip.processor.rfc3261.message.api.ResponseBuilder;
 import com.jive.sip.uri.SipUri;

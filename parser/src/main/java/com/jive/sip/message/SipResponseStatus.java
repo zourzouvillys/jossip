@@ -1,4 +1,4 @@
-package com.jive.sip.message.api;
+package com.jive.sip.message;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

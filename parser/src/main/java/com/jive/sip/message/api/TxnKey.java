@@ -3,6 +3,8 @@ package com.jive.sip.message.api;
 import org.immutables.value.Value;
 
 import com.google.common.net.HostAndPort;
+import com.jive.sip.message.SipMessage;
+import com.jive.sip.message.SipRequest;
 
 @Value.Immutable
 public abstract class TxnKey {
