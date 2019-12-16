@@ -7,32 +7,27 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
-@EqualsAndHashCode(callSuper=false)
-public class HostAndPortParameterValue extends ParameterValue<HostAndPort>
-{
-  
+@EqualsAndHashCode(callSuper = false)
+public class HostAndPortParameterValue extends ParameterValue<HostAndPort> {
+
   private HostAndPort value;
 
-  public HostAndPortParameterValue(String value)
-  {
+  public HostAndPortParameterValue(String value) {
     Preconditions.checkNotNull(value);
     this.value = HostAndPort.fromString(value);
   }
-  
-  public HostAndPortParameterValue(HostAndPort value)
-  {
+
+  public HostAndPortParameterValue(HostAndPort value) {
     this.value = value;
   }
-  
+
   @Override
-  public <T> T apply(ParameterValueVisitor<T> visitor)
-  {
+  public <T> T apply(ParameterValueVisitor<T> visitor) {
     return visitor.visit(this);
   }
-  
+
   @Override
-  public String toString()
-  {
+  public String toString() {
     return value.toString();
   }
 }

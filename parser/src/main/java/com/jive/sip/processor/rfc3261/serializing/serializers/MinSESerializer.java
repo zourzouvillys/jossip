@@ -6,27 +6,23 @@ import java.io.Writer;
 import com.jive.sip.message.api.MinSE;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
 
-public class MinSESerializer extends AbstractRfcSerializer<MinSE>
-{
+public class MinSESerializer extends AbstractRfcSerializer<MinSE> {
 
   private RfcSerializerManager manager;
 
-  public MinSESerializer(RfcSerializerManager manager)
-  {
+  public MinSESerializer(RfcSerializerManager manager) {
     this.manager = manager;
   }
 
   @Override
-  public void serialize(final Writer sink, final MinSE obj) throws IOException
-  {
+  public void serialize(final Writer sink, final MinSE obj) throws IOException {
     sink.append(Long.toString(obj.getDuration().getSeconds()));
-    if (obj.getParameters().isPresent())
-    {
+    if (obj.getParameters().isPresent()) {
       sink.append(RfcSerializationConstants.SEMI);
       manager.serializeCollection(
-          sink,
-          obj.getParameters().get().getRawParameters(),
-          RfcSerializationConstants.SEMI);
+        sink,
+        obj.getParameters().get().getRawParameters(),
+        RfcSerializationConstants.SEMI);
     }
   }
 

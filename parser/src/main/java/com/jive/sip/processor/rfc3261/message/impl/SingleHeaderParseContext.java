@@ -5,20 +5,17 @@ import java.nio.charset.StandardCharsets;
 import com.jive.sip.processor.rfc3261.RfcSipMessageManager;
 import com.jive.sip.processor.rfc3261.parsing.AbstractStringParseContext;
 
-public class SingleHeaderParseContext extends AbstractStringParseContext
-{
+public class SingleHeaderParseContext extends AbstractStringParseContext {
 
   private final String name;
 
-  public SingleHeaderParseContext(final RfcSipMessageManager manager, final String name, final String value)
-  {
+  public SingleHeaderParseContext(final RfcSipMessageManager manager, final String name, final String value) {
     super(manager, value.getBytes(StandardCharsets.UTF_8));
     this.name = name;
   }
 
   @Override
-  public String getName()
-  {
+  public String getName() {
     return this.name;
   }
 

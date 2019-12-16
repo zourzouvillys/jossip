@@ -16,19 +16,16 @@ import lombok.AllArgsConstructor;
  * 
  */
 @AllArgsConstructor
-public class SipResponseSerializer extends AbstractRfcSerializer<SipResponse>
-{
+public class SipResponseSerializer extends AbstractRfcSerializer<SipResponse> {
 
   private final RfcSerializerManager manager;
 
   /*
    * (non-Javadoc)
-   * 
    * @see com.jive.sip.processor.rfc3261.serializing.RfcSerializer#serialize(java.lang.Object)
    */
   @Override
-  public void serialize(final Writer writer, final SipResponse obj) throws IOException
-  {
+  public void serialize(final Writer writer, final SipResponse obj) throws IOException {
 
     writer.append(obj.getVersion());
     writer.append(RfcSerializationConstants.SP);
@@ -42,8 +39,7 @@ public class SipResponseSerializer extends AbstractRfcSerializer<SipResponse>
     writer.append(RfcSerializationConstants.CRLF);
     writer.append(RfcSerializationConstants.CRLF);
 
-    if (obj.getBody() != null)
-    {
+    if (obj.getBody() != null) {
       // TODO: urgh, perhaps not Writer?
       writer.write(new String(obj.getBody()).toCharArray());
     }

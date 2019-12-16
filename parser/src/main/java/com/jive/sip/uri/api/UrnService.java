@@ -12,12 +12,10 @@ import lombok.Value;
  */
 @Value
 @EqualsAndHashCode
-public class UrnService
-{
+public class UrnService {
   private final String service;
-  
-  public String toString()
-  {
+
+  public String toString() {
     return service;
   }
 }

@@ -14,22 +14,19 @@ import com.jive.sip.message.api.TokenSet;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class BadExtensionResponseBuilder extends DefaultResponseBuilder
-{
+public class BadExtensionResponseBuilder extends DefaultResponseBuilder {
 
   /**
    * @param status
    */
 
-  public BadExtensionResponseBuilder(final TokenSet tokens)
-  {
+  public BadExtensionResponseBuilder(final TokenSet tokens) {
     super(SipResponseStatus.BAD_EXTENSION);
     final String value = Joiner.on(", ").join(tokens);
     this.addHeader(new RawHeader("Unsupported", value));
   }
 
-  public BadExtensionResponseBuilder(final RfcSipMessageManager manager, final List<String> unsupportedExtensions)
-  {
+  public BadExtensionResponseBuilder(final RfcSipMessageManager manager, final List<String> unsupportedExtensions) {
     super(manager, SipResponseStatus.BAD_EXTENSION);
     final String value = Joiner.on(", ").join(unsupportedExtensions);
     this.addHeader(new RawHeader("Unsupported", value));

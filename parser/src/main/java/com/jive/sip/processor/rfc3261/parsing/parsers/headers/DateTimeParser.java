@@ -20,10 +20,15 @@ import com.jive.sip.parsers.core.ParseFailureException;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  *
  */
-public class DateTimeParser implements Parser<ZonedDateTime>
-{
-  private static final Parser<CharSequence> WKDAY = or(str("Mon"), str("Tue"), str("Wed"), str("Thu"),
-      str("Fri"), str("Sat"), str("Sun"));
+public class DateTimeParser implements Parser<ZonedDateTime> {
+  private static final Parser<CharSequence> WKDAY =
+    or(str("Mon"),
+      str("Tue"),
+      str("Wed"),
+      str("Thu"),
+      str("Fri"),
+      str("Sat"),
+      str("Sun"));
   private static final Parser<CharSequence> COMMA = ch(',');
   private static final Parser<CharSequence> SP = ch(' ');
   private static final Parser<CharSequence> COLON = ch(':');
@@ -45,92 +50,72 @@ public class DateTimeParser implements Parser<ZonedDateTime>
 
   private static final Parser<CharSequence> GMT = str("GMT");
 
-  private static final Parser<Integer> MONTH = new Parser<Integer>()
-  {
+  private static final Parser<Integer> MONTH = new Parser<Integer>() {
 
     @Override
-    public boolean find(final ParserContext ctx, final ValueListener<Integer> value)
-    {
+    public boolean find(final ParserContext ctx, final ValueListener<Integer> value) {
       Integer result = null;
-      if (ctx.skip(JAN))
-      {
+      if (ctx.skip(JAN)) {
         result = 1;
       }
-      else if (ctx.skip(FEB))
-      {
+      else if (ctx.skip(FEB)) {
         result = 2;
       }
-      else if (ctx.skip(MAR))
-      {
+      else if (ctx.skip(MAR)) {
         result = 3;
       }
-      else if (ctx.skip(APR))
-      {
+      else if (ctx.skip(APR)) {
         result = 4;
       }
-      else if (ctx.skip(MAY))
-      {
+      else if (ctx.skip(MAY)) {
         result = 5;
       }
-      else if (ctx.skip(JUN))
-      {
+      else if (ctx.skip(JUN)) {
         result = 6;
       }
-      else if (ctx.skip(JUL))
-      {
+      else if (ctx.skip(JUL)) {
         result = 7;
       }
-      else if (ctx.skip(AUG))
-      {
+      else if (ctx.skip(AUG)) {
         result = 8;
       }
-      else if (ctx.skip(SEP))
-      {
+      else if (ctx.skip(SEP)) {
         result = 9;
       }
-      else if (ctx.skip(OCT))
-      {
+      else if (ctx.skip(OCT)) {
         result = 10;
       }
-      else if (ctx.skip(NOV))
-      {
+      else if (ctx.skip(NOV)) {
         result = 11;
       }
-      else if (ctx.skip(DEC))
-      {
+      else if (ctx.skip(DEC)) {
         result = 12;
       }
-      else
-      {
+      else {
         return false;
       }
 
-      if (value != null)
-      {
+      if (value != null) {
         value.set(result);
       }
       return true;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
       return "month";
     }
   };
 
   /*
    * (non-Javadoc)
-   *
    * @see com.jive.sip.parsers.core.Parser#find(com.jive.sip.parsers.core.ParserContext,
    * com.jive.sip.parsers.core.ValueListener)
    */
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<ZonedDateTime> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<ZonedDateTime> value) {
     final int pos = ctx.position();
-    try
-    {
+    try {
       ctx.read(WKDAY);
       ctx.read(COMMA);
       ctx.read(SP);
@@ -149,15 +134,13 @@ public class DateTimeParser implements Parser<ZonedDateTime>
       ctx.read(SP);
       ctx.read(GMT);
 
-      if (value != null)
-      {
+      if (value != null) {
         value.set(ZonedDateTime.of(year, month, day, hour, min, sec, 0, ZoneId.of("UTC")));
       }
 
       return true;
     }
-    catch (final ParseFailureException e)
-    {
+    catch (final ParseFailureException e) {
       ctx.position(pos);
       return false;
     }

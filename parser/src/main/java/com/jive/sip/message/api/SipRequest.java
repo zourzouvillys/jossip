@@ -15,8 +15,7 @@ import com.jive.sip.uri.api.Uri;
  * @author theo
  *
  */
-public interface SipRequest extends SipMessage
-{
+public interface SipRequest extends SipMessage {
 
   SipMethod getMethod();
 
@@ -36,14 +35,12 @@ public interface SipRequest extends SipMessage
 
   Optional<TokenSet> getProxyRequire();
 
-
   /**
    *
    * @return
    */
 
   List<Authorization> getProxyAuthorization();
-
 
   /**
    *
@@ -85,7 +82,6 @@ public interface SipRequest extends SipMessage
 
   Optional<NameAddr> getReferredBy();
 
-
   /**
    * Returns the disposition tokens provided in the request.
    *
@@ -113,7 +109,6 @@ public interface SipRequest extends SipMessage
    * @return
    */
 
-
   SipMessage withReplacedHeaders(final RawHeader... headers);
 
   SipRequest withUri(final Uri Uri);
@@ -124,13 +119,11 @@ public interface SipRequest extends SipMessage
 
   SipRequest withBody(final String body);
 
-
   @Override
   SipRequest withoutHeaders(final String... headerNames);
 
   @Override
   SipRequest withoutHeaders(final SipHeaderDefinition... headers);
-
 
   /**
    * Prepends a field to a collection header (e.g, one which is List<T>).
@@ -183,7 +176,6 @@ public interface SipRequest extends SipMessage
   SipRequest withContact(final NameAddr local);
 
   SipRequest withContact(final Uri local);
-
 
   @Override
   SipRequest withCSeq(final long seqNum, final SipMethod method);

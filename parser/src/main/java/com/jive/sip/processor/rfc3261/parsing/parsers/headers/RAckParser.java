@@ -9,21 +9,18 @@ import com.jive.sip.parsers.api.ValueListener;
 import com.jive.sip.parsers.core.ParserUtils;
 import com.jive.sip.parsers.core.ValueHolder;
 
-public class RAckParser implements Parser<RAck>
-{
+public class RAckParser implements Parser<RAck> {
 
   private static final CSeqParser cseq = new CSeqParser();
 
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<RAck> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<RAck> value) {
 
     final int pos = ctx.position();
 
     final UnsignedInteger rseq = ctx.read(ParserUtils.uint(1, 10), null);
 
-    if ((rseq == null) || (ctx.skip(ParserUtils.LWS) == false))
-    {
+    if ((rseq == null) || (ctx.skip(ParserUtils.LWS) == false)) {
       ctx.position(pos);
       return false;
     }
@@ -31,15 +28,12 @@ public class RAckParser implements Parser<RAck>
     //
     ValueHolder<CSeq> vcseq = new ValueHolder<CSeq>();
 
-    if (!cseq.find(ctx, vcseq))
-    {
+    if (!cseq.find(ctx, vcseq)) {
       ctx.position(pos);
       return false;
     }
 
-
-    if (value != null)
-    {
+    if (value != null) {
       value.set(new RAck(rseq, vcseq.value()));
     }
 

@@ -18,19 +18,16 @@ import com.jive.sip.parsers.core.ParameterParser;
  * RFC 3326 Replaces header field value.
  */
 
-public class TargetDialogParser implements Parser<TargetDialog>
-{
+public class TargetDialogParser implements Parser<TargetDialog> {
 
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<TargetDialog> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<TargetDialog> value) {
 
     final CallId callId = ctx.read(new CallIdParser());
 
     final Collection<RawParameter> params = ctx.read(ParameterParser.getInstance());
 
-    if (value != null)
-    {
+    if (value != null) {
       value.set(new TargetDialog(callId, DefaultParameters.from(params)));
     }
 

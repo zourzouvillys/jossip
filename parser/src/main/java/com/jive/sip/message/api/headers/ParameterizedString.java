@@ -8,26 +8,22 @@ import lombok.Value;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class ParameterizedString extends BaseParameterizedObject<ParameterizedString>
-{
-  
+public class ParameterizedString extends BaseParameterizedObject<ParameterizedString> {
+
   private String value;
-  
-  public ParameterizedString(String value)
-  {
+
+  public ParameterizedString(String value) {
     this(value, null);
   }
-  
-  public ParameterizedString(String value, Parameters parameters)
-  {
+
+  public ParameterizedString(String value, Parameters parameters) {
     this.value = value;
     this.parameters = parameters;
   }
 
   @Override
-  public ParameterizedString withParameters(Parameters parameters)
-  {
+  public ParameterizedString withParameters(Parameters parameters) {
     return new ParameterizedString(this.value, parameters);
   }
-  
+
 }

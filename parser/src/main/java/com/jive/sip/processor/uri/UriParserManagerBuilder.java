@@ -12,17 +12,14 @@ import com.jive.sip.processor.uri.parsers.UrnUriParser;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  *
  */
-public class UriParserManagerBuilder
-{
-  public static UriParserManager build()
-  {
+public class UriParserManagerBuilder {
+  public static UriParserManager build() {
     final UriParserManager manager = new UriParserManager();
     registerParsers(manager);
     return manager;
   }
 
-  private static void registerParsers(final UriParserManager manager)
-  {
+  private static void registerParsers(final UriParserManager manager) {
     manager.register(UriParserDefintion.build(TelUriParser.TEL, "tel"));
     manager.register(UriParserDefintion.build(SipUriParser.SIP, "sip"));
     manager.register(UriParserDefintion.build(SipUriParser.SIPS, "sips"));

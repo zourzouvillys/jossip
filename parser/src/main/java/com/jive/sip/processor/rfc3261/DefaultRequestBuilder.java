@@ -23,8 +23,7 @@ import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
 import com.jive.sip.uri.api.Uri;
 
-public class DefaultRequestBuilder implements RequestBuilder
-{
+public class DefaultRequestBuilder implements RequestBuilder {
   private SipMethod method;
   private NameAddr from;
   private NameAddr to;
@@ -41,90 +40,76 @@ public class DefaultRequestBuilder implements RequestBuilder
   private final Map<SipMethod, CSeq> cseqs = Maps.newHashMap();
   private Collection<NameAddr> route;
 
-  public DefaultRequestBuilder()
-  {
+  public DefaultRequestBuilder() {
     this.manager = (RfcSipMessageManager) new RfcSipMessageManagerBuilder().build();
   }
 
-  public DefaultRequestBuilder(final RfcSipMessageManager manager)
-  {
+  public DefaultRequestBuilder(final RfcSipMessageManager manager) {
     this.manager = manager;
   }
 
   @Override
-  public RequestBuilder setMethod(final SipMethod method)
-  {
+  public RequestBuilder setMethod(final SipMethod method) {
     this.method = method;
     return this;
   }
 
   @Override
-  public RequestBuilder setRequestUri(final Uri uri)
-  {
+  public RequestBuilder setRequestUri(final Uri uri) {
     this.rUri = uri;
     return this;
   }
 
   @Override
-  public RequestBuilder setFrom(final NameAddr from)
-  {
+  public RequestBuilder setFrom(final NameAddr from) {
     this.from = from;
     return this;
   }
 
   @Override
-  public RequestBuilder setTo(final NameAddr to)
-  {
+  public RequestBuilder setTo(final NameAddr to) {
     this.to = to;
     return this;
   }
 
   @Override
-  public RequestBuilder setFromTag(final String tag)
-  {
+  public RequestBuilder setFromTag(final String tag) {
     this.fromTag = tag;
     return this;
   }
 
   @Override
-  public RequestBuilder setToTag(final String tag)
-  {
+  public RequestBuilder setToTag(final String tag) {
     this.toTag = tag;
     return this;
   }
 
   @Override
-  public RequestBuilder setCallID(final CallId callID)
-  {
+  public RequestBuilder setCallID(final CallId callID) {
     this.callID = callID;
     return this;
   }
 
   @Override
-  public RequestBuilder setCSeq(final CSeq cSeq)
-  {
+  public RequestBuilder setCSeq(final CSeq cSeq) {
     this.cSeq = cSeq;
     return this;
   }
 
   @Override
-  public RequestBuilder setMaxForwards(final int max)
-  {
+  public RequestBuilder setMaxForwards(final int max) {
     this.maxForwards = UnsignedInteger.valueOf(max);
     return this;
   }
 
   @Override
-  public RequestBuilder setVia(final Via via)
-  {
+  public RequestBuilder setVia(final Via via) {
     this.via = via;
     return this;
   }
 
-
   @Override
-  public RequestBuilder setDialogId(final DialogId dialog)
-  {
+  public RequestBuilder setDialogId(final DialogId dialog) {
     this.callID = dialog.getCallId();
     this.fromTag = dialog.getRemoteTag();
     this.toTag = dialog.getLocalTag();
@@ -132,96 +117,77 @@ public class DefaultRequestBuilder implements RequestBuilder
   }
 
   @Override
-  public RequestBuilder setHeader(final String name, final Object value)
-  {
-    if ("CSeq".equalsIgnoreCase(name))
-    {
+  public RequestBuilder setHeader(final String name, final Object value) {
+    if ("CSeq".equalsIgnoreCase(name)) {
       this.setCSeq((CSeq) value);
     }
-    else if ("Max-Forwards".equalsIgnoreCase(name))
-    {
+    else if ("Max-Forwards".equalsIgnoreCase(name)) {
       this.setMaxForwards((Integer) value);
     }
-    else if ("Via".equalsIgnoreCase(name) || "v".equals(name))
-    {
+    else if ("Via".equalsIgnoreCase(name) || "v".equals(name)) {
       this.setVia((Via) value);
     }
-    else
-    {
+    else {
       this.extraHeaders.put(name, value);
     }
     return this;
   }
 
   @Override
-  public RequestBuilder convertFromResponse(final SipResponse response)
-  {
+  public RequestBuilder convertFromResponse(final SipResponse response) {
     this.callID = response.getCallId();
     this.from = response.getFrom();
     this.to = response.getTo();
 
-    if (response.getContacts().isPresent() && (response.getContacts().get().size() > 0))
-    {
+    if (response.getContacts().isPresent() && (response.getContacts().get().size() > 0)) {
       // should never generate a request with R-URI that doesn't come fron the contact.
       this.rUri = response.getContacts().get().iterator().next().getAddress();
     }
-    else
-    {
+    else {
       this.rUri = response.getToAddress();
     }
     return this;
   }
 
   @Override
-  public RequestBuilder setBody(final String body)
-  {
+  public RequestBuilder setBody(final String body) {
     this.body = body;
     this.extraHeaders.put("Content-Length", body.length());
     return this;
   }
 
-  private void validate()
-  {
+  private void validate() {
     String errorMessage = null;
 
-    if (this.method == null)
-    {
+    if (this.method == null) {
       errorMessage = "Request method cannot be null.";
     }
-    else if (this.rUri == null)
-    {
+    else if (this.rUri == null) {
       errorMessage = "Request URI cannot be null.";
     }
-    else if (this.from == null)
-    {
+    else if (this.from == null) {
       errorMessage = "Request 'From' NameAddr cannot be null.";
     }
-    else if (this.to == null)
-    {
+    else if (this.to == null) {
       errorMessage = "Request 'To' NameAddr cannot be null.";
     }
-    else if (this.callID == null)
-    {
+    else if (this.callID == null) {
       errorMessage = "Request Call-ID cannot be null.";
     }
-    if (errorMessage != null)
-    {
+    if (errorMessage != null) {
       throw new IllegalArgumentException(errorMessage);
     }
   }
 
   @Override
-  public SipRequest build()
-  {
+  public SipRequest build() {
     this.validate();
 
-    if (this.fromTag != null)
-    {
+    if (this.fromTag != null) {
       this.from = this.from.withParameter(Token.from("tag"), Token.from(this.fromTag));
     }
 
-    if (this.toTag != null)
-    {
+    if (this.toTag != null) {
       this.to = this.to.withParameter(Token.from("tag"), Token.from(this.toTag));
     }
 
@@ -237,8 +203,7 @@ public class DefaultRequestBuilder implements RequestBuilder
     req.addHeader("Max-Forwards", this.maxForwards.toString(), this.maxForwards);
 
     // CSeq automagic management
-    if (this.cSeq == null)
-    {
+    if (this.cSeq == null) {
       this.cSeq = Optional.ofNullable(this.cseqs.get(this.method)).orElse(new CSeq(0, this.method)).withNextSequence();
     }
     this.cseqs.put(this.method, this.cSeq);
@@ -247,37 +212,30 @@ public class DefaultRequestBuilder implements RequestBuilder
 
     // Via management
 
-
-    if (this.via != null)
-    {
+    if (this.via != null) {
       req.addHeader(new RawHeader("Via", serializer.serialize(this.via)));
     }
 
     // route headers
-    if (this.route != null)
-    {
-      for (final NameAddr r : this.route)
-      {
+    if (this.route != null) {
+      for (final NameAddr r : this.route) {
         req.addHeader(new RawHeader("Route", serializer.serialize(r)));
       }
     }
 
     // Add extra headers
-    for (final Entry<String, Object> header : this.extraHeaders.entrySet())
-    {
+    for (final Entry<String, Object> header : this.extraHeaders.entrySet()) {
       req.addHeader(header.getKey(), serializer.serialize(header.getValue()), header.getValue());
     }
 
-    if (this.body != null)
-    {
+    if (this.body != null) {
       req.setBody(this.body.getBytes(StandardCharsets.UTF_8));
     }
 
     return req;
   }
 
-  public void setRoute(final Collection<NameAddr> route)
-  {
+  public void setRoute(final Collection<NameAddr> route) {
     this.route = route;
   }
 

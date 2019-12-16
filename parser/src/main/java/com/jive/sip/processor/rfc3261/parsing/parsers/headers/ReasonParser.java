@@ -19,12 +19,10 @@ import com.jive.sip.parsers.core.ParameterParser;
  * RFC 3326 Reason header field value.
  */
 
-public class ReasonParser implements Parser<Reason>
-{
+public class ReasonParser implements Parser<Reason> {
 
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<Reason> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<Reason> value) {
 
     // Q.850 ;cause=16;text="Terminated"
     // SIP ;cause=600 ;text="Busy Everywhere"
@@ -33,8 +31,7 @@ public class ReasonParser implements Parser<Reason>
 
     final Collection<RawParameter> params = ctx.read(ParameterParser.getInstance());
 
-    if (value != null)
-    {
+    if (value != null) {
       value.set(new Reason(protocol, ParameterBuilder.from(params)));
     }
 

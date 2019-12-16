@@ -12,12 +12,10 @@ import com.jive.sip.processor.uri.RawUri;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class RawUriSerializer extends AbstractRfcSerializer<RawUri>
-{
+public class RawUriSerializer extends AbstractRfcSerializer<RawUri> {
 
   @Override
-  public void serialize(final Writer w, final RawUri obj) throws IOException
-  {
+  public void serialize(final Writer w, final RawUri obj) throws IOException {
     w.append(obj.getScheme());
     w.append(RfcSerializationConstants.COLON);
     w.append(obj.getOpaque());

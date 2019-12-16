@@ -6,14 +6,12 @@ import com.google.common.collect.Sets;
 import com.jive.sip.message.api.SipHeaderDefinition;
 import com.jive.sip.processor.rfc3261.message.impl.SingleHeaderDefinition;
 
-public class RfcSipMessageManagerBuilder
-{
+public class RfcSipMessageManagerBuilder {
 
   private SipMessageManagerListener listener = null;
   private final Set<SipHeaderDefinition<?>> headers = Sets.newHashSet();
 
-  public RfcSipMessageManager build()
-  {
+  public RfcSipMessageManager build() {
 
     final RfcSipMessageManager manager = new RfcSipMessageManager();
 
@@ -21,8 +19,7 @@ public class RfcSipMessageManagerBuilder
 
     registerDefaultHeaders(manager);
 
-    for (final SipHeaderDefinition<?> def : this.headers)
-    {
+    for (final SipHeaderDefinition<?> def : this.headers) {
       manager.register(def);
     }
 
@@ -30,8 +27,7 @@ public class RfcSipMessageManagerBuilder
 
   }
 
-  private void registerDefaultHeaders(final RfcSipMessageManager manager)
-  {
+  private void registerDefaultHeaders(final RfcSipMessageManager manager) {
 
     manager.register(DefaultSipMessage.ACCEPT);
     manager.register(DefaultSipMessage.ALERT_INFO);
@@ -105,22 +101,21 @@ public class RfcSipMessageManagerBuilder
   }
 
   /**
-   * Adds a new {@link SipHeaderDefinition} to be registered with the {@link SipMessageManager} instance.
+   * Adds a new {@link SipHeaderDefinition} to be registered with the {@link SipMessageManager}
+   * instance.
    * 
    * @param def
    * @return
    * 
    */
 
-  public <T> RfcSipMessageManagerBuilder addHeader(final SipHeaderDefinition<T> def)
-  {
+  public <T> RfcSipMessageManagerBuilder addHeader(final SipHeaderDefinition<T> def) {
     // TODO: TPZ: check we're not overriding one already set (match both name and short name).
     this.headers.add(def);
     return this;
   }
 
-  public RfcSipMessageManagerBuilder addListener(final SipMessageManagerListener listener)
-  {
+  public RfcSipMessageManagerBuilder addListener(final SipMessageManagerListener listener) {
     this.listener = listener;
     return this;
   }

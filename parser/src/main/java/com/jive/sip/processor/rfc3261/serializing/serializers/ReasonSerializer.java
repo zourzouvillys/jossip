@@ -13,26 +13,21 @@ import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
  * @author theo
  *
  */
-public class ReasonSerializer extends AbstractRfcSerializer<Reason>
-{
+public class ReasonSerializer extends AbstractRfcSerializer<Reason> {
 
   private final RfcSerializerManager manager;
 
-  public ReasonSerializer(final RfcSerializerManager manager)
-  {
+  public ReasonSerializer(final RfcSerializerManager manager) {
     this.manager = manager;
   }
 
   @Override
-  public void serialize(final Writer sink, final Reason obj) throws IOException
-  {
+  public void serialize(final Writer sink, final Reason obj) throws IOException {
     sink.append(obj.getProtocol());
-    if (obj.getParameters().isPresent())
-    {
+    if (obj.getParameters().isPresent()) {
       sink.append(RfcSerializationConstants.SEMI);
       this.manager.serializeCollection(sink, obj.getParameters().get().getRawParameters(), RfcSerializationConstants.SEMI);
     }
   }
-
 
 }

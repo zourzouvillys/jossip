@@ -10,8 +10,7 @@ import java.io.Writer;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public interface RfcSerializer<T>
-{
+public interface RfcSerializer<T> {
 
   /**
    * Serializes the given object to the provided {@link Writer}.

@@ -3,7 +3,6 @@
  */
 package com.jive.sip.processor.rfc3261.serializing;
 
-
 import java.time.ZonedDateTime;
 
 import com.google.common.primitives.UnsignedInteger;
@@ -69,18 +68,15 @@ import com.jive.sip.uri.api.UserInfo;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  *
  */
-public class RfcSerializerManagerBuilder
-{
+public class RfcSerializerManagerBuilder {
 
-  public RfcSerializerManager build()
-  {
+  public RfcSerializerManager build() {
     final RfcSerializerManager manager = new RfcSerializerManager();
     this.register(manager);
     return manager;
   }
 
-  private void register(final RfcSerializerManager manager)
-  {
+  private void register(final RfcSerializerManager manager) {
     manager.register(DefaultSipRequest.class, new SipRequestSerializer(manager));
     manager.register(DefaultSipResponse.class, new SipResponseSerializer(manager));
     manager.register(Authorization.class, new AuthorizationSerializer(manager));
@@ -114,8 +110,7 @@ public class RfcSerializerManagerBuilder
     manager.register(UnsignedInteger.class, new UnsignedIntegerSerializer());
   }
 
-  public static void main(final String[] args)
-  {
+  public static void main(final String[] args) {
     new RfcSerializerManagerBuilder().build();
   }
 }

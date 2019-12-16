@@ -24,8 +24,7 @@ import com.jive.sip.parsers.core.terminal.OrParser;
 import com.jive.sip.parsers.core.terminal.StringParser;
 import com.jive.sip.parsers.core.terminal.UnsignedIntegerParser;
 
-public class ParserUtils
-{
+public class ParserUtils {
 
   public static final String ALPHA_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   public static final String DIGIT_CHARS = "0123456789";
@@ -34,8 +33,7 @@ public class ParserUtils
 
   public static final Parser<CharSequence> CRLF = name(str("\r\n"), "CRLF");
   public static final Parser<CharSequence> LF = name(ch('\n'), "LF");
-  public static final Parser<CharSequence> WSP = name(anyOf(new byte[]
-      { ' ', '\t' }), "WSP");
+  public static final Parser<CharSequence> WSP = name(anyOf(new byte[] { ' ', '\t' }), "WSP");
   public static final Parser<Integer> _1DIGIT = name(intp(1, 1), "1DIGIT");
   public static final Parser<Integer> _3DIGIT = name(intp(3, 3), "3DIGIT");
   public static final Parser<Integer> _1_3DIGIT = name(intp(1, 3), "1*3DIGIT");
@@ -46,7 +44,8 @@ public class ParserUtils
   public static final Parser<CharSequence> ALPHA = name(chars(ALPHA_CHARS), "ALPHA");
   public static final Parser<CharSequence> DIGIT = name(anyOf(DIGIT_CHARS.getBytes(StandardCharsets.UTF_8)), "DIGIT");
   public static final Parser<CharSequence> ALPHANUM = chars(ALPHA_CHARS.concat(DIGIT_CHARS));
-  public static final Parser<CharSequence> TOKEN = name(chars(ALPHA_CHARS.concat(DIGIT_CHARS).concat("-.!%*_+`'~")),
+  public static final Parser<CharSequence> TOKEN =
+    name(chars(ALPHA_CHARS.concat(DIGIT_CHARS).concat("-.!%*_+`'~")),
       "TOKEN");
   public static final Parser<CharSequence> LWS = new LinearWhitespaceParser();
   public static final Parser<CharSequence> SWS = name(optional(LWS), "SWS");
@@ -73,8 +72,7 @@ public class ParserUtils
    * @return
    */
 
-  public static Parser<CharSequence> ch(final char ch)
-  {
+  public static Parser<CharSequence> ch(final char ch) {
     return str(Character.toString(ch));
   }
 
@@ -88,8 +86,7 @@ public class ParserUtils
    *
    */
 
-  public static Parser<CharSequence> str(final String str)
-  {
+  public static Parser<CharSequence> str(final String str) {
     return new StringParser(str);
   }
 
@@ -103,28 +100,23 @@ public class ParserUtils
    * @return
    */
 
-  public static Parser<CharSequence> chars(final String bytes)
-  {
+  public static Parser<CharSequence> chars(final String bytes) {
     return new CharactersParser(bytes.getBytes(StandardCharsets.UTF_8));
   }
 
-  public static Parser<CharSequence> charSize(final String bytes, final int minDigits, final int maxDigits)
-  {
+  public static Parser<CharSequence> charSize(final String bytes, final int minDigits, final int maxDigits) {
     return new InputSizeEnforcer<CharSequence>(chars(bytes), Range.closed(minDigits, maxDigits));
   }
 
-  public static Parser<UnsignedInteger> uint(final int minDigits, final int maxDigits)
-  {
+  public static Parser<UnsignedInteger> uint(final int minDigits, final int maxDigits) {
     return new UnsignedIntegerParser(minDigits, maxDigits);
   }
 
-  public static Parser<Integer> intp(final int minDigits, final int maxDigits)
-  {
+  public static Parser<Integer> intp(final int minDigits, final int maxDigits) {
     return new IntegerParser(minDigits, maxDigits);
   }
 
-  public static <T> Parser<T> name(final Parser<T> parser, final String name)
-  {
+  public static <T> Parser<T> name(final Parser<T> parser, final String name) {
     return new NameParser<T>(parser, name);
   };
 
@@ -135,13 +127,11 @@ public class ParserUtils
    * @return
    */
 
-  public static <T> Parser<List<T>> multi(final Parser<T> finder)
-  {
+  public static <T> Parser<List<T>> multi(final Parser<T> finder) {
     return new MultiParser<T, List<T>>(finder, Range.atLeast(1), new CollectionValueCollector<T>());
   }
 
-  public static <T, R> Parser<R> multi(final Parser<T> finder, final ValueCollector<T, R> collector)
-  {
+  public static <T, R> Parser<R> multi(final Parser<T> finder, final ValueCollector<T, R> collector) {
     return new MultiParser<T, R>(finder, Range.atLeast(1), collector);
   }
 
@@ -154,35 +144,29 @@ public class ParserUtils
    *
    */
 
-  public static <T> Parser<List<T>> repeat(final Parser<T> finder, final int count)
-  {
+  public static <T> Parser<List<T>> repeat(final Parser<T> finder, final int count) {
     Preconditions.checkArgument(count > 0);
     return new MultiParser<T, List<T>>(finder, Range.singleton(count), new CollectionValueCollector<T>());
   }
 
-  public static <T> Parser<T> repeat(final Parser<T> finder, final int count, final ValueCollector<T, T> collector)
-  {
+  public static <T> Parser<T> repeat(final Parser<T> finder, final int count, final ValueCollector<T, T> collector) {
     Preconditions.checkArgument(count > 0);
     return new MultiParser<T, T>(finder, Range.singleton(count), collector);
   }
 
-  public static <T> Parser<T> or(final Parser<T>... finders)
-  {
+  public static <T> Parser<T> or(final Parser<T>... finders) {
     return new OrParser<T>(Lists.newArrayList(finders));
   }
 
-  public static <T> Parser<T> and(final Parser<T>... finders)
-  {
+  public static <T> Parser<T> and(final Parser<T>... finders) {
     return new AndParser<T>(Lists.newArrayList(finders));
   }
 
-  public static <T> Parser<T> optional(final Parser<T> finders)
-  {
+  public static <T> Parser<T> optional(final Parser<T> finders) {
     return new MultiParser<T, T>(finders, Range.atMost(1), new SingleValueCollector<T>());
   }
 
-  public static <T> Parser<T> not(final Parser<T> parser)
-  {
+  public static <T> Parser<T> not(final Parser<T> parser) {
     return new NotPredicateParser<T>(parser);
   }
 
@@ -193,13 +177,11 @@ public class ParserUtils
    * @return
    */
 
-  private static Parser<CharSequence> anyOf(final byte[] bytes)
-  {
+  private static Parser<CharSequence> anyOf(final byte[] bytes) {
     return new OneOf(bytes);
   }
 
-  public static boolean isDigit(final byte peek)
-  {
+  public static boolean isDigit(final byte peek) {
     return ((peek >= 48) && (peek <= 57));
   }
 
@@ -214,29 +196,24 @@ public class ParserUtils
    * @return
    */
 
-  public static <T> T read(final ParserInput input, final Parser<T> parser)
-  {
+  public static <T> T read(final ParserInput input, final Parser<T> parser) {
     final ValueHolder<T> val = ValueHolder.create();
     final ParserContext context = new DefaultParserContext(input);
-    if (!parser.find(context, val))
-    {
+    if (!parser.find(context, val)) {
       return null;
     }
     return val.value();
   }
 
-  public static <T> T read(final ParserContext context, final Parser<T> parser)
-  {
+  public static <T> T read(final ParserContext context, final Parser<T> parser) {
     final ValueHolder<T> val = ValueHolder.create();
-    if (!parser.find(context, val))
-    {
+    if (!parser.find(context, val)) {
       return null;
     }
     return val.value();
   }
 
-  public static boolean isAlpha(final byte b)
-  {
+  public static boolean isAlpha(final byte b) {
     return (b >= 65) && (b <= 122);
   }
 
@@ -253,8 +230,7 @@ public class ParserUtils
    * @return
    */
 
-  public static <T> Parser<T> list(final Parser<T> parser, final Parser<T> seperator, final int count)
-  {
+  public static <T> Parser<T> list(final Parser<T> parser, final Parser<T> seperator, final int count) {
     return and(repeat(and(parser, seperator), count - 1, null), parser);
   }
 
@@ -264,14 +240,11 @@ public class ParserUtils
    * @return
    */
 
-  public static <T> Parser<CharSequence> all()
-  {
+  public static <T> Parser<CharSequence> all() {
 
-    return (ctx, value) ->
-    {
+    return (ctx, value) -> {
 
-      if (value != null)
-      {
+      if (value != null) {
         value.set(ctx.subSequence(ctx.position(), ctx.position() + ctx.remaining()));
       }
 
@@ -288,14 +261,11 @@ public class ParserUtils
    * @return
    */
 
-  public static <T> Parser<String> allString()
-  {
+  public static <T> Parser<String> allString() {
 
-    return (ctx, value) ->
-    {
+    return (ctx, value) -> {
 
-      if (value != null)
-      {
+      if (value != null) {
         value.set(ctx.subSequence(ctx.position(), ctx.position() + ctx.remaining()).toString());
       }
 

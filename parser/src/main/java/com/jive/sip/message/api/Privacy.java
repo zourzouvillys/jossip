@@ -2,8 +2,7 @@ package com.jive.sip.message.api;
 
 import com.jive.sip.base.api.Token;
 
-public class Privacy
-{
+public class Privacy {
 
   public static final Token Id = Token.from("id");
   public static final Token Session = Token.from("session");

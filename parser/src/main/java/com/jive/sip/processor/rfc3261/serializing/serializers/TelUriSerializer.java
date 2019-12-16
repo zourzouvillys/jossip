@@ -16,26 +16,22 @@ import lombok.AllArgsConstructor;
  * 
  */
 @AllArgsConstructor
-public class TelUriSerializer extends AbstractRfcSerializer<TelUri>
-{
+public class TelUriSerializer extends AbstractRfcSerializer<TelUri> {
 
   private final RfcSerializerManager manager;
 
   /*
    * (non-Javadoc)
-   * 
    * @see com.jive.sip.processor.rfc3261.serializing.RfcSerializer#serialize(java.lang.Object)
    */
 
   @Override
-  public void serialize(final Writer w, final TelUri obj) throws IOException
-  {
+  public void serialize(final Writer w, final TelUri obj) throws IOException {
     w.append(obj.getScheme());
     w.append(RfcSerializationConstants.COLON);
     w.append(obj.getNumber());
 
-    if (obj.getParameters().isPresent())
-    {
+    if (obj.getParameters().isPresent()) {
       w.append(RfcSerializationConstants.SEMI);
       this.manager.serializeCollection(w, obj.getParameters().get().getRawParameters(), RfcSerializationConstants.SEMI);
     }

@@ -20,26 +20,22 @@ import lombok.experimental.Wither;
 
 @Value
 @Wither
-public class DialogId
-{
+public class DialogId {
 
   private final CallId callId;
   private final String localTag;
   // note that remote tag or local tag may be null in the case of a half-dialog.
   private final String remoteTag;
 
-  public static DialogId fromRemote(final SipRequest req)
-  {
+  public static DialogId fromRemote(final SipRequest req) {
     return new DialogId(req.getCallId(), req.getToTag(), req.getFromTag());
   }
 
-  public static DialogId fromLocal(final SipResponse res)
-  {
+  public static DialogId fromLocal(final SipResponse res) {
     return new DialogId(res.getCallId(), res.getFromTag(), res.getToTag());
   }
 
-  public static DialogId fromLocal(final SipRequest req)
-  {
+  public static DialogId fromLocal(final SipRequest req) {
     return new DialogId(req.getCallId(), req.getFromTag(), req.getToTag());
   }
 
@@ -59,38 +55,36 @@ public class DialogId
    * 
    */
 
-  public static DialogId fromRemote(final SipRequest req, final String localTag)
-  {
+  public static DialogId fromRemote(final SipRequest req, final String localTag) {
     Preconditions.checkState(req.getToTag() == null, "sipreq had tag in To header");
     return new DialogId(req.getCallId(), localTag, req.getFromTag());
   }
 
-  public static DialogId fromRemote(SipResponse res)
-  {
+  public static DialogId fromRemote(SipResponse res) {
     return new DialogId(res.getCallId(), res.getFromTag(), res.getToTag());
   }
 
   /**
-   * Fetches a dialog ID from an incoming Replaces header. 
+   * Fetches a dialog ID from an incoming Replaces header.
+   * 
    * @param replaces
    * @return
    */
-  
-  public static DialogId fromRemote(Replaces replaces)
-  {
+
+  public static DialogId fromRemote(Replaces replaces) {
     return new DialogId(replaces.getCallId(), replaces.getToTag(), replaces.getFromTag());
   }
-  
+
   /**
    * Converts a dialog ID token to a DialogId.
    * 
-   * @param token A token previously returned by fromToken().
+   * @param token
+   *          A token previously returned by fromToken().
    * 
    * @return
    */
-  
-  public static DialogId fromToken(String token)
-  {
+
+  public static DialogId fromToken(String token) {
     Iterator<String> it = Splitter.on(':').split(token).iterator();
     CallId callId = new CallId(it.next());
     String local = it.next();
@@ -98,19 +92,18 @@ public class DialogId
     return new DialogId(callId, local, remote);
   }
 
-
   /**
-   * Returns a string token which can be used with fromToken(), and will also always be comparable as a string.
+   * Returns a string token which can be used with fromToken(), and will also always be comparable
+   * as a string.
+   * 
    * @return
    */
-  
-  public String getToken()
-  {
+
+  public String getToken() {
     return String.format("%s:%s:%s", getCallId().getValue(), nullToEmpty(getLocalTag()), nullToEmpty(getRemoteTag()));
   }
 
-  public DialogId swap()
-  {
+  public DialogId swap() {
     return new DialogId(getCallId(), getRemoteTag(), getLocalTag());
   }
 

@@ -10,19 +10,16 @@ import com.jive.sip.processor.rfc3261.serializing.serializers.RfcSerializationCo
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class ParamaterizedStringSerializer extends AbstractRfcSerializer<ParameterizedString>
-{
+public class ParamaterizedStringSerializer extends AbstractRfcSerializer<ParameterizedString> {
 
   private final RfcSerializerManager manager;
 
   @Override
-  public void serialize(final Writer w, final ParameterizedString obj) throws IOException
-  {
+  public void serialize(final Writer w, final ParameterizedString obj) throws IOException {
 
     w.append(obj.getValue());
 
-    if (obj.getParameters().isPresent())
-    {
+    if (obj.getParameters().isPresent()) {
       w.append(RfcSerializationConstants.SEMI);
       this.manager.serializeCollection(w, obj.getParameters().get().getRawParameters(), RfcSerializationConstants.SEMI);
     }

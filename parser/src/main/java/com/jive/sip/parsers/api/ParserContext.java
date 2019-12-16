@@ -2,8 +2,7 @@ package com.jive.sip.parsers.api;
 
 import java.util.Optional;
 
-public interface ParserContext extends ParserInput
-{
+public interface ParserContext extends ParserInput {
 
   <T> boolean skip(final Parser<T> parser);
 
@@ -25,6 +24,5 @@ public interface ParserContext extends ParserInput
   <T> T read(final Parser<T> parser, final T defaultValue);
 
   byte peek();
-
 
 }

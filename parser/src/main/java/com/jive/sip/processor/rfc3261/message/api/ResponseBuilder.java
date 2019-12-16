@@ -6,7 +6,6 @@ import com.jive.sip.message.api.SipResponse;
 import com.jive.sip.message.api.SipResponseStatus;
 import com.jive.sip.processor.rfc3261.SipMessageManager;
 
-
 /**
  * Interface used to generate a response to a request using a defined set of rules.
  *
@@ -14,8 +13,7 @@ import com.jive.sip.processor.rfc3261.SipMessageManager;
  *
  */
 
-public interface ResponseBuilder
-{
+public interface ResponseBuilder {
 
   /**
    * Adds a header to populate the response.
@@ -36,8 +34,8 @@ public interface ResponseBuilder
    * @param manager
    *          The {@link SipMessageManager} to use for creating the
    *
-   * @return The new {@link SipResponse} instance that represents a response to the provided {@literal req} parameter
-   *         built using the current {@link ResponseBuilder}.
+   * @return The new {@link SipResponse} instance that represents a response to the provided
+   *         {@literal req} parameter built using the current {@link ResponseBuilder}.
    *
    */
 

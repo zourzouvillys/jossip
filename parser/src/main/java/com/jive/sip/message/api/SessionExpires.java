@@ -11,11 +11,9 @@ import com.jive.sip.parameters.impl.DefaultParameters;
 
 import lombok.Getter;
 
-public class SessionExpires extends BaseParameterizedObject<SessionExpires>
-{
+public class SessionExpires extends BaseParameterizedObject<SessionExpires> {
 
-  public enum Refresher
-  {
+  public enum Refresher {
 
     Server("uas"),
     Client("uac");
@@ -23,15 +21,12 @@ public class SessionExpires extends BaseParameterizedObject<SessionExpires>
     @Getter
     private String protocolValue;
 
-    private Refresher(String value)
-    {
+    private Refresher(String value) {
       this.protocolValue = value;
     }
 
-    public static Refresher fromProtocolValue(String e)
-    {
-      switch (e.toLowerCase())
-      {
+    public static Refresher fromProtocolValue(String e) {
+      switch (e.toLowerCase()) {
         case "uas":
           return Server;
         case "uac":
@@ -45,31 +40,29 @@ public class SessionExpires extends BaseParameterizedObject<SessionExpires>
   @Getter
   private long duration;
 
-  public SessionExpires(long duration)
-  {
+  public SessionExpires(long duration) {
     this(duration, DefaultParameters.EMPTY);
   }
 
-  public SessionExpires(long duration, Refresher refresher)
-  {
-    this(duration, DefaultParameters.from(Lists.newArrayList(new RawParameter("refresher",
+  public SessionExpires(long duration, Refresher refresher) {
+    this(
+      duration,
+      DefaultParameters.from(Lists.newArrayList(new RawParameter(
+        "refresher",
         new TokenParameterValue(refresher.getProtocolValue())))));
   }
 
-  public SessionExpires(long duration, Parameters params)
-  {
+  public SessionExpires(long duration, Parameters params) {
     this.duration = duration;
     this.parameters = params;
   }
 
   @Override
-  public SessionExpires withParameters(Parameters parameters)
-  {
+  public SessionExpires withParameters(Parameters parameters) {
     return new SessionExpires(duration, parameters);
   }
 
-  public Optional<Refresher> getRefresher()
-  {
+  public Optional<Refresher> getRefresher() {
     return Optional.ofNullable(parameters.getParameter("refresher").map(e -> Refresher.fromProtocolValue(e)).orElse(null));
   }
 

@@ -14,8 +14,7 @@ import com.jive.sip.uri.api.Uri;
  * @author theo
  *
  */
-public interface SipResponse extends SipMessage
-{
+public interface SipResponse extends SipMessage {
 
   SipResponseStatus getStatus();
 

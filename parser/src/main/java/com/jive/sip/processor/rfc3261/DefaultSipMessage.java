@@ -84,8 +84,7 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 
 @EqualsAndHashCode
-public abstract class DefaultSipMessage implements SipMessage
-{
+public abstract class DefaultSipMessage implements SipMessage {
 
   protected static final RfcSerializerManager serializer = new RfcSerializerManagerBuilder().build();
 
@@ -100,8 +99,7 @@ public abstract class DefaultSipMessage implements SipMessage
   // CHECKSTYLE:OFF
   private static final Supplier<TokenSetCollector> TOKEN_SET_BUILDER = new Supplier<TokenSetCollector>() {
     @Override
-    public TokenSetCollector get()
-    {
+    public TokenSetCollector get() {
       return new TokenSetCollector();
     }
   };
@@ -109,7 +107,8 @@ public abstract class DefaultSipMessage implements SipMessage
   public static final SipHeaderDefinition<List<MIMEType>> ACCEPT = MultiHeaderDefinition.create(MIME_PARSER, "Accept");
   public static final SipHeaderDefinition<List<RValue>> ACCEPT_RESOURCE_PRIORITY = MultiHeaderDefinition.create(new RValueParser(), "Accept-Resource-Priority");
 
-  public static final SipHeaderDefinition<List<ParameterizedUri>> ALERT_INFO = MultiHeaderDefinition.create(new ParameterizedUriParser(),
+  public static final SipHeaderDefinition<List<ParameterizedUri>> ALERT_INFO =
+    MultiHeaderDefinition.create(new ParameterizedUriParser(),
       "Alert-Info");
   public static final SipHeaderDefinition<TokenSet> ALLOW = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Allow");
 
@@ -120,11 +119,13 @@ public abstract class DefaultSipMessage implements SipMessage
   public static final SipHeaderDefinition<ContactSet> CONTACT = new ContactHeaderDefinition();
   public static final SipHeaderDefinition<UnsignedInteger> CONTENT_LENGTH = SingleHeaderDefinition.create(ParserUtils.uint(1, 5), "Content-Length", 'l');
 
-  public static final SipHeaderDefinition<ContentDisposition> CONTENT_DISPOSITION = SingleHeaderDefinition.create(new ContentDispositionParser(), "Content-Disposition");
+  public static final SipHeaderDefinition<ContentDisposition> CONTENT_DISPOSITION =
+    SingleHeaderDefinition.create(new ContentDispositionParser(), "Content-Disposition");
 
   public static final SipHeaderDefinition<String> CONTENT_TYPE = SingleHeaderDefinition.create("Content-Type", 'c');
   public static final SipHeaderDefinition<ZonedDateTime> DATE = SingleHeaderDefinition.create(new DateTimeParser(), "Date");
-  public static final SipHeaderDefinition<List<ParameterizedUri>> ERROR_INFO = MultiHeaderDefinition.create(new ParameterizedUriParser(),
+  public static final SipHeaderDefinition<List<ParameterizedUri>> ERROR_INFO =
+    MultiHeaderDefinition.create(new ParameterizedUriParser(),
       "Error-Info");
   public static final SipHeaderDefinition<UnsignedInteger> EXPIRES = SingleHeaderDefinition.create(ParserUtils.uint(1, 10), "Expires");
   public static final SipHeaderDefinition<EventSpec> EVENT = SingleHeaderDefinition.create(new EventParser(), "Event", 'o');
@@ -133,8 +134,10 @@ public abstract class DefaultSipMessage implements SipMessage
   public static final SipHeaderDefinition<HistoryInfo> HISTORY_INFO = new HistoryInfoHeaderDefinition();
 
   public static final SipHeaderDefinition<Version> MIME_VERSION = SingleHeaderDefinition.create(new VersionParser(), "MIME-Version");
-  public static final SipHeaderDefinition<MinSE> MIN_SE = SingleHeaderDefinition.create(
-      new MinSEParser(), "Min-SE");
+  public static final SipHeaderDefinition<MinSE> MIN_SE =
+    SingleHeaderDefinition.create(
+      new MinSEParser(),
+      "Min-SE");
 
   public static final SipHeaderDefinition<UnsignedInteger> MAX_FORWARDS = SingleHeaderDefinition.create(ParserUtils.uint(1, 7), "Max-Forwards");
   public static final SipHeaderDefinition<List<NameAddr>> PATH = MultiHeaderDefinition.create(NAME_ADDR_PARSER, "Path");
@@ -158,11 +161,15 @@ public abstract class DefaultSipMessage implements SipMessage
 
   public static final SipHeaderDefinition<NameAddr> P_SERVED_USER = SingleHeaderDefinition.create(NAME_ADDR_PARSER, "P-Served-User");
 
-  public static final SipHeaderDefinition<UnsignedInteger> RSEQ = SingleHeaderDefinition.create(
-      ParserUtils.uint(1, 10), "RSeq");
+  public static final SipHeaderDefinition<UnsignedInteger> RSEQ =
+    SingleHeaderDefinition.create(
+      ParserUtils.uint(1, 10),
+      "RSeq");
 
-  public static final SipHeaderDefinition<RAck> RACK = SingleHeaderDefinition.create(
-      new RAckParser(), "RAck");
+  public static final SipHeaderDefinition<RAck> RACK =
+    SingleHeaderDefinition.create(
+      new RAckParser(),
+      "RAck");
 
   public static final SipHeaderDefinition<List<NameAddr>> RECORD_ROUTE = MultiHeaderDefinition.create(NAME_ADDR_PARSER, "Record-Route");
   public static final SipHeaderDefinition<Reason> REASON = SingleHeaderDefinition.create(new ReasonParser(), "Reason");
@@ -179,13 +186,17 @@ public abstract class DefaultSipMessage implements SipMessage
   public static final SipHeaderDefinition<CharSequence> SERVER = SingleHeaderDefinition.create(ParserUtils.all(), "Server");
   public static final SipHeaderDefinition<String> SESSION_ID = SingleHeaderDefinition.create(ParserUtils.allString(), "Session-ID");
 
-  public static final SipHeaderDefinition<SessionExpires> SESSION_EXPIRES = SingleHeaderDefinition
+  public static final SipHeaderDefinition<SessionExpires> SESSION_EXPIRES =
+    SingleHeaderDefinition
       .create(new SessionExpiresParser(), "Session-Expires", 'x');
 
-  public static final SipHeaderDefinition<CharSequence> SUBJECT = SingleHeaderDefinition.create(ParserUtils.optional(Utf8ParserHelper.TEXT_UTF8_TRIM),
-      "Subject", 's');
+  public static final SipHeaderDefinition<CharSequence> SUBJECT =
+    SingleHeaderDefinition.create(ParserUtils.optional(Utf8ParserHelper.TEXT_UTF8_TRIM),
+      "Subject",
+      's');
   public static final SipHeaderDefinition<TokenSet> SUPPORTED = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Supported", 'k');
-  public static final SipHeaderDefinition<TargetDialog> TARGET_DIALOG = SingleHeaderDefinition
+  public static final SipHeaderDefinition<TargetDialog> TARGET_DIALOG =
+    SingleHeaderDefinition
       .create(new TargetDialogParser(), "Target-Dialog");
   public static final SipHeaderDefinition<NameAddr> TO = SingleHeaderDefinition.create(NAME_ADDR_PARSER, "To", 't');
   public static final SipHeaderDefinition<TokenSet> UNSUPPORTED = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Unsupported");
@@ -203,55 +214,46 @@ public abstract class DefaultSipMessage implements SipMessage
 
   private LoadingCache<SipHeaderDefinition<?>, Optional<?>> parsedHeaders;
 
-  public DefaultSipMessage(final SipMessageManager manager)
-  {
+  public DefaultSipMessage(final SipMessageManager manager) {
     this(manager, null);
   }
 
-  public SipMessageManager getSipMessageManager()
-  {
+  public SipMessageManager getSipMessageManager() {
     return this.manager;
   }
 
-  public DefaultSipMessage(final SipMessageManager manager, final Collection<RawHeader> headers)
-  {
+  public DefaultSipMessage(final SipMessageManager manager, final Collection<RawHeader> headers) {
     this(manager, headers, null);
   }
 
-  public DefaultSipMessage(final SipMessageManager manager, final Collection<RawHeader> headers, final byte[] body)
-  {
+  public DefaultSipMessage(final SipMessageManager manager, final Collection<RawHeader> headers, final byte[] body) {
     this.manager = manager;
     this.headers = headers;
     setBody(body);
 
     final DefaultSipMessage message = this;
-    this.parsedHeaders = CacheBuilder.newBuilder()
+    this.parsedHeaders =
+      CacheBuilder.newBuilder()
         .build(new CacheLoader<SipHeaderDefinition<?>, Optional<?>>() {
           @Override
-          public Optional<?> load(final SipHeaderDefinition<?> definition)
-          {
+          public Optional<?> load(final SipHeaderDefinition<?> definition) {
             return Optional.ofNullable(definition.parse(message.headers));
           }
         });
   }
 
-  public void setBody(final byte[] body)
-  {
-    if (body != null)
-    {
+  public void setBody(final byte[] body) {
+    if (body != null) {
       this.body = Arrays.copyOf(body, body.length);
     }
-    else
-    {
+    else {
       this.body = null;
     }
   }
 
-  public void addHeader(final RawHeader header)
-  {
+  public void addHeader(final RawHeader header) {
 
-    if (this.headers == null)
-    {
+    if (this.headers == null) {
       this.headers = Lists.newLinkedList();
     }
 
@@ -260,23 +262,18 @@ public abstract class DefaultSipMessage implements SipMessage
   }
 
   @Override
-  public List<RawHeader> getHeaders()
-  {
-    if (this.headers == null)
-    {
+  public List<RawHeader> getHeaders() {
+    if (this.headers == null) {
       return ImmutableList.of();
     }
     return ImmutableList.copyOf(this.headers);
   }
 
   @Override
-  public Optional<RawHeader> getHeader(String name)
-  {
+  public Optional<RawHeader> getHeader(String name) {
     name = name.toLowerCase();
-    for (final RawHeader header : getHeaders())
-    {
-      if (name.toLowerCase().equals(header.getName().toLowerCase()))
-      {
+    for (final RawHeader header : getHeaders()) {
+      if (name.toLowerCase().equals(header.getName().toLowerCase())) {
         return Optional.of(header);
       }
     }
@@ -284,73 +281,60 @@ public abstract class DefaultSipMessage implements SipMessage
   }
 
   @Override
-  public Optional<String> getContentType()
-  {
+  public Optional<String> getContentType() {
     return this.getHeader(CONTENT_TYPE);
   }
 
   @Override
-  public Optional<ContentDisposition> getContentDisposition()
-  {
+  public Optional<ContentDisposition> getContentDisposition() {
     return this.getHeader(CONTENT_DISPOSITION);
   }
 
   @Override
-  public NameAddr getTo()
-  {
+  public NameAddr getTo() {
     return getHeader(TO).orElse(null);
   }
 
   @Override
-  public NameAddr getFrom()
-  {
+  public NameAddr getFrom() {
     return getHeader(FROM).orElse(null);
   }
 
   @NonNull
   @Override
-  public HistoryInfo getHistoryInfo()
-  {
+  public HistoryInfo getHistoryInfo() {
     return getHeader(HISTORY_INFO).orElse(HistoryInfo.EMPTY);
   }
 
   @NonNull
   @Override
-  public List<ParameterizedUri> getAlertInfo()
-  {
+  public List<ParameterizedUri> getAlertInfo() {
     return getHeader(ALERT_INFO).orElse(Collections.emptyList());
   }
 
   @Override
-  public Optional<String> getSessionId()
-  {
+  public Optional<String> getSessionId() {
     return this.getHeader(SESSION_ID);
   }
 
   @Override
   @SneakyThrows
   @SuppressWarnings("unchecked")
-  public <T> Optional<T> getHeader(final SipHeaderDefinition<T> def)
-  {
-    try
-    {
+  public <T> Optional<T> getHeader(final SipHeaderDefinition<T> def) {
+    try {
       return (Optional<T>) this.parsedHeaders.get(def);
     }
-    catch (final ExecutionException e)
-    {
+    catch (final ExecutionException e) {
       throw e.getCause();
     }
   }
 
   @Override
-  public List<RawHeader> getHeaders(final String... name)
-  {
+  public List<RawHeader> getHeaders(final String... name) {
     final List<RawHeader> ret = Lists.newLinkedList();
     final Set<String> names = Sets.newHashSet(name);
-    for (final RawHeader header : getHeaders())
-    {
-      if (names.contains(header.getName()))
-      {
+    for (final RawHeader header : getHeaders()) {
+      if (names.contains(header.getName())) {
         ret.add(header);
       }
     }
@@ -359,14 +343,11 @@ public abstract class DefaultSipMessage implements SipMessage
   }
 
   @SuppressWarnings("unchecked")
-  protected <T> List<T> getHeaderList(final Class<T> type, final String name)
-  {
+  protected <T> List<T> getHeaderList(final Class<T> type, final String name) {
     // TODO Fix this method since it doesn't work as advertised - jhutchins & zmorin
     final List<T> result = new ArrayList<T>();
-    for (final RawHeader header : getHeaders())
-    {
-      if (name.equals(header.getName()))
-      {
+    for (final RawHeader header : getHeaders()) {
+      if (name.equals(header.getName())) {
         result.add((T) header);
       }
     }
@@ -374,14 +355,11 @@ public abstract class DefaultSipMessage implements SipMessage
   }
 
   @Override
-  public String getToTag()
-  {
+  public String getToTag() {
     final NameAddr to = getTo();
-    if (to != null)
-    {
+    if (to != null) {
       final Optional<Token> tag = to.getParameter(ParameterUtils.Tag);
-      if (tag.isPresent())
-      {
+      if (tag.isPresent()) {
         return tag.get().toString();
       }
     }
@@ -389,108 +367,90 @@ public abstract class DefaultSipMessage implements SipMessage
   }
 
   @Override
-  public Uri getToAddress()
-  {
+  public Uri getToAddress() {
     return getTo().getAddress();
   }
 
   // TODO: this should return an optional
   @Override
-  public String getFromTag()
-  {
+  public String getFromTag() {
     final Token val = getFrom().getParameter(ParameterUtils.Tag).orElse(null);
-    if (val != null)
-    {
+    if (val != null) {
       return val.toString();
     }
     return "";
   }
 
   @Override
-  public Optional<ContactSet> getContacts()
-  {
+  public Optional<ContactSet> getContacts() {
     return this.getHeader(CONTACT);
   }
 
   @Override
-  public CallId getCallId()
-  {
+  public CallId getCallId() {
     return this.getHeader(CALL_ID).orElse(null);
   }
 
   // TODO: return optional
 
   @Override
-  public CSeq getCSeq()
-  {
+  public CSeq getCSeq() {
     return this.getHeader(CSEQ).orElse(null);
   }
 
   @Override
-  public List<NameAddr> getRoute()
-  {
-    return this.getHeader(ROUTE).orElse(Collections.<NameAddr> emptyList());
+  public List<NameAddr> getRoute() {
+    return this.getHeader(ROUTE).orElse(Collections.<NameAddr>emptyList());
   }
 
   @Override
-  public List<NameAddr> getRecordRoute()
-  {
-    return this.getHeader(RECORD_ROUTE).orElse(Collections.<NameAddr> emptyList());
+  public List<NameAddr> getRecordRoute() {
+    return this.getHeader(RECORD_ROUTE).orElse(Collections.<NameAddr>emptyList());
   }
 
   @Override
-  public List<Via> getVias()
-  {
-    return this.getHeader(VIA).orElse(Collections.<Via> emptyList());
+  public List<Via> getVias() {
+    return this.getHeader(VIA).orElse(Collections.<Via>emptyList());
   }
 
   @Override
-  public Optional<TokenSet> getAllow()
-  {
+  public Optional<TokenSet> getAllow() {
     return this.getHeader(ALLOW);
   }
 
   @Override
-  public Optional<TokenSet> getSupported()
-  {
+  public Optional<TokenSet> getSupported() {
     return this.getHeader(SUPPORTED);
   }
 
   @Override
-  public Optional<TokenSet> getRequire()
-  {
+  public Optional<TokenSet> getRequire() {
     return this.getHeader(REQUIRE);
   }
 
   @Override
-  public Optional<List<MIMEType>> getAccept()
-  {
+  public Optional<List<MIMEType>> getAccept() {
     return this.getHeader(ACCEPT);
   }
 
   @Override
-  public Optional<SessionExpires> getSessionExpires()
-  {
+  public Optional<SessionExpires> getSessionExpires() {
     return this.getHeader(SESSION_EXPIRES);
   }
 
   @Override
-  public Optional<MinSE> getMinSE()
-  {
+  public Optional<MinSE> getMinSE() {
     return this.getHeader(MIN_SE);
   }
 
   @Override
-  public void validate()
-  {
+  public void validate() {
 
-    for (final RawHeader header : this.headers)
-    {
+    for (final RawHeader header : this.headers) {
       // TODO remove the need for a RFCSipMessageManager here. - Hutch
       final SipHeaderDefinition<?> parser = this.manager.adapt(RfcSipMessageManager.class).getParser(header.getName(), null);
 
-      if (parser != null)
-      {
+      if (parser != null) {
         this.getHeader(parser);
       }
 
@@ -499,52 +459,43 @@ public abstract class DefaultSipMessage implements SipMessage
   }
 
   @Override
-  public BranchId getBranchId()
-  {
+  public BranchId getBranchId() {
     final List<Via> vias = getVias();
-    if (vias.isEmpty())
-    {
+    if (vias.isEmpty()) {
       return null;
     }
-    else
-    {
+    else {
       final Token branch = vias.get(0).getParameter(ParameterUtils.Branch).orElse(null);
-      if (branch == null)
-      {
+      if (branch == null) {
         return null;
       }
-      else
-      {
+      else {
         return BranchId.fromToken(branch);
       }
     }
   }
 
-  public void addHeader(final String name, final String rawValue, final Object parsedValue)
-  {
+  public void addHeader(final String name, final String rawValue, final Object parsedValue) {
     // TODO remove the need for a RFCSipMessageManager here. - Hutch
     final SipHeaderDefinition<?> parser = this.manager.adapt(RfcSipMessageManager.class).getParser(name, null);
-    if ((parsedValue != null) && (parser != null))
-    {
+    if ((parsedValue != null) && (parser != null)) {
       this.parsedHeaders.put(parser, Optional.of(parsedValue));
     }
     this.addHeader(new RawHeader(name, rawValue));
   }
 
   @Override
-  public SipMessage withCSeq(final long seqNum, final SipMethod method)
-  {
+  public SipMessage withCSeq(final long seqNum, final SipMethod method) {
     return this
-        .withoutHeaders(CSEQ)
-        .withAppended(CSEQ.getName(), new CSeq(seqNum, method));
+      .withoutHeaders(CSEQ)
+      .withAppended(CSEQ.getName(), new CSeq(seqNum, method));
   }
 
   @Override
-  public SipMessage withIncrementedCSeq(final SipMethod method)
-  {
+  public SipMessage withIncrementedCSeq(final SipMethod method) {
     return this.withCSeq(
-        this.getCSeq().getSequence().plus(UnsignedInteger.ONE).longValue(),
-        method);
+      this.getCSeq().getSequence().plus(UnsignedInteger.ONE).longValue(),
+      method);
   }
 
 }

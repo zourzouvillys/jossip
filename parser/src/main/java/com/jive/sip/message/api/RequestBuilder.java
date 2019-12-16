@@ -3,8 +3,7 @@ package com.jive.sip.message.api;
 import com.jive.sip.message.api.headers.CallId;
 import com.jive.sip.uri.api.Uri;
 
-public interface RequestBuilder
-{
+public interface RequestBuilder {
   public RequestBuilder setMethod(final SipMethod method);
 
   public RequestBuilder setRequestUri(final Uri uri);

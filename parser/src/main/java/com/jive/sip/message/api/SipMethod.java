@@ -12,8 +12,7 @@ import com.jive.sip.base.api.Token;
  * @author theo
  */
 
-public final class SipMethod
-{
+public final class SipMethod {
 
   // Make sure you keep in sync with SipMethod.METHOD_MAP with the static constructor.
   // TODO: fix this requirement. add a KnownSipMethods? -- tpz
@@ -52,8 +51,7 @@ public final class SipMethod
    */
   public static final Map<String, SipMethod> METHOD_MAP = new HashMap<>();
 
-  static
-  {
+  static {
     METHOD_MAP.put(ACK.method, ACK);
     METHOD_MAP.put(BYE.method, BYE);
     METHOD_MAP.put(CANCEL.method, CANCEL);
@@ -78,8 +76,7 @@ public final class SipMethod
    * @param method
    */
 
-  private SipMethod(final String method)
-  {
+  private SipMethod(final String method) {
     this.method = method.intern();
   }
 
@@ -92,11 +89,9 @@ public final class SipMethod
    * @return An object which represents the method.
    */
 
-  public static SipMethod fromString(final String string)
-  {
+  public static SipMethod fromString(final String string) {
 
-    if (METHOD_MAP.containsKey(string))
-    {
+    if (METHOD_MAP.containsKey(string)) {
       return METHOD_MAP.get(string);
     }
 
@@ -106,107 +101,87 @@ public final class SipMethod
 
   }
 
-  public String getMethod()
-  {
+  public String getMethod() {
     return this.method;
   }
 
   @Override
-  public boolean equals(final Object other)
-  {
+  public boolean equals(final Object other) {
     final SipMethod ometh = SipMethod.class.cast(other);
     return (ometh != null) && ometh.method.equals(this.method);
   }
 
   @Override
-  public int hashCode()
-  {
+  public int hashCode() {
     return this.method.hashCode();
   }
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     return this.method;
   }
 
-  public static SipMethod of(final CharSequence method)
-  {
+  public static SipMethod of(final CharSequence method) {
     return fromString((String) method);
   }
 
-  public static Function<? super Token, SipMethod> tokenConverter()
-  {
+  public static Function<? super Token, SipMethod> tokenConverter() {
     return input -> SipMethod.fromString(input.toString());
   }
 
-  public boolean isInvite()
-  {
+  public boolean isInvite() {
     return this.equals(SipMethod.INVITE);
   }
 
-  public boolean isBye()
-  {
+  public boolean isBye() {
     return this.equals(SipMethod.BYE);
   }
 
-  public boolean isAck()
-  {
+  public boolean isAck() {
     return this.equals(SipMethod.ACK);
   }
 
-  public boolean isCancel()
-  {
+  public boolean isCancel() {
     return this.equals(SipMethod.CANCEL);
   }
 
-  public boolean isRefer()
-  {
+  public boolean isRefer() {
     return this.equals(SipMethod.REFER);
   }
 
-  public boolean isUpdate()
-  {
+  public boolean isUpdate() {
     return this.equals(SipMethod.UPDATE);
   }
 
-  public boolean isNotify()
-  {
+  public boolean isNotify() {
     return this.equals(SipMethod.NOTIFY);
   }
 
-  public boolean isSubscribe()
-  {
+  public boolean isSubscribe() {
     return this.equals(SipMethod.SUBSCRIBE);
   }
 
-  public boolean isMessage()
-  {
+  public boolean isMessage() {
     return this.equals(SipMethod.MESSAGE);
   }
 
-  public boolean isInfo()
-  {
+  public boolean isInfo() {
     return this.equals(SipMethod.INFO);
   }
 
-  public boolean isPrack()
-  {
+  public boolean isPrack() {
     return this.equals(SipMethod.PRACK);
   }
 
-  public boolean isPublish()
-  {
+  public boolean isPublish() {
     return this.equals(SipMethod.PUBLISH);
   }
 
-  public boolean isRegister()
-  {
+  public boolean isRegister() {
     return this.equals(SipMethod.REGISTER);
   }
 
-  public boolean isOptions()
-  {
+  public boolean isOptions() {
     return this.equals(SipMethod.OPTIONS);
   }
 }

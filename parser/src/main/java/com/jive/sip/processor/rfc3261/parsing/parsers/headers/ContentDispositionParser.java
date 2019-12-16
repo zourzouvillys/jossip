@@ -12,13 +12,10 @@ import com.jive.sip.parsers.api.ParserContext;
 import com.jive.sip.parsers.api.ValueListener;
 import com.jive.sip.parsers.core.ParameterParser;
 
-public class ContentDispositionParser implements Parser<ContentDisposition>
-{
-
+public class ContentDispositionParser implements Parser<ContentDisposition> {
 
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<ContentDisposition> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<ContentDisposition> value) {
 
     // session;required=true
 
@@ -26,8 +23,7 @@ public class ContentDispositionParser implements Parser<ContentDisposition>
 
     final Collection<RawParameter> params = ctx.read(ParameterParser.getInstance(), ParameterParser.EMPTY_VALUE);
 
-    if (value != null)
-    {
+    if (value != null) {
       value.set(new ContentDisposition(cx, ParameterBuilder.from(params)));
     }
 

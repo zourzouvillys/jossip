@@ -8,54 +8,44 @@ import java.util.stream.Collectors;
 import com.google.common.collect.Sets;
 import com.jive.sip.base.api.Token;
 
-public class TokenSet implements Iterable<Token>
-{
+public class TokenSet implements Iterable<Token> {
 
-  public static final TokenSet EMPTY = new TokenSet(Sets.<Token> newLinkedHashSet());
+  public static final TokenSet EMPTY = new TokenSet(Sets.<Token>newLinkedHashSet());
 
   private final Set<Token> tokens;
 
-  protected TokenSet(final Set<Token> tokens)
-  {
+  protected TokenSet(final Set<Token> tokens) {
     this.tokens = tokens;
   }
 
-  public static TokenSet fromTokens(final Collection<? extends Token> tokens)
-  {
+  public static TokenSet fromTokens(final Collection<? extends Token> tokens) {
     final Set<Token> tts = Sets.newLinkedHashSet();
-    for (final Token token : tokens)
-    {
+    for (final Token token : tokens) {
       tts.add(token);
     }
     return new TokenSet(tts);
 
   }
 
-  public static TokenSet fromList(final Iterable<? extends CharSequence> tokens)
-  {
+  public static TokenSet fromList(final Iterable<? extends CharSequence> tokens) {
     final Set<Token> tts = Sets.newLinkedHashSet();
-    for (final CharSequence token : tokens)
-    {
+    for (final CharSequence token : tokens) {
       tts.add(Token.from(token));
     }
     return new TokenSet(tts);
   }
 
-  public boolean contains(final Token token)
-  {
+  public boolean contains(final Token token) {
     return this.tokens.contains(token);
   }
 
   @Override
-  public Iterator<Token> iterator()
-  {
+  public Iterator<Token> iterator() {
     return this.tokens.iterator();
   }
 
-  public TokenSet with(final Token id)
-  {
-    if (this.tokens.contains(id))
-    {
+  public TokenSet with(final Token id) {
+    if (this.tokens.contains(id)) {
       return this;
     }
     final Set<Token> toks = Sets.newHashSet(this.tokens);
@@ -63,10 +53,8 @@ public class TokenSet implements Iterable<Token>
     return new TokenSet(toks);
   }
 
-  public TokenSet without(final Token id)
-  {
-    if (!this.tokens.contains(id))
-    {
+  public TokenSet without(final Token id) {
+    if (!this.tokens.contains(id)) {
       return this;
     }
     final Set<Token> toks = Sets.newHashSet(this.tokens);
@@ -78,24 +66,23 @@ public class TokenSet implements Iterable<Token>
    * @return all tokens not also in the other list.
    */
 
-  public TokenSet except(TokenSet other)
-  {
-    return TokenSet.fromTokens(tokens.stream().filter(t -> !other.contains(t))
-        .collect(Collectors.toList()));
+  public TokenSet except(TokenSet other) {
+    return TokenSet.fromTokens(tokens.stream()
+      .filter(t -> !other.contains(t))
+      .collect(Collectors.toList()));
   }
 
   /**
    * @return all tokens not also in the other list.
    */
 
-  public TokenSet intersect(TokenSet other)
-  {
-    return TokenSet.fromTokens(tokens.stream().filter(t -> other.contains(t))
-        .collect(Collectors.toList()));
+  public TokenSet intersect(TokenSet other) {
+    return TokenSet.fromTokens(tokens.stream()
+      .filter(t -> other.contains(t))
+      .collect(Collectors.toList()));
   }
 
-  public boolean isEmpty()
-  {
+  public boolean isEmpty() {
     return tokens.isEmpty();
   }
 

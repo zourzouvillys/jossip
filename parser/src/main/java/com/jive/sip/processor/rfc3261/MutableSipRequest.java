@@ -25,8 +25,7 @@ import com.jive.sip.parameters.api.TokenParameterValue;
 import com.jive.sip.parameters.impl.DefaultParameters;
 import com.jive.sip.uri.api.Uri;
 
-public class MutableSipRequest extends MutableSipMessage<MutableSipRequest>
-{
+public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
 
   private final Uri ruri;
   private final SipMethod method;
@@ -42,73 +41,61 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest>
   private RAck rack;
   private List<Authorization> proxyAuthorization;
 
-  public MutableSipRequest replaces(final Replaces replaces)
-  {
+  public MutableSipRequest replaces(final Replaces replaces) {
     this.replaces = replaces;
     return this;
   }
 
-  public MutableSipRequest(final SipMethod method, final Uri ruri)
-  {
+  public MutableSipRequest(final SipMethod method, final Uri ruri) {
     this.method = method;
     this.ruri = ruri;
   }
 
-  public MutableSipRequest maxForwards(final int value)
-  {
+  public MutableSipRequest maxForwards(final int value) {
     this.mf = UnsignedInteger.valueOf(value);
     return this;
   }
 
-  public MutableSipRequest referTo(final Uri referTo)
-  {
+  public MutableSipRequest referTo(final Uri referTo) {
     this.referTo(new NameAddr(referTo));
     return this;
   }
 
-  public MutableSipRequest expires(final int expires)
-  {
+  public MutableSipRequest expires(final int expires) {
     this.expires = UnsignedInteger.valueOf(expires);
     return this;
   }
 
-  public MutableSipRequest referTo(final NameAddr na)
-  {
+  public MutableSipRequest referTo(final NameAddr na) {
     this.referTo = na;
     return this;
   }
 
-  public MutableSipRequest referredBy(final NameAddr nameAddr)
-  {
+  public MutableSipRequest referredBy(final NameAddr nameAddr) {
     this.referredBy = nameAddr;
     return this;
   }
 
-  public MutableSipRequest subscriptionState(final SubscriptionState subscriptionState)
-  {
+  public MutableSipRequest subscriptionState(final SubscriptionState subscriptionState) {
     this.subscriptionState = subscriptionState;
     return this;
   }
 
-  public MutableSipRequest event(final String eventType)
-  {
+  public MutableSipRequest event(final String eventType) {
     this.event = new EventSpec(eventType);
     return this;
   }
 
-  public MutableSipRequest event(final String eventType, final String id)
-  {
+  public MutableSipRequest event(final String eventType, final String id) {
     this.event = new EventSpec(eventType, id);
     return this;
   }
 
-  public void reason(final Reason reason)
-  {
+  public void reason(final Reason reason) {
     this.reason = reason;
   }
 
-  public MutableSipRequest proxyAuthorization(final List<Authorization> creds)
-  {
+  public MutableSipRequest proxyAuthorization(final List<Authorization> creds) {
     this.proxyAuthorization = creds;
     return this;
   }
@@ -120,64 +107,51 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest>
    */
 
   @Override
-  public SipRequest build(final SipMessageManager manager)
-  {
+  public SipRequest build(final SipMessageManager manager) {
 
     final List<RawHeader> headers = super.toRawHeaders();
 
-    if (this.referTo != null)
-    {
+    if (this.referTo != null) {
       headers.add(new RawHeader("Refer-To", MutableSipMessage.serializer.serialize(this.referTo)));
-      if (this.referredBy != null)
-      {
+      if (this.referredBy != null) {
         headers.add(new RawHeader("Referred-By", this.referredBy.getAddress().toString()));
       }
     }
 
-    if (this.event != null)
-    {
+    if (this.event != null) {
       headers.add(new RawHeader("Event", MutableSipMessage.serializer.serialize(this.event)));
     }
 
-    if (this.subscriptionState != null)
-    {
+    if (this.subscriptionState != null) {
       headers.add(new RawHeader("Subscription-State", this.subscriptionState.toString()));
     }
 
-    if (this.expires != null)
-    {
+    if (this.expires != null) {
       headers.add(new RawHeader("Expires", this.expires.toString()));
     }
 
-    if (this.reason != null)
-    {
+    if (this.reason != null) {
       headers.add(new RawHeader("Reason", MutableSipMessage.serializer.serialize(this.reason)));
     }
 
-    if (this.replaces != null)
-    {
+    if (this.replaces != null) {
       headers.add(new RawHeader("Replaces", MutableSipMessage.serializer.serialize(this.replaces)));
     }
 
-    if (this.mf != null)
-    {
+    if (this.mf != null) {
       headers.add(new RawHeader("Max-Forwards", this.mf.toString()));
     }
 
-    if (this.userAgent != null)
-    {
+    if (this.userAgent != null) {
       headers.add(new RawHeader("User-Agent", this.userAgent));
     }
 
-    if (this.rack != null)
-    {
+    if (this.rack != null) {
       headers.add(new RawHeader("RAck", MutableSipMessage.serializer.serialize(this.rack)));
     }
 
-    if (this.proxyAuthorization != null)
-    {
-      for (final Authorization auth : this.proxyAuthorization)
-      {
+    if (this.proxyAuthorization != null) {
+      for (final Authorization auth : this.proxyAuthorization) {
         headers.add(new RawHeader("Proxy-Authorization", MutableSipMessage.serializer.serialize(auth)));
       }
     }
@@ -186,8 +160,7 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest>
 
   }
 
-  public static MutableSipRequest fromRequest(final SipRequest req)
-  {
+  public static MutableSipRequest fromRequest(final SipRequest req) {
 
     final MutableSipRequest m = new MutableSipRequest(req.getMethod(), req.getUri());
 
@@ -203,42 +176,35 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest>
    * @return
    */
 
-  public static MutableSipRequest createInvite(final Uri ruri)
-  {
+  public static MutableSipRequest createInvite(final Uri ruri) {
     final MutableSipRequest req = new MutableSipRequest(SipMethod.INVITE, ruri);
     return req;
   }
 
-  public static MutableSipRequest create(final SipMethod method, final Uri ruri)
-  {
+  public static MutableSipRequest create(final SipMethod method, final Uri ruri) {
     final MutableSipRequest req = new MutableSipRequest(method, ruri);
     return req;
   }
 
-  public MutableSipRequest userAgent(final String userAgent)
-  {
+  public MutableSipRequest userAgent(final String userAgent) {
     this.userAgent = userAgent;
     return this;
   }
 
-  public MutableSipRequest rack(final UnsignedInteger rseq, final CSeq cseq)
-  {
+  public MutableSipRequest rack(final UnsignedInteger rseq, final CSeq cseq) {
     this.rack = new RAck(rseq, cseq);
     return this;
   }
 
-  public MutableSipRequest rack(final long rseq, final CSeq cseq)
-  {
+  public MutableSipRequest rack(final long rseq, final CSeq cseq) {
     return rack(UnsignedInteger.valueOf(rseq), cseq);
   }
 
-  public MutableSipRequest cseq(final CSeq cseq)
-  {
+  public MutableSipRequest cseq(final CSeq cseq) {
     return this.cseq(cseq.getSequence(), cseq.getMethod());
   }
 
-  public static MutableSipRequest ack(final SipResponse res200)
-  {
+  public static MutableSipRequest ack(final SipResponse res200) {
     final MutableSipRequest ack = MutableSipRequest.create(SipMethod.ACK, res200.getContacts().get().iterator().next().getAddress());
     ack.cseq(res200.getCSeq().getSequence(), SipMethod.ACK);
     ack.callId(res200.getCallId());
@@ -247,14 +213,12 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest>
     return ack;
   }
 
-  public MutableSipRequest via(final ViaProtocol proto, final HostAndPort sentby, final String branch, final boolean rport)
-  {
+  public MutableSipRequest via(final ViaProtocol proto, final HostAndPort sentby, final String branch, final boolean rport) {
     final ArrayList<RawParameter> rparams = Lists.newArrayList();
 
     rparams.add(new RawParameter("branch", new TokenParameterValue(String.format("z9hG4bK%s", branch))));
 
-    if (rport)
-    {
+    if (rport) {
       rparams.add(new RawParameter("rport"));
     }
     return this.via(new Via(proto, sentby, DefaultParameters.from(rparams)));
@@ -263,27 +227,26 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest>
   /**
    * Create an ACK for responding to a failure. (hop by hop).
    *
-   * This does NOT add a Via header. The caller is responsible for ensuring a Via header is added before being sent on the wire.
+   * This does NOT add a Via header. The caller is responsible for ensuring a Via header is added
+   * before being sent on the wire.
    *
    * @param req
    * @param res
    * @return
    */
 
-  public static MutableSipRequest createFailureAck(final SipRequest req, final SipResponse res)
-  {
+  public static MutableSipRequest createFailureAck(final SipRequest req, final SipResponse res) {
     return MutableSipRequest.create(SipMethod.ACK, req.getUri())
-        .callId(req.getCallId().getValue())
-        .cseq(req.getCSeq().getSequence(), SipMethod.ACK)
-        .from(req.getFrom())
-        .to(res.getTo())
-        .session(res.getSessionId().orElse(null))
-        .route(req.getRoute());
+      .callId(req.getCallId().getValue())
+      .cseq(req.getCSeq().getSequence(), SipMethod.ACK)
+      .from(req.getFrom())
+      .to(res.getTo())
+      .session(res.getSessionId().orElse(null))
+      .route(req.getRoute());
   }
 
   @Override
-  public SipRequest build()
-  {
+  public SipRequest build() {
     return this.build(MM);
   }
 

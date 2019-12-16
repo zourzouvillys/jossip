@@ -13,9 +13,7 @@ import com.jive.sip.parameters.impl.TokenParameterDefinition;
 
 import lombok.Getter;
 
-public class ContentDisposition extends BaseParameterizedObject<ContentDisposition>
-{
-
+public class ContentDisposition extends BaseParameterizedObject<ContentDisposition> {
 
   public static final Token Required = Token.from("required");
 
@@ -28,34 +26,32 @@ public class ContentDisposition extends BaseParameterizedObject<ContentDispositi
   @Getter
   private final String value;
 
-  public ContentDisposition(final CharSequence value, final Parameters parameters)
-  {
+  public ContentDisposition(final CharSequence value, final Parameters parameters) {
     this.value = value.toString();
     this.parameters = parameters;
   }
 
-  public ContentDisposition(final String name)
-  {
+  public ContentDisposition(final String name) {
     this(name, DefaultParameters.EMPTY);
   }
 
-  public ContentDisposition(final String name, final boolean required)
-  {
-    this(name, (required)
-        ? DefaultParameters.from(
-            Lists.newArrayList(new RawParameter("handling",
-            new TokenParameterValue(ContentDisposition.Required))))
-        : DefaultParameters.EMPTY);
+  public ContentDisposition(final String name, final boolean required) {
+    this(
+      name,
+      (required)
+                 ? DefaultParameters.from(
+                   Lists.newArrayList(new RawParameter(
+                     "handling",
+                     new TokenParameterValue(ContentDisposition.Required))))
+                 : DefaultParameters.EMPTY);
   }
 
-  public Optional<Token> getHandling()
-  {
+  public Optional<Token> getHandling() {
     return this.parameters.getParameter(Handling);
   }
 
   @Override
-  public ContentDisposition withParameters(final Parameters parameters)
-  {
+  public ContentDisposition withParameters(final Parameters parameters) {
     return new ContentDisposition(this.value, parameters);
   }
 

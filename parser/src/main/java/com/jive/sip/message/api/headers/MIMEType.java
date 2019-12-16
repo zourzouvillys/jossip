@@ -17,29 +17,25 @@ import lombok.Value;
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class MIMEType extends BaseParameterizedObject<MIMEType>
-{
+public class MIMEType extends BaseParameterizedObject<MIMEType> {
   public static final MIMEType APPLICATION_SDP = new MIMEType("application", "sdp");
   private final String type;
   private final String subType;
-  
-  public MIMEType(final String type, final String subType)
-  {
+
+  public MIMEType(final String type, final String subType) {
     this(type, subType, DefaultParameters.EMPTY);
   }
-  
-  public MIMEType(final String type, final String subType, final Parameters parameters)
-  {
+
+  public MIMEType(final String type, final String subType, final Parameters parameters) {
     Preconditions.checkNotNull(type);
     Preconditions.checkNotNull(subType);
-    this.type = type; 
+    this.type = type;
     this.subType = subType;
     this.parameters = parameters;
   }
 
   @Override
-  public MIMEType withParameters(Parameters parameters)
-  {
+  public MIMEType withParameters(Parameters parameters) {
     return new MIMEType(this.type, this.subType, parameters);
   }
 

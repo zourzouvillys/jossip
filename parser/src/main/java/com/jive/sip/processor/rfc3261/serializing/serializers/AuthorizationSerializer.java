@@ -16,19 +16,16 @@ import lombok.AllArgsConstructor;
  * 
  */
 @AllArgsConstructor
-public class AuthorizationSerializer extends AbstractRfcSerializer<Authorization>
-{
+public class AuthorizationSerializer extends AbstractRfcSerializer<Authorization> {
 
   private final RfcSerializerManager manager;
 
   @Override
-  public void serialize(final Writer w, final Authorization obj) throws IOException
-  {
+  public void serialize(final Writer w, final Authorization obj) throws IOException {
 
     w.append(obj.getScheme()).append(' ');
 
-    if (obj.getParameters().isPresent())
-    {
+    if (obj.getParameters().isPresent()) {
       this.manager.serializeCollection(w, obj.getParameters().get().getRawParameters(), ", ");
     }
 

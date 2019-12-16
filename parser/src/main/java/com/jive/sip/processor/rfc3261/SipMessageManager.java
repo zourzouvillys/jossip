@@ -18,7 +18,6 @@ import com.jive.sip.processor.rfc3261.message.api.ResponseBuilder;
 import com.jive.sip.uri.api.SipUri;
 import com.jive.sip.uri.api.Uri;
 
-
 /**
  * Interface for working with SIP messages.
  *
@@ -26,11 +25,11 @@ import com.jive.sip.uri.api.Uri;
  *
  */
 
-public interface SipMessageManager
-{
+public interface SipMessageManager {
 
   /**
-   * note: this only performs minimal syntactic checks, it doesn't do semantic ones (e.g, check status codes).
+   * note: this only performs minimal syntactic checks, it doesn't do semantic ones (e.g, check
+   * status codes).
    *
    * @param msg
    * @return
@@ -113,7 +112,6 @@ public interface SipMessageManager
    */
 
   NameAddr parseNameAddr(final String na);
-
 
   /**
    * parses parameters like ";a=z;b=1;d="xxx"

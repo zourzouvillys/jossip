@@ -11,24 +11,20 @@ import com.jive.sip.parsers.api.ValueListener;
  * 
  */
 
-public class OneOf implements Parser<CharSequence>
-{
+public class OneOf implements Parser<CharSequence> {
 
   private final byte[] bytes;
 
-  public OneOf(final byte[] bytes)
-  {
+  public OneOf(final byte[] bytes) {
     this.bytes = bytes;
   }
 
   @Override
-  public boolean find(final ParserContext context, final ValueListener<CharSequence> value)
-  {
+  public boolean find(final ParserContext context, final ValueListener<CharSequence> value) {
 
     final int pos = context.position();
 
-    if (context.remaining() > 0 && Bytes.contains(this.bytes, context.get()))
-    {
+    if (context.remaining() > 0 && Bytes.contains(this.bytes, context.get())) {
       return true;
     }
 
@@ -39,8 +35,7 @@ public class OneOf implements Parser<CharSequence>
   }
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     return new StringBuilder().append("oneOf(").append(this.bytes).append(")").toString();
   }
 

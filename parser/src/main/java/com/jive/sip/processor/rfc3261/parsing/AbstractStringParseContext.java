@@ -9,22 +9,18 @@ import com.jive.sip.processor.rfc3261.HeaderParseContext;
 import com.jive.sip.processor.rfc3261.RfcSipMessageManager;
 import com.jive.sip.processor.rfc3261.SipMessageManager;
 
-public abstract class AbstractStringParseContext implements HeaderParseContext
-{
+public abstract class AbstractStringParseContext implements HeaderParseContext {
 
   private final RfcSipMessageManager manager;
   private final byte[] value;
   private int pos = 0;
 
-  protected AbstractStringParseContext(final SipMessageManager manager, final byte[] bytes)
-  {
+  protected AbstractStringParseContext(final SipMessageManager manager, final byte[] bytes) {
     Preconditions.checkNotNull(bytes);
-    if (manager != null)
-    {
+    if (manager != null) {
       this.manager = manager.adapt(RfcSipMessageManager.class);
     }
-    else
-    {
+    else {
       this.manager = null;
     }
     this.value = bytes;
@@ -32,38 +28,32 @@ public abstract class AbstractStringParseContext implements HeaderParseContext
   }
 
   @Override
-  public List<String> getValue()
-  {
+  public List<String> getValue() {
     return Lists.newArrayList(this.getSingleValue());
   }
 
   @Override
-  public String getSingleValue()
-  {
+  public String getSingleValue() {
     return new String(this.value, StandardCharsets.UTF_8);
   }
 
   @Override
-  public byte peek()
-  {
+  public byte peek() {
     return this.value[this.pos];
   }
 
   @Override
-  public int position()
-  {
+  public int position() {
     return this.pos;
   }
 
   @Override
-  public void consume(final int bytes)
-  {
+  public void consume(final int bytes) {
     this.pos += bytes;
   }
 
   @Override
-  public int position(final int offset)
-  {
+  public int position(final int offset) {
     Preconditions.checkArgument(offset >= 0);
     Preconditions.checkArgument(this.value.length - offset >= 0);
     final int old = this.pos;
@@ -72,25 +62,21 @@ public abstract class AbstractStringParseContext implements HeaderParseContext
   }
 
   @Override
-  public int length()
-  {
+  public int length() {
     return this.value.length - this.pos;
   }
 
   @Override
-  public char charAt(final int index)
-  {
+  public char charAt(final int index) {
     return (char) this.value[index + this.pos];
   }
 
   @Override
-  public CharSequence subSequence(final int start, final int end)
-  {
+  public CharSequence subSequence(final int start, final int end) {
 
     final byte[] data = new byte[end - start];
 
-    for (int i = start, x = 0; i < end; ++i, x++)
-    {
+    for (int i = start, x = 0; i < end; ++i, x++) {
       data[x] = this.value[this.pos + i];
     }
 
@@ -99,27 +85,23 @@ public abstract class AbstractStringParseContext implements HeaderParseContext
   }
 
   @Override
-  public void get(final byte[] target, final int offset, final int len)
-  {
+  public void get(final byte[] target, final int offset, final int len) {
 
     Preconditions.checkPositionIndexes(offset, len, this.length());
 
-    for (int i = 0; i < len; ++i)
-    {
+    for (int i = 0; i < len; ++i) {
       target[i] = this.value[i + this.pos + offset];
     }
 
   }
 
   @Override
-  public void get(final byte[] target)
-  {
+  public void get(final byte[] target) {
     this.get(target, 0, target.length);
   }
 
   @Override
-  public SipMessageManager getManager()
-  {
+  public SipMessageManager getManager() {
     return this.manager;
   }
 

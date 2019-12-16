@@ -19,10 +19,8 @@ import com.jive.sip.processor.rfc3261.parsing.SipMessageParseFailureException;
 import com.jive.sip.processor.uri.RawUri;
 import com.jive.sip.uri.api.Uri;
 
-public class UriParser implements Parser<Uri>
-{
-  private UriParser()
-  {
+public class UriParser implements Parser<Uri> {
+  private UriParser() {
   };
 
   public static final Parser<CharSequence> SCHEME = chars(ALPHANUM_CHARS + "+-.");
@@ -35,34 +33,28 @@ public class UriParser implements Parser<Uri>
 
   public static final Parser<Uri> URI = new UriParser();
 
-  public static final Parser<Uri> URI_WITHBRACKETS = new Parser<Uri>()
-  {
+  public static final Parser<Uri> URI_WITHBRACKETS = new Parser<Uri>() {
 
     @Override
-    public boolean find(final ParserContext ctx, final ValueListener<Uri> value)
-    {
+    public boolean find(final ParserContext ctx, final ValueListener<Uri> value) {
       final int pos = ctx.position();
 
-      if (!ctx.skip(ParserUtils.LAQUOT))
-      {
+      if (!ctx.skip(ParserUtils.LAQUOT)) {
         return false;
       }
 
       final Uri uri = ctx.read(URI);
-      if (uri == null)
-      {
+      if (uri == null) {
         ctx.position(pos);
         return false;
       }
 
-      if (!ctx.skip(ParserUtils.RAQUOT))
-      {
+      if (!ctx.skip(ParserUtils.RAQUOT)) {
         ctx.position(pos);
         return false;
       }
 
-      if (value != null)
-      {
+      if (value != null) {
         value.set(uri);
       }
 
@@ -70,15 +62,12 @@ public class UriParser implements Parser<Uri>
     }
   };
 
-  public static final Parser<Uri> URI_WITHOUT_PARAMS = new Parser<Uri>()
-  {
+  public static final Parser<Uri> URI_WITHOUT_PARAMS = new Parser<Uri>() {
     @Override
-    public boolean find(final ParserContext ctx, final ValueListener<Uri> value)
-    {
+    public boolean find(final ParserContext ctx, final ValueListener<Uri> value) {
       final int pos = ctx.position();
 
-      try
-      {
+      try {
         final CharSequence scheme = ctx.read(SCHEME);
 
         ctx.read(COLON);
@@ -87,63 +76,52 @@ public class UriParser implements Parser<Uri>
 
         final int start = ctx.position();
 
-        while (ctx.remaining() > 0)
-        {
+        while (ctx.remaining() > 0) {
 
-          if (!ctx.skip(and(str("%"), HEXDIG, HEXDIG)))
-          {
-            if (!ctx.skip(chars(RESERVED_CHARS.concat(UNRESERVED_CHARS).replace("?", "").replace(";", ""))))
-            {
+          if (!ctx.skip(and(str("%"), HEXDIG, HEXDIG))) {
+            if (!ctx.skip(chars(RESERVED_CHARS.concat(UNRESERVED_CHARS).replace("?", "").replace(";", "")))) {
               break;
             }
           }
 
         }
 
-        if (start == ctx.position())
-        {
+        if (start == ctx.position()) {
           return false;
         }
 
-        if (value != null)
-        {
+        if (value != null) {
           value.set(new RawUri(scheme.toString(), ctx.subSequence(start, ctx.position()).toString()));
         }
 
         return true;
 
       }
-      catch (final ParseFailureException e)
-      {
+      catch (final ParseFailureException e) {
         ctx.position(pos);
         return false;
       }
     }
   };
 
-  public static final Parser<CharSequence> URIC = name(or(
+  public static final Parser<CharSequence> URIC =
+    name(or(
       chars(RESERVED_CHARS.concat(UNRESERVED_CHARS)),
-      and(str("%"), HEXDIG, HEXDIG)
-      ), "uric");
-  private static final Parser<CharSequence> OPAQUE = new Parser<CharSequence>()
-  {
+      and(str("%"), HEXDIG, HEXDIG)), "uric");
+  private static final Parser<CharSequence> OPAQUE = new Parser<CharSequence>() {
 
     @Override
-    public boolean find(final ParserContext ctx, final ValueListener<CharSequence> value)
-    {
+    public boolean find(final ParserContext ctx, final ValueListener<CharSequence> value) {
       final int pos = ctx.position();
 
       final CharSequence c = ctx.read(URIC);
-      if ((c == null) || c.equals("/"))
-      {
+      if ((c == null) || c.equals("/")) {
         ctx.position(pos);
         return false;
       }
 
-      while (true)
-      {
-        if (!ctx.skip(URIC))
-        {
+      while (true) {
+        if (!ctx.skip(URIC)) {
           break;
         }
       }
@@ -153,32 +131,27 @@ public class UriParser implements Parser<Uri>
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
       return "opaque";
     }
   };
 
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<Uri> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<Uri> value) {
     final int pos = ctx.position();
 
-    try
-    {
+    try {
       final CharSequence scheme = ctx.read(SCHEME);
       ctx.read(COLON);
       final CharSequence opaque = ctx.read(OPAQUE);
 
-      if (value != null)
-      {
+      if (value != null) {
         value.set(new RawUri(scheme.toString(), opaque.toString()));
       }
 
       return true;
     }
-    catch (final SipMessageParseFailureException e)
-    {
+    catch (final SipMessageParseFailureException e) {
       ctx.position(pos);
       return false;
     }

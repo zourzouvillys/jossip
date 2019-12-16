@@ -16,81 +16,64 @@ import lombok.EqualsAndHashCode;
  */
 
 @EqualsAndHashCode
-public abstract class BaseParameterizedObject<T> implements ParameterizedObject<T>
-{
+public abstract class BaseParameterizedObject<T> implements ParameterizedObject<T> {
 
   protected Parameters parameters;
 
   @Override
-  public <R> Optional<R> getParameter(final SipParameterDefinition<R> parameterDefinition)
-  {
-    if (this.parameters != null)
-    {
+  public <R> Optional<R> getParameter(final SipParameterDefinition<R> parameterDefinition) {
+    if (this.parameters != null) {
       return parameterDefinition.parse(this.parameters);
     }
-    else
-    {
+    else {
       return Optional.empty();
     }
   }
 
-
   @Override
-  public T withParameter(final Token name)
-  {
+  public T withParameter(final Token name) {
     return this.withParameters(this.parameters.withParameter(name));
   }
 
   @Override
-  public T withParameter(final Token name, final Token value)
-  {
+  public T withParameter(final Token name, final Token value) {
     return this.withParameters(this.parameters.withParameter(name, value));
   }
 
   @Override
-  public T withParameter(final Token name, final QuotedString value)
-  {
+  public T withParameter(final Token name, final QuotedString value) {
     return this.withParameters(this.parameters.withParameter(name, value));
   }
 
   @Override
-  public T withParameter(final Token name, final Long token)
-  {
+  public T withParameter(final Token name, final Long token) {
     return this.withParameters(this.parameters.withParameter(name, Token.from(token)));
   }
 
-
   @Override
-  public T withParameter(final Token name, final HostAndPort value)
-  {
+  public T withParameter(final Token name, final HostAndPort value) {
     return this.withParameters(this.parameters.withParameter(name, value));
   }
 
   @Override
-  public T withoutParameter(final Token name)
-  {
+  public T withoutParameter(final Token name) {
     return this.withParameters(this.parameters.withoutParameter(name));
   }
 
   @Override
-  public Optional<Parameters> getParameters()
-  {
-    if ((this.parameters == null) || this.parameters.getRawParameters().isEmpty())
-    {
+  public Optional<Parameters> getParameters() {
+    if ((this.parameters == null) || this.parameters.getRawParameters().isEmpty()) {
       return Optional.empty();
     }
-    else
-    {
+    else {
       return Optional.ofNullable(this.parameters);
     }
   }
 
-  public T replaceParameter(SipParameterDefinition<Token> def, Token value)
-  {
+  public T replaceParameter(SipParameterDefinition<Token> def, Token value) {
     Parameters val = this.parameters.withoutParameter(def.getName());
     return withParameters(val.withParameter(def.getName(), value));
   }
-
 
   abstract public T withParameters(final Parameters parameters);
 

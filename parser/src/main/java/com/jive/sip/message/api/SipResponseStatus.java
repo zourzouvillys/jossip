@@ -1,6 +1,5 @@
 package com.jive.sip.message.api;
 
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Map;
@@ -17,8 +16,7 @@ import lombok.Value;
  */
 
 @Value
-public class SipResponseStatus
-{
+public class SipResponseStatus {
 
   /*
    * Pre-made SIP status codes. Only add response codes defined in the core RFCs here.
@@ -94,32 +92,25 @@ public class SipResponseStatus
 
   private static final Map<Integer, SipResponseStatus> statuses = Maps.newHashMap();
 
-  static
-  {
+  static {
 
-    for (Field f : SipResponseStatus.class.getDeclaredFields())
-    {
+    for (Field f : SipResponseStatus.class.getDeclaredFields()) {
 
-      if (!Modifier.isStatic(f.getModifiers()) || !SipResponseStatus.class.isAssignableFrom(f.getType()))
-      {
+      if (!Modifier.isStatic(f.getModifiers()) || !SipResponseStatus.class.isAssignableFrom(f.getType())) {
         continue;
       }
 
-      try
-      {
+      try {
         SipResponseStatus status = (SipResponseStatus) f.get(null);
         statuses.put(status.getCode(), status);
       }
-      catch (Exception e)
-      {
+      catch (Exception e) {
         // swallow.
       }
 
     }
 
-
   }
-
 
   /*
    * 
@@ -129,38 +120,31 @@ public class SipResponseStatus
   private String reason;
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     return new StringBuilder().append(getCode()).append(' ').append(getReason()).toString();
   }
 
-  public boolean isFinal()
-  {
+  public boolean isFinal() {
     return this.code >= 200;
   }
 
-  public boolean isSuccess()
-  {
+  public boolean isSuccess() {
     return (this.code / 100) == 2;
   }
 
-  public boolean isFailure()
-  {
+  public boolean isFailure() {
     return (this.code) >= 300;
   }
 
-  public SipResponseStatus withReason(final String string)
-  {
+  public SipResponseStatus withReason(final String string) {
     return new SipResponseStatus(this.code, string);
   }
 
-  public boolean isRedirect()
-  {
+  public boolean isRedirect() {
     return (this.code / 100) == 3;
   }
 
-  public static SipResponseStatus fromCode(int code)
-  {
+  public static SipResponseStatus fromCode(int code) {
     return statuses.get(code);
   }
 

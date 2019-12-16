@@ -12,36 +12,30 @@ import com.jive.sip.parameters.api.TokenParameterValue;
 
 import lombok.SneakyThrows;
 
-public class RawParameterSerializer extends AbstractRfcSerializer<RawParameter>
-{
+public class RawParameterSerializer extends AbstractRfcSerializer<RawParameter> {
 
   @Override
-  public void serialize(final Writer w, final RawParameter obj) throws IOException
-  {
+  public void serialize(final Writer w, final RawParameter obj) throws IOException {
     w.append(obj.getName().toString());
     obj.getValue().apply(new Serializer(w));
   }
 
-  private static class Serializer implements ParameterValueVisitor<String>
-  {
+  private static class Serializer implements ParameterValueVisitor<String> {
 
     private final Writer sb;
 
-    public Serializer(final Writer sb)
-    {
+    public Serializer(final Writer sb) {
       this.sb = sb;
     }
 
     @Override
-    public String visit(final FlagParameterValue parameter)
-    {
+    public String visit(final FlagParameterValue parameter) {
       return null;
     }
 
     @SneakyThrows
     @Override
-    public String visit(final TokenParameterValue parameter)
-    {
+    public String visit(final TokenParameterValue parameter) {
       this.sb.append('=');
       this.sb.append(parameter.getValue().toString());
       return null;
@@ -49,8 +43,7 @@ public class RawParameterSerializer extends AbstractRfcSerializer<RawParameter>
 
     @SneakyThrows
     @Override
-    public String visit(final QuotedStringParameterValue parameter)
-    {
+    public String visit(final QuotedStringParameterValue parameter) {
       this.sb.append('=');
       this.sb.append('"');
       this.sb.append(parameter.getValue().replace("\"", "\\\""));
@@ -60,13 +53,11 @@ public class RawParameterSerializer extends AbstractRfcSerializer<RawParameter>
 
     @SneakyThrows
     @Override
-    public String visit(final HostAndPortParameterValue parameter)
-    {
+    public String visit(final HostAndPortParameterValue parameter) {
       this.sb.append('=');
       this.sb.append(parameter.getValue().toString());
       return null;
     }
-
 
   }
 

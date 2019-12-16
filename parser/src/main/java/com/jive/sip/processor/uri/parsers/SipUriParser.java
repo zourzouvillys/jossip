@@ -24,130 +24,110 @@ import com.jive.sip.parsers.core.ParserUtils;
 import com.jive.sip.uri.api.SipUri;
 import com.jive.sip.uri.api.UserInfo;
 
-public class SipUriParser implements UriSchemeParser<SipUri>
-{
+public class SipUriParser implements UriSchemeParser<SipUri> {
   private final String scheme;
 
-  private SipUriParser(final String scheme)
-  {
+  private SipUriParser(final String scheme) {
     this.scheme = scheme;
   }
 
   public static final SipUriParser SIP = new SipUriParser(SipUri.SIP);
   public static final SipUriParser SIPS = new SipUriParser(SipUri.SIPS);
 
-  private static final Parser<CharSequence> USER = chars(
+  private static final Parser<CharSequence> USER =
+    chars(
       ALPHANUM_CHARS.concat("-_.!~*'()%&=+$,;?/").concat("#[]"));
   private static final Parser<CharSequence> PASSWORD = chars(ALPHANUM_CHARS.concat("-_.!~*'()%&=+$,"));
   private static final Parser<CharSequence> COLON = ch(':');
   private static final Parser<CharSequence> AT = ch('@');
-  public static final Parser<UserInfo> USERINFO = new Parser<UserInfo>()
-  {
+  public static final Parser<UserInfo> USERINFO = new Parser<UserInfo>() {
     @Override
-    public boolean find(final ParserContext ctx, final ValueListener<UserInfo> value)
-    {
-
+    public boolean find(final ParserContext ctx, final ValueListener<UserInfo> value) {
 
       final int pos = ctx.position();
 
       final CharSequence user = read(ctx, USER);
 
-      if (user == null)
-      {
+      if (user == null) {
         return false;
       }
 
-
       UserInfo info;
 
-      if (ctx.skip(COLON))
-      {
+      if (ctx.skip(COLON)) {
         final CharSequence password = read(ctx, PASSWORD);
-        if (password == null)
-        {
+        if (password == null) {
           ctx.position(pos);
           return false;
         }
         info = new UserInfo(user.toString(), password.toString());
       }
-      else
-      {
+      else {
         info = new UserInfo(user.toString());
       }
 
-      if (!ctx.skip(AT))
-      {
+      if (!ctx.skip(AT)) {
         ctx.position(pos);
         return false;
       }
 
-      if (value != null)
-      {
+      if (value != null) {
         value.set(info);
       }
       return true;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
       return "userinfo";
     }
   };
   private static final Parser<CharSequence> HEADER_CHARS = chars(ALPHANUM_CHARS.concat("-_.!~*'()[]/?:+$%"));
-  private static final Parser<RawHeader> HEADER = new Parser<RawHeader>()
-  {
+  private static final Parser<RawHeader> HEADER = new Parser<RawHeader>() {
 
     @Override
-    public boolean find(final ParserContext ctx, final ValueListener<RawHeader> value)
-    {
+    public boolean find(final ParserContext ctx, final ValueListener<RawHeader> value) {
       final int pos = ctx.position();
 
       final CharSequence hname = read(ctx, HEADER_CHARS);
-      if (hname == null)
-      {
+      if (hname == null) {
         return false;
       }
-      if (!ctx.skip(EQUALS))
-      {
+      if (!ctx.skip(EQUALS)) {
         ctx.position(pos);
         return false;
       }
       final CharSequence hvalue = read(ctx, HEADER_CHARS);
-      if (value != null)
-      {
-        value.set(new RawHeader(hname.toString(), hvalue != null ? URLDecoder.decode(hvalue.toString()) : ""));
+      if (value != null) {
+        value.set(new RawHeader(
+          hname.toString(),
+          hvalue != null ? URLDecoder.decode(hvalue.toString())
+                         : ""));
       }
       return true;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
       return "header";
     }
   };
   private static final Parser<CharSequence> QUESTION = ch('?');
   private static final Parser<CharSequence> AMP = ch('&');
-  public static final Parser<Collection<RawHeader>> HEADERS = new Parser<Collection<RawHeader>>()
-  {
+  public static final Parser<Collection<RawHeader>> HEADERS = new Parser<Collection<RawHeader>>() {
 
     @Override
-    public boolean find(final ParserContext ctx, final ValueListener<Collection<RawHeader>> value)
-    {
+    public boolean find(final ParserContext ctx, final ValueListener<Collection<RawHeader>> value) {
       final int pos = ctx.position();
 
       final Collection<RawHeader> result = Lists.newLinkedList();
-      if (!ctx.skip(QUESTION))
-      {
+      if (!ctx.skip(QUESTION)) {
         return false;
       }
 
-      do
-      {
+      do {
         final RawHeader header = read(ctx, HEADER);
-        if (header == null)
-        {
+        if (header == null) {
           ctx.position(pos);
           return false;
         }
@@ -155,8 +135,7 @@ public class SipUriParser implements UriSchemeParser<SipUri>
       }
       while (ctx.skip(AMP));
 
-      if (value != null)
-      {
+      if (value != null) {
         value.set(result);
       }
 
@@ -164,46 +143,39 @@ public class SipUriParser implements UriSchemeParser<SipUri>
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
       return "headers";
     }
   };
 
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<SipUri> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<SipUri> value) {
     final int pos = ctx.position();
 
     final UserInfo info = read(ctx, USERINFO);
     final HostAndPort host = read(ctx, HostAndPortParser.INSTANCE);
-    if (host == null)
-    {
+    if (host == null) {
       ctx.position(pos);
       return false;
     }
     final Collection<RawParameter> rawParams = read(ctx, ParameterParser.getInstance());
     final Collection<RawHeader> headers = read(ctx, HEADERS);
 
-    if (value != null)
-    {
+    if (value != null) {
       value.set(new SipUri(this.scheme, info, host, DefaultParameters.from(rawParams), headers));
     }
     return true;
   }
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     return "sipuri";
   }
 
-  public static SipUri parse(final String input)
-  {
+  public static SipUri parse(final String input) {
     final ByteParserInput is = ByteParserInput.fromString(input.substring(4));
     final SipUri value = ParserUtils.read(is, SIP);
-    if (is.remaining() > 0)
-    {
+    if (is.remaining() > 0) {
       throw new RuntimeException("Trailing Garbage in SIP URI");
     }
     return value;

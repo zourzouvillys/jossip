@@ -21,43 +21,34 @@ import com.jive.sip.uri.api.Uri;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class ParameterizedUriParser implements Parser<ParameterizedUri>
-{
+public class ParameterizedUriParser implements Parser<ParameterizedUri> {
   /*
    * (non-Javadoc)
-   * 
    * @see com.jive.sip.parsers.core.Parser#find(com.jive.sip.parsers.core.ParserContext,
    * com.jive.sip.parsers.core.ValueListener)
    */
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<ParameterizedUri> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<ParameterizedUri> value) {
     final int pos = ctx.position();
 
-    try
-    {
+    try {
       final Uri uri = ctx.read(UriParser.URI_WITHBRACKETS);
 
       final Collection<RawParameter> params;
 
-      if (ctx.remaining() > 0)
-      {
+      if (ctx.remaining() > 0) {
         params = ctx.read(ParameterParser.getInstance());
       }
-      else
-      {
+      else {
         params = Lists.newLinkedList();
       }
 
-
-      if (value != null)
-      {
+      if (value != null) {
         value.set(new ParameterizedUri(uri, ParameterBuilder.from(params)));
       }
       return true;
     }
-    catch (final SipMessageParseFailureException e)
-    {
+    catch (final SipMessageParseFailureException e) {
       ctx.position(pos);
       return false;
     }

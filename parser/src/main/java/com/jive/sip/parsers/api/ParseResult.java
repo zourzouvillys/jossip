@@ -7,8 +7,7 @@ package com.jive.sip.parsers.api;
  * 
  * @param <T>
  */
-public interface ParseResult<T>
-{
+public interface ParseResult<T> {
 
   /**
    * @return The value this parser returned. May be null.

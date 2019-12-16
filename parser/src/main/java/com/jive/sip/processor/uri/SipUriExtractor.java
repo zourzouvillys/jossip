@@ -4,25 +4,21 @@ import com.jive.sip.uri.api.SipUri;
 import com.jive.sip.uri.api.SipUriVisitor;
 import com.jive.sip.uri.api.Uri;
 
-public class SipUriExtractor implements SipUriVisitor<SipUri>
-{
+public class SipUriExtractor implements SipUriVisitor<SipUri> {
 
   private static final SipUriExtractor INSTANCE = new SipUriExtractor();
 
   @Override
-  public SipUri visit(final Uri unknown)
-  {
+  public SipUri visit(final Uri unknown) {
     return null;
   }
 
   @Override
-  public SipUri visit(final SipUri uri)
-  {
+  public SipUri visit(final SipUri uri) {
     return uri;
   }
 
-  public static SipUriExtractor getInstance()
-  {
+  public static SipUriExtractor getInstance() {
     return INSTANCE;
   }
 

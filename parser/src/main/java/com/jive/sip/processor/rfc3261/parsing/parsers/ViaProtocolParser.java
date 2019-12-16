@@ -9,17 +9,14 @@ import com.jive.sip.parsers.api.ParserContext;
 import com.jive.sip.parsers.api.ValueListener;
 import com.jive.sip.processor.rfc3261.parsing.SipMessageParseFailureException;
 
-public class ViaProtocolParser implements Parser<ViaProtocol>
-{
+public class ViaProtocolParser implements Parser<ViaProtocol> {
 
   @Override
-  public boolean find(final ParserContext context, final ValueListener<ViaProtocol> proto)
-  {
+  public boolean find(final ParserContext context, final ValueListener<ViaProtocol> proto) {
 
     final int pos = context.position();
 
-    try
-    {
+    try {
 
       final CharSequence name = context.read(TOKEN);
       context.read(SLASH);
@@ -27,16 +24,14 @@ public class ViaProtocolParser implements Parser<ViaProtocol>
       context.read(SLASH);
       final CharSequence transport = context.read(TOKEN);
 
-      if (proto != null)
-      {
+      if (proto != null) {
         proto.set(new ViaProtocol(name, version, transport));
       }
 
       return true;
 
     }
-    catch (final SipMessageParseFailureException e)
-    {
+    catch (final SipMessageParseFailureException e) {
       context.position(pos);
       return false;
     }
@@ -44,8 +39,7 @@ public class ViaProtocolParser implements Parser<ViaProtocol>
   }
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     return "via-parm";
   }
 

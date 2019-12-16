@@ -26,90 +26,76 @@ import com.jive.sip.processor.rfc3261.parsing.SipMessageParseFailureException;
  * @param <T>
  */
 
-public class MultiHeaderDefinition<T, R> extends BaseHeaderDefinition implements SipHeaderDefinition<R>
-{
+public class MultiHeaderDefinition<T, R> extends BaseHeaderDefinition implements SipHeaderDefinition<R> {
 
   private final Parser<T> parser;
   private final Supplier<? extends ValueCollector<T, R>> supplier;
 
-  public MultiHeaderDefinition(final Parser<T> parser,
+  public MultiHeaderDefinition(
+      final Parser<T> parser,
       final Supplier<? extends ValueCollector<T, R>> collector,
       final String name,
-      final Character sname)
-  {
+      final Character sname) {
     super(name, sname);
     this.parser = parser;
     this.supplier = collector;
   }
 
-  public static <T, R> SipHeaderDefinition<R> create(final Parser<T> parser,
+  public static <T, R> SipHeaderDefinition<R> create(
+      final Parser<T> parser,
       final Supplier<? extends ValueCollector<T, R>> collector,
       final String name,
-      final char sname)
-  {
+      final char sname) {
     return new MultiHeaderDefinition<T, R>(parser, collector, name, sname);
   }
 
-  public static <T, R> SipHeaderDefinition<R> create(final Parser<T> parser,
+  public static <T, R> SipHeaderDefinition<R> create(
+      final Parser<T> parser,
       final Supplier<? extends ValueCollector<T, R>> collector,
-      final String name)
-  {
+      final String name) {
     return new MultiHeaderDefinition<T, R>(parser, collector, name, null);
   }
 
-  public static <T> SipHeaderDefinition<List<T>> create(final Parser<T> parser, final String name, final char sname)
-  {
+  public static <T> SipHeaderDefinition<List<T>> create(final Parser<T> parser, final String name, final char sname) {
     return new MultiHeaderDefinition<T, List<T>>(parser, collector(parser), name, sname);
   }
 
-  public static <T> SipHeaderDefinition<List<T>> create(final Parser<T> parser, final String name)
-  {
+  public static <T> SipHeaderDefinition<List<T>> create(final Parser<T> parser, final String name) {
     return new MultiHeaderDefinition<T, List<T>>(parser, collector(parser), name, null);
   }
 
-  public static <T> Supplier<? extends ValueCollector<T, List<T>>> collector(final Parser<T> parser)
-  {
-    return new Supplier<ValueCollector<T, List<T>>>()
-    {
+  public static <T> Supplier<? extends ValueCollector<T, List<T>>> collector(final Parser<T> parser) {
+    return new Supplier<ValueCollector<T, List<T>>>() {
       @Override
-      public ValueCollector<T, List<T>> get()
-      {
+      public ValueCollector<T, List<T>> get() {
         return new CollectionValueCollector<T>();
       }
     };
   }
 
   @Override
-  public R parse(final Collection<RawHeader> headers)
-  {
-
+  public R parse(final Collection<RawHeader> headers) {
 
     ValueCollector<T, R> collector = null;
 
+    for (final RawHeader header : headers) {
 
-    for (final RawHeader header : headers)
-    {
-
-      if (matches(header.getName()))
-      {
+      if (matches(header.getName())) {
 
         final ParserInput input = ByteParserInput.fromString(header.getValue());
 
         final ParserContext ctx = new DefaultParserContext(input);
 
-        do
-        {
+        do {
 
           final ValueHolder<T> holder = ValueHolder.create();
 
-          if (!this.parser.find(ctx, holder))
-          {
+          if (!this.parser.find(ctx, holder)) {
             // erp.
             throw new SipMessageParseFailureException("Failed to parse multiple header value");
           }
 
-          if (collector == null)
-          {
+          if (collector == null) {
             collector = this.supplier.get();
           }
 
@@ -122,8 +108,7 @@ public class MultiHeaderDefinition<T, R> extends BaseHeaderDefinition implements
 
     }
 
-    if (collector == null)
-    {
+    if (collector == null) {
       return null;
     }
 

@@ -6,14 +6,12 @@ import com.jive.sip.parsers.api.ParserContext;
 import com.jive.sip.parsers.api.ValueListener;
 import com.jive.sip.parsers.core.ParserUtils;
 
-public class IntegerParser implements Parser<Integer>
-{
+public class IntegerParser implements Parser<Integer> {
 
   private final int minDigits;
   private final int maxDigits;
 
-  public IntegerParser(final int minDigits, final int maxDigits)
-  {
+  public IntegerParser(final int minDigits, final int maxDigits) {
     Preconditions.checkArgument(minDigits > 0, "Min digits must be at least 1");
     Preconditions.checkArgument(maxDigits < 11, "Max digits must be less than 10");
     this.minDigits = minDigits;
@@ -21,26 +19,22 @@ public class IntegerParser implements Parser<Integer>
   }
 
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<Integer> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<Integer> value) {
 
     final int pos = ctx.position();
 
     int skipped = 0;
 
-    for (int i = ctx.position(); (i < ctx.limit()) && (skipped < this.maxDigits) && ParserUtils.isDigit(ctx.get(i)); ++i)
-    {
+    for (int i = ctx.position(); (i < ctx.limit()) && (skipped < this.maxDigits) && ParserUtils.isDigit(ctx.get(i)); ++i) {
       skipped++;
     }
 
-    if (skipped < this.minDigits)
-    {
+    if (skipped < this.minDigits) {
       ctx.position(pos);
       return false;
     }
 
-    if (value != null)
-    {
+    if (value != null) {
       value.set(Integer.parseInt((String) ctx.subSequence(pos, pos + skipped)));
     }
 
@@ -51,8 +45,7 @@ public class IntegerParser implements Parser<Integer>
   }
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     return new StringBuilder().append(this.minDigits).append("*").append(this.maxDigits).append("DIGITS").toString();
   }
 

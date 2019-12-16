@@ -27,30 +27,23 @@ import com.jive.sip.parsers.core.QuotedStringParser;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class RetryAfterParser implements Parser<RetryAfter>
-{
+public class RetryAfterParser implements Parser<RetryAfter> {
 
-
-  private static final Parser<CharSequence> CTEXT = new Parser<CharSequence>()
-  {
+  private static final Parser<CharSequence> CTEXT = new Parser<CharSequence>() {
 
     @Override
-    public boolean find(final ParserContext ctx, final ValueListener<CharSequence> value)
-    {
+    public boolean find(final ParserContext ctx, final ValueListener<CharSequence> value) {
       final int pos = ctx.position();
 
-      if (ctx.length() == pos)
-      {
+      if (ctx.length() == pos) {
         return false;
       }
 
       final byte b = ctx.peek();
 
-      if ((b > 0x20) && (b < 0x7F))
-      {
+      if ((b > 0x20) && (b < 0x7F)) {
         // Allowed ASCII characters range
-        if (((b > 0x27) && (b < 0x2A)) || (b == 0x5C))
-        {
+        if (((b > 0x27) && (b < 0x2A)) || (b == 0x5C)) {
           // Exempt characters
           ctx.position(pos);
           return false;
@@ -60,8 +53,7 @@ public class RetryAfterParser implements Parser<RetryAfter>
         return true;
       }
 
-      if (ctx.skip(UTF8_NONASCII) || ctx.skip(ParserUtils.LWS))
-      {
+      if (ctx.skip(UTF8_NONASCII) || ctx.skip(ParserUtils.LWS)) {
         ParserHelper.notifyValue(ctx, value, pos);
         return true;
       }
@@ -70,29 +62,24 @@ public class RetryAfterParser implements Parser<RetryAfter>
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
       return "ctext";
     }
   };
 
   private static final Parser<CharSequence> SLASH = ParserUtils.ch('\\');
-  private static final Parser<CharSequence> QUOTED_PAIR = new Parser<CharSequence>()
-  {
+  private static final Parser<CharSequence> QUOTED_PAIR = new Parser<CharSequence>() {
 
     @Override
-    public boolean find(final ParserContext ctx, final ValueListener<CharSequence> value)
-    {
+    public boolean find(final ParserContext ctx, final ValueListener<CharSequence> value) {
       final int pos = ctx.position();
 
-      if (!ctx.skip(SLASH))
-      {
+      if (!ctx.skip(SLASH)) {
         return false;
       }
 
       final byte b = ctx.get();
-      if (((b > 0x09) && (b < 0x0B)) || (b == 0x0D) || (b > 0x7F))
-      {
+      if (((b > 0x09) && (b < 0x0B)) || (b == 0x0D) || (b > 0x7F)) {
         ctx.position(pos);
         return false;
       }
@@ -102,8 +89,7 @@ public class RetryAfterParser implements Parser<RetryAfter>
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
       return "quoted-pair";
     }
   };
@@ -113,33 +99,26 @@ public class RetryAfterParser implements Parser<RetryAfter>
 
   /*
    * (non-Javadoc)
-   * 
    * @see com.jive.sip.parsers.core.Parser#find(com.jive.sip.parsers.core.ParserContext,
    * com.jive.sip.parsers.core.ValueListener)
    */
-  private static final Parser<CharSequence> COMMENT = new Parser<CharSequence>()
-  {
+  private static final Parser<CharSequence> COMMENT = new Parser<CharSequence>() {
 
     @Override
-    public boolean find(final ParserContext ctx, final ValueListener<CharSequence> value)
-    {
+    public boolean find(final ParserContext ctx, final ValueListener<CharSequence> value) {
       final int pos = ctx.position();
 
-      if (!ctx.skip(LPAREN))
-      {
+      if (!ctx.skip(LPAREN)) {
         return false;
       }
 
-      while (true)
-      {
-        if (!ctx.skip(CTEXT) && !ctx.skip(QUOTED_PAIR) && !ctx.skip(COMMENT))
-        {
+      while (true) {
+        if (!ctx.skip(CTEXT) && !ctx.skip(QUOTED_PAIR) && !ctx.skip(COMMENT)) {
           break;
         }
       }
 
-      if (!ctx.skip(RPAREN))
-      {
+      if (!ctx.skip(RPAREN)) {
         ctx.position(pos);
         return false;
       }
@@ -150,20 +129,17 @@ public class RetryAfterParser implements Parser<RetryAfter>
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
       return "comment";
     }
   };
 
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<RetryAfter> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<RetryAfter> value) {
     final int pos = ctx.position();
 
     final UnsignedInteger duration = ParserUtils.read(ctx, ParserUtils.INTEGER);
-    if (duration == null)
-    {
+    if (duration == null) {
       return false;
     }
 
@@ -172,30 +148,25 @@ public class RetryAfterParser implements Parser<RetryAfter>
     final CharSequence comment = ParserUtils.read(ctx, COMMENT);
 
     final List<RawParameter> params = Lists.newArrayList();
-    while (ctx.skip(ParserUtils.SEMI))
-    {
+    while (ctx.skip(ParserUtils.SEMI)) {
       final CharSequence pname = ParserUtils.read(ctx, ParserUtils.TOKEN);
-      if (pname == null)
-      {
+      if (pname == null) {
         ctx.position(pos);
         return false;
       }
-      if (!ctx.skip(ParserUtils.EQUALS))
-      {
+      if (!ctx.skip(ParserUtils.EQUALS)) {
         ctx.position(pos);
         return false;
       }
 
       Object pvalue = ParserUtils.read(ctx, QuotedStringParser.INSTANCE);
-      if (pvalue != null)
-      {
+      if (pvalue != null) {
         params.add(new RawParameter(Token.from(pname), new QuotedStringParameterValue(pvalue.toString())));
         continue;
       }
 
       pvalue = ParserUtils.read(ctx, TOKEN);
-      if (pvalue != null)
-      {
+      if (pvalue != null) {
         params.add(new RawParameter(Token.from(pname), new TokenParameterValue(pvalue.toString())));
         continue;
       }
@@ -204,10 +175,11 @@ public class RetryAfterParser implements Parser<RetryAfter>
       return false;
     }
 
-    final String cmt = comment == null ? null : comment.toString();
+    final String cmt =
+      comment == null ? null
+                      : comment.toString();
 
-    if (value != null)
-    {
+    if (value != null) {
       value.set(new RetryAfter(duration.intValue(), cmt, ParameterBuilder.from(params)));
     }
     return true;

@@ -11,21 +11,18 @@ import com.jive.sip.processor.rfc3261.HeaderParseContext;
  * 
  */
 
-public class SipMessageParseFailureException extends RuntimeException
-{
+public class SipMessageParseFailureException extends RuntimeException {
 
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
 
-  public SipMessageParseFailureException(final String msg)
-  {
+  public SipMessageParseFailureException(final String msg) {
     super(msg);
   }
 
-  public SipMessageParseFailureException(final String msg, final HeaderParseContext ctx, final int offset)
-  {
+  public SipMessageParseFailureException(final String msg, final HeaderParseContext ctx, final int offset) {
     super(msg + ", got: '" + ctx.subSequence(offset, ctx.length() - offset) + "'");
   }
 

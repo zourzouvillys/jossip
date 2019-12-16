@@ -5,8 +5,7 @@ import java.util.Optional;
 import com.google.common.net.HostAndPort;
 import com.jive.sip.base.api.Token;
 
-public interface SipParameterDefinition<T>
-{
+public interface SipParameterDefinition<T> {
   // TODO: Refactor to use Parameters interface.
   Optional<T> parse(final Parameters parameters);
 

@@ -15,28 +15,22 @@ import com.jive.sip.parsers.core.DefaultParserContext;
 import com.jive.sip.parsers.core.ParserUtils;
 import com.jive.sip.processor.rfc3261.parsing.parsers.headers.NameAddrParser;
 
-public final class ContactHeaderDefinition extends BaseHeaderDefinition implements SipHeaderDefinition<ContactSet>
-{
+public final class ContactHeaderDefinition extends BaseHeaderDefinition implements SipHeaderDefinition<ContactSet> {
 
-  public ContactHeaderDefinition()
-  {
+  public ContactHeaderDefinition() {
     super("Contact", 'm');
   }
 
   @Override
-  public ContactSet parse(final Collection<RawHeader> headers)
-  {
+  public ContactSet parse(final Collection<RawHeader> headers) {
 
     final List<NameAddr> contacts = Lists.newLinkedList();
 
-    for (final RawHeader header : headers)
-    {
+    for (final RawHeader header : headers) {
 
-      if (matches(header.getName()))
-      {
+      if (matches(header.getName())) {
 
-        if (header.getValue().equals("*"))
-        {
+        if (header.getValue().equals("*")) {
           return ContactSet.STAR;
         }
 
@@ -44,8 +38,7 @@ public final class ContactHeaderDefinition extends BaseHeaderDefinition implemen
 
         final ParserContext ctx = new DefaultParserContext(input);
 
-        do
-        {
+        do {
           NameAddrParser.INSTANCE.find(ctx, new CollectionAppender<NameAddr>(contacts));
         }
         while (ctx.skip(ParserUtils.COMMA));
@@ -54,7 +47,8 @@ public final class ContactHeaderDefinition extends BaseHeaderDefinition implemen
 
     }
 
-    return contacts.isEmpty() ? null : ContactSet.from(contacts);
+    return contacts.isEmpty() ? null
+                              : ContactSet.from(contacts);
 
   }
 

@@ -1,6 +1,5 @@
 package com.jive.sip.parsers.api;
 
-
 /**
  * Base interface for all {@link Parser} implementations.
  * 
@@ -11,15 +10,16 @@ package com.jive.sip.parsers.api;
  * @param <T>
  */
 
-public interface Parser<T>
-{
+public interface Parser<T> {
 
   /**
    * Implementations must attempt to match against the given input.
    * 
-   * If the parse results in a match, then the context must be advanced one input element past the match.
+   * If the parse results in a match, then the context must be advanced one input element past the
+   * match.
    * 
-   * If the parse doesn't result in a match, then context must be at it's original place. You can use mark() and reset() for this.
+   * If the parse doesn't result in a match, then context must be at it's original place. You can
+   * use mark() and reset() for this.
    * 
    * 
    * 

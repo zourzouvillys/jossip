@@ -15,13 +15,11 @@ import lombok.experimental.Wither;
 
 @Value
 @Wither
-public class CallId implements Serializable
-{
+public class CallId implements Serializable {
 
   private final String value;
 
-  public CallId(CharSequence value)
-  {
+  public CallId(CharSequence value) {
     this.value = value.toString();
   }
 
@@ -31,8 +29,7 @@ public class CallId implements Serializable
    * @return
    */
 
-  public String getValue()
-  {
+  public String getValue() {
     return this.value;
   }
 

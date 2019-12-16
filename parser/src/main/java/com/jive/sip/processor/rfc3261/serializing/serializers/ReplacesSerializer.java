@@ -13,22 +13,18 @@ import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
  * @author theo
  *
  */
-public class ReplacesSerializer extends AbstractRfcSerializer<Replaces>
-{
+public class ReplacesSerializer extends AbstractRfcSerializer<Replaces> {
 
   private final RfcSerializerManager manager;
 
-  public ReplacesSerializer(final RfcSerializerManager manager)
-  {
+  public ReplacesSerializer(final RfcSerializerManager manager) {
     this.manager = manager;
   }
 
   @Override
-  public void serialize(final Writer sink, final Replaces obj) throws IOException
-  {
+  public void serialize(final Writer sink, final Replaces obj) throws IOException {
     sink.append(obj.getCallId().getValue());
-    if (obj.getParameters().isPresent())
-    {
+    if (obj.getParameters().isPresent()) {
       sink.append(RfcSerializationConstants.SEMI);
       this.manager.serializeCollection(sink, obj.getParameters().get().getRawParameters(), RfcSerializationConstants.SEMI);
     }

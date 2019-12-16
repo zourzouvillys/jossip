@@ -13,42 +13,36 @@ import com.jive.sip.parameters.impl.TokenParameterDefinition;
 
 import lombok.Getter;
 
-
-public class EventSpec extends BaseParameterizedObject<EventSpec>
-{
+public class EventSpec extends BaseParameterizedObject<EventSpec> {
 
   public static TokenParameterDefinition Id = new TokenParameterDefinition("id");
-
 
   @Getter
   private final String name;
 
-  public EventSpec(final CharSequence name, final Parameters parameters)
-  {
+  public EventSpec(final CharSequence name, final Parameters parameters) {
     this.name = name.toString();
     this.parameters = parameters;
   }
 
-  public EventSpec(final String name)
-  {
+  public EventSpec(final String name) {
     this(name, DefaultParameters.EMPTY);
   }
 
-  public EventSpec(final String name, final String id)
-  {
-    this(name, (id != null) ? DefaultParameters.from(Lists.newArrayList(new RawParameter("id", new TokenParameterValue(id)))) : DefaultParameters.EMPTY);
+  public EventSpec(final String name, final String id) {
+    this(
+      name,
+      (id != null) ? DefaultParameters.from(Lists.newArrayList(new RawParameter("id", new TokenParameterValue(id))))
+                   : DefaultParameters.EMPTY);
   }
 
-  public Optional<Token> getId()
-  {
+  public Optional<Token> getId() {
     return this.parameters.getParameter(Id);
   }
 
   @Override
-  public EventSpec withParameters(final Parameters parameters)
-  {
+  public EventSpec withParameters(final Parameters parameters) {
     return new EventSpec(this.name, parameters);
   }
-
 
 }

@@ -11,40 +11,33 @@ import com.jive.sip.uri.api.TelUri;
 import com.jive.sip.uri.api.TelUriVisitor;
 import com.jive.sip.uri.api.Uri;
 
-public class TelUriExtractor implements SipUriVisitor<TelUri>, TelUriVisitor<TelUri>
-{
+public class TelUriExtractor implements SipUriVisitor<TelUri>, TelUriVisitor<TelUri> {
 
   private static final TelUriExtractor INSTANCE = new TelUriExtractor();
 
-  public static TelUriExtractor getInstance()
-  {
+  public static TelUriExtractor getInstance() {
     return INSTANCE;
   }
 
   @Override
-  public TelUri visit(final Uri unknown)
-  {
+  public TelUri visit(final Uri unknown) {
     return null;
   }
 
   @Override
-  public TelUri visit(final TelUri uri)
-  {
+  public TelUri visit(final TelUri uri) {
     return uri;
   }
 
   @Override
-  public TelUri visit(final SipUri uri)
-  {
-    if (!uri.getUserParameter().equals(Optional.of("phone")))
-    {
+  public TelUri visit(final SipUri uri) {
+    if (!uri.getUserParameter().equals(Optional.of("phone"))) {
       return null;
     }
 
     final String tel = uri.getUsername().orElse(null);
 
-    if (tel == null)
-    {
+    if (tel == null) {
       return null;
     }
 
@@ -52,8 +45,7 @@ public class TelUriExtractor implements SipUriVisitor<TelUri>, TelUriVisitor<Tel
 
     final TelUri value = ParserUtils.read(is, TelUriParser.TEL);
 
-    if (is.remaining() == 0)
-    {
+    if (is.remaining() == 0) {
       return value;
     }
 

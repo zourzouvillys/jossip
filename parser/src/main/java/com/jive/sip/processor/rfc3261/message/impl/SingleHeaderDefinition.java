@@ -20,19 +20,16 @@ import com.jive.sip.parsers.core.ValueHolder;
  * @param <T>
  */
 
-public class SingleHeaderDefinition<T> extends BaseHeaderDefinition implements SipHeaderDefinition<T>
-{
+public class SingleHeaderDefinition<T> extends BaseHeaderDefinition implements SipHeaderDefinition<T> {
 
   private final Parser<T> parser;
 
-  public SingleHeaderDefinition(final Parser<T> parser, final String name, final Character sname)
-  {
+  public SingleHeaderDefinition(final Parser<T> parser, final String name, final Character sname) {
     super(name, sname);
     this.parser = parser;
   }
 
-  public static <T> SipHeaderDefinition<T> create(final Parser<T> parser, final String name, final Character sname)
-  {
+  public static <T> SipHeaderDefinition<T> create(final Parser<T> parser, final String name, final Character sname) {
     return new SingleHeaderDefinition<T>(parser, name, sname);
   }
 
@@ -44,34 +41,27 @@ public class SingleHeaderDefinition<T> extends BaseHeaderDefinition implements S
    * @return
    */
 
-  public static SipHeaderDefinition<String> create(final String name, final Character sname)
-  {
+  public static SipHeaderDefinition<String> create(final String name, final Character sname) {
     return new SingleHeaderDefinition<String>(null, name, sname);
   }
 
-  public static SipHeaderDefinition<String> create(final String name)
-  {
+  public static SipHeaderDefinition<String> create(final String name) {
     return new SingleHeaderDefinition<String>(null, name, null);
   }
 
-  public static <T> SipHeaderDefinition<T> create(final Parser<T> parser, final String name)
-  {
+  public static <T> SipHeaderDefinition<T> create(final Parser<T> parser, final String name) {
     return new SingleHeaderDefinition<T>(parser, name, null);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public T parse(final Collection<RawHeader> headers)
-  {
+  public T parse(final Collection<RawHeader> headers) {
 
-    for (final RawHeader header : headers)
-    {
+    for (final RawHeader header : headers) {
 
-      if (matches(header.getName()))
-      {
+      if (matches(header.getName())) {
 
-        if (this.parser == null)
-        {
+        if (this.parser == null) {
           return (T) header.getValue();
         }
 
@@ -79,13 +69,11 @@ public class SingleHeaderDefinition<T> extends BaseHeaderDefinition implements S
         final ParserContext ctx = new DefaultParserContext(input);
         final ValueHolder<T> holder = new ValueHolder<T>();
 
-        if (!this.parser.find(ctx, holder))
-        {
+        if (!this.parser.find(ctx, holder)) {
           throw new ParseFailureException(String.format("Failed to parse '%s' header", header.getName()));
         }
 
-        if (ctx.remaining() > 0)
-        {
+        if (ctx.remaining() > 0) {
           throw new ParseFailureException(String.format("Trailing garbage in '%s' header at pos %d", header.getName(), ctx.position()));
         }
 

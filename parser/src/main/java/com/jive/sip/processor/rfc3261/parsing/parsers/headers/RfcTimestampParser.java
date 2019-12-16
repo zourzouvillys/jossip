@@ -20,48 +20,45 @@ import com.jive.sip.processor.rfc3261.parsing.SipMessageParseFailureException;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class RfcTimestampParser implements Parser<RfcTimestamp>
-{
+public class RfcTimestampParser implements Parser<RfcTimestamp> {
   /*
    * (non-Javadoc)
-   * 
    * @see com.jive.sip.parsers.core.Parser#find(com.jive.sip.parsers.core.ParserContext,
    * com.jive.sip.parsers.core.ValueListener)
    */
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<RfcTimestamp> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<RfcTimestamp> value) {
     final int pos = ctx.position();
-    try
-    {
+    try {
       final UnsignedInteger part1 = ctx.read(INTEGER);
       UnsignedInteger part2 = null, part3 = null, part4 = null;
 
-      if (ctx.skip(ch('.')))
-      {
+      if (ctx.skip(ch('.'))) {
         part2 = read(ctx, INTEGER);
       }
 
-      if (ctx.skip(LWS))
-      {
+      if (ctx.skip(LWS)) {
         part3 = ctx.read(INTEGER);
 
-        if (ctx.skip(ch('.')))
-        {
+        if (ctx.skip(ch('.'))) {
           part4 = ParserUtils.read(ctx, INTEGER);
         }
       }
 
-      if (value != null)
-      {
-        value.set(new RfcTimestamp(part1.intValue(), (part2 == null) ? null : part2.intValue(), (part3 == null) ? null : part3.intValue(),
-            (part4 == null) ? null : part4.intValue()));
+      if (value != null) {
+        value.set(new RfcTimestamp(
+          part1.intValue(),
+          (part2 == null) ? null
+                          : part2.intValue(),
+          (part3 == null) ? null
+                          : part3.intValue(),
+          (part4 == null) ? null
+                          : part4.intValue()));
       }
 
       return true;
     }
-    catch (final SipMessageParseFailureException e)
-    {
+    catch (final SipMessageParseFailureException e) {
       ctx.position(pos);
       return false;
     }

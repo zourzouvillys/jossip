@@ -1,7 +1,6 @@
 package com.jive.sip.message.api.alertinfo;
 
-public interface AlertInfoReferenceVisitor<T>
-{
+public interface AlertInfoReferenceVisitor<T> {
 
   T visit(final WellKnownAlertInfo i);
 

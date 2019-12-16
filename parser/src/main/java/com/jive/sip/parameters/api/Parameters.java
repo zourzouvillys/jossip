@@ -6,8 +6,7 @@ import java.util.Optional;
 import com.google.common.net.HostAndPort;
 import com.jive.sip.base.api.Token;
 
-public interface Parameters
-{
+public interface Parameters {
   boolean contains(final Token name);
 
   boolean contains(final String name);

@@ -18,8 +18,7 @@ import lombok.Getter;
  * @author theo
  */
 
-public class DefaultResponseBuilder implements ResponseBuilder
-{
+public class DefaultResponseBuilder implements ResponseBuilder {
   @Getter
   private SipResponseStatus status;
   private final List<RawHeader> headers = Lists.newLinkedList();
@@ -31,39 +30,31 @@ public class DefaultResponseBuilder implements ResponseBuilder
    * @param status
    *          The status to send back.
    */
-  public DefaultResponseBuilder()
-  {
+  public DefaultResponseBuilder() {
     this.manager = (RfcSipMessageManager) new RfcSipMessageManagerBuilder().build();
     this.status = SipResponseStatus.OK;
   }
 
-  public DefaultResponseBuilder(final SipResponseStatus status)
-  {
+  public DefaultResponseBuilder(final SipResponseStatus status) {
     this.manager = (RfcSipMessageManager) new RfcSipMessageManagerBuilder().build();
     this.status = status;
   }
 
-  public DefaultResponseBuilder(final RfcSipMessageManager manager, final SipResponseStatus status)
-  {
+  public DefaultResponseBuilder(final RfcSipMessageManager manager, final SipResponseStatus status) {
     this.manager = manager;
     this.status = status;
   }
 
   // TODO: this is a bit of a hac. fix.
-  private final String[] copy = new String[]
-  { "From", "Call-ID", "CSeq", "Via", "To", "f", "i", "v", "t" };
+  private final String[] copy = new String[] { "From", "Call-ID", "CSeq", "Via", "To", "f", "i", "v", "t" };
 
   @Override
-  public final SipResponse build(final SipRequest req, final SipMessageManager manager)
-  {
+  public final SipResponse build(final SipRequest req, final SipMessageManager manager) {
     final DefaultSipResponse res = new DefaultSipResponse(this.manager, this.status);
 
-    for (final String hn : this.copy)
-    {
-      for (final RawHeader header : req.getHeaders())
-      {
-        if (hn.toLowerCase().equals(header.getName().toLowerCase()))
-        {
+    for (final String hn : this.copy) {
+      for (final RawHeader header : req.getHeaders()) {
+        if (hn.toLowerCase().equals(header.getName().toLowerCase())) {
           // loop, otherwise only a single value gets copied (e.g, multiple Via headers).
 
           res.addHeader(header);
@@ -74,8 +65,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
 
     res.addHeader(new RawHeader("Content-Length", "0"));
 
-    for (final RawHeader header : this.headers)
-    {
+    for (final RawHeader header : this.headers) {
       res.addHeader(header);
     }
 
@@ -83,30 +73,25 @@ public class DefaultResponseBuilder implements ResponseBuilder
   }
 
   @Override
-  public SipResponse build(final SipRequest req)
-  {
+  public SipResponse build(final SipRequest req) {
     return build(req, null);
   }
 
   @Override
-  public ResponseBuilder setStatus(final SipResponseStatus status)
-  {
+  public ResponseBuilder setStatus(final SipResponseStatus status) {
     this.status = status;
     return this;
   }
 
   @Override
-  public final ResponseBuilder addHeader(final RawHeader header)
-  {
+  public final ResponseBuilder addHeader(final RawHeader header) {
     this.headers.add(header);
     return this;
   }
 
-  public ResponseBuilder setExpires(final Duration standardSeconds)
-  {
+  public ResponseBuilder setExpires(final Duration standardSeconds) {
     this.headers.add(new RawHeader("Expires", Integer.toString((int) standardSeconds.getSeconds())));
     return this;
   }
-
 
 }

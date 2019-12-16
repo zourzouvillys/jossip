@@ -35,7 +35,6 @@ import com.jive.sip.message.api.headers.RValue;
 import com.jive.sip.uri.api.Uri;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
 @EqualsAndHashCode(callSuper = true)
 public final class DefaultSipRequest extends DefaultSipMessage implements SipRequest {

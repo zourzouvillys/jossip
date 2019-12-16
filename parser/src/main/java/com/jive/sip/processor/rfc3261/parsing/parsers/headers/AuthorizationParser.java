@@ -28,68 +28,58 @@ import com.jive.sip.parsers.core.QuotedStringParser;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  *
  */
-public class AuthorizationParser implements Parser<Authorization>
-{
+public class AuthorizationParser implements Parser<Authorization> {
   /*
    * (non-Javadoc)
-   *
-   * @see com.jive.sip.parsers.core.Parser#find(com.jive.sip.parsers.core.ParserContext, com.jive.sip.parsers.core.ValueListener)
+   * @see com.jive.sip.parsers.core.Parser#find(com.jive.sip.parsers.core.ParserContext,
+   * com.jive.sip.parsers.core.ValueListener)
    */
 
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<Authorization> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<Authorization> value) {
     final int pos = ctx.position();
 
     final CharSequence scheme = ParserUtils.read(ctx, TOKEN);
-    if (scheme == null)
-    {
+    if (scheme == null) {
       return false;
     }
 
     final List<RawParameter> params = Lists.newArrayList();
     ctx.skip(LWS);
 
-    do
-    {
+    do {
       final CharSequence authName = ParserUtils.read(ctx, TOKEN);
-      if (authName == null)
-      {
+      if (authName == null) {
         ctx.position(pos);
         return false;
       }
-      if (!ctx.skip(EQUALS))
-      {
+      if (!ctx.skip(EQUALS)) {
         ctx.position(pos);
         return false;
       }
 
       Object authValue = ParserUtils.read(ctx, QuotedStringParser.INSTANCE);
-      if (authValue != null)
-      {
+      if (authValue != null) {
         params.add(new RawParameter(Token.from(authName), new QuotedStringParameterValue(authValue.toString())));
         continue;
       }
 
       authValue = ParserUtils.read(ctx, TOKEN);
-      if (authValue != null)
-      {
+      if (authValue != null) {
         params.add(new RawParameter(Token.from(authName), new TokenParameterValue(authValue.toString())));
         continue;
       }
 
       ctx.position(pos);
       return false;
-    } while (ctx.skip(COMMA));
+    }
+    while (ctx.skip(COMMA));
 
-    if (value != null)
-    {
-      if ("digest".equals(scheme.toString().toLowerCase()))
-      {
+    if (value != null) {
+      if ("digest".equals(scheme.toString().toLowerCase())) {
         value.set(new DigestCredentials(ParameterBuilder.from(params)));
       }
-      else
-      {
+      else {
         value.set(new Authorization(scheme.toString(), ParameterBuilder.from(params)));
       }
     }

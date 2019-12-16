@@ -13,30 +13,25 @@ import com.jive.sip.parsers.api.ValueListener;
 import com.jive.sip.parsers.core.ParameterParser;
 import com.jive.sip.processor.rfc3261.parsing.SipMessageParseFailureException;
 
-public class ParameterizedStringParser implements Parser<ParameterizedString>
-{
+public class ParameterizedStringParser implements Parser<ParameterizedString> {
 
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<ParameterizedString> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<ParameterizedString> value) {
     final int pos = ctx.position();
-    try
-    {
+    try {
 
       final CharSequence str = ctx.read(TOKEN);
 
       final Collection<RawParameter> rp = ctx.read(ParameterParser.getInstance(), ParameterParser.EMPTY_VALUE);
 
-      if (value != null)
-      {
+      if (value != null) {
         value.set(new ParameterizedString(str.toString(), ParameterBuilder.from(rp)));
       }
 
       return true;
 
     }
-    catch (final SipMessageParseFailureException e)
-    {
+    catch (final SipMessageParseFailureException e) {
       ctx.position(pos);
       return false;
     }

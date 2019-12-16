@@ -11,27 +11,27 @@ import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
  * 
  */
 
-public class MIMETypeSerializer extends AbstractRfcSerializer<MIMEType>
-{
+public class MIMETypeSerializer extends AbstractRfcSerializer<MIMEType> {
 
   private final RfcSerializerManager manager;
 
-  public MIMETypeSerializer(final RfcSerializerManager manager)
-  {
+  public MIMETypeSerializer(final RfcSerializerManager manager) {
     this.manager = manager;
   }
 
   /*
    * (non-Javadoc)
-   * 
    * @see com.jive.sip.processor.rfc3261.serializing.RfcSerializer#serialize(java.lang.Object)
    */
   @Override
-  public String serialize(final MIMEType obj)
-  {
-    return obj.getType() + "/" + obj.getSubType()
-        + (obj.getParameters().isPresent() ? ";" + this.manager
-        .serialize(obj.getParameters()) : "");
+  public String serialize(final MIMEType obj) {
+    return obj.getType()
+      + "/"
+      + obj.getSubType()
+      + (obj.getParameters().isPresent() ? ";"
+        + this.manager
+          .serialize(obj.getParameters())
+                                         : "");
   }
 
 }

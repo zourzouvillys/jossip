@@ -13,17 +13,16 @@ import lombok.Getter;
  * @param <T>
  *
  */
-public class UriListener<T extends Uri> implements ValueListener<T>
-{
+public class UriListener<T extends Uri> implements ValueListener<T> {
   @Getter
-  private T uri; 
+  private T uri;
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see com.jive.sip.parsers.core.ValueListener#set(java.lang.Object)
    */
   @Override
-  public void set(T value)
-  {
+  public void set(T value) {
     uri = value;
   }
 

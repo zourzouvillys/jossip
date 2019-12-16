@@ -15,7 +15,6 @@ import com.jive.sip.uri.api.Uri;
 
 import lombok.Value;
 
-
 /**
  * First stab at a History-Info header.
  *
@@ -23,16 +22,13 @@ import lombok.Value;
  *
  */
 
-public class HistoryInfo
-{
+public class HistoryInfo {
 
   public static final SipParameterDefinition<Token> P_RC = ParameterUtils.createFlagParameterDefinition(Token.from("c"));
   public static final SipParameterDefinition<Token> P_MP = ParameterUtils.createFlagParameterDefinition(Token.from("mp"));
   public static final SipParameterDefinition<Token> P_NP = ParameterUtils.createFlagParameterDefinition(Token.from("np"));
 
-
-  public static enum ChangeType
-  {
+  public static enum ChangeType {
     // o "rc": The Request-URI has changed while the target user associated
     // with the original Request-URI prior to retargeting has been
     // retained.
@@ -50,19 +46,16 @@ public class HistoryInfo
   }
 
   @Value
-  public static class Entry
-  {
+  public static class Entry {
 
     private Uri uri;
     private int[] index;
     private ChangeType type;
     private int[] prev;
 
-    public NameAddr toNameAddr()
-    {
+    public NameAddr toNameAddr() {
       final List<RawParameter> raw = Lists.newLinkedList();
-      switch (this.type)
-      {
+      switch (this.type) {
         case MP:
           raw.add(new RawParameter("mp", new TokenParameterValue(Token.from(buildIndex(prev)))));
           break;
@@ -76,8 +69,7 @@ public class HistoryInfo
           break;
       }
 
-      if ((this.index != null) && (this.index.length > 0))
-      {
+      if ((this.index != null) && (this.index.length > 0)) {
         raw.add(new RawParameter("index", new TokenParameterValue(Token.from(buildIndex(this.index)))));
       }
 
@@ -85,27 +77,22 @@ public class HistoryInfo
 
     }
 
-    public ChangeType getChangeType()
-    {
+    public ChangeType getChangeType() {
       return this.type;
     }
 
   }
 
-  public static final HistoryInfo EMPTY = new HistoryInfo(Lists.<Entry> newLinkedList());
+  public static final HistoryInfo EMPTY = new HistoryInfo(Lists.<Entry>newLinkedList());
   private static final int[] INITIAL_INDEX =
-  { 1 };
+    { 1 };
   private final List<Entry> entries;
 
-
-  private static String buildIndex(int[] index)
-  {
+  private static String buildIndex(int[] index) {
     StringBuilder sb = new StringBuilder();
     int i = 0;
-    for (int id : index)
-    {
-      if (i++ > 0)
-      {
+    for (int id : index) {
+      if (i++ > 0) {
         sb.append('.');
       }
       sb.append(id);
@@ -113,111 +100,84 @@ public class HistoryInfo
     return sb.toString();
   }
 
-  public HistoryInfo(final List<Entry> entries)
-  {
+  public HistoryInfo(final List<Entry> entries) {
     this.entries = entries;
   }
 
-  public List<Entry> entries()
-  {
+  public List<Entry> entries() {
     // TODO: immutable?
     return this.entries;
   }
 
-  public Optional<Entry> last()
-  {
-    if (this.entries.isEmpty())
-    {
+  public Optional<Entry> last() {
+    if (this.entries.isEmpty()) {
       return Optional.empty();
     }
     return Optional.of(this.entries.get(this.entries.size() - 1));
   }
 
-  public static HistoryInfo build(final List<NameAddr> nas)
-  {
+  public static HistoryInfo build(final List<NameAddr> nas) {
     final List<Entry> entries = Lists.newLinkedList();
-    for (final NameAddr na : nas)
-    {
-      int[] prev = new int[]
-      { 1 };
+    for (final NameAddr na : nas) {
+      int[] prev = new int[] { 1 };
       entries.add(new Entry(na.getAddress(), extractIndex(na), extractType(na), prev));
     }
     return new HistoryInfo(entries);
   }
 
-  private static int[] extractIndex(final NameAddr na)
-  {
-    return new int[]
-    { 0 };
+  private static int[] extractIndex(final NameAddr na) {
+    return new int[] { 0 };
   }
 
-  private static ChangeType extractType(final NameAddr na)
-  {
-    if (na.getParameter(P_RC).isPresent())
-    {
+  private static ChangeType extractType(final NameAddr na) {
+    if (na.getParameter(P_RC).isPresent()) {
       return ChangeType.RC;
     }
-    else if (na.getParameter(P_MP).isPresent())
-    {
+    else if (na.getParameter(P_MP).isPresent()) {
       return ChangeType.MP;
     }
-    else if (na.getParameter(P_NP).isPresent())
-    {
+    else if (na.getParameter(P_NP).isPresent()) {
       return ChangeType.NP;
     }
     return ChangeType.Unknown;
   }
 
-  public HistoryInfo withAppended(final Uri target)
-  {
+  public HistoryInfo withAppended(final Uri target) {
     final List<Entry> entries = Lists.newLinkedList(this.entries);
-    entries.add(new Entry(target, INITIAL_INDEX, ChangeType.MP, new int[]
-    { 1 }));
+    entries.add(new Entry(target, INITIAL_INDEX, ChangeType.MP, new int[] { 1 }));
     return new HistoryInfo(entries);
   }
 
-
-  public HistoryInfo withRecursion(final Uri target)
-  {
+  public HistoryInfo withRecursion(final Uri target) {
     final List<Entry> entries = Lists.newLinkedList(this.entries);
-    entries.add(new Entry(target, INITIAL_INDEX, ChangeType.RC, new int[]
-    { 1 }));
+    entries.add(new Entry(target, INITIAL_INDEX, ChangeType.RC, new int[] { 1 }));
     return new HistoryInfo(entries);
   }
 
-
-  public HistoryInfo withRetarget(final Uri target)
-  {
+  public HistoryInfo withRetarget(final Uri target) {
     final List<Entry> entries = Lists.newLinkedList(this.entries);
-    entries.add(new Entry(target, INITIAL_INDEX, ChangeType.MP, new int[]
-    { 1 }));
+    entries.add(new Entry(target, INITIAL_INDEX, ChangeType.MP, new int[] { 1 }));
     return new HistoryInfo(entries);
   }
 
-  public HistoryInfo withNoChange(final Uri target)
-  {
+  public HistoryInfo withNoChange(final Uri target) {
     final List<Entry> entries = Lists.newLinkedList(this.entries);
-    entries.add(new Entry(target, INITIAL_INDEX, ChangeType.NP, new int[]
-    { 1 }));
+    entries.add(new Entry(target, INITIAL_INDEX, ChangeType.NP, new int[] { 1 }));
     return new HistoryInfo(entries);
   }
 
-  public static HistoryInfo fromUnknownRequest(Uri target)
-  {
+  public static HistoryInfo fromUnknownRequest(Uri target) {
     final List<Entry> entries = Lists.newLinkedList();
     entries.add(new Entry(target, INITIAL_INDEX, ChangeType.Unknown, null));
     return new HistoryInfo(entries);
   }
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     StringBuilder sb = new StringBuilder();
     int i = 0;
-    for (Entry e : entries)
-    {
-      if (i++ > 0)
-      {
+    for (Entry e : entries) {
+      if (i++ > 0) {
         sb.append(", ");
       }
       sb.append(e.toNameAddr());
@@ -225,8 +185,7 @@ public class HistoryInfo
     return sb.toString();
   }
 
-  public boolean isEmpty()
-  {
+  public boolean isEmpty() {
     return this.entries.isEmpty();
   }
 

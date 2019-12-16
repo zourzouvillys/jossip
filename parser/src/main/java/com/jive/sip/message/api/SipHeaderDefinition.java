@@ -13,12 +13,12 @@ import com.jive.sip.base.api.RawHeader;
  * @param <T>
  */
 
-public interface SipHeaderDefinition<T>
-{
+public interface SipHeaderDefinition<T> {
 
   /**
-   * Parses the given header definition from the message. If there were no matching headers found, then null should be
-   * returned. If matches were found but didn't successfully match, then an exception should be thrown.
+   * Parses the given header definition from the message. If there were no matching headers found,
+   * then null should be returned. If matches were found but didn't successfully match, then an
+   * exception should be thrown.
    * 
    * @param header
    * @return

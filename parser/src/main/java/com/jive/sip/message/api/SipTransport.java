@@ -9,30 +9,24 @@ import com.jive.sip.base.api.Token;
  * 
  */
 
-public final class SipTransport extends Token
-{
+public final class SipTransport extends Token {
 
   public static SipTransport UDP = new SipTransport(Token.from("UDP"));
   public static SipTransport TCP = new SipTransport(Token.from("TCP"));
   public static SipTransport TLS = new SipTransport(Token.from("TLS"));
 
-  private SipTransport(final Token protocol)
-  {
+  private SipTransport(final Token protocol) {
     super(protocol);
   }
 
-  public static SipTransport fromString(final CharSequence transport)
-  {
-    if ("UDP".equalsIgnoreCase(transport.toString()))
-    {
+  public static SipTransport fromString(final CharSequence transport) {
+    if ("UDP".equalsIgnoreCase(transport.toString())) {
       return UDP;
     }
-    else if ("TCP".equalsIgnoreCase(transport.toString()))
-    {
+    else if ("TCP".equalsIgnoreCase(transport.toString())) {
       return TCP;
     }
-    else if ("TLS".equalsIgnoreCase(transport.toString()))
-    {
+    else if ("TLS".equalsIgnoreCase(transport.toString())) {
       return TLS;
     }
     return new SipTransport(Token.from(transport));

@@ -23,14 +23,12 @@ import com.jive.sip.processor.rfc3261.parsing.parsers.ViaProtocolParser;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class ViaParser implements Parser<Via>
-{
+public class ViaParser implements Parser<Via> {
 
   public static Parser<ViaProtocol> PROTOCOL_PARSER = new ViaProtocolParser();
 
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<Via> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<Via> value) {
 
     // SIP/2.0/UDP 10.101.7.30:5060;branch=z9hG4bK4cbb5ffc;rport.
 
@@ -40,10 +38,11 @@ public class ViaParser implements Parser<Via>
 
     final HostAndPort sentBy = ctx.read(HostAndPortParser.INSTANCE);
 
-    final Collection<RawParameter> params = ctx.remaining() > 0 ? ctx.read(ParameterParser.getInstance()) : Lists.<RawParameter> newArrayList();
+    final Collection<RawParameter> params =
+      ctx.remaining() > 0 ? ctx.read(ParameterParser.getInstance())
+                          : Lists.<RawParameter>newArrayList();
 
-    if (value != null)
-    {
+    if (value != null) {
       value.set(new Via(protocol, sentBy, ParameterBuilder.from(params)));
     }
 

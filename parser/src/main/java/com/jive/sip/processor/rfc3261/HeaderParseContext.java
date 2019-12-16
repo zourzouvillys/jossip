@@ -2,17 +2,17 @@ package com.jive.sip.processor.rfc3261;
 
 import java.util.List;
 
-
 /**
- * Because a field need to be entirely accessible to a parser but may not encompass the whole header field, an instance of this class keeps a pointer to the current position. The
- * parser is responsible for positioning the HeaderParseContext in the right place (e,g end of field) based on the parse.
+ * Because a field need to be entirely accessible to a parser but may not encompass the whole header
+ * field, an instance of this class keeps a pointer to the current position. The parser is
+ * responsible for positioning the HeaderParseContext in the right place (e,g end of field) based on
+ * the parse.
  * 
  * @author theo
  * 
  */
 
-public interface HeaderParseContext extends CharSequence
-{
+public interface HeaderParseContext extends CharSequence {
 
   String getName();
 

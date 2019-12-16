@@ -16,34 +16,28 @@ import com.jive.sip.processor.rfc3261.parsing.SipMessageParseFailureException;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class VersionParser implements Parser<Version>
-{
+public class VersionParser implements Parser<Version> {
   /*
    * (non-Javadoc)
-   * 
    * @see com.jive.sip.parsers.core.Parser#find(com.jive.sip.parsers.core.ParserContext,
    * com.jive.sip.parsers.core.ValueListener)
    */
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<Version> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<Version> value) {
     final int pos = ctx.position();
 
-    try
-    {
+    try {
       final int major = ctx.read(_1DIGIT);
       ctx.skip(ch('.'));
       final int minor = ctx.read(_1DIGIT);
 
-      if (value != null)
-      {
+      if (value != null) {
         value.set(new Version(major, minor));
       }
 
       return true;
     }
-    catch (final SipMessageParseFailureException e)
-    {
+    catch (final SipMessageParseFailureException e) {
       ctx.position(pos);
       return false;
     }

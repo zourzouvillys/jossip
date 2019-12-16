@@ -13,19 +13,17 @@ import com.google.common.base.Joiner;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  *
  */
-public class DateTimeSerializer extends AbstractRfcSerializer<ZonedDateTime>
-{
+public class DateTimeSerializer extends AbstractRfcSerializer<ZonedDateTime> {
 
   /*
    * (non-Javadoc)
-   *
    * @see com.jive.sip.processor.rfc3261.serializing.RfcSerializer#serialize(java.lang.Object)
    */
 
   @Override
-  public String serialize(final ZonedDateTime obj)
-  {
-    return Joiner.on(" ").join(
+  public String serialize(final ZonedDateTime obj) {
+    return Joiner.on(" ")
+      .join(
         this.toString(obj.getDayOfWeek()) + ",",
         obj.getDayOfMonth(),
         this.toString(obj.getMonth()),
@@ -34,10 +32,8 @@ public class DateTimeSerializer extends AbstractRfcSerializer<ZonedDateTime>
         "GMT");
   }
 
-  private String toString(final Month month)
-  {
-    switch (month)
-    {
+  private String toString(final Month month) {
+    switch (month) {
       case APRIL:
         return "Apr";
       case AUGUST:
@@ -68,10 +64,8 @@ public class DateTimeSerializer extends AbstractRfcSerializer<ZonedDateTime>
     }
   }
 
-  private String toString(final DayOfWeek dayOfWeek)
-  {
-    switch (dayOfWeek)
-    {
+  private String toString(final DayOfWeek dayOfWeek) {
+    switch (dayOfWeek) {
       case FRIDAY:
         return "Fri";
       case MONDAY:

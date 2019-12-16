@@ -4,32 +4,26 @@ import com.jive.sip.base.api.Token;
 
 import lombok.Getter;
 
-abstract class BaseParameterDefinition
-{
-  
+abstract class BaseParameterDefinition {
+
   @Getter
   protected final Token name;
 
-  protected BaseParameterDefinition(CharSequence name)
-  {
+  protected BaseParameterDefinition(CharSequence name) {
     this(Token.from(name));
   }
-  
-  protected BaseParameterDefinition(Token name)
-  {
+
+  protected BaseParameterDefinition(Token name) {
     this.name = name;
   }
-  
-  protected boolean matches(final Token name)
-  {    
-    if (this.name.equals(name))
-    {
+
+  protected boolean matches(final Token name) {
+    if (this.name.equals(name)) {
       return true;
     }
-    else
-    {
+    else {
       return false;
     }
   }
-  
+
 }

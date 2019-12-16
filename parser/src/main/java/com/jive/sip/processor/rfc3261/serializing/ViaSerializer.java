@@ -10,14 +10,12 @@ import com.jive.sip.processor.rfc3261.serializing.serializers.RfcSerializationCo
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class ViaSerializer extends AbstractRfcSerializer<Via>
-{
+public class ViaSerializer extends AbstractRfcSerializer<Via> {
 
   private final RfcSerializerManager manager;
 
   @Override
-  public void serialize(final Writer writer, final Via obj) throws IOException
-  {
+  public void serialize(final Writer writer, final Via obj) throws IOException {
 
     writer.append(obj.getProtocol().getName());
     writer.append(RfcSerializationConstants.SLASH);
@@ -28,8 +26,7 @@ public class ViaSerializer extends AbstractRfcSerializer<Via>
     writer.append(RfcSerializationConstants.SP);
     writer.append(obj.getSentBy().toString());
 
-    if (obj.getParameters().isPresent())
-    {
+    if (obj.getParameters().isPresent()) {
       writer.append(RfcSerializationConstants.SEMI);
       this.manager.serializeCollection(writer, obj.getParameters().get().getRawParameters(), RfcSerializationConstants.SEMI);
     }

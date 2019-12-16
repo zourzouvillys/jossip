@@ -43,8 +43,7 @@ import com.jive.sip.uri.api.Uri;
  *
  */
 
-public class RfcSipMessageManager implements SipMessageManager
-{
+public class RfcSipMessageManager implements SipMessageManager {
 
   private static final String SIP_2_0 = "SIP/2.0";
   private static final char COLON = ':';
@@ -61,52 +60,43 @@ public class RfcSipMessageManager implements SipMessageManager
   private final Map<String, SipHeaderDefinition<?>> headers = Maps.newHashMap();
   private SipMessageManagerListener listener = null;
 
-  public RfcSipMessageManager()
-  {
+  public RfcSipMessageManager() {
 
   }
 
-  void register(final SipHeaderDefinition<?> def)
-  {
+  void register(final SipHeaderDefinition<?> def) {
 
     this.headers.put(def.getName().toLowerCase(), def);
 
-    if (def.getShortName().isPresent())
-    {
+    if (def.getShortName().isPresent()) {
       this.headers.put(Character.toString(def.getShortName().get()).toLowerCase(), def);
     }
 
   }
 
   @Override
-  public SipMessage convert(final RawMessage raw)
-  {
+  public SipMessage convert(final RawMessage raw) {
     return this.convert(raw, true);
   }
 
   @Override
-  public SipMessage convert(final RawMessage raw, final boolean lazy)
-  {
+  public SipMessage convert(final RawMessage raw, final boolean lazy) {
 
     final DefaultSipMessage msg;
 
-    if (raw.getInitialLine().startsWith(SIP_2_0))
-    {
+    if (raw.getInitialLine().startsWith(SIP_2_0)) {
       msg = this.createResponse(raw.getInitialLine(), raw.getHeaders());
     }
-    else
-    {
+    else {
       msg = this.createRequest(raw.getInitialLine(), raw.getHeaders());
     }
 
-    if (lazy == false)
-    {
+    if (lazy == false) {
       msg.validate();
     }
 
     // handle the body
-    if (raw.getBody() != null)
-    {
+    if (raw.getBody() != null) {
       msg.setBody(raw.getBody());
     }
 
@@ -114,8 +104,7 @@ public class RfcSipMessageManager implements SipMessageManager
 
   }
 
-  private DefaultSipResponse createResponse(final String line, final Collection<RawHeader> headers)
-  {
+  private DefaultSipResponse createResponse(final String line, final Collection<RawHeader> headers) {
 
     Preconditions.checkArgument(line.length() < MAX_RESPONSE_LINE);
 
@@ -129,8 +118,7 @@ public class RfcSipMessageManager implements SipMessageManager
 
     final int code = context.read(ParserUtils.name(ParserUtils._3DIGIT, "SIP status code"));
 
-    if ((code < 100) || (code > 699))
-    {
+    if ((code < 100) || (code > 699)) {
       throw new RuntimeException(String.format("Invalid Status Code '%d'", code));
     }
 
@@ -138,8 +126,7 @@ public class RfcSipMessageManager implements SipMessageManager
 
     String reason = (String) context.subSequence(context.position(), context.limit());
 
-    if (reason.length() == 0)
-    {
+    if (reason.length() == 0) {
       reason = null;
     }
 
@@ -150,8 +137,7 @@ public class RfcSipMessageManager implements SipMessageManager
   private static final Parser<Uri> RURI = ParserUtils.name(UriParser.URI, "R-URI");
   private static final Parser<CharSequence> REQUEST_METHOD = ParserUtils.name(ParserUtils.TOKEN, "request method");
 
-  DefaultSipRequest createRequest(final String line, final Collection<RawHeader> headers)
-  {
+  DefaultSipRequest createRequest(final String line, final Collection<RawHeader> headers) {
 
     Preconditions.checkArgument(line.length() < MAX_REQUEST_LINE);
 
@@ -179,33 +165,36 @@ public class RfcSipMessageManager implements SipMessageManager
 
   @Deprecated
   @Override
-  public ByteBuffer toBytes(final SipMessage message)
-  {
+  public ByteBuffer toBytes(final SipMessage message) {
 
     final StringBuilder sb = new StringBuilder();
 
-    if (message instanceof DefaultSipRequest)
-    {
+    if (message instanceof DefaultSipRequest) {
       final DefaultSipRequest req = (DefaultSipRequest) message;
-      sb.append(req.getMethod().getMethod()).append(SPACE).append(req.getUri()).append(SPACE).append(SIP_2_0)
-      .append(CRLF);
+      sb.append(req.getMethod().getMethod())
+        .append(SPACE)
+        .append(req.getUri())
+        .append(SPACE)
+        .append(SIP_2_0)
+        .append(CRLF);
     }
-    else if (message instanceof DefaultSipResponse)
-    {
+    else if (message instanceof DefaultSipResponse) {
       final DefaultSipResponse res = (DefaultSipResponse) message;
-      sb.append(SIP_2_0).append(SPACE).append(res.getStatus().getCode()).append(SPACE)
-      .append(res.getStatus().getReason()).append(CRLF);
+      sb.append(SIP_2_0)
+        .append(SPACE)
+        .append(res.getStatus().getCode())
+        .append(SPACE)
+        .append(res.getStatus().getReason())
+        .append(CRLF);
     }
 
-    for (final RawHeader header : message.getHeaders())
-    {
+    for (final RawHeader header : message.getHeaders()) {
       sb.append(header.getName()).append(COLON).append(SPACE).append(header.getValue()).append(CRLF);
     }
 
     sb.append(CRLF);
 
-    if (message.getBody() != null)
-    {
+    if (message.getBody() != null) {
       sb.append(new String(message.getBody()));
     }
 
@@ -214,8 +203,7 @@ public class RfcSipMessageManager implements SipMessageManager
   }
 
   @Override
-  public ResponseBuilder responseBuilder(final SipResponseStatus status)
-  {
+  public ResponseBuilder responseBuilder(final SipResponseStatus status) {
     return new DefaultResponseBuilder(this, status);
   }
 
@@ -228,13 +216,11 @@ public class RfcSipMessageManager implements SipMessageManager
    * @return
    */
 
-  public <T> SipHeaderDefinition<T> getParser(final String headerName, final SipHeaderDefinition<T> defaultParser)
-  {
+  public <T> SipHeaderDefinition<T> getParser(final String headerName, final SipHeaderDefinition<T> defaultParser) {
 
     final SipHeaderDefinition<T> def = (SipHeaderDefinition<T>) this.headers.get(headerName.toLowerCase());
 
-    if (def == null)
-    {
+    if (def == null) {
       return defaultParser;
     }
 
@@ -242,16 +228,13 @@ public class RfcSipMessageManager implements SipMessageManager
 
   }
 
-  public <T> SipHeaderDefinition<T> getParser(final String headerName)
-  {
+  public <T> SipHeaderDefinition<T> getParser(final String headerName) {
 
     final SipHeaderDefinition<T> def = this.getParser(headerName, null);
 
-    if (def == null)
-    {
+    if (def == null) {
 
-      if (this.listener != null)
-      {
+      if (this.listener != null) {
         return (SipHeaderDefinition<T>) this.listener.unknownHeader(headerName);
       }
 
@@ -265,42 +248,40 @@ public class RfcSipMessageManager implements SipMessageManager
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T adapt(final Class<T> adapter)
-  {
-    if (adapter.isAssignableFrom(RfcSipMessageManager.class))
-    {
+  public <T> T adapt(final Class<T> adapter) {
+    if (adapter.isAssignableFrom(RfcSipMessageManager.class)) {
       return (T) this;
     }
     throw new RuntimeException("Unable to create adapter to " + adapter.getName());
   }
 
-  public HeaderParseContext createParseContext(final String text)
-  {
+  public HeaderParseContext createParseContext(final String text) {
     return new SingleHeaderParseContext(this, null, text);
   }
 
-  public void addListener(final SipMessageManagerListener listener)
-  {
+  public void addListener(final SipMessageManagerListener listener) {
     this.listener = listener;
   }
 
   @Override
-  public DefaultSipRequest createRequest(final SipMethod method, final Uri ruri, final Collection<RawHeader> headers,
-      final byte[] body)
-  {
+  public DefaultSipRequest createRequest(
+      final SipMethod method,
+      final Uri ruri,
+      final Collection<RawHeader> headers,
+      final byte[] body) {
     return new DefaultSipRequest(this, method, ruri, SipMessage.VERSION, headers, body);
   }
 
   @Override
-  public DefaultSipResponse createResponse(final SipResponseStatus status, final List<RawHeader> headers,
-      final byte[] body)
-  {
+  public DefaultSipResponse createResponse(
+      final SipResponseStatus status,
+      final List<RawHeader> headers,
+      final byte[] body) {
     return new DefaultSipResponse(this, SipMessage.VERSION, status, headers, body);
   }
 
   @Override
-  public SipRequest createAck(final SipResponse res, final List<NameAddr> route)
-  {
+  public SipRequest createAck(final SipResponse res, final List<NameAddr> route) {
 
     final DefaultRequestBuilder builder = new DefaultRequestBuilder(this);
 
@@ -308,8 +289,7 @@ public class RfcSipMessageManager implements SipMessageManager
     builder.setMethod(SipMethod.ACK);
     builder.setCSeq(res.getCSeq().withMethod(SipMethod.ACK));
 
-    if ((route != null) && !route.isEmpty())
-    {
+    if ((route != null) && !route.isEmpty()) {
       builder.setRoute(route);
     }
 
@@ -317,14 +297,12 @@ public class RfcSipMessageManager implements SipMessageManager
   }
 
   @Override
-  public SipRequest createCancel(final SipRequest original)
-  {
+  public SipRequest createCancel(final SipRequest original) {
     return this.createCancel(original, null);
   }
 
   @Override
-  public SipRequest createCancel(final SipRequest original, final Reason reason)
-  {
+  public SipRequest createCancel(final SipRequest original, final Reason reason) {
 
     final DefaultRequestBuilder builder = new DefaultRequestBuilder(this);
 
@@ -335,13 +313,11 @@ public class RfcSipMessageManager implements SipMessageManager
     builder.setMethod(SipMethod.CANCEL);
     builder.setCSeq(original.getCSeq().withMethod(SipMethod.CANCEL));
 
-    if (reason != null)
-    {
+    if (reason != null) {
       builder.setHeader("Reason", reason);
     }
 
-    if ((original.getRoute() != null) && !original.getRoute().isEmpty())
-    {
+    if ((original.getRoute() != null) && !original.getRoute().isEmpty()) {
       builder.setRoute(original.getRoute());
     }
 
@@ -349,35 +325,32 @@ public class RfcSipMessageManager implements SipMessageManager
   }
 
   @Override
-  public SipRequest fromUri(final SipUri target)
-  {
+  public SipRequest fromUri(final SipUri target) {
     final SipMethod method = target.getParameter(SipUri.PMethod).map(SipMethod.tokenConverter()).orElse(SipMethod.INVITE);
-    return this.createRequest(method, target.withoutHeaders().withoutParameter(SipUri.PMethod), target.getHeaders(),
-        null);
+    return this.createRequest(method,
+      target.withoutHeaders().withoutParameter(SipUri.PMethod),
+      target.getHeaders(),
+      null);
   }
 
   @Override
-  public Uri parseUri(final String str)
-  {
+  public Uri parseUri(final String str) {
     final ParserInput input = ByteParserInput.fromString(str);
     final ParserContext context = new DefaultParserContext(input);
     final Uri uri = context.read(RURI);
-    if (input.remaining() > 0)
-    {
+    if (input.remaining() > 0) {
       throw new RuntimeException("Trailing data at end of URI");
     }
     return uri;
   }
 
   @Override
-  public Parameters parseParameters(final String input)
-  {
+  public Parameters parseParameters(final String input) {
 
     final ByteParserInput is = ByteParserInput.fromString(input);
     final Collection<RawParameter> value = ParserUtils.read(is, ParameterParser.getInstance());
 
-    if (is.remaining() > 0)
-    {
+    if (is.remaining() > 0) {
       throw new RuntimeException("Trailing data at end of parameters");
     }
 
@@ -386,18 +359,14 @@ public class RfcSipMessageManager implements SipMessageManager
   }
 
   @Override
-  public NameAddr parseNameAddr(final String na)
-  {
+  public NameAddr parseNameAddr(final String na) {
     final ParserInput input = ByteParserInput.fromString(na);
     final ParserContext context = new DefaultParserContext(input);
     final NameAddr res = context.read(NameAddrParser.INSTANCE);
-    if (input.remaining() > 0)
-    {
+    if (input.remaining() > 0) {
       throw new RuntimeException("Trailing data at end of Name-Addr");
     }
     return res;
   }
-
-
 
 }

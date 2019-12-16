@@ -1,7 +1,6 @@
 package com.jive.sip.processor.rfc3261.serializing.serializers;
 
-public class RfcSerializationConstants
-{
+public class RfcSerializationConstants {
 
   public static final String SP = " ";
   public static final String DQUOT = "\"";

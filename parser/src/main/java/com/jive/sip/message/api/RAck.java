@@ -5,8 +5,7 @@ import com.google.common.primitives.UnsignedInteger;
 import lombok.Value;
 
 @Value
-public class RAck
-{
+public class RAck {
   private UnsignedInteger reliableSequence;
   private CSeq sequence;
 }

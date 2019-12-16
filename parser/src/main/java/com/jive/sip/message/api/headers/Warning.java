@@ -13,8 +13,7 @@ import lombok.experimental.Wither;
 
 @Value
 @Wither
-public class Warning
-{
+public class Warning {
   @Getter
   private final int code;
   @Getter

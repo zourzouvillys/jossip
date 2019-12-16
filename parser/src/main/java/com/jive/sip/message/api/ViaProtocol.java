@@ -5,8 +5,7 @@ import com.google.common.base.Joiner;
 import lombok.Value;
 
 @Value
-public class ViaProtocol
-{
+public class ViaProtocol {
 
   public static final ViaProtocol UDP = new ViaProtocol("SIP", "2.0", "UDP");
   public static final ViaProtocol TCP = new ViaProtocol("SIP", "2.0", "TCP");
@@ -14,7 +13,7 @@ public class ViaProtocol
 
   public static final ViaProtocol SCTP = new ViaProtocol("SIP", "2.0", "SCTP");
   public static final ViaProtocol TLS_SCTP = new ViaProtocol("SIP", "2.0", "TLS-SCTP");
-  
+
   public static final ViaProtocol WS = new ViaProtocol("SIP", "2.0", "WS");
   public static final ViaProtocol WSS = new ViaProtocol("SIP", "2.0", "WSS");
 
@@ -26,10 +25,8 @@ public class ViaProtocol
   private CharSequence version;
   private CharSequence transport;
 
-  public static ViaProtocol forString(String protocol)
-  {
-    switch (protocol.toUpperCase())
-    {
+  public static ViaProtocol forString(String protocol) {
+    switch (protocol.toUpperCase()) {
       case "UDP":
         return UDP;
       case "TCP":
@@ -55,8 +52,7 @@ public class ViaProtocol
   }
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     return Joiner.on("/").join(name, version, transport);
   }
 

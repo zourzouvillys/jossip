@@ -18,25 +18,22 @@ import com.jive.sip.parsers.api.ParserContext;
 import com.jive.sip.parsers.api.ValueListener;
 import com.jive.sip.parsers.core.ParameterParser;
 
-public class SessionExpiresParser implements Parser<SessionExpires>
-{
+public class SessionExpiresParser implements Parser<SessionExpires> {
 
   @Override
-  public boolean find(ParserContext ctx, ValueListener<SessionExpires> value)
-  {
+  public boolean find(ParserContext ctx, ValueListener<SessionExpires> value) {
 
     final UnsignedInteger seconds = ctx.read(INTEGER);
 
-    if (seconds == null)
-    {
+    if (seconds == null) {
       return false;
     }
 
     final Optional<Collection<RawParameter>> params = ctx.tryRead(ParameterParser.getInstance());
 
     value.set(new SessionExpires(
-        seconds.longValue(),
-        params.map(p -> ParameterBuilder.from(p)).orElse(DefaultParameters.EMPTY)));
+      seconds.longValue(),
+      params.map(p -> ParameterBuilder.from(p)).orElse(DefaultParameters.EMPTY)));
 
     return true;
 

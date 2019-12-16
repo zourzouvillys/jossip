@@ -19,19 +19,16 @@ import com.jive.sip.parsers.core.ParameterParser;
  * RFC 3265 Event header field value.
  */
 
-public class EventParser implements Parser<EventSpec>
-{
+public class EventParser implements Parser<EventSpec> {
 
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<EventSpec> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<EventSpec> value) {
 
     final CharSequence protocol = ctx.read(TOKEN);
 
     final Collection<RawParameter> params = ctx.read(ParameterParser.getInstance(), null);
 
-    if (value != null)
-    {
+    if (value != null) {
       value.set(new EventSpec(protocol, ParameterBuilder.from(params)));
     }
 

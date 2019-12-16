@@ -20,11 +20,9 @@ import com.jive.sip.uri.api.UrnUri;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class UrnUriParser implements UriSchemeParser<UrnUri>
-{
+public class UrnUriParser implements UriSchemeParser<UrnUri> {
 
-  private UrnUriParser(final String type)
-  {
+  private UrnUriParser(final String type) {
   }
 
   public static final UrnUriParser SERVICE = new UrnUriParser(UrnUri.SERVICE);
@@ -37,36 +35,31 @@ public class UrnUriParser implements UriSchemeParser<UrnUri>
 
   /*
    * (non-Javadoc)
-   * @see com.jive.sip.parsers.core.Parser#find(com.jive.sip.parsers.core.ParserContext, com.jive.sip.parsers.core.ValueListener)
+   * @see com.jive.sip.parsers.core.Parser#find(com.jive.sip.parsers.core.ParserContext,
+   * com.jive.sip.parsers.core.ValueListener)
    */
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<UrnUri> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<UrnUri> value) {
     final int pos = ctx.position();
-    if (!ctx.skip(URN_TYPE))
-    {
+    if (!ctx.skip(URN_TYPE)) {
       return false;
     }
     CharSequence service = ParserUtils.read(ctx, TOP_LEVEL);
-    if (service == null)
-    {
+    if (service == null) {
       ctx.position(pos);
       return false;
     }
 
-    while (ctx.skip(PERIOD))
-    {
+    while (ctx.skip(PERIOD)) {
       final CharSequence subService = ParserUtils.read(ctx, SUB_SERVICE);
-      if (subService == null)
-      {
+      if (subService == null) {
         ctx.position(pos);
         return false;
       }
       service = service.toString().concat("." + subService);
     }
 
-    if (value != null)
-    {
+    if (value != null) {
       value.set(new UrnUri(UrnUri.SERVICE, new UrnService(service.toString())));
     }
 

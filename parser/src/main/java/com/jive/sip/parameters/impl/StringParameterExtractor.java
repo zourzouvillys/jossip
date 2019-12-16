@@ -6,37 +6,31 @@ import com.jive.sip.parameters.api.ParameterValueVisitor;
 import com.jive.sip.parameters.api.QuotedStringParameterValue;
 import com.jive.sip.parameters.api.TokenParameterValue;
 
-public class StringParameterExtractor implements ParameterValueVisitor<String>
-{
+public class StringParameterExtractor implements ParameterValueVisitor<String> {
 
   private static final StringParameterExtractor INSTANCE = new StringParameterExtractor();
 
   @Override
-  public String visit(final FlagParameterValue parameter)
-  {
+  public String visit(final FlagParameterValue parameter) {
     return "";
   }
 
   @Override
-  public String visit(final TokenParameterValue parameter)
-  {
+  public String visit(final TokenParameterValue parameter) {
     return parameter.getValue().toString();
   }
 
   @Override
-  public String visit(final QuotedStringParameterValue parameter)
-  {
+  public String visit(final QuotedStringParameterValue parameter) {
     return parameter.getValue();
   }
 
   @Override
-  public String visit(final HostAndPortParameterValue parameter)
-  {
+  public String visit(final HostAndPortParameterValue parameter) {
     return parameter.toString();
   }
 
-  public static StringParameterExtractor getInstance()
-  {
+  public static StringParameterExtractor getInstance() {
     return INSTANCE;
   }
 

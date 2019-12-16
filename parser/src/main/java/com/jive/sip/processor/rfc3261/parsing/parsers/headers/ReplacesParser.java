@@ -18,19 +18,16 @@ import com.jive.sip.parsers.core.ParameterParser;
  * RFC 3326 Replaces header field value.
  */
 
-public class ReplacesParser implements Parser<Replaces>
-{
+public class ReplacesParser implements Parser<Replaces> {
 
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<Replaces> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<Replaces> value) {
 
     final CallId callId = ctx.read(new CallIdParser());
 
     final Collection<RawParameter> params = ctx.read(ParameterParser.getInstance());
 
-    if (value != null)
-    {
+    if (value != null) {
       value.set(new Replaces(callId, DefaultParameters.from(params)));
     }
 

@@ -5,8 +5,7 @@ import java.util.Optional;
 import com.google.common.net.HostAndPort;
 import com.jive.sip.base.api.Token;
 
-public interface ParameterizedObject<T>
-{
+public interface ParameterizedObject<T> {
 
   Optional<Parameters> getParameters();
 

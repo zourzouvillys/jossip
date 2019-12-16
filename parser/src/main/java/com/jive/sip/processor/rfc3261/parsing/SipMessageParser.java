@@ -5,15 +5,14 @@ import java.nio.ByteBuffer;
 import com.jive.sip.message.api.SipMessage;
 
 /**
- * Interface implemented by SIP messages parser implementations which takes raw bytes and converts it into a SIP model
- * message.
+ * Interface implemented by SIP messages parser implementations which takes raw bytes and converts
+ * it into a SIP model message.
  * 
  * @author theo & jeff
  * 
  */
 
-public interface SipMessageParser
-{
+public interface SipMessageParser {
 
   /**
    * 

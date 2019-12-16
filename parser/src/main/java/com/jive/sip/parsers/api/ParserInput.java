@@ -1,7 +1,6 @@
 package com.jive.sip.parsers.api;
 
-public interface ParserInput extends CharSequence
-{
+public interface ParserInput extends CharSequence {
 
   /**
    * our current posaition.
@@ -22,7 +21,8 @@ public interface ParserInput extends CharSequence
   int remaining();
 
   /**
-   * Relative get method. Reads the byte at this buffer's current position, and then increments the position.
+   * Relative get method. Reads the byte at this buffer's current position, and then increments the
+   * position.
    */
 
   byte get();
@@ -40,7 +40,8 @@ public interface ParserInput extends CharSequence
   byte get(final int index);
 
   /**
-   * Sets this buffer's limit. If the position is larger than the new limit then it is set to the new limit.
+   * Sets this buffer's limit. If the position is larger than the new limit then it is set to the
+   * new limit.
    * 
    * If the mark is defined and larger than the new limit then it is discarded.
    * 
@@ -75,7 +76,8 @@ public interface ParserInput extends CharSequence
   ParserInput reset();
 
   /**
-   * Creates a new {@link ParserInput} who's content is a shared subsequence of this {@link ParserInput}.
+   * Creates a new {@link ParserInput} who's content is a shared subsequence of this
+   * {@link ParserInput}.
    */
 
   ParserInput slice();

@@ -16,51 +16,42 @@ import com.jive.sip.uri.api.SipUri;
  * 
  */
 
-public class SipUriSerializer extends AbstractRfcSerializer<SipUri>
-{
+public class SipUriSerializer extends AbstractRfcSerializer<SipUri> {
 
   private final RfcSerializerManager manager;
 
-  public SipUriSerializer(final RfcSerializerManager manager)
-  {
+  public SipUriSerializer(final RfcSerializerManager manager) {
     this.manager = manager;
   }
 
   /*
    * (non-Javadoc)
-   * 
    * @see com.jive.sip.processor.rfc3261.serializing.RfcSerializer#serialize(java.lang.Object)
    */
 
   @Override
-  public void serialize(final Writer sb, final SipUri obj) throws IOException
-  {
+  public void serialize(final Writer sb, final SipUri obj) throws IOException {
 
     sb.append(obj.getScheme()).append(':');
 
-    if (obj.getUserinfo().isPresent())
-    {
+    if (obj.getUserinfo().isPresent()) {
       this.manager.serialize(sb, obj.getUserinfo().get());
       sb.append('@');
     }
 
     sb.append(obj.getHost().toString());
 
-    if (obj.getParameters().isPresent())
-    {
+    if (obj.getParameters().isPresent()) {
       sb.append(RfcSerializationConstants.SEMI);
       this.manager.serializeCollection(sb, obj.getParameters().get().getRawParameters(), RfcSerializationConstants.SEMI);
     }
 
-    if ((obj.getHeaders() != null) && !obj.getHeaders().isEmpty())
-    {
+    if ((obj.getHeaders() != null) && !obj.getHeaders().isEmpty()) {
 
       final StringBuilder hb = new StringBuilder();
 
-      for (final RawHeader header : obj.getHeaders())
-      {
-        if (hb.length() > 0)
-        {
+      for (final RawHeader header : obj.getHeaders()) {
+        if (hb.length() > 0) {
           hb.append('&');
         }
         hb.append(header.getName()).append('=').append(URLEncoder.encode(header.getValue(), "UTF-8"));
@@ -71,6 +62,5 @@ public class SipUriSerializer extends AbstractRfcSerializer<SipUri>
     }
 
   }
-
 
 }

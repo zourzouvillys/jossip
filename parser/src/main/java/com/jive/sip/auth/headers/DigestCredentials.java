@@ -13,12 +13,10 @@ import com.jive.sip.parameters.tools.ParameterUtils;
 import lombok.Builder;
 import lombok.Singular;
 
-public class DigestCredentials extends Authorization
-{
+public class DigestCredentials extends Authorization {
 
   @Builder
-  public static final class DigestValues
-  {
+  public static final class DigestValues {
 
     private final String realm;
     private final String domain;
@@ -36,68 +34,58 @@ public class DigestCredentials extends Authorization
     @Singular
     private final Collection<RawParameter> params;
 
-    public static class DigestValuesBuilder
-    {
+    public static class DigestValuesBuilder {
 
-      public DigestCredentials build()
-      {
+      public DigestCredentials build() {
 
         Parameters params = DefaultParameters.EMPTY;
 
-        if (this.algorithm != null)
-        {
+        if (this.algorithm != null) {
           params = params.withParameter(ALGORITHM, this.algorithm);
         }
 
-        if (this.realm != null)
-        {
+        if (this.realm != null) {
           params = params.withParameter(REALM, this.realm);
         }
 
-        if (this.response != null)
-        {
+        if (this.response != null) {
           params = params.withParameter(RESPONSE, this.response);
         }
 
-        if (this.username != null)
-        {
+        if (this.username != null) {
           params = params.withParameter(USERNAME, this.username);
         }
 
-        if (this.domain != null)
-        {
+        if (this.domain != null) {
           params = params.withParameter(DOMAIN, this.realm);
         }
 
-        if (this.cnonce != null)
-        {
+        if (this.cnonce != null) {
           params = params.withParameter(CNONCE, this.cnonce);
         }
 
-        if (this.uri != null)
-        {
+        if (this.uri != null) {
           params = params.withParameter(DIGEST_URI, this.uri);
         }
 
-        if (this.nonce != null)
-        {
+        if (this.nonce != null) {
           params = params.withParameter(NONCE, this.nonce);
         }
 
-        if (this.opaque != null)
-        {
+        if (this.opaque != null) {
           params = params.withParameter(OPAQUE, this.opaque);
         }
 
-        params = params.withParameter(STALE, this.stale ? Token.TRUE : Token.FALSE);
+        params =
+          params.withParameter(STALE,
+            this.stale ? Token.TRUE
+                       : Token.FALSE);
 
-        if (this.qop != null)
-        {
+        if (this.qop != null) {
           params = params.withParameter(QOP, this.qop);
         }
 
-        if (this.nonceCount != null)
-        {
+        if (this.nonceCount != null) {
           params = params.withParameter(NONCE_COUNT, String.format("%08d", this.nonceCount));
         }
 
@@ -109,8 +97,7 @@ public class DigestCredentials extends Authorization
 
   }
 
-  public static DigestValues.DigestValuesBuilder builder()
-  {
+  public static DigestValues.DigestValuesBuilder builder() {
     return DigestValues.builder();
   }
 
@@ -129,19 +116,16 @@ public class DigestCredentials extends Authorization
 
   public static final String MD5 = "MD5";
 
-  public DigestCredentials()
-  {
+  public DigestCredentials() {
     this(DefaultParameters.EMPTY);
   }
 
-  public DigestCredentials(final Parameters parameters)
-  {
+  public DigestCredentials(final Parameters parameters) {
     super("Digest", parameters);
   }
 
   @Override
-  public DigestCredentials withParameters(final Parameters parameters)
-  {
+  public DigestCredentials withParameters(final Parameters parameters) {
     return new DigestCredentials(parameters);
   }
 
@@ -149,53 +133,43 @@ public class DigestCredentials extends Authorization
    *
    */
 
-  public String realm()
-  {
+  public String realm() {
     return this.getParameter(REALM).orElse(null);
   }
 
-  public String domain()
-  {
+  public String domain() {
     return this.getParameter(DOMAIN).orElse(null);
   }
 
-  public String nonce()
-  {
+  public String nonce() {
     return this.getParameter(NONCE).orElse(null);
   }
 
-  public String opqaue()
-  {
+  public String opqaue() {
     return this.getParameter(OPAQUE).orElse(null);
   }
 
-  public boolean stale()
-  {
+  public boolean stale() {
     return this.getParameter(STALE).map(b -> b.toString().equals("true")).orElse(false);
   }
 
-  public String algorithm()
-  {
+  public String algorithm() {
     return this.getParameter(ALGORITHM).map(e -> e.toString()).orElse(null);
   }
 
-  public String digestUri()
-  {
+  public String digestUri() {
     return this.getParameter(DIGEST_URI).orElse(null);
   }
 
-  public String response()
-  {
+  public String response() {
     return this.getParameter(RESPONSE).map(t -> t.toString()).orElse(null);
   }
 
-  public String cnonce()
-  {
+  public String cnonce() {
     return this.getParameter(CNONCE).orElse(null);
   }
 
-  public String qop()
-  {
+  public String qop() {
     return this.getParameter(QOP).orElse(null);
   }
 
@@ -203,8 +177,7 @@ public class DigestCredentials extends Authorization
    * null if not set.
    */
 
-  public Long nonceCount()
-  {
+  public Long nonceCount() {
     return this.getParameter(NONCE_COUNT).map(e -> Long.parseLong(e.toString())).orElse(null);
   }
 
@@ -212,34 +185,31 @@ public class DigestCredentials extends Authorization
    * returns an instance with an incremented nonce count.
    */
 
-  public DigestCredentials withIncrementedCnonceCount()
-  {
-    Token nc = Token.from(String.format("%08d", (this.nonceCount() == null) ? Token.from(1) : Token.from(this.nonceCount() + 1)));
+  public DigestCredentials withIncrementedCnonceCount() {
+    Token nc =
+      Token.from(String.format("%08d",
+        (this.nonceCount() == null) ? Token.from(1)
+                                    : Token.from(this.nonceCount() + 1)));
     return (DigestCredentials) this.withParameter(NONCE_COUNT.getName(), nc);
   }
 
-  public DigestCredentials withResponse(String authorization)
-  {
+  public DigestCredentials withResponse(String authorization) {
     return (DigestCredentials) this.withParameter(RESPONSE.getName(), QuotedString.from(authorization)).withoutParameter(STALE.getName());
   }
 
-  public DigestCredentials withCnonce(String cnonce)
-  {
+  public DigestCredentials withCnonce(String cnonce) {
     return (DigestCredentials) this.withParameter(CNONCE.getName(), QuotedString.from(cnonce));
   }
 
-  public DigestCredentials withNonceCount(long nc)
-  {
+  public DigestCredentials withNonceCount(long nc) {
     return (DigestCredentials) this.withParameter(NONCE_COUNT.getName(), Token.from(String.format("%08x", nc)));
   }
 
-  public DigestCredentials withUsername(String user)
-  {
+  public DigestCredentials withUsername(String user) {
     return (DigestCredentials) this.withParameter(USERNAME.getName(), QuotedString.from(user));
   }
 
-  public DigestCredentials withUri(String string)
-  {
+  public DigestCredentials withUri(String string) {
     return (DigestCredentials) this.withParameter(DIGEST_URI.getName(), QuotedString.from(string));
   }
 

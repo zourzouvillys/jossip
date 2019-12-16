@@ -19,22 +19,18 @@ import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class NameAddrSerializer extends AbstractRfcSerializer<NameAddr>
-{
+public class NameAddrSerializer extends AbstractRfcSerializer<NameAddr> {
 
   private final RfcSerializerManager manager;
 
-  public NameAddrSerializer(final RfcSerializerManager manager)
-  {
+  public NameAddrSerializer(final RfcSerializerManager manager) {
     this.manager = manager;
   }
 
   @Override
-  public void serialize(final Writer w, final NameAddr obj) throws IOException
-  {
+  public void serialize(final Writer w, final NameAddr obj) throws IOException {
 
-    if (obj.getName().isPresent())
-    {
+    if (obj.getName().isPresent()) {
       w.append(DQUOT);
       w.append(obj.getName().get().replace("\"", "\\\""));
       w.append(DQUOT);
@@ -45,8 +41,7 @@ public class NameAddrSerializer extends AbstractRfcSerializer<NameAddr>
     w.append(this.manager.serialize(obj.getAddress()));
     w.append(GT);
 
-    if (obj.getParameters().isPresent())
-    {
+    if (obj.getParameters().isPresent()) {
       w.append(SEMI);
       this.manager.serializeCollection(w, obj.getParameters().get().getRawParameters(), SEMI);
     }

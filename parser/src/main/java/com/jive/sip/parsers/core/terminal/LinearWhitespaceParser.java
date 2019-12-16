@@ -12,25 +12,21 @@ import com.jive.sip.parsers.api.ParserContext;
 import com.jive.sip.parsers.api.ValueListener;
 import com.jive.sip.parsers.core.ParserHelper;
 
-public class LinearWhitespaceParser implements Parser<CharSequence>
-{
+public class LinearWhitespaceParser implements Parser<CharSequence> {
 
   @Override
-  public boolean find(final ParserContext context, final ValueListener<CharSequence> value)
-  {
+  public boolean find(final ParserContext context, final ValueListener<CharSequence> value) {
 
     final int pos = context.position();
 
     boolean matched = context.skip(multi(WSP));
 
-    while (context.skip(and(or(CRLF, LF), WSP)))
-    {
+    while (context.skip(and(or(CRLF, LF), WSP))) {
       context.skip(multi(WSP));
       matched = true;
     }
 
-    if (!matched)
-    {
+    if (!matched) {
       context.position(pos);
       return false;
     }
@@ -41,8 +37,7 @@ public class LinearWhitespaceParser implements Parser<CharSequence>
   }
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     return "LWS";
   }
 

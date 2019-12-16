@@ -19,43 +19,38 @@ import com.jive.sip.parsers.core.ParseFailureException;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  *
  */
-public class RawHeaderParser implements Parser<RawHeader>
-{
+public class RawHeaderParser implements Parser<RawHeader> {
 
   private final static Parser<CharSequence> NOT_TERM = not(TERM);
-  
-  /* (non-Javadoc)
-   * @see com.jive.sip.parsers.core.Parser#find(com.jive.sip.parsers.core.ParserContext, com.jive.sip.parsers.core.ValueListener)
+
+  /*
+   * (non-Javadoc)
+   * @see com.jive.sip.parsers.core.Parser#find(com.jive.sip.parsers.core.ParserContext,
+   * com.jive.sip.parsers.core.ValueListener)
    */
   @Override
-  public boolean find(ParserContext ctx, ValueListener<RawHeader> value)
-  {
+  public boolean find(ParserContext ctx, ValueListener<RawHeader> value) {
     int pos = ctx.position();
-    try
-    {
+    try {
       String name = ctx.read(TOKEN).toString();
       ctx.read(COLON);
       int start = ctx.position();
-      do
-      {
-        while(ctx.skip(NOT_TERM) && ctx.position() < ctx.length())
-        {
+      do {
+        while (ctx.skip(NOT_TERM) && ctx.position() < ctx.length()) {
           ctx.get();
         }
       }
       while (ctx.skip(LWS));
-      
+
       int end = ctx.position();
       ctx.read(TERM);
 
-      if (value != null)
-      {
+      if (value != null) {
         value.set(new RawHeader(name, ctx.subSequence(start, end).toString()));
       }
       return true;
     }
-    catch (ParseFailureException e)
-    {
+    catch (ParseFailureException e) {
       ctx.position(pos);
       return false;
     }

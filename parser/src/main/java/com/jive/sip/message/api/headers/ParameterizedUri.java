@@ -11,33 +11,27 @@ import com.jive.sip.uri.api.Uri;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
-
-
 /**
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class ParameterizedUri extends BaseParameterizedObject<ParameterizedUri>
-{
-  
+public class ParameterizedUri extends BaseParameterizedObject<ParameterizedUri> {
+
   private final Uri uri;
-  
-  public ParameterizedUri(Uri uri)
-  {
+
+  public ParameterizedUri(Uri uri) {
     this(uri, DefaultParameters.EMPTY);
   }
 
-  public ParameterizedUri(Uri uri, Parameters parameters)
-  {
+  public ParameterizedUri(Uri uri, Parameters parameters) {
     this.uri = uri;
     this.parameters = parameters;
   }
-  
+
   @Override
-  public ParameterizedUri withParameters(Parameters parameters)
-  {
+  public ParameterizedUri withParameters(Parameters parameters) {
     return new ParameterizedUri(this.uri, parameters);
   }
 }

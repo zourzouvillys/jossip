@@ -19,37 +19,31 @@ import lombok.experimental.Wither;
 @Value()
 @Wither
 @EqualsAndHashCode(callSuper = true)
-public class RetryAfter extends BaseParameterizedObject<RetryAfter>
-{
+public class RetryAfter extends BaseParameterizedObject<RetryAfter> {
 
   private final int delta;
   private final String comment;
 
-  public RetryAfter(int delta)
-  {
+  public RetryAfter(int delta) {
     this(delta, null, null);
   }
 
-  public RetryAfter(int delta, String comment)
-  {
+  public RetryAfter(int delta, String comment) {
     this(delta, comment, null);
   }
 
-  public RetryAfter(int delta, String comment, Parameters parameters)
-  {
+  public RetryAfter(int delta, String comment, Parameters parameters) {
     this.delta = delta;
     this.comment = comment;
     this.parameters = parameters;
   }
 
-  public Optional<String> getComment()
-  {
+  public Optional<String> getComment() {
     return Optional.ofNullable(comment);
   }
 
   @Override
-  public RetryAfter withParameters(Parameters parameters)
-  {
+  public RetryAfter withParameters(Parameters parameters) {
     return new RetryAfter(this.delta, this.comment, parameters);
   }
 

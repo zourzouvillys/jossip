@@ -18,19 +18,16 @@ import com.jive.sip.parsers.core.ParserUtils;
  *
  */
 
-public class RValueParser implements Parser<RValue>
-{
+public class RValueParser implements Parser<RValue> {
 
   public static final Parser<CharSequence> TOKEN_NODOT = name(chars(ALPHANUM_CHARS.concat("-!%*_+`'~")), "TOKEN-NODOT");
 
   @Override
-  public boolean find(final ParserContext ctx, final ValueListener<RValue> value)
-  {
+  public boolean find(final ParserContext ctx, final ValueListener<RValue> value) {
 
     final CharSequence namespace = ParserUtils.read(ctx, TOKEN_NODOT);
 
-    if (namespace == null)
-    {
+    if (namespace == null) {
       return false;
     }
 
@@ -38,13 +35,11 @@ public class RValueParser implements Parser<RValue>
 
     final CharSequence priority = ParserUtils.read(ctx, TOKEN_NODOT);
 
-    if (priority == null)
-    {
+    if (priority == null) {
       return false;
     }
 
-    if (value != null)
-    {
+    if (value != null) {
       value.set(new RValue(namespace, priority));
     }
 

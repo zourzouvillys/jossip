@@ -20,18 +20,15 @@ import com.jive.sip.parsers.core.ValueHolder;
  * @param <T>
  */
 
-public class MultiHeaderDefinition<T> extends BaseHeaderDefinition implements SipHeaderDefinition<T>
-{
+public class MultiHeaderDefinition<T> extends BaseHeaderDefinition implements SipHeaderDefinition<T> {
 
   private Parser<T> parser;
 
-  public MultiHeaderDefinition(final Parser<T> parser, final String name, final Character sname)
-  {
+  public MultiHeaderDefinition(final Parser<T> parser, final String name, final Character sname) {
     super(name, sname);
   }
 
-  public static <T> SipHeaderDefinition<T> create(final Parser<T> parser, final String name, final Character sname)
-  {
+  public static <T> SipHeaderDefinition<T> create(final Parser<T> parser, final String name, final Character sname) {
     return new MultiHeaderDefinition<T>(parser, name, sname);
   }
 
@@ -43,34 +40,27 @@ public class MultiHeaderDefinition<T> extends BaseHeaderDefinition implements Si
    * @return
    */
 
-  public static SipHeaderDefinition<String> create(final String name, final Character sname)
-  {
+  public static SipHeaderDefinition<String> create(final String name, final Character sname) {
     return new MultiHeaderDefinition<String>(null, name, sname);
   }
 
-  public static SipHeaderDefinition<String> create(final String name)
-  {
+  public static SipHeaderDefinition<String> create(final String name) {
     return new MultiHeaderDefinition<String>(null, name, null);
   }
 
-  public static <T> SipHeaderDefinition<T> create(final Parser<T> parser, final String name)
-  {
+  public static <T> SipHeaderDefinition<T> create(final Parser<T> parser, final String name) {
     return new MultiHeaderDefinition<T>(parser, name, null);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public T parse(final Collection<RawHeader> headers)
-  {
+  public T parse(final Collection<RawHeader> headers) {
 
-    for (final RawHeader header : headers)
-    {
+    for (final RawHeader header : headers) {
 
-      if (this.matches(header.getName()))
-      {
+      if (this.matches(header.getName())) {
 
-        if (this.parser == null)
-        {
+        if (this.parser == null) {
           return (T) header.getValue();
         }
 
@@ -78,19 +68,16 @@ public class MultiHeaderDefinition<T> extends BaseHeaderDefinition implements Si
         final ParserContext ctx = new DefaultParserContext(input);
         final ValueHolder<T> holder = new ValueHolder<T>();
 
-        if (!this.parser.find(ctx, holder))
-        {
+        if (!this.parser.find(ctx, holder)) {
           return null;
         }
 
-        do
-        {
+        do {
           this.parser.find(ctx, null);
         }
         while (ctx.skip(ParserUtils.COMMA));
 
-        if (ctx.remaining() > 0)
-        {
+        if (ctx.remaining() > 0) {
           return null;
         }
 

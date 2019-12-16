@@ -11,8 +11,7 @@ import com.jive.sip.message.api.SipRequest;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public interface RequestAuthorizer
-{
+public interface RequestAuthorizer {
   /**
    * @return
    */
