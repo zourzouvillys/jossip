@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.jive.sip.uri.api;
+package com.jive.sip.uri;
 
 import java.util.Optional;
 

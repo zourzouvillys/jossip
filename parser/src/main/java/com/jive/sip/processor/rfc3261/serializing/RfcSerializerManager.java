@@ -22,6 +22,8 @@ import com.google.common.primitives.Primitives;
 
 public class RfcSerializerManager {
 
+  private static final RfcSerializerManager INSTANCE = new RfcSerializerManagerBuilder().build();
+
   private final Map<Class<?>, RfcSerializer<?>> serializers = Maps.newHashMap();
 
   private final LoadingCache<Class<?>, RfcSerializer<?>> classSerializerCache =
@@ -39,6 +41,14 @@ public class RfcSerializerManager {
 
   public <T> void register(final Class<? extends T> klass, final RfcSerializer<T> serializer) {
     this.serializers.put(klass, serializer);
+  }
+
+  /**
+   * 
+   */
+
+  public String writeValueAsString(Object obj) {
+    return serialize(obj);
   }
 
   /**
@@ -163,6 +173,10 @@ public class RfcSerializerManager {
       }
     }
     return (RfcSerializer<T>) serializerFor(klass.getSuperclass());
+  }
+
+  public static final RfcSerializerManager defaultSerializer() {
+    return INSTANCE;
   }
 
 }

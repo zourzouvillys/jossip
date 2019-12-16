@@ -10,7 +10,7 @@ import com.google.common.base.Splitter;
 import com.jive.sip.message.api.headers.CallId;
 
 import lombok.Value;
-import lombok.experimental.Wither;
+import lombok.With;
 
 /**
  * A dialog pair between two endpoints.
@@ -19,12 +19,11 @@ import lombok.experimental.Wither;
  */
 
 @Value
-@Wither
+@With
 public class DialogId {
 
   private final CallId callId;
   private final String localTag;
-  // note that remote tag or local tag may be null in the case of a half-dialog.
   private final String remoteTag;
 
   public static DialogId fromRemote(final SipRequest req) {

@@ -189,7 +189,8 @@ public class MutableSipResponse extends MutableSipMessage<MutableSipResponse> {
         .stale(stale)
         .algorithm(DigestCredentials.MD5)
         .qop("auth")
-        .build();
+        .build()
+        .asCredentials();
 
     this.proxyAuthenticate(creds);
 

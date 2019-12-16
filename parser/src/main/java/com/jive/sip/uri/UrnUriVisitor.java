@@ -1,4 +1,4 @@
-package com.jive.sip.uri.api;
+package com.jive.sip.uri;
 
 public interface UrnUriVisitor<T> extends UriVisitor<T> {
 

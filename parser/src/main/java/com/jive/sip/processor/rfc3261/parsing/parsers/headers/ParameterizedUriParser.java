@@ -15,7 +15,7 @@ import com.jive.sip.parsers.api.ValueListener;
 import com.jive.sip.parsers.core.ParameterParser;
 import com.jive.sip.processor.rfc3261.parsing.SipMessageParseFailureException;
 import com.jive.sip.processor.rfc3261.parsing.parsers.uri.UriParser;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 /**
  * @author Jeff Hutchins <jhutchins@getjive.com>

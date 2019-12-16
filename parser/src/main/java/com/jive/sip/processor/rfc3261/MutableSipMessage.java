@@ -31,8 +31,8 @@ import com.jive.sip.message.api.headers.HistoryInfo;
 import com.jive.sip.message.api.headers.MIMEType;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
-import com.jive.sip.uri.api.SipUri;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.SipUri;
+import com.jive.sip.uri.Uri;
 
 /**
  * Base class for building SIP requests and responses.

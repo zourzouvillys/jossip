@@ -11,7 +11,7 @@ import com.jive.sip.parsers.core.ByteParserInput;
 import com.jive.sip.parsers.core.ParameterParser;
 import com.jive.sip.parsers.core.ParserHelper;
 import com.jive.sip.parsers.core.ParserUtils;
-import com.jive.sip.uri.api.TelUri;
+import com.jive.sip.uri.TelUri;
 
 import lombok.Value;
 

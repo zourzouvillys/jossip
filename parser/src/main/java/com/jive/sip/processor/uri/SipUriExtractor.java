@@ -1,8 +1,8 @@
 package com.jive.sip.processor.uri;
 
-import com.jive.sip.uri.api.SipUri;
-import com.jive.sip.uri.api.SipUriVisitor;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.SipUri;
+import com.jive.sip.uri.SipUriVisitor;
+import com.jive.sip.uri.Uri;
 
 public class SipUriExtractor implements SipUriVisitor<SipUri> {
 

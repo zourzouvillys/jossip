@@ -7,8 +7,8 @@ import com.jive.sip.parsers.api.ParserContext;
 import com.jive.sip.parsers.api.ParserInput;
 import com.jive.sip.parsers.core.ByteParserInput;
 import com.jive.sip.parsers.core.DefaultParserContext;
-import com.jive.sip.uri.api.Uri;
-import com.jive.sip.uri.api.UriVisitor;
+import com.jive.sip.uri.Uri;
+import com.jive.sip.uri.UriVisitor;
 
 import lombok.Value;
 

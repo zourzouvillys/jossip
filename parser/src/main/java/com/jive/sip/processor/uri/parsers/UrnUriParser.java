@@ -13,8 +13,8 @@ import com.jive.sip.parsers.api.Parser;
 import com.jive.sip.parsers.api.ParserContext;
 import com.jive.sip.parsers.api.ValueListener;
 import com.jive.sip.parsers.core.ParserUtils;
-import com.jive.sip.uri.api.UrnService;
-import com.jive.sip.uri.api.UrnUri;
+import com.jive.sip.uri.UrnService;
+import com.jive.sip.uri.UrnUri;
 
 /**
  * @author Jeff Hutchins <jhutchins@getjive.com>

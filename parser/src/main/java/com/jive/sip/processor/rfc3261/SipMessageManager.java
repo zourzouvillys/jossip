@@ -1,6 +1,5 @@
 package com.jive.sip.processor.rfc3261;
 
-import java.nio.ByteBuffer;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,29 +14,34 @@ import com.jive.sip.message.api.SipResponse;
 import com.jive.sip.message.api.SipResponseStatus;
 import com.jive.sip.parameters.api.Parameters;
 import com.jive.sip.processor.rfc3261.message.api.ResponseBuilder;
-import com.jive.sip.uri.api.SipUri;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.SipUri;
+import com.jive.sip.uri.Uri;
 
 /**
  * Interface for working with SIP messages.
- *
- * @author theo
- *
  */
 
 public interface SipMessageManager {
 
   /**
+   * converts an incoming {@link RawMessage} to a parsed {@link SipMessage}.
+   * 
    * note: this only performs minimal syntactic checks, it doesn't do semantic ones (e.g, check
    * status codes).
    *
    * @param msg
-   * @return
+   *          the raw message to parse.
+   * 
+   * @return a parsed sip message.
    */
 
   SipMessage convert(final RawMessage msg);
 
-  ByteBuffer toBytes(final SipMessage message);
+  /**
+   * 
+   * @param status
+   * @return
+   */
 
   ResponseBuilder responseBuilder(final SipResponseStatus status);
 
@@ -51,7 +55,15 @@ public interface SipMessageManager {
    * @return
    */
 
-  DefaultSipRequest createRequest(final SipMethod invite, final Uri ruri, final Collection<RawHeader> headers, final byte[] body);
+  DefaultSipRequest createRequest(final SipMethod method, final Uri ruri, final Collection<RawHeader> headers, final byte[] body);
+
+  /**
+   * 
+   * @param status
+   * @param build
+   * @param body
+   * @return
+   */
 
   DefaultSipResponse createResponse(final SipResponseStatus status, final List<RawHeader> build, final byte[] body);
 
@@ -64,8 +76,12 @@ public interface SipMessageManager {
 
   SipRequest createAck(final SipResponse res, final List<NameAddr> route);
 
-  @Deprecated
-  SipRequest createCancel(final SipRequest original);
+  /**
+   * 
+   * @param original
+   * @param reason
+   * @return
+   */
 
   SipRequest createCancel(final SipRequest original, final Reason reason);
 
@@ -96,7 +112,7 @@ public interface SipMessageManager {
    *
    */
 
-  SipRequest fromUri(final SipUri target);
+  SipRequest fromUri(final SipUri target, SipMethod defaultMethod);
 
   /**
    * Parse a URI.
@@ -118,5 +134,9 @@ public interface SipMessageManager {
    */
 
   Parameters parseParameters(final String params);
+
+  static SipMessageManager defaultManager() {
+    return RfcSipMessageManager.defaultInstance();
+  }
 
 }

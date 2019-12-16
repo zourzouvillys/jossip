@@ -21,7 +21,7 @@ import com.jive.sip.message.api.SipMessage;
 import com.jive.sip.message.api.SipMethod;
 import com.jive.sip.message.api.SipRequest;
 import com.jive.sip.processor.uri.RawUri;
-import com.jive.sip.uri.api.SipUri;
+import com.jive.sip.uri.SipUri;
 
 /**
  * @author Jeff Hutchins {@code <jhutchins@getjive.com>}

@@ -12,7 +12,7 @@ import com.jive.sip.message.api.RequestBuilder;
 import com.jive.sip.message.api.SipMethod;
 import com.jive.sip.message.api.SipRequest;
 import com.jive.sip.message.api.headers.CallId;
-import com.jive.sip.uri.api.SipUri;
+import com.jive.sip.uri.SipUri;
 
 public class DefaultSipRequestTest {
 

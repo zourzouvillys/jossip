@@ -60,9 +60,9 @@ import com.jive.sip.processor.rfc3261.serializing.serializers.UnsignedIntegerSer
 import com.jive.sip.processor.rfc3261.serializing.serializers.VersionSerializer;
 import com.jive.sip.processor.rfc3261.serializing.serializers.WarningSerializer;
 import com.jive.sip.processor.uri.RawUri;
-import com.jive.sip.uri.api.SipUri;
-import com.jive.sip.uri.api.TelUri;
-import com.jive.sip.uri.api.UserInfo;
+import com.jive.sip.uri.SipUri;
+import com.jive.sip.uri.TelUri;
+import com.jive.sip.uri.UserInfo;
 
 /**
  * @author Jeff Hutchins <jhutchins@getjive.com>

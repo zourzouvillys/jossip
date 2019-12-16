@@ -1,103 +1,15 @@
 package com.jive.sip.auth.headers;
 
-import java.util.Collection;
-
 import com.jive.sip.base.api.Token;
 import com.jive.sip.parameters.api.Parameters;
 import com.jive.sip.parameters.api.QuotedString;
-import com.jive.sip.parameters.api.RawParameter;
 import com.jive.sip.parameters.api.SipParameterDefinition;
 import com.jive.sip.parameters.impl.DefaultParameters;
 import com.jive.sip.parameters.tools.ParameterUtils;
 
-import lombok.Builder;
-import lombok.Singular;
-
 public class DigestCredentials extends Authorization {
 
-  @Builder
-  public static final class DigestValues {
-
-    private final String realm;
-    private final String domain;
-    private final String nonce;
-    private final String opaque;
-    private boolean stale = false;
-    private final String algorithm;
-    private final String username;
-    private final String uri;
-    private final String response;
-    private final String cnonce;
-    private final String qop;
-    private final Integer nonceCount;
-
-    @Singular
-    private final Collection<RawParameter> params;
-
-    public static class DigestValuesBuilder {
-
-      public DigestCredentials build() {
-
-        Parameters params = DefaultParameters.EMPTY;
-
-        if (this.algorithm != null) {
-          params = params.withParameter(ALGORITHM, this.algorithm);
-        }
-
-        if (this.realm != null) {
-          params = params.withParameter(REALM, this.realm);
-        }
-
-        if (this.response != null) {
-          params = params.withParameter(RESPONSE, this.response);
-        }
-
-        if (this.username != null) {
-          params = params.withParameter(USERNAME, this.username);
-        }
-
-        if (this.domain != null) {
-          params = params.withParameter(DOMAIN, this.realm);
-        }
-
-        if (this.cnonce != null) {
-          params = params.withParameter(CNONCE, this.cnonce);
-        }
-
-        if (this.uri != null) {
-          params = params.withParameter(DIGEST_URI, this.uri);
-        }
-
-        if (this.nonce != null) {
-          params = params.withParameter(NONCE, this.nonce);
-        }
-
-        if (this.opaque != null) {
-          params = params.withParameter(OPAQUE, this.opaque);
-        }
-
-        params =
-          params.withParameter(STALE,
-            this.stale ? Token.TRUE
-                       : Token.FALSE);
-
-        if (this.qop != null) {
-          params = params.withParameter(QOP, this.qop);
-        }
-
-        if (this.nonceCount != null) {
-          params = params.withParameter(NONCE_COUNT, String.format("%08d", this.nonceCount));
-        }
-
-        return new DigestCredentials(params);
-
-      }
-
-    }
-
-  }
-
-  public static DigestValues.DigestValuesBuilder builder() {
+  public static DigestValues.Builder builder() {
     return DigestValues.builder();
   }
 

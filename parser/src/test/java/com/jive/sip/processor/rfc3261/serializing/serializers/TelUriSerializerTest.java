@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import com.jive.sip.base.api.Token;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializer;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
-import com.jive.sip.uri.api.TelUri;
+import com.jive.sip.uri.TelUri;
 
 public class TelUriSerializerTest {
 

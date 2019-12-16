@@ -6,7 +6,7 @@ package com.jive.sip.message.api.headers;
 import com.jive.sip.parameters.api.BaseParameterizedObject;
 import com.jive.sip.parameters.api.Parameters;
 import com.jive.sip.parameters.impl.DefaultParameters;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;

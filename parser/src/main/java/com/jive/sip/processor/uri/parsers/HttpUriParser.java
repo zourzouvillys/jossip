@@ -12,7 +12,7 @@ import com.jive.sip.parsers.api.Parser;
 import com.jive.sip.parsers.api.ParserContext;
 import com.jive.sip.parsers.api.ValueListener;
 import com.jive.sip.parsers.core.ParserUtils;
-import com.jive.sip.uri.api.HttpUri;
+import com.jive.sip.uri.HttpUri;
 
 public class HttpUriParser implements UriSchemeParser<HttpUri> {
 

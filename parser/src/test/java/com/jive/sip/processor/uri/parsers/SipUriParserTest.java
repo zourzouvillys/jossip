@@ -17,8 +17,8 @@ import com.jive.sip.parameters.api.RawParameter;
 import com.jive.sip.parameters.api.TokenParameterValue;
 import com.jive.sip.parameters.impl.DefaultParameters;
 import com.jive.sip.parsers.core.BaseParserTest;
-import com.jive.sip.uri.api.SipUri;
-import com.jive.sip.uri.api.UserInfo;
+import com.jive.sip.uri.SipUri;
+import com.jive.sip.uri.UserInfo;
 
 /**
  * SIP-URI parsing tests.

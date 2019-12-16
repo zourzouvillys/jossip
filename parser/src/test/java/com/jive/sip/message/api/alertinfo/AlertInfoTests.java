@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import com.jive.sip.message.api.headers.ParameterizedUri;
-import com.jive.sip.uri.api.HttpUri;
-import com.jive.sip.uri.api.UrnService;
-import com.jive.sip.uri.api.UrnUri;
+import com.jive.sip.uri.HttpUri;
+import com.jive.sip.uri.UrnService;
+import com.jive.sip.uri.UrnUri;
 
 public class AlertInfoTests {
 

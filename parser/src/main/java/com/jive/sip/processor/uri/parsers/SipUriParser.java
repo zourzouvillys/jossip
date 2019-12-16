@@ -21,8 +21,8 @@ import com.jive.sip.parsers.core.ByteParserInput;
 import com.jive.sip.parsers.core.HostAndPortParser;
 import com.jive.sip.parsers.core.ParameterParser;
 import com.jive.sip.parsers.core.ParserUtils;
-import com.jive.sip.uri.api.SipUri;
-import com.jive.sip.uri.api.UserInfo;
+import com.jive.sip.uri.SipUri;
+import com.jive.sip.uri.UserInfo;
 
 public class SipUriParser implements UriSchemeParser<SipUri> {
   private final String scheme;

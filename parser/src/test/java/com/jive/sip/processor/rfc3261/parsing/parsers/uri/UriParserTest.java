@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import com.jive.sip.parsers.core.BaseParserTest;
 import com.jive.sip.processor.uri.RawUri;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 public class UriParserTest extends BaseParserTest<Uri> {
 

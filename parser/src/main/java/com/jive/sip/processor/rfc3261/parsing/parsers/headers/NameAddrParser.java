@@ -24,7 +24,7 @@ import com.jive.sip.parsers.core.ParseFailureException;
 import com.jive.sip.parsers.core.ParserUtils;
 import com.jive.sip.parsers.core.QuotedStringParser;
 import com.jive.sip.processor.rfc3261.parsing.parsers.uri.UriParser;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 /**
  * Tries to parse a name-addr structure defined in RFC 3261.

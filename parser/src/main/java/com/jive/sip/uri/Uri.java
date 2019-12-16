@@ -1,4 +1,4 @@
-package com.jive.sip.uri.api;
+package com.jive.sip.uri;
 
 /**
  * Base interface for all URIs in the stack.

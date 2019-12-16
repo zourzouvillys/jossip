@@ -1,6 +1,6 @@
 package com.jive.sip.message.api.alertinfo;
 
-import com.jive.sip.uri.api.UrnUri;
+import com.jive.sip.uri.UrnUri;
 
 import lombok.Value;
 

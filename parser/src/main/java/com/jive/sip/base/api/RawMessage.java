@@ -21,8 +21,10 @@ import lombok.RequiredArgsConstructor;
  * @author theo
  * 
  */
+
 @RequiredArgsConstructor(staticName = "create")
 public class RawMessage {
+  
   @NonNull
   private final String initialLine;
   private final Multimap<String, RawHeader> headers = LinkedListMultimap.create();

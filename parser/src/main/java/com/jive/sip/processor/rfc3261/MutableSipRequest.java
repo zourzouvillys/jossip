@@ -23,7 +23,7 @@ import com.jive.sip.message.api.ViaProtocol;
 import com.jive.sip.parameters.api.RawParameter;
 import com.jive.sip.parameters.api.TokenParameterValue;
 import com.jive.sip.parameters.impl.DefaultParameters;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
 

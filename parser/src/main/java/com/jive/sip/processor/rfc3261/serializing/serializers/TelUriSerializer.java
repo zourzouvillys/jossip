@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
-import com.jive.sip.uri.api.TelUri;
+import com.jive.sip.uri.TelUri;
 
 import lombok.AllArgsConstructor;
 

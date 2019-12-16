@@ -1,10 +1,10 @@
 package com.jive.sip.processor.uri;
 
-import com.jive.sip.uri.api.SipUri;
-import com.jive.sip.uri.api.SipUriVisitor;
-import com.jive.sip.uri.api.TelUri;
-import com.jive.sip.uri.api.TelUriVisitor;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.SipUri;
+import com.jive.sip.uri.SipUriVisitor;
+import com.jive.sip.uri.TelUri;
+import com.jive.sip.uri.TelUriVisitor;
+import com.jive.sip.uri.Uri;
 
 public class TelephoneNumberExtractor implements SipUriVisitor<String>, TelUriVisitor<String> {
 

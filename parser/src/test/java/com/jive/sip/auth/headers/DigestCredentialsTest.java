@@ -18,7 +18,8 @@ public class DigestCredentialsTest {
         .nonce("xxx")
         .nonceCount(1234)
         .username("theo")
-        .build();
+        .build()
+        .asCredentials();
 
     assertEquals(
       MD5,

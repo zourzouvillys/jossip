@@ -15,7 +15,7 @@ import com.google.common.net.HostAndPort;
 import com.jive.sip.base.api.Token;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializer;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
-import com.jive.sip.uri.api.SipUri;
+import com.jive.sip.uri.SipUri;
 
 /**
  * @author Jeff Hutchins <jhutchins@getjive.com>

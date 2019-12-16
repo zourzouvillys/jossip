@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import com.google.common.net.HostAndPort;
 import com.jive.sip.base.api.Token;
 import com.jive.sip.parameters.impl.TokenParameterDefinition;
-import com.jive.sip.uri.api.SipUri;
+import com.jive.sip.uri.SipUri;
 
 /**
  * @author Jeff Hutchins {@code <jhutchins@getjive.com>}

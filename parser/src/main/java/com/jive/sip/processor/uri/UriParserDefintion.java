@@ -4,7 +4,7 @@
 package com.jive.sip.processor.uri;
 
 import com.jive.sip.processor.uri.parsers.UriSchemeParser;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 import lombok.Value;
 

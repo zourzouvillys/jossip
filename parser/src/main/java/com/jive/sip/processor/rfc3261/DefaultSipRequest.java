@@ -32,7 +32,7 @@ import com.jive.sip.message.api.SipRequest;
 import com.jive.sip.message.api.TargetDialog;
 import com.jive.sip.message.api.TokenSet;
 import com.jive.sip.message.api.headers.RValue;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 import lombok.EqualsAndHashCode;
 

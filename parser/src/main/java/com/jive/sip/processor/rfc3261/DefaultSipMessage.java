@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
 
+import com.google.common.base.Throwables;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -76,12 +77,11 @@ import com.jive.sip.processor.rfc3261.parsing.parsers.headers.VersionParser;
 import com.jive.sip.processor.rfc3261.parsing.parsers.headers.ViaParser;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.SneakyThrows;
 
 @EqualsAndHashCode
 public abstract class DefaultSipMessage implements SipMessage {
@@ -318,14 +318,14 @@ public abstract class DefaultSipMessage implements SipMessage {
   }
 
   @Override
-  @SneakyThrows
   @SuppressWarnings("unchecked")
   public <T> Optional<T> getHeader(final SipHeaderDefinition<T> def) {
     try {
       return (Optional<T>) this.parsedHeaders.get(def);
     }
     catch (final ExecutionException e) {
-      throw e.getCause();
+      Throwables.throwIfUnchecked(e.getCause());
+      throw new RuntimeException(e);
     }
   }
 

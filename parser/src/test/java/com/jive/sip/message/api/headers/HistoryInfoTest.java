@@ -9,8 +9,8 @@ import com.google.common.net.HostAndPort;
 import com.jive.sip.message.api.headers.HistoryInfo.ChangeType;
 import com.jive.sip.message.api.headers.HistoryInfo.Entry;
 import com.jive.sip.processor.uri.parsers.TelUriParser;
-import com.jive.sip.uri.api.SipUri;
-import com.jive.sip.uri.api.TelUri;
+import com.jive.sip.uri.SipUri;
+import com.jive.sip.uri.TelUri;
 
 public class HistoryInfoTest {
 

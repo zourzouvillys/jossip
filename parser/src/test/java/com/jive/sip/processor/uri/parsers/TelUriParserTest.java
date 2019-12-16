@@ -12,7 +12,7 @@ import com.jive.sip.parameters.api.RawParameter;
 import com.jive.sip.parameters.api.TokenParameterValue;
 import com.jive.sip.parameters.impl.DefaultParameters;
 import com.jive.sip.parsers.core.BaseParserTest;
-import com.jive.sip.uri.api.TelUri;
+import com.jive.sip.uri.TelUri;
 
 /**
  * @author Jeff Hutchins <jhutchins@getjive.com>

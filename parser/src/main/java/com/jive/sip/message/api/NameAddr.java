@@ -13,7 +13,7 @@ import com.jive.sip.parameters.api.RawParameter;
 import com.jive.sip.parameters.api.SipParameterDefinition;
 import com.jive.sip.parameters.impl.DefaultParameters;
 import com.jive.sip.parameters.tools.ParameterUtils;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

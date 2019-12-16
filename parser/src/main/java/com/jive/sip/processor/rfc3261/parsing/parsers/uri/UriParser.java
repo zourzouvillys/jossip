@@ -17,7 +17,7 @@ import com.jive.sip.parsers.core.ParserHelper;
 import com.jive.sip.parsers.core.ParserUtils;
 import com.jive.sip.processor.rfc3261.parsing.SipMessageParseFailureException;
 import com.jive.sip.processor.uri.RawUri;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 public class UriParser implements Parser<Uri> {
   private UriParser() {

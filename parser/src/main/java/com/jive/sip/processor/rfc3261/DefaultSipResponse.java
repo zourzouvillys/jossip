@@ -27,7 +27,7 @@ import com.jive.sip.message.api.SipResponseStatus;
 import com.jive.sip.message.api.headers.RValue;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 public final class DefaultSipResponse extends DefaultSipMessage implements SipResponse {
 

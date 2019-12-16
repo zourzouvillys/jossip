@@ -6,8 +6,6 @@ import java.io.Writer;
 
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializer;
 
-import lombok.SneakyThrows;
-
 public abstract class AbstractRfcSerializer<T> implements RfcSerializer<T> {
 
   @Override
@@ -16,11 +14,15 @@ public abstract class AbstractRfcSerializer<T> implements RfcSerializer<T> {
     sink.append(output);
   }
 
-  @SneakyThrows
   @Override
   public String serialize(final T obj) {
     final StringWriter writer = new StringWriter();
-    serialize(writer, obj);
+    try {
+      serialize(writer, obj);
+    }
+    catch (IOException e) {
+      throw new RuntimeException(e);
+    }
     return writer.toString();
   }
 

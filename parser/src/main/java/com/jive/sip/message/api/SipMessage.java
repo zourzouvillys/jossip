@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import com.jive.sip.base.api.RawHeader;
 import com.jive.sip.message.api.headers.CallId;
 import com.jive.sip.message.api.headers.HistoryInfo;
 import com.jive.sip.message.api.headers.MIMEType;
 import com.jive.sip.message.api.headers.ParameterizedUri;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 import lombok.NonNull;
 
@@ -28,6 +29,7 @@ import lombok.NonNull;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  *
  */
+
 public interface SipMessage extends Serializable {
 
   public static final String VERSION = "SIP/2.0";
@@ -296,6 +298,10 @@ public interface SipMessage extends Serializable {
       return Optional.empty();
     }
     return Optional.of(getVias().get(0));
+  }
+
+  default <T> T apply(Function<SipMessage, T> applicator) {
+    return applicator.apply(this);
   }
 
 }

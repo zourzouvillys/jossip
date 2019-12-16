@@ -9,7 +9,7 @@ import java.net.URLEncoder;
 
 import com.jive.sip.base.api.RawHeader;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
-import com.jive.sip.uri.api.SipUri;
+import com.jive.sip.uri.SipUri;
 
 /**
  * @author Jeff Hutchins <jhutchins@getjive.com>

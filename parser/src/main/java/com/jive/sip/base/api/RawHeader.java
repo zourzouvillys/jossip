@@ -4,10 +4,8 @@ import lombok.Value;
 
 /**
  * Representation of a single header in a SIP message.
- * 
- * 
- * @author theo
  */
+
 @Value
 public final class RawHeader {
 

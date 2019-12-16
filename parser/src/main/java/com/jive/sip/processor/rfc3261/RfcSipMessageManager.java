@@ -1,7 +1,5 @@
 package com.jive.sip.processor.rfc3261;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.List;
@@ -33,8 +31,8 @@ import com.jive.sip.processor.rfc3261.message.api.ResponseBuilder;
 import com.jive.sip.processor.rfc3261.message.impl.SingleHeaderParseContext;
 import com.jive.sip.processor.rfc3261.parsing.parsers.headers.NameAddrParser;
 import com.jive.sip.processor.rfc3261.parsing.parsers.uri.UriParser;
-import com.jive.sip.uri.api.SipUri;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.SipUri;
+import com.jive.sip.uri.Uri;
 
 /**
  * Default internal implementation of the SIP message manager.
@@ -44,6 +42,8 @@ import com.jive.sip.uri.api.Uri;
  */
 
 public class RfcSipMessageManager implements SipMessageManager {
+
+  private static final RfcSipMessageManager DEFAULT_INSTANCE = new RfcSipMessageManagerBuilder().build();
 
   private static final String SIP_2_0 = "SIP/2.0";
   private static final char COLON = ':';
@@ -159,49 +159,6 @@ public class RfcSipMessageManager implements SipMessageManager {
 
   }
 
-  /**
-   * Use RfcSerializerManager instead.
-   */
-
-  @Deprecated
-  @Override
-  public ByteBuffer toBytes(final SipMessage message) {
-
-    final StringBuilder sb = new StringBuilder();
-
-    if (message instanceof DefaultSipRequest) {
-      final DefaultSipRequest req = (DefaultSipRequest) message;
-      sb.append(req.getMethod().getMethod())
-        .append(SPACE)
-        .append(req.getUri())
-        .append(SPACE)
-        .append(SIP_2_0)
-        .append(CRLF);
-    }
-    else if (message instanceof DefaultSipResponse) {
-      final DefaultSipResponse res = (DefaultSipResponse) message;
-      sb.append(SIP_2_0)
-        .append(SPACE)
-        .append(res.getStatus().getCode())
-        .append(SPACE)
-        .append(res.getStatus().getReason())
-        .append(CRLF);
-    }
-
-    for (final RawHeader header : message.getHeaders()) {
-      sb.append(header.getName()).append(COLON).append(SPACE).append(header.getValue()).append(CRLF);
-    }
-
-    sb.append(CRLF);
-
-    if (message.getBody() != null) {
-      sb.append(new String(message.getBody()));
-    }
-
-    return ByteBuffer.wrap(sb.toString().getBytes(StandardCharsets.UTF_8));
-
-  }
-
   @Override
   public ResponseBuilder responseBuilder(final SipResponseStatus status) {
     return new DefaultResponseBuilder(this, status);
@@ -297,11 +254,6 @@ public class RfcSipMessageManager implements SipMessageManager {
   }
 
   @Override
-  public SipRequest createCancel(final SipRequest original) {
-    return this.createCancel(original, null);
-  }
-
-  @Override
   public SipRequest createCancel(final SipRequest original, final Reason reason) {
 
     final DefaultRequestBuilder builder = new DefaultRequestBuilder(this);
@@ -325,8 +277,8 @@ public class RfcSipMessageManager implements SipMessageManager {
   }
 
   @Override
-  public SipRequest fromUri(final SipUri target) {
-    final SipMethod method = target.getParameter(SipUri.PMethod).map(SipMethod.tokenConverter()).orElse(SipMethod.INVITE);
+  public SipRequest fromUri(final SipUri target, SipMethod defaultMethod) {
+    final SipMethod method = target.getParameter(SipUri.PMethod).map(SipMethod.tokenConverter()).orElse(defaultMethod);
     return this.createRequest(method,
       target.withoutHeaders().withoutParameter(SipUri.PMethod),
       target.getHeaders(),
@@ -367,6 +319,10 @@ public class RfcSipMessageManager implements SipMessageManager {
       throw new RuntimeException("Trailing data at end of Name-Addr");
     }
     return res;
+  }
+
+  public static SipMessageManager defaultInstance() {
+    return DEFAULT_INSTANCE;
   }
 
 }

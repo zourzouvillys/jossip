@@ -9,21 +9,19 @@ import java.io.Writer;
 import com.jive.sip.message.api.SipResponse;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
 
-import lombok.AllArgsConstructor;
-
 /**
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-@AllArgsConstructor
+
 public class SipResponseSerializer extends AbstractRfcSerializer<SipResponse> {
 
   private final RfcSerializerManager manager;
 
-  /*
-   * (non-Javadoc)
-   * @see com.jive.sip.processor.rfc3261.serializing.RfcSerializer#serialize(java.lang.Object)
-   */
+  public SipResponseSerializer(RfcSerializerManager manager) {
+    this.manager = manager;
+  }
+
   @Override
   public void serialize(final Writer writer, final SipResponse obj) throws IOException {
 

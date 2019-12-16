@@ -9,17 +9,18 @@ import java.io.Writer;
 import com.jive.sip.message.api.SipRequest;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
 
-import lombok.AllArgsConstructor;
-
 /**
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
 
-@AllArgsConstructor
 public class SipRequestSerializer extends AbstractRfcSerializer<SipRequest> {
 
   private final RfcSerializerManager manager;
+
+  public SipRequestSerializer(RfcSerializerManager manager) {
+    this.manager = manager;
+  }
 
   /*
    * (non-Javadoc)

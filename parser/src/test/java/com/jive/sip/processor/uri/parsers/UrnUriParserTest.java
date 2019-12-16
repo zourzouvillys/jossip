@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import com.jive.sip.parsers.core.BaseParserTest;
-import com.jive.sip.uri.api.UrnService;
-import com.jive.sip.uri.api.UrnUri;
+import com.jive.sip.uri.UrnService;
+import com.jive.sip.uri.UrnUri;
 
 /**
  * @author Jeff Hutchins <jhutchins@getjive.com>

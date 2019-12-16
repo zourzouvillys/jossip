@@ -1,4 +1,4 @@
-package com.jive.sip.uri.api;
+package com.jive.sip.uri;
 
 import java.net.InetSocketAddress;
 import java.util.Collection;
@@ -18,8 +18,6 @@ import com.jive.sip.parameters.api.SipParameterDefinition;
 import com.jive.sip.parameters.impl.DefaultParameters;
 import com.jive.sip.parameters.impl.TokenParameterDefinition;
 
-import lombok.Value;
-
 /**
  * A 'sip' or 'sips' URI.
  *
@@ -30,16 +28,17 @@ import lombok.Value;
  *
  */
 
-@Value
 public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
 
   public static final String SIP = "sip";
   public static final String SIPS = "sips";
 
   public static final SipUri ANONYMOUS = SipUri.fromUserAndHost("anonymous", "anonymous.invalid");
+
   private static final TokenParameterDefinition P_USER =
     new TokenParameterDefinition(
       Token.from("user"));
+
   public static final SipParameterDefinition<Token> PMethod =
     new TokenParameterDefinition("method");
 
@@ -331,4 +330,19 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
     return obj instanceof SipUri;
   }
 
+  public String getScheme() {
+    return this.scheme;
+  }
+
+  public Optional<UserInfo> getUserinfo() {
+    return this.userinfo;
+  }
+
+  public HostAndPort getHost() {
+    return this.host;
+  }
+
+  public Collection<RawHeader> getHeaders() {
+    return this.headers;
+  }
 }

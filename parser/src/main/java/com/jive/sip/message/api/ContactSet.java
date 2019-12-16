@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 import lombok.EqualsAndHashCode;
 

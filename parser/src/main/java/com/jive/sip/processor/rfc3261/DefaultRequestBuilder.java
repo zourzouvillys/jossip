@@ -21,9 +21,10 @@ import com.jive.sip.message.api.Via;
 import com.jive.sip.message.api.headers.CallId;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 public class DefaultRequestBuilder implements RequestBuilder {
+
   private SipMethod method;
   private NameAddr from;
   private NameAddr to;

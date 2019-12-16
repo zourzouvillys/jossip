@@ -1,10 +1,10 @@
 package com.jive.sip.message.api.alertinfo;
 
-import com.jive.sip.uri.api.HttpUri;
-import com.jive.sip.uri.api.HttpUriVisitor;
-import com.jive.sip.uri.api.Uri;
-import com.jive.sip.uri.api.UrnUri;
-import com.jive.sip.uri.api.UrnUriVisitor;
+import com.jive.sip.uri.HttpUri;
+import com.jive.sip.uri.HttpUriVisitor;
+import com.jive.sip.uri.Uri;
+import com.jive.sip.uri.UrnUri;
+import com.jive.sip.uri.UrnUriVisitor;
 
 public class AlertInfoUriExtractor implements HttpUriVisitor<AlertInfoReference>, UrnUriVisitor<AlertInfoReference> {
 

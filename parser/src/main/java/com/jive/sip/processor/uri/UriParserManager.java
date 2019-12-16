@@ -8,7 +8,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.jive.sip.parsers.api.Parser;
 import com.jive.sip.processor.uri.parsers.UriSubParserManager;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 /**
  * @author Jeff Hutchins <jhutchins@getjive.com>

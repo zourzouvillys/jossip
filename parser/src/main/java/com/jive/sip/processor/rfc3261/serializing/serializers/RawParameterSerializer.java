@@ -33,29 +33,41 @@ public class RawParameterSerializer extends AbstractRfcSerializer<RawParameter> 
       return null;
     }
 
-    @SneakyThrows
     @Override
     public String visit(final TokenParameterValue parameter) {
-      this.sb.append('=');
-      this.sb.append(parameter.getValue().toString());
+      try {
+        this.sb.append('=');
+        this.sb.append(parameter.getValue().toString());
+      }
+      catch (IOException ex) {
+        throw new RuntimeException(ex);
+      }
       return null;
     }
 
-    @SneakyThrows
     @Override
     public String visit(final QuotedStringParameterValue parameter) {
-      this.sb.append('=');
-      this.sb.append('"');
-      this.sb.append(parameter.getValue().replace("\"", "\\\""));
-      this.sb.append('"');
+      try {
+        this.sb.append('=');
+        this.sb.append('"');
+        this.sb.append(parameter.getValue().replace("\"", "\\\""));
+        this.sb.append('"');
+      }
+      catch (IOException ex) {
+        throw new RuntimeException(ex);
+      }
       return null;
     }
 
-    @SneakyThrows
     @Override
     public String visit(final HostAndPortParameterValue parameter) {
-      this.sb.append('=');
-      this.sb.append(parameter.getValue().toString());
+      try {
+        this.sb.append('=');
+        this.sb.append(parameter.getValue().toString());
+      }
+      catch (IOException ex) {
+        throw new RuntimeException(ex);
+      }
       return null;
     }
 

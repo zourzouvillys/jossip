@@ -1,7 +1,7 @@
 package com.jive.sip.message.api;
 
 import com.jive.sip.message.api.headers.CallId;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 public interface RequestBuilder {
   public RequestBuilder setMethod(final SipMethod method);

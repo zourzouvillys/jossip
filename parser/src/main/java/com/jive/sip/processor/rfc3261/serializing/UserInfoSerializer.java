@@ -1,7 +1,7 @@
 package com.jive.sip.processor.rfc3261.serializing;
 
 import com.jive.sip.processor.rfc3261.serializing.serializers.AbstractRfcSerializer;
-import com.jive.sip.uri.api.UserInfo;
+import com.jive.sip.uri.UserInfo;
 
 public class UserInfoSerializer extends AbstractRfcSerializer<UserInfo> {
 

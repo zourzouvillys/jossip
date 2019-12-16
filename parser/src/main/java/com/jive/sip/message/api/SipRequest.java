@@ -7,7 +7,7 @@ import com.google.common.primitives.UnsignedInteger;
 import com.jive.sip.auth.headers.Authorization;
 import com.jive.sip.base.api.RawHeader;
 import com.jive.sip.message.api.headers.RValue;
-import com.jive.sip.uri.api.Uri;
+import com.jive.sip.uri.Uri;
 
 /**
  * Representation of a SIP request.
@@ -184,5 +184,6 @@ public interface SipRequest extends SipMessage {
   SipRequest withIncrementedCSeq(final SipMethod method);
 
   Optional<TargetDialog> getTargetDialog();
+
 
 }

@@ -1,4 +1,4 @@
-package com.jive.sip.uri.api;
+package com.jive.sip.uri;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;

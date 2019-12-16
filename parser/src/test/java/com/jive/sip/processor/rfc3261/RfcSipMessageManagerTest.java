@@ -12,7 +12,7 @@ import com.jive.sip.message.api.SipRequest;
 import com.jive.sip.message.api.headers.CallId;
 import com.jive.sip.parsers.core.ParseFailureException;
 import com.jive.sip.processor.uri.parsers.SipUriParser;
-import com.jive.sip.uri.api.SipUri;
+import com.jive.sip.uri.SipUri;
 
 public class RfcSipMessageManagerTest {
   private final RfcSipMessageManager manager = new RfcSipMessageManager();
@@ -40,7 +40,7 @@ public class RfcSipMessageManagerTest {
   @Test
   public void testFromEmbedded() {
     final SipUri uri = SipUriParser.parse("sip:theo@test.com;method=REGISTER?Replaces=xxx%3Bto-tag%3Dyyy%3Bfrom-tag%3Dzzz");
-    final SipRequest req = this.manager.fromUri(uri);
+    final SipRequest req = this.manager.fromUri(uri, SipMethod.INVITE);
     final Replaces rep = req.getReplaces().get();
     assertEquals(SipMethod.REGISTER, req.getMethod());
     assertEquals(new CallId("xxx"), rep.getCallId());
