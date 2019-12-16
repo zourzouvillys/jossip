@@ -22,7 +22,6 @@ import com.jive.sip.message.api.headers.CallId;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
 import com.jive.sip.uri.api.Uri;
-import com.jive.sip.utils.rfc3261.RfcHelper;
 
 public class DefaultRequestBuilder implements RequestBuilder
 {
@@ -240,7 +239,7 @@ public class DefaultRequestBuilder implements RequestBuilder
     // CSeq automagic management
     if (this.cSeq == null)
     {
-      this.cSeq = RfcHelper.nextCSeq(Optional.ofNullable(this.cseqs.get(this.method)).orElse(new CSeq(0, this.method)));
+      this.cSeq = Optional.ofNullable(this.cseqs.get(this.method)).orElse(new CSeq(0, this.method)).withNextSequence();
     }
     this.cseqs.put(this.method, this.cSeq);
     req.addHeader("CSeq", serializer.serialize(this.cSeq), this.cSeq);

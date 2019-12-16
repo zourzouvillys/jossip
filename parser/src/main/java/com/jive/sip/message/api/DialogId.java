@@ -25,7 +25,6 @@ public class DialogId
 
   private final CallId callId;
   private final String localTag;
-  
   // note that remote tag or local tag may be null in the case of a half-dialog.
   private final String remoteTag;
 
