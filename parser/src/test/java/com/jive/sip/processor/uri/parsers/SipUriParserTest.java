@@ -6,7 +6,7 @@ package com.jive.sip.processor.uri.parsers;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.jive.sip.processor.uri.parsers.SipUriParser.HEADERS;
 import static com.jive.sip.processor.uri.parsers.SipUriParser.USERINFO;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 

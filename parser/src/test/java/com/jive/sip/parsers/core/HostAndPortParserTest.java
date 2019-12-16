@@ -9,8 +9,8 @@ import static com.jive.sip.parsers.core.HostAndPortParser.HOSTNAME;
 import static com.jive.sip.parsers.core.HostAndPortParser.IPV4_ADDRESS;
 import static com.jive.sip.parsers.core.HostAndPortParser.IPV6_REFFERENCE;
 import static com.jive.sip.parsers.core.HostAndPortParser.TOP_LABEL;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 

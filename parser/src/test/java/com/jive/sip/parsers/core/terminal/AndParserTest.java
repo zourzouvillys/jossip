@@ -1,6 +1,6 @@
 package com.jive.sip.parsers.core.terminal;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 

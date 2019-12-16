@@ -3,9 +3,8 @@
  */
 package com.jive.sip.processor.rfc3261.parsing.parsers.headers;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
@@ -34,7 +33,7 @@ public class AuthorizationParserTest extends BaseParserTest<Authorization> {
    * @throws SipMessageParseFailureException
    */
 
-  @Ignore
+  //  @Ignore
   @Test
   public void testAuthorizationHeader() throws SipMessageParseFailureException {
 

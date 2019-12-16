@@ -3,7 +3,7 @@
  */
 package com.jive.sip.processor.rfc3261.parsing;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.ByteBuffer;
 

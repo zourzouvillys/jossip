@@ -19,7 +19,7 @@ public class HistoryInfoTest {
 
     HistoryInfo hi =
       HistoryInfo.fromUnknownRequest(
-        SipUri.fromUserAndHost("theo", HostAndPort.fromString("test.com")));
+        SipUri.fromUserAndHost("theo", HostAndPort.fromString("test.example.com")));
     hi =
       hi
         .withAppended(new TelUri("+13344545455"))

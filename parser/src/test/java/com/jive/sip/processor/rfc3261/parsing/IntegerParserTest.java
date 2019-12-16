@@ -1,6 +1,6 @@
 package com.jive.sip.processor.rfc3261.parsing;
 
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.primitives.UnsignedInteger;
@@ -15,17 +15,17 @@ public class IntegerParserTest extends BaseParserTest<UnsignedInteger> {
 
   @Test
   public void test() {
-    Assert.assertEquals(UnsignedInteger.valueOf(10), this.parse("10"));
-    Assert.assertEquals(UnsignedInteger.valueOf(0), this.parse("0"));
-    Assert.assertEquals(UnsignedInteger.valueOf(1), this.parse("1"));
-    Assert.assertEquals(UnsignedInteger.valueOf(1), this.parse("0001"));
-    Assert.assertEquals(UnsignedInteger.valueOf(100), this.parse("100"));
-    Assert.assertEquals(UnsignedInteger.valueOf(201), this.parse("201"));
+    assertEquals(UnsignedInteger.valueOf(10), this.parse("10"));
+    assertEquals(UnsignedInteger.valueOf(0), this.parse("0"));
+    assertEquals(UnsignedInteger.valueOf(1), this.parse("1"));
+    assertEquals(UnsignedInteger.valueOf(1), this.parse("0001"));
+    assertEquals(UnsignedInteger.valueOf(100), this.parse("100"));
+    assertEquals(UnsignedInteger.valueOf(201), this.parse("201"));
   }
 
   @Test
   public void testParseOverLength() {
-    Assert.assertEquals(UnsignedInteger.valueOf(0), this.parse("00001", 1));
+    assertEquals(UnsignedInteger.valueOf(0), this.parse("00001", 1));
   }
 
 }

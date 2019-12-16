@@ -1,6 +1,7 @@
 package com.jive.sip.parsers.core.terminal;
 
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
 import com.google.common.primitives.UnsignedInteger;
@@ -15,7 +16,7 @@ public class UnsignedIntegerParserTest {
     final ParserInput in = ByteParserInput.fromString("1");
     final ValueValidator<UnsignedInteger> validator = ValueValidator.expect(UnsignedInteger.valueOf(1));
     new UnsignedIntegerParser(1, 4).find(new DefaultParserContext(in), validator);
-    Assert.assertEquals(UnsignedInteger.valueOf(1), validator.value());
+    assertEquals(UnsignedInteger.valueOf(1), validator.value());
   }
 
   @Test
@@ -23,8 +24,8 @@ public class UnsignedIntegerParserTest {
     final ParserInput in = ByteParserInput.fromString("1a");
     final ValueValidator<UnsignedInteger> validator = ValueValidator.expect(UnsignedInteger.valueOf(1));
     new UnsignedIntegerParser(1, 4).find(new DefaultParserContext(in), validator);
-    Assert.assertEquals(UnsignedInteger.valueOf(1), validator.value());
-    Assert.assertEquals(1, in.remaining());
+    assertEquals(UnsignedInteger.valueOf(1), validator.value());
+    assertEquals(1, in.remaining());
   }
 
   @Test
@@ -32,8 +33,8 @@ public class UnsignedIntegerParserTest {
     final ParserInput in = ByteParserInput.fromString("12229");
     final ValueValidator<UnsignedInteger> validator = ValueValidator.expect(UnsignedInteger.valueOf(1222));
     new UnsignedIntegerParser(1, 4).find(new DefaultParserContext(in), validator);
-    Assert.assertEquals(1, in.remaining());
-    Assert.assertEquals(UnsignedInteger.valueOf(1222), validator.value());
+    assertEquals(1, in.remaining());
+    assertEquals(UnsignedInteger.valueOf(1222), validator.value());
   }
 
 }

@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
+
 @AllArgsConstructor
 public class SipRequestSerializer extends AbstractRfcSerializer<SipRequest> {
 

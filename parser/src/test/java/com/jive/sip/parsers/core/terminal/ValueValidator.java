@@ -1,6 +1,6 @@
 package com.jive.sip.parsers.core.terminal;
 
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.jive.sip.parsers.api.ValueListener;
 
@@ -16,7 +16,7 @@ public class ValueValidator<T> implements ValueListener<T> {
   @Override
   public void set(final T value) {
     this.value = value;
-    Assert.assertEquals(this.expected, value);
+    assertEquals(this.expected, value);
   }
 
   public T value() {

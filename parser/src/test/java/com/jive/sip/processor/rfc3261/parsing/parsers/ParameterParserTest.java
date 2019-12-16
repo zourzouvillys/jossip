@@ -1,12 +1,9 @@
 package com.jive.sip.processor.rfc3261.parsing.parsers;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Collection;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import com.jive.sip.base.api.Token;
@@ -29,7 +26,7 @@ public class ParameterParserTest extends BaseParserTest<Collection<RawParameter>
     this.parse(";moo;cows=2");
     this.parse(" ; moo;cows=2");
     this.parse(";    moo;  cows ; x-meep ; +moo");
-    Assert.assertEquals(1, this.parse(";cows=2").size());
+    assertEquals(1, this.parse(";cows=2").size());
 
   }
 

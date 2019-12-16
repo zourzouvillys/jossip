@@ -1,9 +1,6 @@
-/**
- *
- */
 package com.jive.sip.message.api.header;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
