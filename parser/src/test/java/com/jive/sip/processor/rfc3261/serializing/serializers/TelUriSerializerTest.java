@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.jive.sip.base.api.Token;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializer;
@@ -17,7 +17,7 @@ public class TelUriSerializerTest {
 
   private RfcSerializer<TelUri> serializer;
 
-  @Before
+  @BeforeEach
   public void setup() {
     this.serializer = new TelUriSerializer(new RfcSerializerManagerBuilder().build());
   }

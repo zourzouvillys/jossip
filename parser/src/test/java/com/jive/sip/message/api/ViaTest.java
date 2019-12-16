@@ -4,8 +4,8 @@
 package com.jive.sip.message.api;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.net.HostAndPort;
 import com.jive.sip.base.api.Token;
@@ -22,7 +22,7 @@ public class ViaTest {
   private HostAndPort host;
   private Token branch;
 
-  @Before
+  @BeforeEach
   public void setup() {
     this.host = HostAndPort.fromString("localhost");
     this.branch = Token.from(Via.createBranch());

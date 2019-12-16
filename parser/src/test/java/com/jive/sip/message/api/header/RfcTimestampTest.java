@@ -6,7 +6,7 @@ package com.jive.sip.message.api.header;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.jive.sip.message.api.headers.RfcTimestamp;
 import com.jive.sip.parsers.core.BaseParserTest;

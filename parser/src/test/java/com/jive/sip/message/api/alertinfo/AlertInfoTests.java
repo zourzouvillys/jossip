@@ -2,7 +2,7 @@ package com.jive.sip.message.api.alertinfo;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.jive.sip.message.api.headers.ParameterizedUri;
 import com.jive.sip.uri.api.HttpUri;

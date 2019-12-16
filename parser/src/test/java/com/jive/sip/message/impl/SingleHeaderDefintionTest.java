@@ -7,8 +7,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 import com.jive.sip.base.api.RawHeader;
@@ -29,7 +29,7 @@ public class SingleHeaderDefintionTest {
   private SipHeaderDefinition<NameAddr> from;
   private List<RawHeader> headers;
 
-  @Before
+  @BeforeEach
   public void setup() {
     this.from = SingleHeaderDefinition.create(new NameAddrParser(), "From", 'f');
     this.headers = Lists.newLinkedList();

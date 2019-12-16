@@ -5,7 +5,7 @@ package com.jive.sip.processor.uri.parsers;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 import com.jive.sip.parameters.api.RawParameter;

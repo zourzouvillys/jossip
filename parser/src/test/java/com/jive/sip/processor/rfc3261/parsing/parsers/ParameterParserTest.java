@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.jive.sip.base.api.Token;
 import com.jive.sip.parameters.api.Parameters;

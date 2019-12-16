@@ -2,7 +2,7 @@ package com.jive.sip.processor.rfc3261.parsing.parsers;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.jive.sip.message.api.ViaProtocol;
 import com.jive.sip.parsers.core.BaseParserTest;

@@ -5,7 +5,7 @@ package com.jive.sip.processor.rfc3261.parsing.parsers.headers;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.jive.sip.base.api.Token;
 import com.jive.sip.message.api.headers.MIMEType;

@@ -3,7 +3,7 @@
  */
 package com.jive.sip.processor.rfc3261.parsing.parsers.headers;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.jive.sip.message.api.NameAddr;
 import com.jive.sip.parsers.core.BaseParserTest;

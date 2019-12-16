@@ -1,7 +1,7 @@
 package com.jive.sip.parsers.core.terminal;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.primitives.UnsignedInteger;
 import com.jive.sip.parsers.api.ParserInput;

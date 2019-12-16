@@ -1,7 +1,7 @@
 package com.jive.sip.auth.headers;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DigestCredentialsTest {
 

@@ -5,8 +5,8 @@ package com.jive.sip.processor.rfc3261.serializing.serializers;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.jive.sip.base.api.RawHeader;
 import com.jive.sip.base.api.RawMessage;
@@ -35,7 +35,7 @@ public class SipRequestSerializerTest {
   private SipRequest msg;
   private final SipMessageManager manager = new RfcSipMessageManager();
 
-  @Before
+  @BeforeEach
   public void setup() {
     RawMessage msg = RawMessage.create("OPTIONS sip:carol@chicago.com SIP/2.0");
     msg.addHeader(new RawHeader("Via", "SIP/2.0/UDP pc33.atlanta.com;branch=z9hG4bKhjhs8ass877"));

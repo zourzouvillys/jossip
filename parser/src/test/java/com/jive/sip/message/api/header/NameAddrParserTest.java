@@ -6,8 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 import com.jive.sip.base.api.Token;
@@ -35,7 +35,7 @@ public class NameAddrParserTest extends BaseParserTest<NameAddr> {
     super(new NameAddrParser());
   }
 
-  @Before
+  @BeforeEach
   public void setup() {
     this.params =
       Lists.newArrayList(new RawParameter(Token.from("a"), new TokenParameterValue("1")),

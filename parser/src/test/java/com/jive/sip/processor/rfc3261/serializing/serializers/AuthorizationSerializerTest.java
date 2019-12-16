@@ -5,8 +5,8 @@ package com.jive.sip.processor.rfc3261.serializing.serializers;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 import com.jive.sip.auth.headers.Authorization;
@@ -23,7 +23,7 @@ import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
 public class AuthorizationSerializerTest {
   private RfcSerializer<Authorization> serializer;
 
-  @Before
+  @BeforeEach
   public void setup() {
     serializer = new AuthorizationSerializer(new RfcSerializerManagerBuilder().build());
   }

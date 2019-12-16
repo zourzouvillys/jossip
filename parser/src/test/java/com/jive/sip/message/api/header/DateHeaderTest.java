@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.jive.sip.parsers.core.BaseParserTest;
 import com.jive.sip.processor.rfc3261.parsing.SipMessageParseFailureException;

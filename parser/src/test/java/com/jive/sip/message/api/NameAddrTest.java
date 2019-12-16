@@ -4,7 +4,7 @@
 package com.jive.sip.message.api;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.net.HostAndPort;
 import com.jive.sip.base.api.Token;

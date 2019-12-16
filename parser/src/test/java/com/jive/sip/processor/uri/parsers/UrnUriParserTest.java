@@ -5,7 +5,7 @@ package com.jive.sip.processor.uri.parsers;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.jive.sip.parsers.core.BaseParserTest;
 import com.jive.sip.uri.api.UrnService;

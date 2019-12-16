@@ -8,8 +8,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.net.HostAndPort;
 import com.jive.sip.base.api.Token;
@@ -25,7 +25,7 @@ public class SipUriSerializerTest {
 
   private RfcSerializer<SipUri> serializer;
 
-  @Before
+  @BeforeEach
   public void setup() {
     this.serializer = new SipUriSerializer(new RfcSerializerManagerBuilder().build());
   }

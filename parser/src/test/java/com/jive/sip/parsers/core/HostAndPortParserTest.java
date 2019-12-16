@@ -12,7 +12,7 @@ import static com.jive.sip.parsers.core.HostAndPortParser.TOP_LABEL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.net.HostAndPort;
 

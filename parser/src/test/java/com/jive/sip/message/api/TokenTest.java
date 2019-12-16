@@ -2,8 +2,9 @@ package com.jive.sip.message.api;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.jive.sip.base.api.Token;
 
@@ -16,13 +17,13 @@ public class TokenTest {
     assertNotEquals(Token.from("XXX"), Token.from("YYY"));
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void testNullToken() {
-    Token.from(null);
+    assertThrows(NullPointerException.class, () -> Token.from(null));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testEmptyString() {
-    Token.from("");
+    assertThrows(IllegalArgumentException.class, () -> Token.from(""));
   }
 }

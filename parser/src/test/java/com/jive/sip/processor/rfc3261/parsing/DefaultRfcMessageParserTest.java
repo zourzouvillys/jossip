@@ -7,8 +7,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.nio.ByteBuffer;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.jive.sip.base.api.RawHeader;
 import com.jive.sip.base.api.RawMessage;
@@ -50,7 +50,7 @@ public class DefaultRfcMessageParserTest extends BaseParserTest<RawMessage> {
 
   private final RawMessage msg = RawMessage.create("OPTIONS sip:carol@chicago.com SIP/2.0");
 
-  @Before
+  @BeforeEach
   public void setup() {
     this.msg.addHeader(new RawHeader("Via", "SIP/2.0/UDP pc33.atlanta.com;branch=z9hG4bKhjhs8ass877"));
     this.msg.addHeader(new RawHeader("Max-Forwards", "70"));

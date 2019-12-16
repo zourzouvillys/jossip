@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 import com.jive.sip.message.api.TokenSet;
@@ -20,7 +20,7 @@ public class RfcSerializerManagerTest {
   private SipMessageManager manager;
   private RfcSerializerManager serializer;
 
-  @Before
+  @BeforeEach
   public void setup() {
     this.manager = new RfcSipMessageManagerBuilder().build();
     this.serializer = new RfcSerializerManagerBuilder().build();

@@ -6,7 +6,7 @@ package com.jive.sip.message.api.header;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.jive.sip.base.api.Token;
 import com.jive.sip.message.api.alertinfo.AlertInfoUriExtractor;

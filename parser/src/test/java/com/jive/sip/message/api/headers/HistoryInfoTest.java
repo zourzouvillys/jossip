@@ -1,6 +1,6 @@
 package com.jive.sip.message.api.headers;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.net.HostAndPort;
 import com.jive.sip.uri.api.SipUri;

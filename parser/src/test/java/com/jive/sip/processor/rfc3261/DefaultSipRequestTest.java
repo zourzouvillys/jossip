@@ -2,8 +2,8 @@ package com.jive.sip.processor.rfc3261;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.net.HostAndPort;
 import com.jive.sip.base.api.RawHeader;
@@ -18,7 +18,7 @@ public class DefaultSipRequestTest {
 
   RequestBuilder reqBuilder;
 
-  @Before
+  @BeforeEach
   public void setup() throws Exception {
     SipUri uri = SipUri.create(HostAndPort.fromParts("localhost", 5060));
     reqBuilder =

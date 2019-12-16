@@ -1,11 +1,11 @@
 package com.jive.sip.processor.rfc3261;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import com.google.common.collect.Lists;
-import com.jive.sip.base.api.RawHeader;
 import com.jive.sip.message.api.Replaces;
 import com.jive.sip.message.api.SipMethod;
 import com.jive.sip.message.api.SipRequest;
@@ -19,22 +19,22 @@ public class RfcSipMessageManagerTest {
 
   @Test
   public void testEscapedUri() {
-    this.manager.createRequest("SUBSCRIBE xxx:%20 SIP/2.0", Lists.<RawHeader>newArrayList());
+    this.manager.createRequest("SUBSCRIBE xxx:%20 SIP/2.0", newArrayList());
   }
 
   @Test
   public void test() {
-    this.manager.createRequest("INVITE sip:theo SIP/2.0", Lists.<RawHeader>newArrayList());
+    this.manager.createRequest("INVITE sip:theo SIP/2.0", newArrayList());
   }
 
-  @Test(expected = ParseFailureException.class)
+  @Test
   public void testMultipleSpaces() {
-    this.manager.createRequest("INVITE   sip:theo SIP/2.0", Lists.<RawHeader>newArrayList());
+    assertThrows(ParseFailureException.class, () -> this.manager.createRequest("INVITE   sip:theo SIP/2.0", newArrayList()));
   }
 
-  @Test(expected = ParseFailureException.class)
+  @Test
   public void testMissingVersion() {
-    this.manager.createRequest("INVITE sip:theo", Lists.<RawHeader>newArrayList());
+    assertThrows(ParseFailureException.class, () -> this.manager.createRequest("INVITE sip:theo", newArrayList()));
   }
 
   @Test

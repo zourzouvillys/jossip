@@ -5,7 +5,7 @@ package com.jive.sip.message.api;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.jive.sip.base.api.RawHeader;
 import com.jive.sip.base.api.RawMessage;

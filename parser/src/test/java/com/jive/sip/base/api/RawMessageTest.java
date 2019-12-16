@@ -5,18 +5,15 @@ package com.jive.sip.base.api;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-/**
- * @author Jeff Hutchins {@code <jhutchins@getjive.com>}
- * 
- */
 public class RawMessageTest {
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void testConstructorNull() {
-    RawMessage.create(null);
+    assertThrows(NullPointerException.class, () -> RawMessage.create(null));
   }
 
   @Test()

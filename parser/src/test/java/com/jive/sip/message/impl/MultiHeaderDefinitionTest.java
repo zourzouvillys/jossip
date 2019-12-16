@@ -1,11 +1,12 @@
 package com.jive.sip.message.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 import com.google.common.net.HostAndPort;
@@ -27,7 +28,7 @@ public class MultiHeaderDefinitionTest {
   private SipHeaderDefinition<List<Via>> via;
   private List<RawHeader> headers;
 
-  @Before
+  @BeforeEach
   public void setup() {
     this.via = MultiHeaderDefinition.create(new ViaParser(), "Via", 'v');
     this.headers = Lists.newLinkedList();
@@ -110,10 +111,10 @@ public class MultiHeaderDefinitionTest {
     assertEquals(vias.get(0).getParameters().get(), actual.get(0).getParameters().get());
   }
 
-  @Test(expected = ParseFailureException.class)
+  @Test
   public void testBadVia() {
     this.headers.add(new RawHeader("Via", "Bad Test"));
-    this.via.parse(this.headers);
+    assertThrows(ParseFailureException.class, () -> this.via.parse(this.headers));
   }
 
 }
