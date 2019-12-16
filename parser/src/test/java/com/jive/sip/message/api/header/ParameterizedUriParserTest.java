@@ -18,21 +18,17 @@ import com.jive.sip.processor.rfc3261.parsing.SipMessageParseFailureException;
 import com.jive.sip.processor.rfc3261.parsing.parsers.headers.ParameterizedUriParser;
 import com.jive.sip.processor.uri.RawUri;
 
-
 /**
  * @author Jeff Hutchins <jhutchins@getjive.com>
  *
  */
-public class ParameterizedUriParserTest extends BaseParserTest<ParameterizedUri>
-{
-  public ParameterizedUriParserTest()
-  {
+public class ParameterizedUriParserTest extends BaseParserTest<ParameterizedUri> {
+  public ParameterizedUriParserTest() {
     super(new ParameterizedUriParser());
   }
 
   @Test
-  public void testCallInfo() throws SipMessageParseFailureException
-  {
+  public void testCallInfo() throws SipMessageParseFailureException {
     final ParameterizedUri header = this.parse("<http://wwww.example.com/alice/photo.jpg> ;purpose  =  icon");
     assertEquals("http", header.getUri().getScheme());
     assertEquals("//wwww.example.com/alice/photo.jpg", ((RawUri) header.getUri()).getOpaque());
@@ -42,8 +38,7 @@ public class ParameterizedUriParserTest extends BaseParserTest<ParameterizedUri>
   }
 
   @Test
-  public void testErrorInfo() throws SipMessageParseFailureException
-  {
+  public void testErrorInfo() throws SipMessageParseFailureException {
     final ParameterizedUri header = this.parse("<sip:not-in-service-recording@atlanta.com>");
 
     assertEquals("sip", header.getUri().getScheme());

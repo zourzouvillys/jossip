@@ -22,22 +22,20 @@ import com.jive.sip.processor.rfc3261.parsing.parsers.headers.ViaParser;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class ViaParserTest extends BaseParserTest<Via>
-{
+public class ViaParserTest extends BaseParserTest<Via> {
 
-  public ViaParserTest()
-  {
+  public ViaParserTest() {
     super(new ViaParser());
   }
 
   /**
-   * Test method for {@link com.jive.sip.processor.rfc3261.headers.Via#Via(java.lang.String, java.lang.String)}.
+   * Test method for
+   * {@link com.jive.sip.processor.rfc3261.headers.Via#Via(java.lang.String, java.lang.String)}.
    * 
    * @throws SipMessageParseFailureException
    */
   @Test
-  public void testViaHeader() throws SipMessageParseFailureException
-  {
+  public void testViaHeader() throws SipMessageParseFailureException {
     final String test = "SIP / 2.0 / UdP first.example.com: 4000;ttl=16;maddr=224.2.0.1 ;branch=z9hG4bKa7c6a8dlze.1";
     final Via header = this.parse(test);
     assertEquals(new ViaProtocol("SIP", "2.0", "UdP"), header.getProtocol());
@@ -48,8 +46,7 @@ public class ViaParserTest extends BaseParserTest<Via>
   }
 
   @Test
-  public void testViaHeaderWithValuelessParam() throws SipMessageParseFailureException
-  {
+  public void testViaHeaderWithValuelessParam() throws SipMessageParseFailureException {
 
     final String test = "SIP/2.0/XXX 172.20.103.51;branch=z9hG4bK-ac271308;rport";
 
@@ -66,8 +63,7 @@ public class ViaParserTest extends BaseParserTest<Via>
   }
 
   @Test
-  public void testParseWithIpAndPort()
-  {
+  public void testParseWithIpAndPort() {
     this.parse("SIP/2.0/UDP 199.36.250.60:5061;branch=0");
   }
 

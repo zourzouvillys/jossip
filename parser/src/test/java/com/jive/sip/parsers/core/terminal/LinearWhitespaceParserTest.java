@@ -6,17 +6,14 @@ import org.junit.Test;
 
 import com.jive.sip.parsers.core.BaseParserTest;
 
-public class LinearWhitespaceParserTest extends BaseParserTest<CharSequence>
-{
+public class LinearWhitespaceParserTest extends BaseParserTest<CharSequence> {
 
-  public LinearWhitespaceParserTest()
-  {
+  public LinearWhitespaceParserTest() {
     super(new LinearWhitespaceParser());
   }
 
   @Test
-  public void test()
-  {
+  public void test() {
     assertEquals(" ", this.parse(" "));
     assertEquals("     ", this.parse("     "));
     assertEquals(" \t   ", this.parse(" \t   "));

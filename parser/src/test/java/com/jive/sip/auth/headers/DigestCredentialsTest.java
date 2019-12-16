@@ -3,13 +3,12 @@ package com.jive.sip.auth.headers;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class DigestCredentialsTest
-{
+public class DigestCredentialsTest {
 
   @Test
-  public void test()
-  {
-    final DigestCredentials creds = DigestCredentials.builder()
+  public void test() {
+    final DigestCredentials creds =
+      DigestCredentials.builder()
         .realm("jive.com")
         .algorithm(DigestCredentials.MD5)
         .nonce("xxx")

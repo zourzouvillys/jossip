@@ -17,17 +17,14 @@ import com.jive.sip.processor.rfc3261.parsing.SipMessageParseFailureException;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class WarningParserTest extends BaseParserTest<Warning>
-{
+public class WarningParserTest extends BaseParserTest<Warning> {
 
-  public WarningParserTest()
-  {
+  public WarningParserTest() {
     super(new WarningParser());
   }
 
   @Test
-  public void testWarning() throws SipMessageParseFailureException
-  {
+  public void testWarning() throws SipMessageParseFailureException {
     final Warning header = this.parse("307 isi.edu \"Session parameter 'foo' not understood\"");
     assertEquals(307, header.getCode());
     assertEquals("isi.edu", header.getAgent());
@@ -35,26 +32,22 @@ public class WarningParserTest extends BaseParserTest<Warning>
   }
 
   @Test
-  public void testTestNotQuoted() throws ParseFailureException
-  {
+  public void testTestNotQuoted() throws ParseFailureException {
     assertNull(this.parse("307 isi.edu Session parameter 'foo' not understood", 50));
   }
 
   @Test
-  public void testCodeNotNumber() throws ParseFailureException
-  {
+  public void testCodeNotNumber() throws ParseFailureException {
     assertNull(this.parse("Bad isi.ed \"Message\"", 20));
   }
 
   @Test
-  public void testCodeTooShort() throws ParseFailureException
-  {
+  public void testCodeTooShort() throws ParseFailureException {
     assertNull(this.parse("20 isi.ed \"Message\"", 19));
   }
 
   @Test
-  public void testCodeTooLong() throws ParseFailureException
-  {
+  public void testCodeTooLong() throws ParseFailureException {
     assertNull(this.parse("2000 isi.ed \"Message\"", 21));
   }
 }

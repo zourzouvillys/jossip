@@ -25,31 +25,27 @@ import com.jive.sip.processor.uri.RawUri;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class SingleHeaderDefintionTest
-{
+public class SingleHeaderDefintionTest {
   private SipHeaderDefinition<NameAddr> from;
   private List<RawHeader> headers;
 
   @Before
-  public void setup()
-  {
+  public void setup() {
     this.from = SingleHeaderDefinition.create(new NameAddrParser(), "From", 'f');
     this.headers = Lists.newLinkedList();
   }
 
   @Test
-  public void testLongName()
-  {
+  public void testLongName() {
     this.headers.add(new RawHeader("From", "\"A. G. Bell\" <sip:agb@bell-telephone.com> ;tag=a48s"));
     NameAddr name = this.from.parse(this.headers);
     assertEquals("A. G. Bell", name.getName().get());
     assertEquals(new RawUri("sip", "agb@bell-telephone.com"), name.getAddress());
     assertEquals(DefaultParameters.from(Lists.newArrayList(new RawParameter("tag", new TokenParameterValue("a48s")))), name.getParameters().get());
   }
-  
+
   @Test
-  public void testCompactName()
-  {
+  public void testCompactName() {
     this.headers.add(new RawHeader("f", "Anonymous <sip:c8oqz84zk7z@privacy.org>;tag=hyh8"));
     NameAddr name = this.from.parse(this.headers);
     assertEquals("Anonymous", name.getName().get());

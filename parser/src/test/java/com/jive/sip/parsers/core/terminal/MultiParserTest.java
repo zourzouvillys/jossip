@@ -5,12 +5,10 @@ import org.junit.Test;
 
 import com.google.common.collect.Range;
 
-public class MultiParserTest
-{
+public class MultiParserTest {
 
   @Test
-  public void test()
-  {
+  public void test() {
 
     Assert.assertTrue(new MultiParser<String, Integer>(null, Range.atLeast(1)).canSupportMore(0));
     Assert.assertTrue(new MultiParser<String, Integer>(null, Range.atLeast(1)).canSupportMore(0));
@@ -27,8 +25,7 @@ public class MultiParserTest
   }
 
   @Test
-  public void testSatisified()
-  {
+  public void testSatisified() {
 
     Assert.assertFalse(new MultiParser<String, Integer>(null, Range.atLeast(1)).satifiedBy(0));
     Assert.assertTrue(new MultiParser<String, Integer>(null, Range.atLeast(1)).satifiedBy(1));

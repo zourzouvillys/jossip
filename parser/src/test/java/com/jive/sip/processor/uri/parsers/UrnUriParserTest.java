@@ -15,21 +15,18 @@ import com.jive.sip.uri.api.UrnUri;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class UrnUriParserTest extends BaseParserTest<UrnUri>
-{
+public class UrnUriParserTest extends BaseParserTest<UrnUri> {
 
-  public UrnUriParserTest()
-  {
+  public UrnUriParserTest() {
     super(UrnUriParser.SERVICE);
   }
 
   @Test
-  public void test()
-  {
+  public void test() {
     assertEquals(new UrnUri(UrnUri.SERVICE, new UrnService("sos")), this.parse("service:sos"));
     assertEquals(new UrnUri(UrnUri.SERVICE, new UrnService("sos.ambulance")), this.parse("service:sos.ambulance"));
     assertEquals(new UrnUri(UrnUri.SERVICE, new UrnService("sos.animal-control")),
-        this.parse("service:sos.animal-control"));
+      this.parse("service:sos.animal-control"));
   }
 
 }

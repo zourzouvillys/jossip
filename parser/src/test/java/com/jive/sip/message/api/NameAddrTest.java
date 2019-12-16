@@ -15,13 +15,12 @@ import com.jive.sip.uri.api.SipUri;
  * @author Jeff Hutchins {@code <jhutchins@getjive.com>}
  *
  */
-public class NameAddrTest
-{
+public class NameAddrTest {
 
   @Test
-  public void parameterTest()
-  {
-    final NameAddr name = new NameAddr(new SipUri(HostAndPort.fromString("10.199.3.1:5061")))
+  public void parameterTest() {
+    final NameAddr name =
+      new NameAddr(new SipUri(HostAndPort.fromString("10.199.3.1:5061")))
         .withParameter(Token.from("ftag"), Token.from("a29dd1ac97e3b91e"))
         .withParameter(Token.from("lr"), Token.from("on"));
 
@@ -34,15 +33,13 @@ public class NameAddrTest
   }
 
   @Test
-  public void testWithUri()
-  {
+  public void testWithUri() {
 
-
-    final NameAddr name = new NameAddr(new SipUri(HostAndPort.fromString("10.199.3.1:5061")))
+    final NameAddr name =
+      new NameAddr(new SipUri(HostAndPort.fromString("10.199.3.1:5061")))
         .withParameter(Token.from("expires"), Token.from("0"));
 
     System.err.println(name.withAddress(name.getAddress()));
-
 
   }
 

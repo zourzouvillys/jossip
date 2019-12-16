@@ -19,20 +19,17 @@ import com.jive.sip.message.api.ViaProtocol;
 import com.jive.sip.message.api.headers.CallId;
 import com.jive.sip.uri.api.SipUri;
 
-public class DefaultRequestBuilderTest
-{
+public class DefaultRequestBuilderTest {
 
   private RequestBuilder builder;
 
   @Before
-  public void setup()
-  {
+  public void setup() {
     this.builder = new DefaultRequestBuilder();
   }
 
   @Test
-  public void testDefaultCSeq() throws Exception
-  {
+  public void testDefaultCSeq() throws Exception {
     this.builder.setMethod(SipMethod.OPTIONS);
     this.builder.setRequestUri(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)));
     this.builder.setFrom(new NameAddr(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060))));
@@ -44,8 +41,7 @@ public class DefaultRequestBuilderTest
   }
 
   @Test
-  public void testSetCSeq() throws Exception
-  {
+  public void testSetCSeq() throws Exception {
     this.builder.setMethod(SipMethod.OPTIONS);
     this.builder.setRequestUri(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)));
     this.builder.setFrom(new NameAddr(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060))));
@@ -58,8 +54,7 @@ public class DefaultRequestBuilderTest
   }
 
   @Test
-  public void testCSeqManagement() throws Exception
-  {
+  public void testCSeqManagement() throws Exception {
     this.builder.setMethod(SipMethod.OPTIONS);
     this.builder.setRequestUri(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)));
     this.builder.setFrom(new NameAddr(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060))));
@@ -74,8 +69,7 @@ public class DefaultRequestBuilderTest
   }
 
   @Test
-  public void testSetCSeqByaddHeader1() throws Exception
-  {
+  public void testSetCSeqByaddHeader1() throws Exception {
     this.builder.setMethod(SipMethod.OPTIONS);
     this.builder.setRequestUri(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)));
     this.builder.setFrom(new NameAddr(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060))));
@@ -88,8 +82,7 @@ public class DefaultRequestBuilderTest
   }
 
   @Test
-  public void testSetCSeqByaddHeader2() throws Exception
-  {
+  public void testSetCSeqByaddHeader2() throws Exception {
     this.builder.setMethod(SipMethod.OPTIONS);
     this.builder.setRequestUri(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)));
     this.builder.setFrom(new NameAddr(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060))));
@@ -102,8 +95,7 @@ public class DefaultRequestBuilderTest
   }
 
   @Test(expected = ClassCastException.class)
-  public void testSetCSeqByaddHeaderError() throws Exception
-  {
+  public void testSetCSeqByaddHeaderError() throws Exception {
     this.builder.setMethod(SipMethod.OPTIONS);
     this.builder.setRequestUri(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)));
     this.builder.setFrom(new NameAddr(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060))));
@@ -116,8 +108,7 @@ public class DefaultRequestBuilderTest
   }
 
   @Test
-  public void testDefaultMaxForwards() throws Exception
-  {
+  public void testDefaultMaxForwards() throws Exception {
     this.builder.setMethod(SipMethod.OPTIONS);
     this.builder.setRequestUri(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)));
     this.builder.setFrom(new NameAddr(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060))));
@@ -129,8 +120,7 @@ public class DefaultRequestBuilderTest
   }
 
   @Test
-  public void testSetMaxForwards() throws Exception
-  {
+  public void testSetMaxForwards() throws Exception {
     this.builder.setMethod(SipMethod.OPTIONS);
     this.builder.setRequestUri(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)));
     this.builder.setFrom(new NameAddr(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060))));
@@ -143,8 +133,7 @@ public class DefaultRequestBuilderTest
   }
 
   @Test
-  public void testSetMaxForwardsBySetHeader1() throws Exception
-  {
+  public void testSetMaxForwardsBySetHeader1() throws Exception {
     this.builder.setMethod(SipMethod.OPTIONS);
     this.builder.setRequestUri(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)));
     this.builder.setFrom(new NameAddr(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060))));
@@ -157,8 +146,7 @@ public class DefaultRequestBuilderTest
   }
 
   @Test
-  public void testSetMaxForwardsBySetHeader2() throws Exception
-  {
+  public void testSetMaxForwardsBySetHeader2() throws Exception {
     this.builder.setMethod(SipMethod.OPTIONS);
     this.builder.setRequestUri(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)));
     this.builder.setFrom(new NameAddr(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060))));
@@ -171,8 +159,7 @@ public class DefaultRequestBuilderTest
   }
 
   @Test(expected = ClassCastException.class)
-  public void testSetMaxForwardsBySetHeaderError() throws Exception
-  {
+  public void testSetMaxForwardsBySetHeaderError() throws Exception {
     this.builder.setMethod(SipMethod.OPTIONS);
     this.builder.setRequestUri(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)));
     this.builder.setFrom(new NameAddr(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060))));
@@ -184,10 +171,8 @@ public class DefaultRequestBuilderTest
     assertEquals(UnsignedInteger.valueOf(43), request.getMaxForwards().get());
   }
 
-
   @Test
-  public void testSetVia() throws Exception
-  {
+  public void testSetVia() throws Exception {
     final String ip = "jeff.jive.com";
     final Via expected = new Via(ViaProtocol.UDP, HostAndPort.fromParts(ip, 5060));
 
@@ -201,15 +186,13 @@ public class DefaultRequestBuilderTest
 
     final Collection<Via> vias = request.getVias();
     assertEquals(vias.size(), 1);
-    for (final Via via : vias)
-    {
+    for (final Via via : vias) {
       assertEquals(via, expected);
     }
   }
 
   @Test
-  public void testSetViaByHeader1() throws Exception
-  {
+  public void testSetViaByHeader1() throws Exception {
     final String ip = "jeff.jive.com";
     final Via expected = new Via(ViaProtocol.UDP, HostAndPort.fromParts(ip, 5060));
 
@@ -223,15 +206,13 @@ public class DefaultRequestBuilderTest
 
     final Collection<Via> vias = request.getVias();
     assertEquals(vias.size(), 1);
-    for (final Via via : vias)
-    {
+    for (final Via via : vias) {
       assertEquals(via, expected);
     }
   }
 
   @Test
-  public void testSetViaByHeader2() throws Exception
-  {
+  public void testSetViaByHeader2() throws Exception {
     final String ip = "jeff.jive.com";
     final Via expected = new Via(ViaProtocol.UDP, HostAndPort.fromParts(ip, 5060));
 
@@ -245,15 +226,13 @@ public class DefaultRequestBuilderTest
 
     final Collection<Via> vias = request.getVias();
     assertEquals(vias.size(), 1);
-    for (final Via via : vias)
-    {
+    for (final Via via : vias) {
       assertEquals(via, expected);
     }
   }
 
   @Test
-  public void testSetViaByHeader3() throws Exception
-  {
+  public void testSetViaByHeader3() throws Exception {
     final String ip = "jeff.jive.com";
     final Via expected = new Via(ViaProtocol.UDP, HostAndPort.fromParts(ip, 5060));
 
@@ -267,15 +246,13 @@ public class DefaultRequestBuilderTest
 
     final Collection<Via> vias = request.getVias();
     assertEquals(vias.size(), 1);
-    for (final Via via : vias)
-    {
+    for (final Via via : vias) {
       assertEquals(via, expected);
     }
   }
 
   @Test(expected = ClassCastException.class)
-  public void testSetViaByHeaderError() throws Exception
-  {
+  public void testSetViaByHeaderError() throws Exception {
     final String ip = "jeff.jive.com";
     final Via expected = new Via(ViaProtocol.UDP, HostAndPort.fromParts(ip, 5060));
 
@@ -289,8 +266,7 @@ public class DefaultRequestBuilderTest
 
     final Collection<Via> vias = request.getVias();
     assertEquals(vias.size(), 1);
-    for (final Via via : vias)
-    {
+    for (final Via via : vias) {
       assertEquals(via, expected);
     }
   }

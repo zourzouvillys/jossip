@@ -18,10 +18,10 @@ import com.jive.sip.parsers.core.BaseParserTest;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class DefaultRfcMessageParserTest extends BaseParserTest<RawMessage>
-{
+public class DefaultRfcMessageParserTest extends BaseParserTest<RawMessage> {
 
-  private final String test = "OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
+  private final String test =
+    "OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
       + "Via: SIP/2.0/UDP pc33.atlanta.com;branch=z9hG4bKhjhs8ass877\r\n"
       + "Max-Forwards: 70\r\n"
       + "To: <sip:carol@chicago.com>\r\n"
@@ -34,7 +34,8 @@ public class DefaultRfcMessageParserTest extends BaseParserTest<RawMessage>
       + "\r\n"
       + "This is the test body to a message";
 
-  private final String lfTest = "OPTIONS sip:carol@chicago.com SIP/2.0\n"
+  private final String lfTest =
+    "OPTIONS sip:carol@chicago.com SIP/2.0\n"
       + "Via: SIP/2.0/UDP pc33.atlanta.com;branch=z9hG4bKhjhs8ass877\n"
       + "Max-Forwards: 70\n"
       + "To: <sip:carol@chicago.com>\n"
@@ -50,8 +51,7 @@ public class DefaultRfcMessageParserTest extends BaseParserTest<RawMessage>
   private final RawMessage msg = RawMessage.create("OPTIONS sip:carol@chicago.com SIP/2.0");
 
   @Before
-  public void setup()
-  {
+  public void setup() {
     this.msg.addHeader(new RawHeader("Via", "SIP/2.0/UDP pc33.atlanta.com;branch=z9hG4bKhjhs8ass877"));
     this.msg.addHeader(new RawHeader("Max-Forwards", "70"));
     this.msg.addHeader(new RawHeader("To", "<sip:carol@chicago.com>"));
@@ -68,8 +68,7 @@ public class DefaultRfcMessageParserTest extends BaseParserTest<RawMessage>
   /**
    * @param parser
    */
-  public DefaultRfcMessageParserTest()
-  {
+  public DefaultRfcMessageParserTest() {
     super(new DefaultRfcMessageParser());
   }
 
@@ -78,14 +77,12 @@ public class DefaultRfcMessageParserTest extends BaseParserTest<RawMessage>
    * {@link com.jive.sip.processor.rfc3261.parsing.DefaultRfcMessageParser#parse(org.jboss.netty.buffer.ChannelBuffer)}.
    */
   @Test
-  public void testParseChannelBuffer()
-  {
+  public void testParseChannelBuffer() {
     assertEquals(this.msg, new DefaultRfcMessageParser().parse(ByteBuffer.wrap(this.test.getBytes())));
   }
 
   @Test
-  public void testParseLfChannelBuffer()
-  {
+  public void testParseLfChannelBuffer() {
     assertEquals(this.msg, new DefaultRfcMessageParser().parse(ByteBuffer.wrap(this.lfTest.getBytes())));
   }
 
@@ -95,8 +92,7 @@ public class DefaultRfcMessageParserTest extends BaseParserTest<RawMessage>
    * .
    */
   @Test
-  public void testFind()
-  {
+  public void testFind() {
     final RawMessage testMessage = this.parse(this.test);
     assertEquals(this.msg, testMessage);
   }

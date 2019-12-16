@@ -20,24 +20,20 @@ import com.google.common.net.HostAndPort;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class HostAndPortParserTest extends BaseParserTest<HostAndPort>
-{
+public class HostAndPortParserTest extends BaseParserTest<HostAndPort> {
 
-  public HostAndPortParserTest()
-  {
+  public HostAndPortParserTest() {
     super(HostAndPortParser.INSTANCE);
   }
 
   @Test
-  public void testIPV6()
-  {
+  public void testIPV6() {
     assertEquals("[FD00::1337:C96:DB:3:6C91]",
-        this.parse(IPV6_REFFERENCE, "[FD00::1337:C96:DB:3:6C91]"));
+      this.parse(IPV6_REFFERENCE, "[FD00::1337:C96:DB:3:6C91]"));
   }
 
   @Test
-  public void testDomainLabel()
-  {
+  public void testDomainLabel() {
     assertEquals(null, this.parse(DOMAIN_LABEL, "-", 1));
     assertEquals("a", this.parse(DOMAIN_LABEL, "a"));
     assertEquals("1", this.parse(DOMAIN_LABEL, "1"));
@@ -48,8 +44,7 @@ public class HostAndPortParserTest extends BaseParserTest<HostAndPort>
   }
 
   @Test
-  public void testTopLabel()
-  {
+  public void testTopLabel() {
     assertEquals(null, this.parse(TOP_LABEL, "-", 1));
     assertEquals("a", this.parse(TOP_LABEL, "a"));
     assertEquals(null, this.parse(TOP_LABEL, "1", 1));
@@ -60,8 +55,7 @@ public class HostAndPortParserTest extends BaseParserTest<HostAndPort>
   }
 
   @Test
-  public void testHostname()
-  {
+  public void testHostname() {
     assertEquals("this.is.a.test", this.parse(HOSTNAME, "this.is.a.test"));
     assertEquals(null, this.parse(HOSTNAME, "0000", 4));
     assertEquals(null, this.parse(HOSTNAME, "-moo", 4));
@@ -72,14 +66,12 @@ public class HostAndPortParserTest extends BaseParserTest<HostAndPort>
   }
 
   @Test
-  public void testHostnameParserDoesntParseIpAddress()
-  {
+  public void testHostnameParserDoesntParseIpAddress() {
     assertEquals(null, this.parse(HOSTNAME, "127.0.0.1", 9));
   }
 
   @Test
-  public void testIPv4Address()
-  {
+  public void testIPv4Address() {
     assertEquals("127.0.0.1", this.parse(IPV4_ADDRESS, "127.0.0.1"));
     assertEquals("127.0.23.1", this.parse(IPV4_ADDRESS, "127.0.23.1:2000", 5));
     assertEquals(null, this.parse(IPV4_ADDRESS, "127.0.23.", 9));
@@ -91,8 +83,7 @@ public class HostAndPortParserTest extends BaseParserTest<HostAndPort>
   }
 
   @Test
-  public void testHexpart()
-  {
+  public void testHexpart() {
     assertEquals("03AD", this.parse(HEXPART, "03AD"));
     assertEquals("::03AD", this.parse(HEXPART, "::03AD"));
     assertEquals("D34B::03AD", this.parse(HEXPART, "D34B::03AD"));
@@ -103,8 +94,7 @@ public class HostAndPortParserTest extends BaseParserTest<HostAndPort>
   }
 
   @Test
-  public void testHostAndPortParser()
-  {
+  public void testHostAndPortParser() {
     assertEquals(HostAndPort.fromParts("this.is.a.test", 2000), this.parse("this.is.a.test:2000"));
     assertEquals(HostAndPort.fromString("this.is.a.test"), this.parse("this.is.a.test"));
     assertEquals(HostAndPort.fromParts("this.is.a.test", 2000), this.parse("this.is.a.test:2000"));

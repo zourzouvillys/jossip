@@ -9,17 +9,14 @@ import com.jive.sip.message.api.Reason;
 import com.jive.sip.parameters.impl.TokenParameterDefinition;
 import com.jive.sip.parsers.core.BaseParserTest;
 
-public class ReasonParserTest extends BaseParserTest<Reason>
-{
+public class ReasonParserTest extends BaseParserTest<Reason> {
 
-  public ReasonParserTest()
-  {
+  public ReasonParserTest() {
     super(new ReasonParser());
   }
 
   @Test
-  public void test()
-  {
+  public void test() {
     final Reason reason = this.parse("Q.850;cause=12;text=\"Busy Everywhere\";xxx=yyy");
     assertEquals("Q.850", reason.getProtocol());
     assertEquals(12, (int) reason.getCause().get());

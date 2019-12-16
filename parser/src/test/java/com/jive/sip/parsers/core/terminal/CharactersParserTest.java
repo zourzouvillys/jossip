@@ -6,17 +6,14 @@ import org.junit.Test;
 
 import com.jive.sip.parsers.core.BaseParserTest;
 
-public class CharactersParserTest extends BaseParserTest<CharSequence>
-{
+public class CharactersParserTest extends BaseParserTest<CharSequence> {
 
-  public CharactersParserTest()
-  {
+  public CharactersParserTest() {
     super(new CharactersParser("a"));
   }
 
   @Test
-  public void test()
-  {
+  public void test() {
     assertEquals("a", this.parse("a"));
     assertEquals(null, this.parse(""));
     assertEquals("aaa", this.parse("aaa"));

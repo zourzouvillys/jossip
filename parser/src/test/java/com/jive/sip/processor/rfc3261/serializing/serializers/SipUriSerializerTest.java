@@ -21,20 +21,17 @@ import com.jive.sip.uri.api.SipUri;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class SipUriSerializerTest
-{
+public class SipUriSerializerTest {
 
   private RfcSerializer<SipUri> serializer;
 
   @Before
-  public void setup()
-  {
+  public void setup() {
     this.serializer = new SipUriSerializer(new RfcSerializerManagerBuilder().build());
   }
 
   @Test
-  public void test() throws IOException
-  {
+  public void test() throws IOException {
     final SipUri uri = SipUri.fromUserAndHost("theo", HostAndPort.fromParts("test.com", 5060));
     final StringWriter w = new StringWriter();
     this.serializer.serialize(w, uri);
@@ -42,38 +39,31 @@ public class SipUriSerializerTest
   }
 
   @Test
-  public void testNoPort() throws IOException
-  {
+  public void testNoPort() throws IOException {
     final SipUri uri = SipUri.fromUserAndHost("theo", HostAndPort.fromString("test.com"));
     final StringWriter w = new StringWriter();
     this.serializer.serialize(w, uri);
     assertEquals("sip:theo@test.com", w.toString());
   }
 
-
   @Test
-  public void testNoUser() throws IOException
-  {
+  public void testNoUser() throws IOException {
     final SipUri uri = new SipUri(HostAndPort.fromString("test.com"));
     final StringWriter w = new StringWriter();
     this.serializer.serialize(w, uri);
     assertEquals("sip:test.com", w.toString());
   }
 
-
   @Test
-  public void testWithParams() throws IOException
-  {
+  public void testWithParams() throws IOException {
     final SipUri uri = new SipUri(HostAndPort.fromString("test.com")).withParameter(Token.from("xxx"));
     final StringWriter w = new StringWriter();
     this.serializer.serialize(w, uri);
     assertEquals("sip:test.com;xxx", w.toString());
   }
 
-
   @Test
-  public void testWithMultipleParams() throws IOException
-  {
+  public void testWithMultipleParams() throws IOException {
     final SipUri uri = new SipUri(HostAndPort.fromString("test.com")).withParameter(Token.from("xxx"), Token.from("yyy")).withParameter(Token.from("ob"));
     final StringWriter w = new StringWriter();
     this.serializer.serialize(w, uri);

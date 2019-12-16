@@ -7,17 +7,14 @@ import com.google.common.primitives.UnsignedInteger;
 import com.jive.sip.parsers.core.BaseParserTest;
 import com.jive.sip.parsers.core.ParserUtils;
 
-public class IntegerParserTest extends BaseParserTest<UnsignedInteger>
-{
+public class IntegerParserTest extends BaseParserTest<UnsignedInteger> {
 
-  public IntegerParserTest()
-  {
+  public IntegerParserTest() {
     super(ParserUtils.uint(1, 4));
   }
 
   @Test
-  public void test()
-  {
+  public void test() {
     Assert.assertEquals(UnsignedInteger.valueOf(10), this.parse("10"));
     Assert.assertEquals(UnsignedInteger.valueOf(0), this.parse("0"));
     Assert.assertEquals(UnsignedInteger.valueOf(1), this.parse("1"));
@@ -27,8 +24,7 @@ public class IntegerParserTest extends BaseParserTest<UnsignedInteger>
   }
 
   @Test
-  public void testParseOverLength()
-  {
+  public void testParseOverLength() {
     Assert.assertEquals(UnsignedInteger.valueOf(0), this.parse("00001", 1));
   }
 

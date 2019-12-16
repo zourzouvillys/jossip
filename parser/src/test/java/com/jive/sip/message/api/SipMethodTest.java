@@ -11,20 +11,17 @@ import org.junit.Test;
  * @author theo
  * 
  */
-public class SipMethodTest
-{
+public class SipMethodTest {
 
   @Test
-  public void test()
-  {
+  public void test() {
 
     assertEquals(SipMethod.INVITE, SipMethod.fromString("INVITE"));
     assertEquals(SipMethod.REGISTER, SipMethod.fromString("REGISTER"));
   }
 
   @Test
-  public void testNegativeMatches()
-  {
+  public void testNegativeMatches() {
     // method is case sensitive.
     assertNotEquals(SipMethod.REGISTER, SipMethod.fromString("REGiSTEr"));
     // no trailing or leading spaces
@@ -32,8 +29,7 @@ public class SipMethodTest
   }
 
   @Test
-  public void testEquals()
-  {
+  public void testEquals() {
 
     assertEquals(SipMethod.fromString("uNkNoWnMetHOD"), SipMethod.fromString("uNkNoWnMetHOD"));
 

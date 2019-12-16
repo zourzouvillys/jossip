@@ -15,27 +15,23 @@ import com.jive.sip.processor.rfc3261.SipMessageManager;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager;
 import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
 
-public class RfcSerializerManagerTest
-{
+public class RfcSerializerManagerTest {
 
   private SipMessageManager manager;
   private RfcSerializerManager serializer;
 
   @Before
-  public void setup()
-  {
+  public void setup() {
     this.manager = new RfcSipMessageManagerBuilder().build();
     this.serializer = new RfcSerializerManagerBuilder().build();
   }
 
   @Test
-  public void test() throws IOException
-  {
+  public void test() throws IOException {
     final TokenSet set = TokenSet.fromList(Lists.newArrayList("alice", "bob"));
     final StringWriter w = new StringWriter();
     this.serializer.serialize(w, set);
     assertEquals("alice, bob", w.toString());
   }
-
 
 }

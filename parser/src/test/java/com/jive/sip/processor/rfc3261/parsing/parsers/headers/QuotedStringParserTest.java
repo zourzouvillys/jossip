@@ -7,42 +7,35 @@ import org.junit.Test;
 import com.jive.sip.parsers.core.BaseParserTest;
 import com.jive.sip.parsers.core.QuotedStringParser;
 
-public class QuotedStringParserTest extends BaseParserTest<CharSequence>
-{
+public class QuotedStringParserTest extends BaseParserTest<CharSequence> {
 
-  public QuotedStringParserTest()
-  {
+  public QuotedStringParserTest() {
     super(QuotedStringParser.INSTANCE);
   }
 
   @Test
-  public void testEmptyString()
-  {
+  public void testEmptyString() {
     assertEquals("", this.parse("\"\""));
   }
 
   @Test
-  public void testLeadingSWS()
-  {
+  public void testLeadingSWS() {
     assertEquals("", this.parse(" \"\""));
     assertEquals("", this.parse("  \"\""));
   }
 
   @Test
-  public void testOneChar()
-  {
+  public void testOneChar() {
     assertEquals("1", this.parse("\"1\""));
   }
 
   @Test
-  public void testLWS()
-  {
+  public void testLWS() {
     assertEquals(" a ", this.parse("\" a \""));
   }
 
   @Test
-  public void testEscape()
-  {
+  public void testEscape() {
     assertEquals("\\\"", this.parse("\"\\\"\""));
   }
 }

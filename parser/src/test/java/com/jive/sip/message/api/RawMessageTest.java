@@ -14,12 +14,10 @@ import com.jive.sip.base.api.RawMessage;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  *
  */
-public class RawMessageTest
-{
+public class RawMessageTest {
 
   @Test
-  public void test()
-  {
+  public void test() {
     RawMessage msg1 = RawMessage.create("OPTIONS sip:carol@chicago.com SIP/2.0");
     msg1.addHeader(new RawHeader("Via", "SIP/2.0/UDP pc33.atlanta.com;branch=z9hG4bKhjhs8ass877"));
     msg1.addHeader(new RawHeader("Max-Forwards", "70"));
@@ -30,7 +28,7 @@ public class RawMessageTest
     msg1.addHeader(new RawHeader("Contact", "<sip:alice@pc33.atlanta.com>"));
     msg1.addHeader(new RawHeader("Accept", "application/sdp"));
     msg1.addHeader(new RawHeader("Content-Length", "0"));
-    
+
     RawMessage msg2 = RawMessage.create("OPTIONS sip:carol@chicago.com SIP/2.0");
     msg2.addHeader(new RawHeader("Via", "SIP/2.0/UDP pc33.atlanta.com;branch=z9hG4bKhjhs8ass877"));
     msg2.addHeader(new RawHeader("Max-Forwards", "70"));
@@ -41,8 +39,8 @@ public class RawMessageTest
     msg2.addHeader(new RawHeader("Contact", "<sip:alice@pc33.atlanta.com>"));
     msg2.addHeader(new RawHeader("Accept", "application/sdp"));
     msg2.addHeader(new RawHeader("Content-Length", "0"));
-    
-    assertEquals(msg1,  msg2);
+
+    assertEquals(msg1, msg2);
   }
 
 }

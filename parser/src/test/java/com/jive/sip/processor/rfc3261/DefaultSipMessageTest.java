@@ -27,11 +27,9 @@ import com.jive.sip.uri.api.SipUri;
  * @author Jeff Hutchins {@code <jhutchins@getjive.com>}
  * 
  */
-public class DefaultSipMessageTest
-{
+public class DefaultSipMessageTest {
   @Test
-  public void getContacts()
-  {
+  public void getContacts() {
     SipMessage message;
     Optional<ContactSet> contacts;
 
@@ -40,30 +38,46 @@ public class DefaultSipMessageTest
     assertFalse(message.getContacts().isPresent());
 
     final String value = "getjive.com";
-    message = new DefaultSipRequest(null, SipMethod.INVITE, new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)), "2.0",
-        Lists.newArrayList(new RawHeader("Contact", "sip:" + value)), null);
+    message =
+      new DefaultSipRequest(
+        null,
+        SipMethod.INVITE,
+        new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)),
+        "2.0",
+        Lists.newArrayList(new RawHeader("Contact", "sip:" + value)),
+        null);
     contacts = message.getContacts();
     assertTrue(contacts.isPresent());
     assertFalse(contacts.get().isStar());
     assertEquals(1, contacts.get().size());
-    for (final NameAddr addr : contacts.get())
-    {
+    for (final NameAddr addr : contacts.get()) {
       assertEquals(new NameAddr(new RawUri("sip", value)), addr);
     }
 
-    message = new DefaultSipRequest(null, SipMethod.INVITE, new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)), "2.0",
-        Lists.newArrayList(new RawHeader("Contact", "*")), null);
+    message =
+      new DefaultSipRequest(
+        null,
+        SipMethod.INVITE,
+        new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)),
+        "2.0",
+        Lists.newArrayList(new RawHeader("Contact", "*")),
+        null);
     contacts = message.getContacts();
     assertTrue(contacts.isPresent());
     assertTrue(contacts.get().isStar());
   }
 
   @Test
-  public void parseExpires()
-  {
+  public void parseExpires() {
     UnsignedInteger maxExpires = UnsignedInteger.valueOf(2147483647);
-    SipRequest message = new DefaultSipRequest(null, SipMethod.INVITE, new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)), "2.0",
-            Lists.newArrayList(new RawHeader("Expires", maxExpires.toString())), null);
+    SipRequest message =
+      new DefaultSipRequest(
+        null,
+        SipMethod.INVITE,
+        new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)),
+        "2.0",
+        Lists.newArrayList(new RawHeader("Expires", maxExpires.toString())),
+        null);
 
     Optional<UnsignedInteger> expires = message.getExpires();
 

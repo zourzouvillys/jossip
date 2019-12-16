@@ -15,17 +15,14 @@ import com.jive.sip.processor.rfc3261.parsing.SipMessageParseFailureException;
 /**
  */
 
-public class CSeqParserTest extends BaseParserTest<CSeq>
-{
+public class CSeqParserTest extends BaseParserTest<CSeq> {
 
-  public CSeqParserTest()
-  {
+  public CSeqParserTest() {
     super(new CSeqParser());
   }
 
   @Test
-  public void testParsing() throws SipMessageParseFailureException
-  {
+  public void testParsing() throws SipMessageParseFailureException {
     assertEquals(new CSeq(1, SipMethod.INVITE), this.parse("1 INVITE"));
     assertEquals(new CSeq(1, SipMethod.INVITE), this.parse("1      INVITE"));
     assertEquals(new CSeq(0, SipMethod.INVITE), this.parse("0 INVITE"));

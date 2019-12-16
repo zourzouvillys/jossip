@@ -21,11 +21,9 @@ import com.jive.sip.processor.rfc3261.parsing.SipMessageParseFailureException;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class AuthorizationParserTest extends BaseParserTest<Authorization>
-{
+public class AuthorizationParserTest extends BaseParserTest<Authorization> {
 
-  public AuthorizationParserTest()
-  {
+  public AuthorizationParserTest() {
     super(new AuthorizationParser());
   }
 
@@ -39,17 +37,18 @@ public class AuthorizationParserTest extends BaseParserTest<Authorization>
 
   @Ignore
   @Test
-  public void testAuthorizationHeader() throws SipMessageParseFailureException
-  {
-    final String test = "Digest username=\"Alice\", realm=\"atlanta.com\", "
+  public void testAuthorizationHeader() throws SipMessageParseFailureException {
+    final String test =
+      "Digest username=\"Alice\", realm=\"atlanta.com\", "
         + "nonce=\"84a4cc6f3082121f32b42a2187831a9e\", response=\"7587245234b3434cc3412213e5f113a5432\"";
 
-    assertEquals(new Authorization("Digest",
-        DefaultParameters.from(Lists.newArrayList(new RawParameter("username", new QuotedStringParameterValue("\"Alice\"")),
-            new RawParameter("realm", new QuotedStringParameterValue("\"atlanta.com\"")),
-            new RawParameter("nonce", new TokenParameterValue("84a4cc6f3082121f32b42a2187831a9e")),
-            new RawParameter("response", new TokenParameterValue("7587245234b3434cc3412213e5f113a5432"))))),
-        this.parse(test));
+    assertEquals(new Authorization(
+      "Digest",
+      DefaultParameters.from(Lists.newArrayList(new RawParameter("username", new QuotedStringParameterValue("\"Alice\"")),
+        new RawParameter("realm", new QuotedStringParameterValue("\"atlanta.com\"")),
+        new RawParameter("nonce", new TokenParameterValue("84a4cc6f3082121f32b42a2187831a9e")),
+        new RawParameter("response", new TokenParameterValue("7587245234b3434cc3412213e5f113a5432"))))),
+      this.parse(test));
   }
 
 }

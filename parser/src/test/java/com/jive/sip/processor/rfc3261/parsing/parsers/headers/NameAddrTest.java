@@ -12,11 +12,9 @@ import com.jive.sip.parsers.core.BaseParserTest;
  * @author Jeff Hutchins {@code <jhutchins@getjive.com>}
  *
  */
-public class NameAddrTest extends  BaseParserTest<NameAddr>
-{
+public class NameAddrTest extends BaseParserTest<NameAddr> {
 
-  public NameAddrTest()
-  {
+  public NameAddrTest() {
     super(NameAddrParser.INSTANCE);
   }
 

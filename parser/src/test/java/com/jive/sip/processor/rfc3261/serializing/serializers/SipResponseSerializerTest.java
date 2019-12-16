@@ -19,9 +19,9 @@ import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  * 
  */
-public class SipResponseSerializerTest
-{
-  private final String result = "SIP/2.0 200 OK\r\n"
+public class SipResponseSerializerTest {
+  private final String result =
+    "SIP/2.0 200 OK\r\n"
       + "Via: SIP/2.0/UDP pc33.atlanta.com;branch=z9hG4bKhjhs8ass877\r\n"
       + "Max-Forwards: 70\r\n"
       + "To: <sip:carol@chicago.com>\r\n"
@@ -36,8 +36,7 @@ public class SipResponseSerializerTest
   private final SipMessageManager manager = new RfcSipMessageManager();
 
   @Before
-  public void setup()
-  {
+  public void setup() {
     final RawMessage msg = RawMessage.create("SIP/2.0 200 OK");
     msg.addHeader(new RawHeader("Via", "SIP/2.0/UDP pc33.atlanta.com;branch=z9hG4bKhjhs8ass877"));
     msg.addHeader(new RawHeader("Max-Forwards", "70"));
@@ -52,8 +51,7 @@ public class SipResponseSerializerTest
   }
 
   @Test
-  public void test()
-  {
+  public void test() {
     final SipResponseSerializer serializer = new SipResponseSerializer(new RfcSerializerManagerBuilder().build());
     assertEquals(this.result, serializer.serialize(this.msg));
   }

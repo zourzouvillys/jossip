@@ -8,12 +8,10 @@ import com.jive.sip.parsers.api.ParserInput;
 import com.jive.sip.parsers.core.ByteParserInput;
 import com.jive.sip.parsers.core.DefaultParserContext;
 
-public class UnsignedIntegerParserTest
-{
+public class UnsignedIntegerParserTest {
 
   @Test
-  public void test()
-  {
+  public void test() {
     final ParserInput in = ByteParserInput.fromString("1");
     final ValueValidator<UnsignedInteger> validator = ValueValidator.expect(UnsignedInteger.valueOf(1));
     new UnsignedIntegerParser(1, 4).find(new DefaultParserContext(in), validator);
@@ -21,8 +19,7 @@ public class UnsignedIntegerParserTest
   }
 
   @Test
-  public void testTrailing()
-  {
+  public void testTrailing() {
     final ParserInput in = ByteParserInput.fromString("1a");
     final ValueValidator<UnsignedInteger> validator = ValueValidator.expect(UnsignedInteger.valueOf(1));
     new UnsignedIntegerParser(1, 4).find(new DefaultParserContext(in), validator);
@@ -31,8 +28,7 @@ public class UnsignedIntegerParserTest
   }
 
   @Test
-  public void testLeading()
-  {
+  public void testLeading() {
     final ParserInput in = ByteParserInput.fromString("12229");
     final ValueValidator<UnsignedInteger> validator = ValueValidator.expect(UnsignedInteger.valueOf(1222));
     new UnsignedIntegerParser(1, 4).find(new DefaultParserContext(in), validator);

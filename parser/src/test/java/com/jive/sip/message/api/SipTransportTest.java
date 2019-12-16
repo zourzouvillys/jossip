@@ -6,12 +6,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class SipTransportTest
-{
+public class SipTransportTest {
 
   @Test
-  public void test()
-  {
+  public void test() {
     assertEquals(SipTransport.UDP, SipTransport.fromString("UDP"));
     assertEquals(SipTransport.UDP, SipTransport.fromString("uDp"));
     assertEquals(SipTransport.UDP, SipTransport.fromString("udp"));

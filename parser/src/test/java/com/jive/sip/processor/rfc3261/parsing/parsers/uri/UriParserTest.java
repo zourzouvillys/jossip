@@ -8,17 +8,14 @@ import com.jive.sip.parsers.core.BaseParserTest;
 import com.jive.sip.processor.uri.RawUri;
 import com.jive.sip.uri.api.Uri;
 
-public class UriParserTest extends BaseParserTest<Uri>
-{
+public class UriParserTest extends BaseParserTest<Uri> {
 
-  public UriParserTest()
-  {
+  public UriParserTest() {
     super(UriParser.URI);
   }
 
   @Test
-  public void test()
-  {
+  public void test() {
     assertEquals(new RawUri("unknown+scheme", "x"), this.parse("unknown+scheme:x"));
     assertEquals(new RawUri("unknown+scheme", "//x"), this.parse("unknown+scheme://x"));
     assertEquals(new RawUri("unknown+scheme", "/x?mo"), this.parse("unknown+scheme:/x?mo"));

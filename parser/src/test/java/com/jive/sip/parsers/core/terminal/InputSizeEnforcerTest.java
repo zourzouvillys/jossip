@@ -9,17 +9,14 @@ import com.jive.sip.parsers.api.Parser;
 import com.jive.sip.parsers.core.BaseParserTest;
 import com.jive.sip.parsers.core.ParserUtils;
 
-public class InputSizeEnforcerTest extends BaseParserTest<CharSequence>
-{
+public class InputSizeEnforcerTest extends BaseParserTest<CharSequence> {
 
-  public InputSizeEnforcerTest()
-  {
+  public InputSizeEnforcerTest() {
     super(ParserUtils.ALPHANUM);
   }
 
   @Test
-  public void test1()
-  {
+  public void test1() {
     final Parser<CharSequence> parser = new InputSizeEnforcer<CharSequence>(this.parser, Range.closed(5, 10));
     assertEquals("abcdefg", this.parse(parser, "abcdefg"));
     assertEquals(null, this.parse(parser, "abc", 3));
