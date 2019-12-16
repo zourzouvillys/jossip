@@ -29,15 +29,15 @@ public class DialogId {
   private final String remoteTag;
 
   public static DialogId fromRemote(final SipRequest req) {
-    return new DialogId(req.getCallId(), req.getToTag(), req.getFromTag());
+    return new DialogId(req.callId(), req.toTag(), req.fromTag());
   }
 
   public static DialogId fromLocal(final SipResponse res) {
-    return new DialogId(res.getCallId(), res.getFromTag(), res.getToTag());
+    return new DialogId(res.callId(), res.fromTag(), res.toTag());
   }
 
   public static DialogId fromLocal(final SipRequest req) {
-    return new DialogId(req.getCallId(), req.getFromTag(), req.getToTag());
+    return new DialogId(req.callId(), req.fromTag(), req.toTag());
   }
 
   /**
@@ -57,12 +57,12 @@ public class DialogId {
    */
 
   public static DialogId fromRemote(final SipRequest req, final String localTag) {
-    Preconditions.checkState(req.getToTag() == null, "sipreq had tag in To header");
-    return new DialogId(req.getCallId(), localTag, req.getFromTag());
+    Preconditions.checkState(req.toTag() == null, "sipreq had tag in To header");
+    return new DialogId(req.callId(), localTag, req.fromTag());
   }
 
   public static DialogId fromRemote(SipResponse res) {
-    return new DialogId(res.getCallId(), res.getFromTag(), res.getToTag());
+    return new DialogId(res.callId(), res.fromTag(), res.toTag());
   }
 
   /**

@@ -72,11 +72,11 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
     final String bodyString;
 
     if (this.body != null && this.body.length > 0)
-      bodyString = String.format(" [%s, %d bytes]", this.getContentType().orElse("???"), this.body.length);
+      bodyString = String.format(" [%s, %d bytes]", this.contentType().orElse("???"), this.body.length);
     else
       bodyString = "";
 
-    if (this.getCSeq() == null) {
+    if (this.cseq() == null) {
       return String.format("%d %s",
         this.getStatus().code(),
         this.getStatus().reason()) + bodyString;
@@ -84,8 +84,8 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
     return String.format("%d %s (%d %s)",
       this.getStatus().code(),
       this.getStatus().reason(),
-      this.getCSeq().sequence().longValue(),
-      this.getCSeq().method()) + bodyString;
+      this.cseq().sequence().longValue(),
+      this.cseq().method()) + bodyString;
   }
 
   @Override
@@ -109,7 +109,7 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   }
 
   @Override
-  public String getVersion() {
+  public String version() {
     return this.version;
   }
 
@@ -275,7 +275,7 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   @Override
   public SipResponse withIncrementedCSeq(final SipMethod method) {
     return this.withCSeq(
-      this.getCSeq().sequence().plus(UnsignedInteger.ONE).longValue(),
+      this.cseq().sequence().plus(UnsignedInteger.ONE).longValue(),
       method);
   }
 

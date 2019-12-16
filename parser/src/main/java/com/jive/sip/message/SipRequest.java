@@ -26,64 +26,25 @@ import com.jive.sip.uri.Uri;
  */
 public interface SipRequest extends SipMessage {
 
-  SipMethod getMethod();
+  SipMethod method();
 
-  Uri getUri();
-
-  /**
-   *
-   * @return The Max-Forwards value for this request.
-   */
+  Uri uri();
 
   Optional<UnsignedInteger> getMaxForwards();
 
-  /**
-   *
-   * @return
-   */
-
   Optional<TokenSet> getProxyRequire();
-
-  /**
-   *
-   * @return
-   */
 
   List<Authorization> getProxyAuthorization();
 
-  /**
-   *
-   * @return
-   */
-
   List<Authorization> getAuthorization();
 
-  /**
-   * @return
-   */
   Optional<UnsignedInteger> getExpires();
 
-  /**
-   *
-   * @return
-   */
   List<NameAddr> getPath();
 
-  /**
-   * @return
-   */
   Optional<EventSpec> getEvent();
 
-  /**
-   * @return
-   */
-
   Optional<CharSequence> getUserAgent();
-
-  /**
-   *
-   * @return
-   */
 
   Optional<Replaces> getReplaces();
 
@@ -91,26 +52,21 @@ public interface SipRequest extends SipMessage {
 
   Optional<NameAddr> getReferredBy();
 
-  /**
-   * Returns the disposition tokens provided in the request.
-   *
-   * @return
-   */
-
   Optional<TokenSet> getRequestDisposition();
-
-  /**
-   *
-   * @return
-   */
 
   Optional<TokenSet> getPrivacy();
 
-  /**
-   * The Resource-Priority header.
-   */
-
   List<RValue> getResourcePriority();
+
+  Optional<NameAddr> getPServedUser();
+
+  Optional<RAck> getRAck();
+
+  List<NameAddr> getPAssertedIdentity();
+
+  Optional<Reason> getReason();
+
+  Optional<TargetDialog> getTargetDialog();
 
   /**
    *
@@ -154,14 +110,6 @@ public interface SipRequest extends SipMessage {
 
   SipRequest withPrepended(final RawHeader raw);
 
-  Optional<NameAddr> getPServedUser();
-
-  /**
-   *
-   */
-
-  Optional<RAck> getRAck();
-
   /**
    * Each of the P-Asseted-Identity values in the SIP-Request.
    *
@@ -169,10 +117,6 @@ public interface SipRequest extends SipMessage {
    *
    * @return
    */
-
-  List<NameAddr> getPAssertedIdentity();
-
-  Optional<Reason> getReason();
 
   @Override
   SipRequest withFrom(final NameAddr na);
@@ -191,7 +135,5 @@ public interface SipRequest extends SipMessage {
 
   @Override
   SipRequest withIncrementedCSeq(final SipMethod method);
-
-  Optional<TargetDialog> getTargetDialog();
 
 }

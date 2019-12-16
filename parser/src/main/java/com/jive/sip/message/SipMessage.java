@@ -64,7 +64,7 @@ public interface SipMessage extends Serializable {
    * @return an immutable collection of raw headers.
    */
 
-  List<RawHeader> getHeaders();
+  List<RawHeader> headers();
 
   /**
    * The content of this message.
@@ -80,19 +80,19 @@ public interface SipMessage extends Serializable {
    * The parsed Via headers.
    */
 
-  List<Via> getVias();
+  List<Via> vias();
 
   /**
    * @return URIHeader
    */
 
-  NameAddr getTo();
+  NameAddr to();
 
   /**
    * @return URIHeader
    */
 
-  NameAddr getFrom();
+  NameAddr from();
 
   /*
    * ===== Common SIP Values ===== There are here as helpers.
@@ -104,7 +104,7 @@ public interface SipMessage extends Serializable {
    * @return The call-id, or null if one is not present in the message.
    */
 
-  CallId getCallId();
+  CallId callId();
 
   /**
    * The value of the 'tag' parameter in the 'From' header,
@@ -113,7 +113,7 @@ public interface SipMessage extends Serializable {
    *         parameter.
    */
 
-  String getFromTag();
+  String fromTag();
 
   /**
    * The value of the 'tag' parameter in the 'To' header,
@@ -121,7 +121,7 @@ public interface SipMessage extends Serializable {
    * @return The value or null if the To header doesn't exist or doesn't contain a 'tag' parameter.
    */
 
-  String getToTag();
+  String toTag();
 
   /**
    * The value of the address section of the From header.
@@ -129,8 +129,8 @@ public interface SipMessage extends Serializable {
    * @return String
    */
 
-  default Uri getFromAddress() {
-    return getFrom().address();
+  default Uri fromAddress() {
+    return from().address();
   }
 
   /**
@@ -139,7 +139,7 @@ public interface SipMessage extends Serializable {
    * @return String
    */
 
-  Uri getToAddress();
+  Uri toAddress();
 
   /**
    * The value(s) for the Contact header(s) or Optional.absent.
@@ -147,7 +147,7 @@ public interface SipMessage extends Serializable {
    * @return
    */
 
-  Optional<ContactSet> getContacts();
+  Optional<ContactSet> contacts();
 
   /**
    * The parsed CSeq header.
@@ -155,7 +155,7 @@ public interface SipMessage extends Serializable {
    * @return
    */
 
-  CSeq getCSeq();
+  CSeq cseq();
 
   /**
    * The parsed Route headers.
@@ -163,7 +163,7 @@ public interface SipMessage extends Serializable {
    * @return
    */
 
-  List<NameAddr> getRoute();
+  List<NameAddr> route();
 
   /**
    * The parsed Record-Route headers.
@@ -171,20 +171,20 @@ public interface SipMessage extends Serializable {
    * @return
    */
 
-  List<NameAddr> getRecordRoute();
+  List<NameAddr> recordRoute();
 
   /**
    *
    */
 
-  Optional<SessionExpires> getSessionExpires();
+  Optional<SessionExpires> sessionExpires();
 
   /**
    *
    * @return
    */
 
-  Optional<String> getSessionId();
+  Optional<String> sessionId();
 
   /**
    * Returns a {@link RawHeader} instance for the value of the header with the given name.
@@ -212,7 +212,7 @@ public interface SipMessage extends Serializable {
    */
 
   @NonNull
-  HistoryInfo getHistoryInfo();
+  HistoryInfo historyInfo();
 
   /**
    * Visitors which can be used to walk all parts of the message.
@@ -227,34 +227,34 @@ public interface SipMessage extends Serializable {
    * The SIP version, e.g "SIP/2.0".
    */
 
-  String getVersion();
+  String version();
 
   /**
    *
    * @return
    */
 
-  Optional<List<MIMEType>> getAccept();
+  Optional<List<MIMEType>> accept();
 
   /**
    *
    * @return
    */
 
-  Optional<TokenSet> getRequire();
+  Optional<TokenSet> require();
 
   /**
    *
    * @return
    */
 
-  Optional<TokenSet> getSupported();
+  Optional<TokenSet> supported();
 
   /**
    *
    */
 
-  List<ParameterizedUri> getAlertInfo();
+  List<ParameterizedUri> alertInfo();
 
   /**
    * Runs through each header and ensures it is valid.
@@ -268,7 +268,7 @@ public interface SipMessage extends Serializable {
    * @return
    */
 
-  public BranchId getBranchId();
+  public BranchId branchId();
 
   public SipMessage withHeader(final RawHeader header);
 
@@ -280,9 +280,9 @@ public interface SipMessage extends Serializable {
 
   public SipMessage withBody(final String contentType, final byte[] body);
 
-  public Optional<String> getContentType();
+  public Optional<String> contentType();
 
-  Optional<TokenSet> getAllow();
+  Optional<TokenSet> allow();
 
   /**
    * @param name
@@ -301,15 +301,15 @@ public interface SipMessage extends Serializable {
 
   SipMessage withIncrementedCSeq(final SipMethod method);
 
-  Optional<ContentDisposition> getContentDisposition();
+  Optional<ContentDisposition> contentDisposition();
 
-  Optional<MinSE> getMinSE();
+  Optional<MinSE> minSE();
 
   default Optional<Via> topVia() {
-    if (getVias().isEmpty()) {
+    if (vias().isEmpty()) {
       return Optional.empty();
     }
-    return Optional.of(getVias().get(0));
+    return Optional.of(vias().get(0));
   }
 
   default <T> T apply(Function<SipMessage, T> applicator) {

@@ -110,28 +110,28 @@ public class MutableSipResponse extends MutableSipMessage<MutableSipResponse> {
   public static MutableSipResponse createResponse(final SipRequest req, final SipResponseStatus status) {
     final MutableSipResponse res = new MutableSipResponse(status);
 
-    if ((req.getVias() != null) && !req.getVias().isEmpty()) {
-      res.via(req.getVias());
+    if ((req.vias() != null) && !req.vias().isEmpty()) {
+      res.via(req.vias());
     }
 
-    if (req.getTo() != null) {
-      res.to(req.getTo());
+    if (req.to() != null) {
+      res.to(req.to());
     }
 
-    if (req.getFrom() != null) {
-      res.from(req.getFrom());
+    if (req.from() != null) {
+      res.from(req.from());
     }
 
-    if (req.getCallId() != null) {
-      res.callId(req.getCallId().getValue());
+    if (req.callId() != null) {
+      res.callId(req.callId().getValue());
     }
 
-    if (req.getCSeq() != null) {
-      res.cseq(req.getCSeq().sequence().longValue(), req.getCSeq().method());
+    if (req.cseq() != null) {
+      res.cseq(req.cseq().sequence().longValue(), req.cseq().method());
     }
 
-    if ((req.getRecordRoute() != null) && !req.getRecordRoute().isEmpty()) {
-      res.recordRoute(req.getRecordRoute());
+    if ((req.recordRoute() != null) && !req.recordRoute().isEmpty()) {
+      res.recordRoute(req.recordRoute());
     }
 
     final Optional<RawHeader> session = req.getHeader("Session-ID");
@@ -139,9 +139,9 @@ public class MutableSipResponse extends MutableSipMessage<MutableSipResponse> {
       res.session(session.get().value());
     }
 
-    if (!req.getHistoryInfo().isEmpty()) {
+    if (!req.historyInfo().isEmpty()) {
       // todo: check privacy?
-      res.historyInfo(req.getHistoryInfo());
+      res.historyInfo(req.historyInfo());
     }
 
     return res;

@@ -42,7 +42,7 @@ public class RfcSipMessageManagerTest {
     final SipUri uri = SipUriParser.parse("sip:theo@test.com;method=REGISTER?Replaces=xxx%3Bto-tag%3Dyyy%3Bfrom-tag%3Dzzz");
     final SipRequest req = this.manager.fromUri(uri, SipMethod.INVITE);
     final Replaces rep = req.getReplaces().get();
-    assertEquals(SipMethod.REGISTER, req.getMethod());
+    assertEquals(SipMethod.REGISTER, req.method());
     assertEquals(new CallId("xxx"), rep.callId());
     assertEquals("yyy", rep.getToTag());
     assertEquals("zzz", rep.getFromTag());

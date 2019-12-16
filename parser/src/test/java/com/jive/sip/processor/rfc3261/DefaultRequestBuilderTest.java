@@ -39,7 +39,7 @@ public class DefaultRequestBuilderTest {
     this.builder.setCallID(new CallId("jhutchins"));
     final SipRequest request = this.builder.build();
 
-    assertEquals(new CSeq(1, SipMethod.OPTIONS), request.getCSeq());
+    assertEquals(new CSeq(1, SipMethod.OPTIONS), request.cseq());
   }
 
   @Test
@@ -52,7 +52,7 @@ public class DefaultRequestBuilderTest {
     this.builder.setCSeq(new CSeq(5, SipMethod.OPTIONS));
     final SipRequest request = this.builder.build();
 
-    assertEquals(new CSeq(5, SipMethod.OPTIONS), request.getCSeq());
+    assertEquals(new CSeq(5, SipMethod.OPTIONS), request.cseq());
   }
 
   @Test
@@ -67,7 +67,7 @@ public class DefaultRequestBuilderTest {
     request = this.builder.build();
     request = this.builder.build();
 
-    assertEquals(new CSeq(7, SipMethod.OPTIONS), request.getCSeq());
+    assertEquals(new CSeq(7, SipMethod.OPTIONS), request.cseq());
   }
 
   @Test
@@ -80,7 +80,7 @@ public class DefaultRequestBuilderTest {
     this.builder.setHeader("CSeq", (new CSeq(5, SipMethod.OPTIONS)));
     final SipRequest request = this.builder.build();
 
-    assertEquals(new CSeq(5, SipMethod.OPTIONS), request.getCSeq());
+    assertEquals(new CSeq(5, SipMethod.OPTIONS), request.cseq());
   }
 
   @Test
@@ -93,7 +93,7 @@ public class DefaultRequestBuilderTest {
     this.builder.setHeader("cseq", (new CSeq(5, SipMethod.OPTIONS)));
     final SipRequest request = this.builder.build();
 
-    assertEquals(new CSeq(5, SipMethod.OPTIONS), request.getCSeq());
+    assertEquals(new CSeq(5, SipMethod.OPTIONS), request.cseq());
   }
 
   @Test
@@ -170,7 +170,7 @@ public class DefaultRequestBuilderTest {
     this.builder.setVia(expected);
     final SipRequest request = this.builder.build();
 
-    final Collection<Via> vias = request.getVias();
+    final Collection<Via> vias = request.vias();
     assertEquals(vias.size(), 1);
     for (final Via via : vias) {
       assertEquals(via, expected);
@@ -190,7 +190,7 @@ public class DefaultRequestBuilderTest {
     this.builder.setHeader("Via", expected);
     final SipRequest request = this.builder.build();
 
-    final Collection<Via> vias = request.getVias();
+    final Collection<Via> vias = request.vias();
     assertEquals(vias.size(), 1);
     for (final Via via : vias) {
       assertEquals(via, expected);
@@ -210,7 +210,7 @@ public class DefaultRequestBuilderTest {
     this.builder.setHeader("VIA", expected);
     final SipRequest request = this.builder.build();
 
-    final Collection<Via> vias = request.getVias();
+    final Collection<Via> vias = request.vias();
     assertEquals(vias.size(), 1);
     for (final Via via : vias) {
       assertEquals(via, expected);
@@ -230,7 +230,7 @@ public class DefaultRequestBuilderTest {
     this.builder.setHeader("v", expected);
     final SipRequest request = this.builder.build();
 
-    final Collection<Via> vias = request.getVias();
+    final Collection<Via> vias = request.vias();
     assertEquals(vias.size(), 1);
     for (final Via via : vias) {
       assertEquals(via, expected);

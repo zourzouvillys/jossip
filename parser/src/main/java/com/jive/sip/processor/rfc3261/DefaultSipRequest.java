@@ -110,8 +110,8 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   @Override
   public String toString() {
     if (this.body != null && this.body.length > 0)
-      return String.format("%s %s [%s, %d bytes]", getMethod(), getUri(), this.getContentType().orElse("???"), this.body.length);
-    return String.format("%s %s", getMethod(), getUri());
+      return String.format("%s %s [%s, %d bytes]", method(), uri(), this.contentType().orElse("???"), this.body.length);
+    return String.format("%s %s", method(), uri());
   }
 
   @Override
@@ -125,7 +125,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   }
 
   @Override
-  public List<NameAddr> getRecordRoute() {
+  public List<NameAddr> recordRoute() {
     return this.getHeader(RECORD_ROUTE).orElse(Collections.<NameAddr>emptyList());
   }
 
@@ -247,7 +247,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   }
 
   @Override
-  public String getVersion() {
+  public String version() {
     return this.version;
   }
 
@@ -429,7 +429,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
 
   @Override
   public SipRequest withIncrementedCSeq(final SipMethod method) {
-    return this.withCSeq(this.getCSeq().sequence().plus(UnsignedInteger.ONE).longValue(), method);
+    return this.withCSeq(this.cseq().sequence().plus(UnsignedInteger.ONE).longValue(), method);
   }
 
   @Override
@@ -438,12 +438,12 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   }
 
   @Override
-  public SipMethod getMethod() {
+  public SipMethod method() {
     return this.method;
   }
 
   @Override
-  public Uri getUri() {
+  public Uri uri() {
     return this.uri;
   }
 

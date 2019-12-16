@@ -244,7 +244,7 @@ public class RfcSipMessageManager implements SipMessageManager {
 
     builder.convertFromResponse(res);
     builder.setMethod(SipMethod.ACK);
-    builder.setCSeq(res.getCSeq().withMethod(SipMethod.ACK));
+    builder.setCSeq(res.cseq().withMethod(SipMethod.ACK));
 
     if ((route != null) && !route.isEmpty()) {
       builder.setRoute(route);
@@ -258,19 +258,19 @@ public class RfcSipMessageManager implements SipMessageManager {
 
     final DefaultRequestBuilder builder = new DefaultRequestBuilder(this);
 
-    builder.setRequestUri(original.getUri());
-    builder.setTo(original.getTo());
-    builder.setFrom(original.getFrom());
-    builder.setCallID(original.getCallId());
+    builder.setRequestUri(original.uri());
+    builder.setTo(original.to());
+    builder.setFrom(original.from());
+    builder.setCallID(original.callId());
     builder.setMethod(SipMethod.CANCEL);
-    builder.setCSeq(original.getCSeq().withMethod(SipMethod.CANCEL));
+    builder.setCSeq(original.cseq().withMethod(SipMethod.CANCEL));
 
     if (reason != null) {
       builder.setHeader("Reason", reason);
     }
 
-    if ((original.getRoute() != null) && !original.getRoute().isEmpty()) {
-      builder.setRoute(original.getRoute());
+    if ((original.route() != null) && !original.route().isEmpty()) {
+      builder.setRoute(original.route());
     }
 
     return builder.build();

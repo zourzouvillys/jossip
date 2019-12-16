@@ -136,16 +136,16 @@ public class DefaultRequestBuilder implements RequestBuilder {
 
   @Override
   public RequestBuilder convertFromResponse(final SipResponse response) {
-    this.callID = response.getCallId();
-    this.from = response.getFrom();
-    this.to = response.getTo();
+    this.callID = response.callId();
+    this.from = response.from();
+    this.to = response.to();
 
-    if (response.getContacts().isPresent() && (response.getContacts().get().size() > 0)) {
+    if (response.contacts().isPresent() && (response.contacts().get().size() > 0)) {
       // should never generate a request with R-URI that doesn't come fron the contact.
-      this.rUri = response.getContacts().get().iterator().next().address();
+      this.rUri = response.contacts().get().iterator().next().address();
     }
     else {
-      this.rUri = response.getToAddress();
+      this.rUri = response.toAddress();
     }
     return this;
   }

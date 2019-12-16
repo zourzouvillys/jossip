@@ -35,7 +35,7 @@ public class DefaultSipMessageTest {
 
     // No contacts
     message = new DefaultSipRequest(null, SipMethod.INVITE, new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)));
-    assertFalse(message.getContacts().isPresent());
+    assertFalse(message.contacts().isPresent());
 
     final String value = "getjive.com";
     message =
@@ -46,7 +46,7 @@ public class DefaultSipMessageTest {
         "2.0",
         Lists.newArrayList(new RawHeader("Contact", "sip:" + value)),
         null);
-    contacts = message.getContacts();
+    contacts = message.contacts();
     assertTrue(contacts.isPresent());
     assertFalse(contacts.get().isStar());
     assertEquals(1, contacts.get().size());
@@ -62,7 +62,7 @@ public class DefaultSipMessageTest {
         "2.0",
         Lists.newArrayList(new RawHeader("Contact", "*")),
         null);
-    contacts = message.getContacts();
+    contacts = message.contacts();
     assertTrue(contacts.isPresent());
     assertTrue(contacts.get().isStar());
   }

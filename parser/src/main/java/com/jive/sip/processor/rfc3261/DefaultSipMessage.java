@@ -265,7 +265,7 @@ public abstract class DefaultSipMessage implements SipMessage {
   }
 
   @Override
-  public List<RawHeader> getHeaders() {
+  public List<RawHeader> headers() {
     if (this.headers == null) {
       return ImmutableList.of();
     }
@@ -275,7 +275,7 @@ public abstract class DefaultSipMessage implements SipMessage {
   @Override
   public Optional<RawHeader> getHeader(String name) {
     name = name.toLowerCase();
-    for (final RawHeader header : getHeaders()) {
+    for (final RawHeader header : headers()) {
       if (name.toLowerCase().equals(header.name().toLowerCase())) {
         return Optional.of(header);
       }
@@ -284,39 +284,39 @@ public abstract class DefaultSipMessage implements SipMessage {
   }
 
   @Override
-  public Optional<String> getContentType() {
+  public Optional<String> contentType() {
     return this.getHeader(CONTENT_TYPE);
   }
 
   @Override
-  public Optional<ContentDisposition> getContentDisposition() {
+  public Optional<ContentDisposition> contentDisposition() {
     return this.getHeader(CONTENT_DISPOSITION);
   }
 
   @Override
-  public NameAddr getTo() {
+  public NameAddr to() {
     return getHeader(TO).orElse(null);
   }
 
   @Override
-  public NameAddr getFrom() {
+  public NameAddr from() {
     return getHeader(FROM).orElse(null);
   }
 
   @NonNull
   @Override
-  public HistoryInfo getHistoryInfo() {
+  public HistoryInfo historyInfo() {
     return getHeader(HISTORY_INFO).orElse(HistoryInfo.EMPTY);
   }
 
   @NonNull
   @Override
-  public List<ParameterizedUri> getAlertInfo() {
+  public List<ParameterizedUri> alertInfo() {
     return getHeader(ALERT_INFO).orElse(Collections.emptyList());
   }
 
   @Override
-  public Optional<String> getSessionId() {
+  public Optional<String> sessionId() {
     return this.getHeader(SESSION_ID);
   }
 
@@ -336,7 +336,7 @@ public abstract class DefaultSipMessage implements SipMessage {
   public List<RawHeader> getHeaders(final String... name) {
     final List<RawHeader> ret = Lists.newLinkedList();
     final Set<String> names = Sets.newHashSet(name);
-    for (final RawHeader header : getHeaders()) {
+    for (final RawHeader header : headers()) {
       if (names.contains(header.name())) {
         ret.add(header);
       }
@@ -349,7 +349,7 @@ public abstract class DefaultSipMessage implements SipMessage {
   protected <T> List<T> getHeaderList(final Class<T> type, final String name) {
     // TODO Fix this method since it doesn't work as advertised - jhutchins & zmorin
     final List<T> result = new ArrayList<T>();
-    for (final RawHeader header : getHeaders()) {
+    for (final RawHeader header : headers()) {
       if (name.equals(header.name())) {
         result.add((T) header);
       }
@@ -358,8 +358,8 @@ public abstract class DefaultSipMessage implements SipMessage {
   }
 
   @Override
-  public String getToTag() {
-    final NameAddr to = getTo();
+  public String toTag() {
+    final NameAddr to = to();
     if (to != null) {
       final Optional<Token> tag = to.getParameter(ParameterUtils.Tag);
       if (tag.isPresent()) {
@@ -370,14 +370,14 @@ public abstract class DefaultSipMessage implements SipMessage {
   }
 
   @Override
-  public Uri getToAddress() {
-    return getTo().address();
+  public Uri toAddress() {
+    return to().address();
   }
 
   // TODO: this should return an optional
   @Override
-  public String getFromTag() {
-    final Token val = getFrom().getParameter(ParameterUtils.Tag).orElse(null);
+  public String fromTag() {
+    final Token val = from().getParameter(ParameterUtils.Tag).orElse(null);
     if (val != null) {
       return val.toString();
     }
@@ -385,64 +385,64 @@ public abstract class DefaultSipMessage implements SipMessage {
   }
 
   @Override
-  public Optional<ContactSet> getContacts() {
+  public Optional<ContactSet> contacts() {
     return this.getHeader(CONTACT);
   }
 
   @Override
-  public CallId getCallId() {
+  public CallId callId() {
     return this.getHeader(CALL_ID).orElse(null);
   }
 
   // TODO: return optional
 
   @Override
-  public CSeq getCSeq() {
+  public CSeq cseq() {
     return this.getHeader(CSEQ).orElse(null);
   }
 
   @Override
-  public List<NameAddr> getRoute() {
+  public List<NameAddr> route() {
     return this.getHeader(ROUTE).orElse(Collections.<NameAddr>emptyList());
   }
 
   @Override
-  public List<NameAddr> getRecordRoute() {
+  public List<NameAddr> recordRoute() {
     return this.getHeader(RECORD_ROUTE).orElse(Collections.<NameAddr>emptyList());
   }
 
   @Override
-  public List<Via> getVias() {
+  public List<Via> vias() {
     return this.getHeader(VIA).orElse(Collections.<Via>emptyList());
   }
 
   @Override
-  public Optional<TokenSet> getAllow() {
+  public Optional<TokenSet> allow() {
     return this.getHeader(ALLOW);
   }
 
   @Override
-  public Optional<TokenSet> getSupported() {
+  public Optional<TokenSet> supported() {
     return this.getHeader(SUPPORTED);
   }
 
   @Override
-  public Optional<TokenSet> getRequire() {
+  public Optional<TokenSet> require() {
     return this.getHeader(REQUIRE);
   }
 
   @Override
-  public Optional<List<MIMEType>> getAccept() {
+  public Optional<List<MIMEType>> accept() {
     return this.getHeader(ACCEPT);
   }
 
   @Override
-  public Optional<SessionExpires> getSessionExpires() {
+  public Optional<SessionExpires> sessionExpires() {
     return this.getHeader(SESSION_EXPIRES);
   }
 
   @Override
-  public Optional<MinSE> getMinSE() {
+  public Optional<MinSE> minSE() {
     return this.getHeader(MIN_SE);
   }
 
@@ -462,8 +462,8 @@ public abstract class DefaultSipMessage implements SipMessage {
   }
 
   @Override
-  public BranchId getBranchId() {
-    final List<Via> vias = getVias();
+  public BranchId branchId() {
+    final List<Via> vias = vias();
     if (vias.isEmpty()) {
       return null;
     }
@@ -497,7 +497,7 @@ public abstract class DefaultSipMessage implements SipMessage {
   @Override
   public SipMessage withIncrementedCSeq(final SipMethod method) {
     return this.withCSeq(
-      this.getCSeq().sequence().plus(UnsignedInteger.ONE).longValue(),
+      this.cseq().sequence().plus(UnsignedInteger.ONE).longValue(),
       method);
   }
 

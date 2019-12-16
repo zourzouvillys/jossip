@@ -29,14 +29,14 @@ public class SipRequestSerializer extends AbstractRfcSerializer<SipRequest> {
   @Override
   public void serialize(final Writer writer, final SipRequest obj) throws IOException {
 
-    writer.append(obj.getMethod().getMethod());
+    writer.append(obj.method().getMethod());
     writer.append(RfcSerializationConstants.SP);
-    this.manager.serialize(writer, obj.getUri());
+    this.manager.serialize(writer, obj.uri());
     writer.append(RfcSerializationConstants.SP);
-    writer.append(obj.getVersion());
+    writer.append(obj.version());
     writer.append(RfcSerializationConstants.CRLF);
 
-    this.manager.serializeCollection(writer, obj.getHeaders(), RfcSerializationConstants.CRLF);
+    this.manager.serializeCollection(writer, obj.headers(), RfcSerializationConstants.CRLF);
 
     writer.append(RfcSerializationConstants.CRLF);
     writer.append(RfcSerializationConstants.CRLF);

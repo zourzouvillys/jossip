@@ -37,7 +37,7 @@ public class DigestAuthUtils {
   }
 
   public static Authorization createResponse(final SipRequest req, final DigestCredentials auth, final String user, final String pass) {
-    return createResponse(req.getMethod(), req.getUri().toString(), auth, generateNonce(), 1, user, pass);
+    return createResponse(req.method(), req.uri().toString(), auth, generateNonce(), 1, user, pass);
   }
 
   public static DigestCredentials createResponse(

@@ -53,7 +53,7 @@ public class DefaultResponseBuilder implements ResponseBuilder {
     final DefaultSipResponse res = new DefaultSipResponse(this.manager, this.status);
 
     for (final String hn : this.copy) {
-      for (final RawHeader header : req.getHeaders()) {
+      for (final RawHeader header : req.headers()) {
         if (hn.toLowerCase().equals(header.name().toLowerCase())) {
           // loop, otherwise only a single value gets copied (e.g, multiple Via headers).
 

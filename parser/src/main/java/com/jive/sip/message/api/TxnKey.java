@@ -47,17 +47,17 @@ public abstract class TxnKey {
       .of(
         msg.topVia().orElseThrow().sentBy(),
         methodFor(msg),
-        msg.getBranchId().getValueWithoutCookie());
+        msg.branchId().getValueWithoutCookie());
   }
 
   public static SipMethod methodFor(SipMessage msg) {
     if (msg instanceof SipRequest) {
-      SipMethod method = ((SipRequest) msg).getMethod();
+      SipMethod method = ((SipRequest) msg).method();
       if (method.isAck()) {
         return SipMethod.INVITE;
       }
     }
-    return msg.getCSeq().method();
+    return msg.cseq().method();
   }
 
 }

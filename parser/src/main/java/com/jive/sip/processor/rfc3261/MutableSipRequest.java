@@ -162,7 +162,7 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
 
   public static MutableSipRequest fromRequest(final SipRequest req) {
 
-    final MutableSipRequest m = new MutableSipRequest(req.getMethod(), req.getUri());
+    final MutableSipRequest m = new MutableSipRequest(req.method(), req.uri());
 
     return m;
 
@@ -205,11 +205,11 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
   }
 
   public static MutableSipRequest ack(final SipResponse res200) {
-    final MutableSipRequest ack = MutableSipRequest.create(SipMethod.ACK, res200.getContacts().get().iterator().next().address());
-    ack.cseq(res200.getCSeq().sequence(), SipMethod.ACK);
-    ack.callId(res200.getCallId());
-    ack.to(res200.getTo());
-    ack.from(res200.getFrom());
+    final MutableSipRequest ack = MutableSipRequest.create(SipMethod.ACK, res200.contacts().get().iterator().next().address());
+    ack.cseq(res200.cseq().sequence(), SipMethod.ACK);
+    ack.callId(res200.callId());
+    ack.to(res200.to());
+    ack.from(res200.from());
     return ack;
   }
 
@@ -236,13 +236,13 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
    */
 
   public static MutableSipRequest createFailureAck(final SipRequest req, final SipResponse res) {
-    return MutableSipRequest.create(SipMethod.ACK, req.getUri())
-      .callId(req.getCallId().getValue())
-      .cseq(req.getCSeq().sequence(), SipMethod.ACK)
-      .from(req.getFrom())
-      .to(res.getTo())
-      .session(res.getSessionId().orElse(null))
-      .route(req.getRoute());
+    return MutableSipRequest.create(SipMethod.ACK, req.uri())
+      .callId(req.callId().getValue())
+      .cseq(req.cseq().sequence(), SipMethod.ACK)
+      .from(req.from())
+      .to(res.to())
+      .session(res.sessionId().orElse(null))
+      .route(req.route());
   }
 
   @Override
