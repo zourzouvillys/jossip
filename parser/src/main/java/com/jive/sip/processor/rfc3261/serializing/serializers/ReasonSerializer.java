@@ -23,7 +23,7 @@ public class ReasonSerializer extends AbstractRfcSerializer<Reason> {
 
   @Override
   public void serialize(final Writer sink, final Reason obj) throws IOException {
-    sink.append(obj.getProtocol());
+    sink.append(obj.protocol());
     if (obj.getParameters().isPresent()) {
       sink.append(RfcSerializationConstants.SEMI);
       this.manager.serializeCollection(sink, obj.getParameters().get().getRawParameters(), RfcSerializationConstants.SEMI);

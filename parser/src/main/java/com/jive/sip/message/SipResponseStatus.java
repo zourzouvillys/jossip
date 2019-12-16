@@ -102,7 +102,7 @@ public class SipResponseStatus {
 
       try {
         SipResponseStatus status = (SipResponseStatus) f.get(null);
-        statuses.put(status.getCode(), status);
+        statuses.put(status.code(), status);
       }
       catch (Exception e) {
         // swallow.
@@ -121,7 +121,7 @@ public class SipResponseStatus {
 
   @Override
   public String toString() {
-    return new StringBuilder().append(getCode()).append(' ').append(getReason()).toString();
+    return new StringBuilder().append(code()).append(' ').append(reason()).toString();
   }
 
   public boolean isFinal() {

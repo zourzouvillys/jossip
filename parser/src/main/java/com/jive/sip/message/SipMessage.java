@@ -74,7 +74,7 @@ public interface SipMessage extends Serializable {
    * @return the content, as a byte array.
    */
 
-  byte[] getBody();
+  byte[] body();
 
   /**
    * The parsed Via headers.
@@ -130,7 +130,7 @@ public interface SipMessage extends Serializable {
    */
 
   default Uri getFromAddress() {
-    return getFrom().getAddress();
+    return getFrom().address();
   }
 
   /**

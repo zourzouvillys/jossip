@@ -35,9 +35,9 @@ public class DefaultSipRequestTest {
     SipRequest req = reqBuilder.setBody("12345").setHeader("l", 5).build();
     req = (SipRequest) req.withReplacedHeaders(new RawHeader("Content-Length", "9"));
     assert (req.getHeader("l").isPresent());
-    assertEquals("5", req.getHeader("l").get().getValue());
+    assertEquals("5", req.getHeader("l").get().value());
     assert (req.getHeader("Content-Length").isPresent());
-    assertEquals("9", req.getHeader("Content-Length").get().getValue());
+    assertEquals("9", req.getHeader("Content-Length").get().value());
   }
 
   @Test
@@ -46,7 +46,7 @@ public class DefaultSipRequestTest {
     req = req.withBody("123456789");
     assert (!req.getHeader("l").isPresent());
     assert (req.getHeader("Content-Length").isPresent());
-    assertEquals("9", req.getHeader("Content-Length").get().getValue());
+    assertEquals("9", req.getHeader("Content-Length").get().value());
   }
 
   @Test

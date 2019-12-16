@@ -6,10 +6,11 @@ import com.google.common.net.HostAndPort;
 import com.jive.sip.base.api.Token;
 
 public interface SipParameterDefinition<T> {
+
   // TODO: Refactor to use Parameters interface.
   Optional<T> parse(final Parameters parameters);
 
-  Token getName();
+  Token name();
 
   ParameterValue<T> toParameterValue(String value);
 

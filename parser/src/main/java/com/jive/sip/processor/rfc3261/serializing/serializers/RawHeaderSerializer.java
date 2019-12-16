@@ -21,13 +21,13 @@ public class RawHeaderSerializer extends AbstractRfcSerializer<RawHeader> {
   @Override
   public void serialize(final Writer w, final RawHeader obj) throws IOException {
 
-    w.append(obj.getName());
+    w.append(obj.name());
 
     w.append(RfcSerializationConstants.COLON);
     w.append(RfcSerializationConstants.SP);
 
-    if (obj.getValue() != null) {
-      w.append(obj.getValue());
+    if (obj.value() != null) {
+      w.append(obj.value());
     }
 
   }

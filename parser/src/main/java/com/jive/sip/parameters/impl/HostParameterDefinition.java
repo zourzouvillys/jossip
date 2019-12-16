@@ -21,22 +21,21 @@ public class HostParameterDefinition extends BaseParameterDefinition implements 
   public Optional<HostAndPort> parse(final Parameters parameters) {
     if (parameters != null) {
       for (final RawParameter p : parameters.getRawParameters()) {
-        if (this.matches(p.getName())) {
-          return Optional.ofNullable(this.convert(p.getValue()));
+        if (this.matches(p.name())) {
+          return Optional.ofNullable(this.convert(p.value()));
         }
       }
     }
-
     return Optional.empty();
   }
 
   private HostAndPort convert(final ParameterValue value) {
     if (value instanceof HostAndPortParameterValue) {
-      return ((HostAndPortParameterValue) value).getValue();
+      return ((HostAndPortParameterValue) value).value();
     }
     else if ((value instanceof TokenParameterValue) || (value instanceof QuotedStringParameterValue)) {
       try {
-        return HostAndPort.fromString(value.getValue().toString());
+        return HostAndPort.fromString(value.value().toString());
       }
       catch (final Exception e) {
         return null;

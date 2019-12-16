@@ -12,7 +12,7 @@ public class BranchId implements Comparable<BranchId> {
   public static final String MAGIC_COOKIE = "z9hG4bK";
 
   public boolean hasMagicCookie() {
-    return this.getValue().startsWith(MAGIC_COOKIE);
+    return this.value().startsWith(MAGIC_COOKIE);
   }
 
   @Override
@@ -42,8 +42,8 @@ public class BranchId implements Comparable<BranchId> {
   }
 
   public String getValueWithoutCookie() {
-    return (this.getValue().length() > MAGIC_COOKIE.length()) ? this.getValue().substring(MAGIC_COOKIE.length())
-                                                              : this.getValue();
+    return (this.value().length() > MAGIC_COOKIE.length()) ? this.value().substring(MAGIC_COOKIE.length())
+                                                           : this.value();
   }
 
   public Token asToken() {

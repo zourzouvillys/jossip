@@ -11,9 +11,9 @@ public class RAckSerializer extends AbstractRfcSerializer<RAck> {
 
   @Override
   public void serialize(final Writer sink, final RAck obj) throws IOException {
-    sink.append(obj.getReliableSequence().toString());
+    sink.append(obj.reliableSequence().toString());
     sink.append(' ');
-    cseq.serialize(sink, obj.getSequence());
+    cseq.serialize(sink, obj.sequence());
   }
 
 }

@@ -27,9 +27,9 @@ public class SipResponseSerializer extends AbstractRfcSerializer<SipResponse> {
 
     writer.append(obj.getVersion());
     writer.append(RfcSerializationConstants.SP);
-    writer.append(Integer.toString(obj.getStatus().getCode()));
+    writer.append(Integer.toString(obj.getStatus().code()));
     writer.append(RfcSerializationConstants.SP);
-    writer.append(obj.getStatus().getReason());
+    writer.append(obj.getStatus().reason());
     writer.append(RfcSerializationConstants.CRLF);
 
     this.manager.serializeCollection(writer, obj.getHeaders(), RfcSerializationConstants.CRLF);
@@ -37,9 +37,9 @@ public class SipResponseSerializer extends AbstractRfcSerializer<SipResponse> {
     writer.append(RfcSerializationConstants.CRLF);
     writer.append(RfcSerializationConstants.CRLF);
 
-    if (obj.getBody() != null) {
+    if (obj.body() != null) {
       // TODO: urgh, perhaps not Writer?
-      writer.write(new String(obj.getBody()).toCharArray());
+      writer.write(new String(obj.body()).toCharArray());
     }
 
   }

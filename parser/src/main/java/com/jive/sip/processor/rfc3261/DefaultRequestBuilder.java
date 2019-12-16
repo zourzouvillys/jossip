@@ -111,9 +111,9 @@ public class DefaultRequestBuilder implements RequestBuilder {
 
   @Override
   public RequestBuilder setDialogId(final DialogId dialog) {
-    this.callID = dialog.getCallId();
-    this.fromTag = dialog.getRemoteTag();
-    this.toTag = dialog.getLocalTag();
+    this.callID = dialog.callId();
+    this.fromTag = dialog.remoteTag();
+    this.toTag = dialog.localTag();
     return this;
   }
 
@@ -142,7 +142,7 @@ public class DefaultRequestBuilder implements RequestBuilder {
 
     if (response.getContacts().isPresent() && (response.getContacts().get().size() > 0)) {
       // should never generate a request with R-URI that doesn't come fron the contact.
-      this.rUri = response.getContacts().get().iterator().next().getAddress();
+      this.rUri = response.getContacts().get().iterator().next().address();
     }
     else {
       this.rUri = response.getToAddress();

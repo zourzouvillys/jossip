@@ -17,7 +17,7 @@ public class ContentDispositionSerializer extends AbstractRfcSerializer<ContentD
   @Override
   public void serialize(final Writer sink, final ContentDisposition obj) throws IOException {
 
-    sink.append(obj.getValue());
+    sink.append(obj.value());
 
     if (obj.getParameters().isPresent()) {
       sink.append(RfcSerializationConstants.SEMI);

@@ -26,13 +26,13 @@ public class MIMETypeParserTest extends BaseParserTest<MIMEType> {
   @Test
   public void testContentTypeHeaderConstructor() throws SipMessageParseFailureException {
     MIMEType header = this.parse("application/sdp");
-    assertEquals("application", header.getType());
-    assertEquals("sdp", header.getSubType());
+    assertEquals("application", header.type());
+    assertEquals("sdp", header.subType());
 
     // Better test
     header = this.parse("text/html; charset=ISO-8859-4; language-preference=\"fortran\"");
-    assertEquals("text", header.getType());
-    assertEquals("html", header.getSubType());
+    assertEquals("text", header.type());
+    assertEquals("html", header.subType());
     assertEquals(Token.from("ISO-8859-4"), header.getParameter(new TokenParameterDefinition("charset")).get());
     assertEquals(Token.from("fortran"), header.getParameter(new TokenParameterDefinition("language-preference")).get());
   }

@@ -18,7 +18,7 @@ public class WarningSerializer extends AbstractRfcSerializer<Warning> {
    */
   @Override
   public String serialize(final Warning obj) {
-    return Joiner.on(" ").join(obj.getCode(), obj.getAgent(), "\"" + obj.getText().toString().replace("\"", "\\\"") + "\"");
+    return Joiner.on(" ").join(obj.code(), obj.agent(), "\"" + obj.text().toString().replace("\"", "\\\"") + "\"");
   }
 
 }

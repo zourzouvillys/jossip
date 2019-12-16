@@ -26,8 +26,8 @@ public class TokenParameterDefinition extends BaseParameterDefinition implements
   public Optional<Token> parse(final Parameters parameters) {
     if (parameters != null) {
       for (final RawParameter p : parameters.getRawParameters()) {
-        if (this.matches(p.getName())) {
-          return Optional.ofNullable(this.convert(p.getValue()));
+        if (this.matches(p.name())) {
+          return Optional.ofNullable(this.convert(p.value()));
         }
       }
     }
@@ -36,12 +36,12 @@ public class TokenParameterDefinition extends BaseParameterDefinition implements
 
   private Token convert(final ParameterValue value) {
     if (value instanceof TokenParameterValue) {
-      return (Token) value.getValue();
+      return (Token) value.value();
     }
     else if (value instanceof QuotedStringParameterValue) {
       Token token = null;
       try {
-        token = Token.from((String) value.getValue());
+        token = Token.from((String) value.value());
       }
       catch (final Exception e) {
       }
@@ -49,7 +49,7 @@ public class TokenParameterDefinition extends BaseParameterDefinition implements
       return token;
     }
     else if (value instanceof HostAndPortParameterValue) {
-      return Token.from(((HostAndPort) value.getValue()).getHost());
+      return Token.from(((HostAndPort) value.value()).getHost());
     }
 
     return null;

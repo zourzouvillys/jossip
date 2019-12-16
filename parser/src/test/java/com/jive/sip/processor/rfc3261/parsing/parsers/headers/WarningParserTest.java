@@ -26,9 +26,9 @@ public class WarningParserTest extends BaseParserTest<Warning> {
   @Test
   public void testWarning() throws SipMessageParseFailureException {
     final Warning header = this.parse("307 isi.edu \"Session parameter 'foo' not understood\"");
-    assertEquals(307, header.getCode());
-    assertEquals("isi.edu", header.getAgent());
-    assertEquals("Session parameter 'foo' not understood", header.getText());
+    assertEquals(307, header.code());
+    assertEquals("isi.edu", header.agent());
+    assertEquals("Session parameter 'foo' not understood", header.text());
   }
 
   @Test

@@ -63,12 +63,12 @@ public class MultiHeaderDefinitionTest {
         .withParameter(Token.from("maddr"), Token.from("224.2.0.1")));
     // .withParameter(Token.from("branch"), Token.from("z9hG4bKa7c6a8dlze.1")));
 
-    assertEquals(expected.getProtocol(), actual.getProtocol());
-    assertEquals(expected.getSentBy(), actual.getSentBy());
+    assertEquals(expected.protocol(), actual.protocol());
+    assertEquals(expected.sentBy(), actual.sentBy());
     List<RawParameter> expectedParams = Lists.newArrayList(expected.getParameters().get().getRawParameters());
     List<RawParameter> actualParams = Lists.newArrayList(actual.getParameters().get().getRawParameters());
-    ParameterValue<?> e = expectedParams.get(1).getValue();
-    ParameterValue<?> a = actualParams.get(1).getValue();
+    ParameterValue<?> e = expectedParams.get(1).value();
+    ParameterValue<?> a = actualParams.get(1).value();
     assertEquals(e, a);
 
     // assertEquals(Lists.newArrayList(

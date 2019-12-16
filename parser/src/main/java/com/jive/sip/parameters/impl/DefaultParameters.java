@@ -38,7 +38,7 @@ public class DefaultParameters implements Parameters {
   @Override
   public boolean contains(Token name) {
     for (RawParameter p : raw) {
-      if (p.getName().equals(name)) {
+      if (p.name().equals(name)) {
         return true;
       }
     }
@@ -66,9 +66,9 @@ public class DefaultParameters implements Parameters {
     Token tok = Token.from(name);
 
     for (RawParameter param : this.raw) {
-      if (param.getName().equals(tok)) {
+      if (param.name().equals(tok)) {
         ParameterValueVisitor<String> extractor = StringParameterExtractor.getInstance();
-        String str = param.getValue().apply(extractor);
+        String str = param.value().apply(extractor);
         return Optional.<String>ofNullable(str);
       }
     }
@@ -89,7 +89,7 @@ public class DefaultParameters implements Parameters {
 
   @Override
   public Parameters withParameter(Token name, QuotedString value) {
-    return this.withParameter(name, new QuotedStringParameterValue(value.getValue()));
+    return this.withParameter(name, new QuotedStringParameterValue(value.value()));
   }
 
   @Override
@@ -112,7 +112,7 @@ public class DefaultParameters implements Parameters {
 
     while (it.hasNext()) {
       RawParameter p = it.next();
-      if (!p.getName().equals(name)) {
+      if (!p.name().equals(name)) {
         params.add(p);
       }
     }
@@ -152,7 +152,7 @@ public class DefaultParameters implements Parameters {
     Parameters self = this;
 
     for (RawParameter param : params.getRawParameters()) {
-      self = self.withoutParameter(param.getName()).withParameter(param);
+      self = self.withoutParameter(param.name()).withParameter(param);
     }
 
     return self;
@@ -162,9 +162,9 @@ public class DefaultParameters implements Parameters {
   @Override
   public boolean compareCommonParameters(Parameters params) {
     for (RawParameter rp : raw) {
-      Optional<String> other = params.getParameter(rp.getName().toString());
+      Optional<String> other = params.getParameter(rp.name().toString());
       if (other.isPresent()
-        && !other.get().equals(rp.getValue().apply(StringParameterExtractor.getInstance()))) {
+        && !other.get().equals(rp.value().apply(StringParameterExtractor.getInstance()))) {
         return false;
       }
     }
@@ -174,7 +174,7 @@ public class DefaultParameters implements Parameters {
 
   @Override
   public <T> Parameters withParameter(SipParameterDefinition<T> def, String value) {
-    return this.withParameter(def.getName(), def.toParameterValue(value));
+    return this.withParameter(def.name(), def.toParameterValue(value));
   }
 
   @Override
@@ -184,12 +184,12 @@ public class DefaultParameters implements Parameters {
 
   @Override
   public <T> Parameters withParameter(SipParameterDefinition<T> def, long value) {
-    return this.withParameter(def.getName(), def.toParameterValue(value));
+    return this.withParameter(def.name(), def.toParameterValue(value));
   }
 
   @Override
   public <T> Parameters withParameter(SipParameterDefinition<T> def, HostAndPort value) {
-    return this.withParameter(def.getName(), def.toParameterValue(value));
+    return this.withParameter(def.name(), def.toParameterValue(value));
   }
 
 }

@@ -102,27 +102,27 @@ public class DigestCredentials extends Authorization {
       Token.from(String.format("%08d",
         (this.nonceCount() == null) ? Token.from(1)
                                     : Token.from(this.nonceCount() + 1)));
-    return (DigestCredentials) this.withParameter(NONCE_COUNT.getName(), nc);
+    return (DigestCredentials) this.withParameter(NONCE_COUNT.name(), nc);
   }
 
   public DigestCredentials withResponse(String authorization) {
-    return (DigestCredentials) this.withParameter(RESPONSE.getName(), QuotedString.from(authorization)).withoutParameter(STALE.getName());
+    return (DigestCredentials) this.withParameter(RESPONSE.name(), QuotedString.from(authorization)).withoutParameter(STALE.name());
   }
 
   public DigestCredentials withCnonce(String cnonce) {
-    return (DigestCredentials) this.withParameter(CNONCE.getName(), QuotedString.from(cnonce));
+    return (DigestCredentials) this.withParameter(CNONCE.name(), QuotedString.from(cnonce));
   }
 
   public DigestCredentials withNonceCount(long nc) {
-    return (DigestCredentials) this.withParameter(NONCE_COUNT.getName(), Token.from(String.format("%08x", nc)));
+    return (DigestCredentials) this.withParameter(NONCE_COUNT.name(), Token.from(String.format("%08x", nc)));
   }
 
   public DigestCredentials withUsername(String user) {
-    return (DigestCredentials) this.withParameter(USERNAME.getName(), QuotedString.from(user));
+    return (DigestCredentials) this.withParameter(USERNAME.name(), QuotedString.from(user));
   }
 
   public DigestCredentials withUri(String string) {
-    return (DigestCredentials) this.withParameter(DIGEST_URI.getName(), QuotedString.from(string));
+    return (DigestCredentials) this.withParameter(DIGEST_URI.name(), QuotedString.from(string));
   }
 
 }

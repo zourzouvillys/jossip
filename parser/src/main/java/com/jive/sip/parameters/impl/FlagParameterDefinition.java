@@ -16,7 +16,7 @@ public class FlagParameterDefinition extends TokenParameterDefinition {
   public Optional<Token> parse(final Parameters parameters) {
     if (parameters != null) {
       for (final RawParameter p : parameters.getRawParameters()) {
-        if (this.matches(p.getName())) {
+        if (this.matches(p.name())) {
           return Optional.of(this.name);
         }
       }

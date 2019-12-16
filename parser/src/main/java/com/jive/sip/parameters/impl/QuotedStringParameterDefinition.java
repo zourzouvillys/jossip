@@ -18,16 +18,15 @@ public class QuotedStringParameterDefinition extends BaseParameterDefinition imp
   @Override
   public Optional<String> parse(final Parameters parameters) {
     for (final RawParameter p : parameters.getRawParameters()) {
-      if (this.matches(p.getName())) {
-        return Optional.ofNullable(this.convert(p.getValue()));
+      if (this.matches(p.name())) {
+        return Optional.ofNullable(this.convert(p.value()));
       }
     }
-
     return Optional.empty();
   }
 
   private String convert(final ParameterValue value) {
-    final Object obj = value.getValue();
+    final Object obj = value.value();
     return obj == null ? null
                        : obj.toString();
   }

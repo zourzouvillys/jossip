@@ -23,7 +23,7 @@ public class ReplacesSerializer extends AbstractRfcSerializer<Replaces> {
 
   @Override
   public void serialize(final Writer sink, final Replaces obj) throws IOException {
-    sink.append(obj.getCallId().getValue());
+    sink.append(obj.callId().getValue());
     if (obj.getParameters().isPresent()) {
       sink.append(RfcSerializationConstants.SEMI);
       this.manager.serializeCollection(sink, obj.getParameters().get().getRawParameters(), RfcSerializationConstants.SEMI);

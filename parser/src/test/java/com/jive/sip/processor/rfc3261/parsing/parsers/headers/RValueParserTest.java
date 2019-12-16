@@ -17,8 +17,8 @@ public class RValueParserTest extends BaseParserTest<RValue> {
   @Test
   public void testRetryAfterHeader() throws SipMessageParseFailureException {
     final RValue value = this.parse("moo.cows");
-    assertEquals("moo", value.getNamespace());
-    assertEquals("cows", value.getPriority());
+    assertEquals("moo", value.namespace());
+    assertEquals("cows", value.priority());
   }
 
 }

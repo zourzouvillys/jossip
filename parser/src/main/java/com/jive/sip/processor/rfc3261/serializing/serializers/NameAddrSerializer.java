@@ -38,7 +38,7 @@ public class NameAddrSerializer extends AbstractRfcSerializer<NameAddr> {
     }
 
     w.append(LT);
-    w.append(this.manager.serialize(obj.getAddress()));
+    w.append(this.manager.serialize(obj.address()));
     w.append(GT);
 
     if (obj.getParameters().isPresent()) {

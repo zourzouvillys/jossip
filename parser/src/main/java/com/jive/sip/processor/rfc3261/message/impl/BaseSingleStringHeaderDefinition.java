@@ -18,9 +18,9 @@ public abstract class BaseSingleStringHeaderDefinition<T> extends BaseHeaderDefi
   @Override
   public T parse(final Collection<RawHeader> headers) {
     for (final RawHeader header : headers) {
-      if (matches(header.getName())) {
+      if (matches(header.name())) {
         // TODO: what do we want to do if there are multiple values? -- TPZ
-        return this.parse(header.getValue());
+        return this.parse(header.value());
       }
     }
     return null;

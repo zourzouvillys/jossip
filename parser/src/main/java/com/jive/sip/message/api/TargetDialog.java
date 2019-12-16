@@ -24,18 +24,18 @@ public class TargetDialog extends BaseParameterizedObject<TargetDialog> {
   }
 
   public TargetDialog(DialogId dialogId) {
-    this.callId = dialogId.getCallId();
+    this.callId = dialogId.callId();
     this.parameters =
       DefaultParameters.from(Lists.newArrayList(
         new RawParameter(
           "local-tag",
           new TokenParameterValue(
-            Token.from(dialogId.getLocalTag()))),
+            Token.from(dialogId.localTag()))),
         new RawParameter(
           "remote-tag",
           new TokenParameterValue(
             Token.from(dialogId
-              .getRemoteTag())))));
+              .remoteTag())))));
   }
 
   /**
@@ -44,7 +44,7 @@ public class TargetDialog extends BaseParameterizedObject<TargetDialog> {
 
   public Optional<DialogId> asDialogId() {
     if (getLocalTag().isPresent() && getRemoteTag().isPresent()) {
-      return Optional.of(new DialogId(getCallId(), getLocalTag().get(), getRemoteTag().get()));
+      return Optional.of(new DialogId(callId(), getLocalTag().get(), getRemoteTag().get()));
     }
     return Optional.empty();
   }

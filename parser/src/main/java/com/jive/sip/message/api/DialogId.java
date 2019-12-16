@@ -73,7 +73,7 @@ public class DialogId {
    */
 
   public static DialogId fromRemote(Replaces replaces) {
-    return new DialogId(replaces.getCallId(), replaces.getToTag(), replaces.getFromTag());
+    return new DialogId(replaces.callId(), replaces.getToTag(), replaces.getFromTag());
   }
 
   /**
@@ -101,15 +101,15 @@ public class DialogId {
    */
 
   public String getToken() {
-    return String.format("%s:%s:%s", getCallId().getValue(), nullToEmpty(getLocalTag()), nullToEmpty(getRemoteTag()));
+    return String.format("%s:%s:%s", callId().getValue(), nullToEmpty(localTag()), nullToEmpty(remoteTag()));
   }
 
   public DialogId swap() {
-    return new DialogId(getCallId(), getRemoteTag(), getLocalTag());
+    return new DialogId(callId(), remoteTag(), localTag());
   }
 
   public boolean hasLocalTag() {
-    return !isNullOrEmpty(getLocalTag());
+    return !isNullOrEmpty(localTag());
   }
 
 }

@@ -21,9 +21,9 @@ public class VersionSerializer extends AbstractRfcSerializer<Version> {
 
   @Override
   public void serialize(final Writer w, final Version obj) throws IOException {
-    w.append(Integer.toString(obj.getMajorVersion()));
+    w.append(Integer.toString(obj.majorVersion()));
     w.append(RfcSerializationConstants.DOT);
-    w.append(Integer.toString(obj.getMinorVersion()));
+    w.append(Integer.toString(obj.minorVersion()));
   }
 
 }

@@ -41,9 +41,9 @@ public class SipRequestSerializer extends AbstractRfcSerializer<SipRequest> {
     writer.append(RfcSerializationConstants.CRLF);
     writer.append(RfcSerializationConstants.CRLF);
 
-    if (obj.getBody() != null) {
+    if (obj.body() != null) {
       // TODO: urgh, perhaps not Writer?
-      writer.write(new String(obj.getBody()).toCharArray());
+      writer.write(new String(obj.body()).toCharArray());
     }
 
   }

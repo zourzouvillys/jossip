@@ -159,9 +159,9 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
         if (i++ > 0) {
           sb.append('&');
         }
-        sb.append(UrlEscapers.urlFormParameterEscaper().escape(header.getName()));
+        sb.append(UrlEscapers.urlFormParameterEscaper().escape(header.name()));
         sb.append('=');
-        sb.append(UrlEscapers.urlFormParameterEscaper().escape(header.getValue()));
+        sb.append(UrlEscapers.urlFormParameterEscaper().escape(header.value()));
       }
 
     }
@@ -227,7 +227,7 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
 
   public static SipUri fromTelUri(final TelUri tel, final HostAndPort host) {
     final StringBuilder user = new StringBuilder();
-    user.append(tel.getNumber());
+    user.append(tel.number());
     if (tel.getParameters().isPresent()) {
       user.append(tel.getParameters().get());
     }
@@ -284,7 +284,7 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
   }
 
   public SipUri withoutParameter(final SipParameterDefinition<?> param) {
-    return this.withoutParameter(param.getName());
+    return this.withoutParameter(param.name());
   }
 
   /**

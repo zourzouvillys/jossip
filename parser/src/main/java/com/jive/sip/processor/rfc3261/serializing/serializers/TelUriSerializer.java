@@ -31,7 +31,7 @@ public class TelUriSerializer extends AbstractRfcSerializer<TelUri> {
   public void serialize(final Writer w, final TelUri obj) throws IOException {
     w.append(obj.getScheme());
     w.append(RfcSerializationConstants.COLON);
-    w.append(obj.getNumber());
+    w.append(obj.number());
 
     if (obj.getParameters().isPresent()) {
       w.append(RfcSerializationConstants.SEMI);

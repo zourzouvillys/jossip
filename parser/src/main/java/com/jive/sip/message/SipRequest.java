@@ -194,5 +194,4 @@ public interface SipRequest extends SipMessage {
 
   Optional<TargetDialog> getTargetDialog();
 
-
 }

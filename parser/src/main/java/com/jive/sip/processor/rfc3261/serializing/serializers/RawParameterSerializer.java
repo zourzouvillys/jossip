@@ -10,14 +10,12 @@ import com.jive.sip.parameters.api.QuotedStringParameterValue;
 import com.jive.sip.parameters.api.RawParameter;
 import com.jive.sip.parameters.api.TokenParameterValue;
 
-import lombok.SneakyThrows;
-
 public class RawParameterSerializer extends AbstractRfcSerializer<RawParameter> {
 
   @Override
   public void serialize(final Writer w, final RawParameter obj) throws IOException {
-    w.append(obj.getName().toString());
-    obj.getValue().apply(new Serializer(w));
+    w.append(obj.name().toString());
+    obj.value().apply(new Serializer(w));
   }
 
   private static class Serializer implements ParameterValueVisitor<String> {
@@ -37,7 +35,7 @@ public class RawParameterSerializer extends AbstractRfcSerializer<RawParameter> 
     public String visit(final TokenParameterValue parameter) {
       try {
         this.sb.append('=');
-        this.sb.append(parameter.getValue().toString());
+        this.sb.append(parameter.value().toString());
       }
       catch (IOException ex) {
         throw new RuntimeException(ex);
@@ -50,7 +48,7 @@ public class RawParameterSerializer extends AbstractRfcSerializer<RawParameter> 
       try {
         this.sb.append('=');
         this.sb.append('"');
-        this.sb.append(parameter.getValue().replace("\"", "\\\""));
+        this.sb.append(parameter.value().replace("\"", "\\\""));
         this.sb.append('"');
       }
       catch (IOException ex) {
@@ -63,7 +61,7 @@ public class RawParameterSerializer extends AbstractRfcSerializer<RawParameter> 
     public String visit(final HostAndPortParameterValue parameter) {
       try {
         this.sb.append('=');
-        this.sb.append(parameter.getValue().toString());
+        this.sb.append(parameter.value().toString());
       }
       catch (IOException ex) {
         throw new RuntimeException(ex);

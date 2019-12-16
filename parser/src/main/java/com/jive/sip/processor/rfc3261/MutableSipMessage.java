@@ -177,7 +177,7 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
   }
 
   public T from(final NameAddr name, final String tag) {
-    return this.from(name.getAddress(), name.getName().orElse(null), tag);
+    return this.from(name.address(), name.getName().orElse(null), tag);
   }
 
   public T from(final Uri uri, final String tag) {

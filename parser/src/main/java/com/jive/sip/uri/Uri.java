@@ -7,6 +7,7 @@ package com.jive.sip.uri;
  * 
  */
 public interface Uri {
+
   String getScheme();
 
   <T> T apply(UriVisitor<T> visitor);

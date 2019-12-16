@@ -22,7 +22,7 @@ public class TelephoneNumberExtractor implements SipUriVisitor<String>, TelUriVi
 
   @Override
   public String visit(final TelUri uri) {
-    return uri.getNumber();
+    return uri.number();
   }
 
   public static TelephoneNumberExtractor getInstance() {

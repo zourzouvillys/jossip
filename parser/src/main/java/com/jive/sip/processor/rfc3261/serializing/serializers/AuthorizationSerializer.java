@@ -25,7 +25,7 @@ public class AuthorizationSerializer extends AbstractRfcSerializer<Authorization
   @Override
   public void serialize(final Writer w, final Authorization obj) throws IOException {
 
-    w.append(obj.getScheme()).append(' ');
+    w.append(obj.scheme()).append(' ');
 
     if (obj.getParameters().isPresent()) {
       this.manager.serializeCollection(w, obj.getParameters().get().getRawParameters(), ", ");

@@ -16,7 +16,7 @@ public class MinSESerializer extends AbstractRfcSerializer<MinSE> {
 
   @Override
   public void serialize(final Writer sink, final MinSE obj) throws IOException {
-    sink.append(Long.toString(obj.getDuration().getSeconds()));
+    sink.append(Long.toString(obj.duration().getSeconds()));
     if (obj.getParameters().isPresent()) {
       sink.append(RfcSerializationConstants.SEMI);
       manager.serializeCollection(

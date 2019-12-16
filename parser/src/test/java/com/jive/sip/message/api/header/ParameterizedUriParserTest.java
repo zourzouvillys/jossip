@@ -30,18 +30,18 @@ public class ParameterizedUriParserTest extends BaseParserTest<ParameterizedUri>
   @Test
   public void testCallInfo() throws SipMessageParseFailureException {
     final ParameterizedUri header = this.parse("<http://wwww.example.com/alice/photo.jpg> ;purpose  =  icon");
-    assertEquals("http", header.getUri().getScheme());
-    assertEquals("//wwww.example.com/alice/photo.jpg", ((RawUri) header.getUri()).getOpaque());
+    assertEquals("http", header.uri().getScheme());
+    assertEquals("//wwww.example.com/alice/photo.jpg", ((RawUri) header.uri()).getOpaque());
     assertTrue(header.getParameter(new TokenParameterDefinition("purpose")).isPresent());
     assertEquals(Token.from("icon"), header.getParameter(new TokenParameterDefinition("purpose")).get());
-    assertEquals(new HttpUriAlertInfo("http://wwww.example.com/alice/photo.jpg"), header.getUri().apply(AlertInfoUriExtractor.getInstance()));
+    assertEquals(new HttpUriAlertInfo("http://wwww.example.com/alice/photo.jpg"), header.uri().apply(AlertInfoUriExtractor.getInstance()));
   }
 
   @Test
   public void testErrorInfo() throws SipMessageParseFailureException {
     final ParameterizedUri header = this.parse("<sip:not-in-service-recording@atlanta.com>");
 
-    assertEquals("sip", header.getUri().getScheme());
-    assertEquals("not-in-service-recording@atlanta.com", ((RawUri) header.getUri()).getOpaque());
+    assertEquals("sip", header.uri().getScheme());
+    assertEquals("not-in-service-recording@atlanta.com", ((RawUri) header.uri()).getOpaque());
   }
 }

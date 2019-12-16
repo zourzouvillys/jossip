@@ -72,8 +72,8 @@ public class Via extends BaseParameterizedObject<Via> {
 
   public Via withRPort() {
     return this
-      .withoutParameter(ParameterUtils.RPort.getName())
-      .withParameter(ParameterUtils.RPort.getName());
+      .withoutParameter(ParameterUtils.RPort.name())
+      .withParameter(ParameterUtils.RPort.name());
   }
 
   public Via withRPort(int port) {
@@ -118,7 +118,7 @@ public class Via extends BaseParameterizedObject<Via> {
 
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append(getProtocol()).append(' ').append(getSentBy());
+    sb.append(protocol()).append(' ').append(sentBy());
     if (getParameters().isPresent()) {
       sb.append(getParameters().get());
     }

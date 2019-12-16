@@ -18,14 +18,14 @@ public class ViaSerializer extends AbstractRfcSerializer<Via> {
   @Override
   public void serialize(final Writer writer, final Via obj) throws IOException {
 
-    writer.append(obj.getProtocol().getName());
+    writer.append(obj.protocol().name());
     writer.append(RfcSerializationConstants.SLASH);
-    writer.append(obj.getProtocol().getVersion());
+    writer.append(obj.protocol().version());
     writer.append(RfcSerializationConstants.SLASH);
-    writer.append(obj.getProtocol().getTransport());
+    writer.append(obj.protocol().transport());
 
     writer.append(RfcSerializationConstants.SP);
-    writer.append(obj.getSentBy().toString());
+    writer.append(obj.sentBy().toString());
 
     if (obj.getParameters().isPresent()) {
       writer.append(RfcSerializationConstants.SEMI);

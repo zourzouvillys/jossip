@@ -40,7 +40,7 @@ public class SingleHeaderDefintionTest {
     this.headers.add(new RawHeader("From", "\"A. G. Bell\" <sip:agb@bell-telephone.com> ;tag=a48s"));
     NameAddr name = this.from.parse(this.headers);
     assertEquals("A. G. Bell", name.getName().get());
-    assertEquals(RawUri.of("sip", "agb@bell-telephone.com"), name.getAddress());
+    assertEquals(RawUri.of("sip", "agb@bell-telephone.com"), name.address());
     assertEquals(DefaultParameters.from(Lists.newArrayList(new RawParameter("tag", new TokenParameterValue("a48s")))), name.getParameters().get());
   }
 
@@ -49,7 +49,7 @@ public class SingleHeaderDefintionTest {
     this.headers.add(new RawHeader("f", "Anonymous <sip:c8oqz84zk7z@privacy.org>;tag=hyh8"));
     NameAddr name = this.from.parse(this.headers);
     assertEquals("Anonymous", name.getName().get());
-    assertEquals(RawUri.of("sip", "c8oqz84zk7z@privacy.org"), name.getAddress());
+    assertEquals(RawUri.of("sip", "c8oqz84zk7z@privacy.org"), name.address());
     assertEquals(DefaultParameters.from(Lists.newArrayList(new RawParameter("tag", new TokenParameterValue("hyh8")))), name.getParameters().get());
   }
 

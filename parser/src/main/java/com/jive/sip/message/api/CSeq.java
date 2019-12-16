@@ -37,7 +37,7 @@ public class CSeq {
   }
 
   public CSeq withNextSequence() {
-    return withSequence(getSequence().plus(UnsignedInteger.ONE));
+    return withSequence(sequence().plus(UnsignedInteger.ONE));
   }
 
 }

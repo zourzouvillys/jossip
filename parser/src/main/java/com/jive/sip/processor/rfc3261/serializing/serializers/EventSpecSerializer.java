@@ -16,7 +16,7 @@ public class EventSpecSerializer extends AbstractRfcSerializer<EventSpec> {
   @Override
   public void serialize(final Writer w, final EventSpec obj) throws IOException {
 
-    w.append(obj.getName());
+    w.append(obj.name());
 
     if (obj.getParameters().isPresent()) {
       w.append(RfcSerializationConstants.SEMI);

@@ -49,7 +49,7 @@ public class SessionExpires extends BaseParameterizedObject<SessionExpires> {
       duration,
       DefaultParameters.from(Lists.newArrayList(new RawParameter(
         "refresher",
-        new TokenParameterValue(refresher.getProtocolValue())))));
+        new TokenParameterValue(refresher.protocolValue())))));
   }
 
   public SessionExpires(long duration, Parameters params) {

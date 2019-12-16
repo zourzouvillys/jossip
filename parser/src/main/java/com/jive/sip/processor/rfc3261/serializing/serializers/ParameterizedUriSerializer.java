@@ -24,7 +24,7 @@ public class ParameterizedUriSerializer extends AbstractRfcSerializer<Parameteri
    */
   @Override
   public String serialize(final ParameterizedUri obj) {
-    return "<" + this.manager.serialize(obj.getUri()) + ">" + this.manager.serialize(obj.getParameters());
+    return "<" + this.manager.serialize(obj.uri()) + ">" + this.manager.serialize(obj.getParameters());
   }
 
 }

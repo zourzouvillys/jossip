@@ -202,11 +202,11 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
     final Map<String, String> replacementValues = Maps.newHashMap();
     final List<RawHeader> headerList = Lists.newArrayList();
     for (final RawHeader h : headers) {
-      replacementValues.put(h.getName(), h.getValue());
+      replacementValues.put(h.name(), h.value());
     }
     for (final RawHeader h : this.headers) {
-      if (replacementValues.containsKey(h.getName())) {
-        headerList.add(new RawHeader(h.getName(), replacementValues.remove(h.getName())));
+      if (replacementValues.containsKey(h.name())) {
+        headerList.add(new RawHeader(h.name(), replacementValues.remove(h.name())));
       }
       else {
         headerList.add(h);
@@ -290,7 +290,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   @Override
   public DefaultSipRequest withoutHeaders(final String... headerNames) {
     final List<String> badHeaders = Lists.newArrayList(headerNames);
-    final List<RawHeader> keepers = Lists.newArrayList(Iterables.filter(this.headers, header -> !Iterables.contains(badHeaders, header.getName())));
+    final List<RawHeader> keepers = Lists.newArrayList(Iterables.filter(this.headers, header -> !Iterables.contains(badHeaders, header.name())));
 
     final DefaultSipRequest result =
       new DefaultSipRequest(
@@ -351,7 +351,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
 
     for (int i = 0; i < headers.size(); ++i) {
       final RawHeader raw = headers.get(i);
-      if (raw.getName().equals(header)) {
+      if (raw.name().equals(header)) {
         last = i;
       }
     }
@@ -429,7 +429,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
 
   @Override
   public SipRequest withIncrementedCSeq(final SipMethod method) {
-    return this.withCSeq(this.getCSeq().getSequence().plus(UnsignedInteger.ONE).longValue(), method);
+    return this.withCSeq(this.getCSeq().sequence().plus(UnsignedInteger.ONE).longValue(), method);
   }
 
   @Override

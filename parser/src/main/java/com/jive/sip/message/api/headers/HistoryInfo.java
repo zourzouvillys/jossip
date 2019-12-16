@@ -131,7 +131,7 @@ public class HistoryInfo {
     final List<Entry> entries = Lists.newLinkedList();
     for (final NameAddr na : nas) {
       int[] prev = new int[] { 1 };
-      entries.add(Entry.of(na.getAddress(), extractIndex(na), extractType(na), prev));
+      entries.add(Entry.of(na.address(), extractIndex(na), extractType(na), prev));
     }
     return new HistoryInfo(entries);
   }

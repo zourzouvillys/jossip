@@ -38,8 +38,8 @@ public class ViaParserTest extends BaseParserTest<Via> {
   public void testViaHeader() throws SipMessageParseFailureException {
     final String test = "SIP / 2.0 / UdP first.example.com: 4000;ttl=16;maddr=224.2.0.1 ;branch=z9hG4bKa7c6a8dlze.1";
     final Via header = this.parse(test);
-    assertEquals(new ViaProtocol("SIP", "2.0", "UdP"), header.getProtocol());
-    assertEquals("first.example.com:4000", header.getSentBy().toString());
+    assertEquals(new ViaProtocol("SIP", "2.0", "UdP"), header.protocol());
+    assertEquals("first.example.com:4000", header.sentBy().toString());
     assertEquals(Token.from("16"), new TokenParameterDefinition("ttl").parse(header.getParameters().get()).orElse(null));
     assertEquals(Token.from("224.2.0.1"), new TokenParameterDefinition("maddr").parse(header.getParameters().get()).orElse(null));
     assertEquals(Token.from("z9hG4bKa7c6a8dlze.1"), ParameterUtils.Branch.parse(header.getParameters().get()).orElse(null));
@@ -52,11 +52,11 @@ public class ViaParserTest extends BaseParserTest<Via> {
 
     final Via header = this.parse(test);
 
-    assertEquals("SIP", header.getProtocol().getName());
-    assertEquals("2.0", header.getProtocol().getVersion());
-    assertEquals("XXX", header.getProtocol().getTransport());
+    assertEquals("SIP", header.protocol().name());
+    assertEquals("2.0", header.protocol().version());
+    assertEquals("XXX", header.protocol().transport());
 
-    assertEquals("172.20.103.51", header.getSentBy().toString());
+    assertEquals("172.20.103.51", header.sentBy().toString());
     assertEquals(Token.from("z9hG4bK-ac271308"), ParameterUtils.Branch.parse(header.getParameters().get()).orElse(null));
     assertTrue(new FlagParameterDefinition("rport").parse(header.getParameters().get()).isPresent());
 

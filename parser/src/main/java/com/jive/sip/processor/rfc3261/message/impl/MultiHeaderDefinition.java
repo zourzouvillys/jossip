@@ -58,13 +58,13 @@ public class MultiHeaderDefinition<T> extends BaseHeaderDefinition implements Si
 
     for (final RawHeader header : headers) {
 
-      if (this.matches(header.getName())) {
+      if (this.matches(header.name())) {
 
         if (this.parser == null) {
-          return (T) header.getValue();
+          return (T) header.value();
         }
 
-        final ParserInput input = ByteParserInput.fromString(header.getValue());
+        final ParserInput input = ByteParserInput.fromString(header.value());
         final ParserContext ctx = new DefaultParserContext(input);
         final ValueHolder<T> holder = new ValueHolder<T>();
 

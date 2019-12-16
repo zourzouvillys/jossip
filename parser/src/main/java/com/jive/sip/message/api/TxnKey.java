@@ -45,7 +45,7 @@ public abstract class TxnKey {
   public static TxnKey forMessage(SipMessage msg) {
     return ImmutableTxnKey
       .of(
-        msg.topVia().orElseThrow().getSentBy(),
+        msg.topVia().orElseThrow().sentBy(),
         methodFor(msg),
         msg.getBranchId().getValueWithoutCookie());
   }
@@ -57,7 +57,7 @@ public abstract class TxnKey {
         return SipMethod.INVITE;
       }
     }
-    return msg.getCSeq().getMethod();
+    return msg.getCSeq().method();
   }
 
 }

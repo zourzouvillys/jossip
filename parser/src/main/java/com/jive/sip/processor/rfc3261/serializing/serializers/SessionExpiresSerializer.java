@@ -16,7 +16,7 @@ public class SessionExpiresSerializer extends AbstractRfcSerializer<SessionExpir
 
   @Override
   public void serialize(final Writer sink, final SessionExpires obj) throws IOException {
-    sink.append(Long.toString(obj.getDuration()));
+    sink.append(Long.toString(obj.duration()));
     if (obj.getParameters().isPresent()) {
       sink.append(RfcSerializationConstants.SEMI);
       manager.serializeCollection(

@@ -17,9 +17,9 @@ public class RfcTimestampSerializer extends AbstractRfcSerializer<RfcTimestamp> 
    */
   @Override
   public String serialize(final RfcTimestamp obj) {
-    String result = obj.getTimePartOne() + "." + obj.getTimePartTwo().orElse(0);
-    if (obj.getDelayPartOne().isPresent() || obj.getDelayPartTwo().isPresent()) {
-      result += " " + obj.getDelayPartOne().orElse(0) + "." + obj.getDelayPartTwo().orElse(0);
+    String result = obj.timePartOne() + "." + obj.timePartTwo().orElse(0);
+    if (obj.delayPartOne().isPresent() || obj.delayPartTwo().isPresent()) {
+      result += " " + obj.delayPartOne().orElse(0) + "." + obj.delayPartTwo().orElse(0);
     }
     return result;
   }

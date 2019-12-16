@@ -207,7 +207,6 @@ public abstract class DefaultSipMessage implements SipMessage {
 
   // CHECKSTYLE.ON
 
-  @Getter
   protected byte[] body;
   protected Collection<RawHeader> headers;
   protected final SipMessageManager manager;
@@ -216,6 +215,10 @@ public abstract class DefaultSipMessage implements SipMessage {
 
   public DefaultSipMessage(final SipMessageManager manager) {
     this(manager, null);
+  }
+
+  public byte[] body() {
+    return this.body;
   }
 
   public SipMessageManager getSipMessageManager() {
@@ -273,7 +276,7 @@ public abstract class DefaultSipMessage implements SipMessage {
   public Optional<RawHeader> getHeader(String name) {
     name = name.toLowerCase();
     for (final RawHeader header : getHeaders()) {
-      if (name.toLowerCase().equals(header.getName().toLowerCase())) {
+      if (name.toLowerCase().equals(header.name().toLowerCase())) {
         return Optional.of(header);
       }
     }
@@ -334,7 +337,7 @@ public abstract class DefaultSipMessage implements SipMessage {
     final List<RawHeader> ret = Lists.newLinkedList();
     final Set<String> names = Sets.newHashSet(name);
     for (final RawHeader header : getHeaders()) {
-      if (names.contains(header.getName())) {
+      if (names.contains(header.name())) {
         ret.add(header);
       }
     }
@@ -347,7 +350,7 @@ public abstract class DefaultSipMessage implements SipMessage {
     // TODO Fix this method since it doesn't work as advertised - jhutchins & zmorin
     final List<T> result = new ArrayList<T>();
     for (final RawHeader header : getHeaders()) {
-      if (name.equals(header.getName())) {
+      if (name.equals(header.name())) {
         result.add((T) header);
       }
     }
@@ -368,7 +371,7 @@ public abstract class DefaultSipMessage implements SipMessage {
 
   @Override
   public Uri getToAddress() {
-    return getTo().getAddress();
+    return getTo().address();
   }
 
   // TODO: this should return an optional
@@ -448,7 +451,7 @@ public abstract class DefaultSipMessage implements SipMessage {
 
     for (final RawHeader header : this.headers) {
       // TODO remove the need for a RFCSipMessageManager here. - Hutch
-      final SipHeaderDefinition<?> parser = this.manager.adapt(RfcSipMessageManager.class).getParser(header.getName(), null);
+      final SipHeaderDefinition<?> parser = this.manager.adapt(RfcSipMessageManager.class).getParser(header.name(), null);
 
       if (parser != null) {
         this.getHeader(parser);
@@ -494,7 +497,7 @@ public abstract class DefaultSipMessage implements SipMessage {
   @Override
   public SipMessage withIncrementedCSeq(final SipMethod method) {
     return this.withCSeq(
-      this.getCSeq().getSequence().plus(UnsignedInteger.ONE).longValue(),
+      this.getCSeq().sequence().plus(UnsignedInteger.ONE).longValue(),
       method);
   }
 

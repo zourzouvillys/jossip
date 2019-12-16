@@ -25,9 +25,9 @@ public class MIMETypeSerializer extends AbstractRfcSerializer<MIMEType> {
    */
   @Override
   public String serialize(final MIMEType obj) {
-    return obj.getType()
+    return obj.type()
       + "/"
-      + obj.getSubType()
+      + obj.subType()
       + (obj.getParameters().isPresent() ? ";"
         + this.manager
           .serialize(obj.getParameters())

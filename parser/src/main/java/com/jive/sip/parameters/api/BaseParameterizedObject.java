@@ -71,8 +71,8 @@ public abstract class BaseParameterizedObject<T> implements ParameterizedObject<
   }
 
   public T replaceParameter(SipParameterDefinition<Token> def, Token value) {
-    Parameters val = this.parameters.withoutParameter(def.getName());
-    return withParameters(val.withParameter(def.getName(), value));
+    Parameters val = this.parameters.withoutParameter(def.name());
+    return withParameters(val.withParameter(def.name(), value));
   }
 
   abstract public T withParameters(final Parameters parameters);

@@ -78,14 +78,14 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
 
     if (this.getCSeq() == null) {
       return String.format("%d %s",
-        this.getStatus().getCode(),
-        this.getStatus().getReason()) + bodyString;
+        this.getStatus().code(),
+        this.getStatus().reason()) + bodyString;
     }
     return String.format("%d %s (%d %s)",
-      this.getStatus().getCode(),
-      this.getStatus().getReason(),
-      this.getCSeq().getSequence().longValue(),
-      this.getCSeq().getMethod()) + bodyString;
+      this.getStatus().code(),
+      this.getStatus().reason(),
+      this.getCSeq().sequence().longValue(),
+      this.getCSeq().method()) + bodyString;
   }
 
   @Override
@@ -141,7 +141,7 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   @Override
   public DefaultSipResponse withoutHeaders(final String... headerNames) {
     final List<String> badHeaders = Lists.newArrayList(headerNames);
-    final List<RawHeader> keepers = Lists.newArrayList(Iterables.filter(this.headers, header -> !Iterables.contains(badHeaders, header.getName())));
+    final List<RawHeader> keepers = Lists.newArrayList(Iterables.filter(this.headers, header -> !Iterables.contains(badHeaders, header.name())));
     final DefaultSipResponse result = new DefaultSipResponse(this.manager.adapt(RfcSipMessageManager.class), this.version, this.status, keepers);
     result.body = this.body;
     return result;
@@ -275,7 +275,7 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   @Override
   public SipResponse withIncrementedCSeq(final SipMethod method) {
     return this.withCSeq(
-      this.getCSeq().getSequence().plus(UnsignedInteger.ONE).longValue(),
+      this.getCSeq().sequence().plus(UnsignedInteger.ONE).longValue(),
       method);
   }
 

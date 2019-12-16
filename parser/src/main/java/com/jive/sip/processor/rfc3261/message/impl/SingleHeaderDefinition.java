@@ -59,22 +59,22 @@ public class SingleHeaderDefinition<T> extends BaseHeaderDefinition implements S
 
     for (final RawHeader header : headers) {
 
-      if (matches(header.getName())) {
+      if (matches(header.name())) {
 
         if (this.parser == null) {
-          return (T) header.getValue();
+          return (T) header.value();
         }
 
-        final ParserInput input = ByteParserInput.fromString(header.getValue());
+        final ParserInput input = ByteParserInput.fromString(header.value());
         final ParserContext ctx = new DefaultParserContext(input);
         final ValueHolder<T> holder = new ValueHolder<T>();
 
         if (!this.parser.find(ctx, holder)) {
-          throw new ParseFailureException(String.format("Failed to parse '%s' header", header.getName()));
+          throw new ParseFailureException(String.format("Failed to parse '%s' header", header.name()));
         }
 
         if (ctx.remaining() > 0) {
-          throw new ParseFailureException(String.format("Trailing garbage in '%s' header at pos %d", header.getName(), ctx.position()));
+          throw new ParseFailureException(String.format("Trailing garbage in '%s' header at pos %d", header.name(), ctx.position()));
         }
 
         return holder.value();

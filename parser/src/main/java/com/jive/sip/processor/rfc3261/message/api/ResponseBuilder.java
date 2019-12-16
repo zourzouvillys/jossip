@@ -45,6 +45,6 @@ public interface ResponseBuilder {
 
   SipResponse build(final SipRequest req);
 
-  SipResponseStatus getStatus();
+  SipResponseStatus status();
 
 }

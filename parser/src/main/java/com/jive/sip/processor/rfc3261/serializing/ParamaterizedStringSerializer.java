@@ -17,7 +17,7 @@ public class ParamaterizedStringSerializer extends AbstractRfcSerializer<Paramet
   @Override
   public void serialize(final Writer w, final ParameterizedString obj) throws IOException {
 
-    w.append(obj.getValue());
+    w.append(obj.value());
 
     if (obj.getParameters().isPresent()) {
       w.append(RfcSerializationConstants.SEMI);

@@ -51,17 +51,17 @@ public class Replaces extends BaseParameterizedObject<Replaces> {
   }
 
   public static Replaces fromLocal(final DialogId dialogId, final boolean earlyOnly) {
-    return create(dialogId.getCallId(), dialogId.getLocalTag(), dialogId.getRemoteTag(), earlyOnly);
+    return create(dialogId.callId(), dialogId.localTag(), dialogId.remoteTag(), earlyOnly);
   }
 
   public static Replaces fromRemote(final DialogId dialogId, final boolean earlyOnly) {
-    return create(dialogId.getCallId(), dialogId.getRemoteTag(), dialogId.getLocalTag(), earlyOnly);
+    return create(dialogId.callId(), dialogId.remoteTag(), dialogId.localTag(), earlyOnly);
   }
 
   public static Replaces create(final CallId callId, final String to, final String from, final boolean earlyOnly) {
     final List<RawParameter> params = Lists.newLinkedList();
-    params.add(new RawParameter(ToTag.getName(), new TokenParameterValue(to)));
-    params.add(new RawParameter(FromTag.getName(), new TokenParameterValue(from)));
+    params.add(new RawParameter(ToTag.name(), new TokenParameterValue(to)));
+    params.add(new RawParameter(FromTag.name(), new TokenParameterValue(from)));
     if (earlyOnly) {
       params.add(new RawParameter("early-only"));
     }

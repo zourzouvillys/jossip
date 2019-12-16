@@ -22,12 +22,12 @@ public class IntegerExtractor implements ParameterValueVisitor<Integer> {
 
   @Override
   public Integer visit(final TokenParameterValue parameter) {
-    return UnsignedInteger.valueOf(parameter.getValue().toString()).intValue();
+    return UnsignedInteger.valueOf(parameter.value().toString()).intValue();
   }
 
   @Override
   public Integer visit(final QuotedStringParameterValue parameter) {
-    return UnsignedInteger.valueOf(parameter.getValue().toString()).intValue();
+    return UnsignedInteger.valueOf(parameter.value().toString()).intValue();
   }
 
   @Override

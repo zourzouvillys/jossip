@@ -28,9 +28,9 @@ public final class HistoryInfoHeaderDefinition extends BaseHeaderDefinition impl
 
     for (final RawHeader header : headers) {
 
-      if (matches(header.getName())) {
+      if (matches(header.name())) {
 
-        final ParserInput input = ByteParserInput.fromString(header.getValue());
+        final ParserInput input = ByteParserInput.fromString(header.value());
 
         final ParserContext ctx = new DefaultParserContext(input);
 

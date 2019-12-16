@@ -24,6 +24,7 @@ import lombok.Getter;
  * @author theo
  * 
  */
+
 @SuppressWarnings("serial")
 @EqualsAndHashCode(callSuper = true)
 public class NameAddr extends BaseParameterizedObject<NameAddr> implements Serializable {
@@ -100,9 +101,9 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
         // TODO: this doesn't keep quoted values ...
         result +=
           ";"
-            + p.getName()
-            + ((p.getValue() == null) || (p.getValue() instanceof FlagParameterValue) ? ""
-                                                                                      : "=" + p.getValue());
+            + p.name()
+            + ((p.value() == null) || (p.value() instanceof FlagParameterValue) ? ""
+                                                                                : "=" + p.value());
       }
     }
     return result;
@@ -118,7 +119,7 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
   }
 
   public NameAddr withTag(String tag) {
-    return withoutParameter(PTag.getName()).withParameter(PTag.getName(), Token.from(tag));
+    return withoutParameter(PTag.name()).withParameter(PTag.name(), Token.from(tag));
   }
 
   public NameAddr withoutName() {
@@ -138,7 +139,7 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
   }
 
   public NameAddr withExpires(int seconds) {
-    return withoutParameter(PExpires.getName()).withParameter(PExpires.getName(), Token.from(seconds));
+    return withoutParameter(PExpires.name()).withParameter(PExpires.name(), Token.from(seconds));
   }
 
 }

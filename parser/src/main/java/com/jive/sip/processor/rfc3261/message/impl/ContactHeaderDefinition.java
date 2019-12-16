@@ -28,13 +28,13 @@ public final class ContactHeaderDefinition extends BaseHeaderDefinition implemen
 
     for (final RawHeader header : headers) {
 
-      if (matches(header.getName())) {
+      if (matches(header.name())) {
 
-        if (header.getValue().equals("*")) {
+        if (header.value().equals("*")) {
           return ContactSet.STAR;
         }
 
-        final ParserInput input = ByteParserInput.fromString(header.getValue());
+        final ParserInput input = ByteParserInput.fromString(header.value());
 
         final ParserContext ctx = new DefaultParserContext(input);
 

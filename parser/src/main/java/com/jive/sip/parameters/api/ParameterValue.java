@@ -4,7 +4,7 @@ public abstract class ParameterValue<T> {
 
   abstract public <R> R apply(ParameterValueVisitor<R> visitor);
 
-  abstract public T getValue();
+  abstract public T value();
 
   abstract public int hashCode();
 

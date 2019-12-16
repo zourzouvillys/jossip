@@ -22,7 +22,7 @@ public class FlagParameterValue extends ParameterValue<Void> {
   }
 
   @Override
-  public Void getValue() {
+  public Void value() {
     return null;
   }
 

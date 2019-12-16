@@ -24,7 +24,7 @@ public class RetryAfterSerializer extends AbstractRfcSerializer<RetryAfter> {
    */
   @Override
   public String serialize(final RetryAfter obj) {
-    String result = obj.getDelta() + " " + obj.getComment().orElse("");
+    String result = obj.delta() + " " + obj.getComment().orElse("");
     result += this.manager.serialize(obj.getParameters());
     return result;
   }

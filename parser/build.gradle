@@ -20,6 +20,9 @@ java {
 }
 
 
+lombok.config['lombok.accessors.fluent'] = 'true'
+lombok.config['lombok.sneakyThrows.flagUsage'] = 'warning'
+
 	
 eclipse {
   synchronizationTasks 'eclipseJdtApt', 'eclipseFactorypath', 'eclipseJdt'

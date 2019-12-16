@@ -114,7 +114,7 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
     if (this.referTo != null) {
       headers.add(new RawHeader("Refer-To", MutableSipMessage.serializer.serialize(this.referTo)));
       if (this.referredBy != null) {
-        headers.add(new RawHeader("Referred-By", this.referredBy.getAddress().toString()));
+        headers.add(new RawHeader("Referred-By", this.referredBy.address().toString()));
       }
     }
 
@@ -201,12 +201,12 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
   }
 
   public MutableSipRequest cseq(final CSeq cseq) {
-    return this.cseq(cseq.getSequence(), cseq.getMethod());
+    return this.cseq(cseq.sequence(), cseq.method());
   }
 
   public static MutableSipRequest ack(final SipResponse res200) {
-    final MutableSipRequest ack = MutableSipRequest.create(SipMethod.ACK, res200.getContacts().get().iterator().next().getAddress());
-    ack.cseq(res200.getCSeq().getSequence(), SipMethod.ACK);
+    final MutableSipRequest ack = MutableSipRequest.create(SipMethod.ACK, res200.getContacts().get().iterator().next().address());
+    ack.cseq(res200.getCSeq().sequence(), SipMethod.ACK);
     ack.callId(res200.getCallId());
     ack.to(res200.getTo());
     ack.from(res200.getFrom());
@@ -238,7 +238,7 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
   public static MutableSipRequest createFailureAck(final SipRequest req, final SipResponse res) {
     return MutableSipRequest.create(SipMethod.ACK, req.getUri())
       .callId(req.getCallId().getValue())
-      .cseq(req.getCSeq().getSequence(), SipMethod.ACK)
+      .cseq(req.getCSeq().sequence(), SipMethod.ACK)
       .from(req.getFrom())
       .to(res.getTo())
       .session(res.getSessionId().orElse(null))

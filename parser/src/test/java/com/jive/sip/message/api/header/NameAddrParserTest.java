@@ -55,7 +55,7 @@ public class NameAddrParserTest extends BaseParserTest<NameAddr> {
     final NameAddr name = this.parse("\"Alice\" <sip:alice@domain> ;a=1 ; b;c = c");
     assertTrue(name.getName().isPresent());
     assertEquals("Alice", name.getName().get());
-    assertEquals(RawUri.of("sip", "alice@domain"), name.getAddress());
+    assertEquals(RawUri.of("sip", "alice@domain"), name.address());
     assertEquals(DefaultParameters.from(this.params), name.getParameters().get());
   }
 
@@ -63,7 +63,7 @@ public class NameAddrParserTest extends BaseParserTest<NameAddr> {
   public void testDisplayNameAndAsinineSpacing() {
     final NameAddr name = this.parse("Alice <sip:alice@domain> ;a=1 ; b;c = c");
     assertEquals("Alice", name.getName().get());
-    assertEquals(RawUri.of("sip", "alice@domain"), name.getAddress());
+    assertEquals(RawUri.of("sip", "alice@domain"), name.address());
     assertEquals(DefaultParameters.from(this.params), name.getParameters().get());
   }
 
@@ -71,7 +71,7 @@ public class NameAddrParserTest extends BaseParserTest<NameAddr> {
   public void testNoDisplayNameWithAsinineSpacing() {
     final NameAddr name = this.parse("<sip:alice@domain> ;a=1 ; b;c = c");
     assertFalse(name.getName().isPresent());
-    assertEquals(RawUri.of("sip", "alice@domain"), name.getAddress());
+    assertEquals(RawUri.of("sip", "alice@domain"), name.address());
     assertEquals(DefaultParameters.from(this.params), name.getParameters().get());
   }
 
@@ -80,7 +80,7 @@ public class NameAddrParserTest extends BaseParserTest<NameAddr> {
     final NameAddr name = this.parse("sip:alice@domain");
     assertFalse(name.getName().isPresent());
     assertFalse(name.getParameters().isPresent());
-    assertEquals(RawUri.of("sip", "alice@domain"), name.getAddress());
+    assertEquals(RawUri.of("sip", "alice@domain"), name.address());
   }
 
   @Test
@@ -88,7 +88,7 @@ public class NameAddrParserTest extends BaseParserTest<NameAddr> {
     final NameAddr name = this.parse("Anonymous <sip:c8oqz84zk7z@privacy.org>;tag=hyh8");
     assertTrue(name.getName().isPresent());
     assertEquals("Anonymous", name.getName().get());
-    assertEquals(RawUri.of("sip", "c8oqz84zk7z@privacy.org"), name.getAddress());
+    assertEquals(RawUri.of("sip", "c8oqz84zk7z@privacy.org"), name.address());
     assertEquals(DefaultParameters.from(Lists.newArrayList(new RawParameter("tag", new TokenParameterValue("hyh8")))),
       name.getParameters().get());
   }
@@ -98,7 +98,7 @@ public class NameAddrParserTest extends BaseParserTest<NameAddr> {
     final NameAddr name = this.parse("Theo Zourzouvillys <sip:theo@jive.com>;tag=xxxx");
     assertTrue(name.getName().isPresent());
     assertEquals("Theo Zourzouvillys", name.getName().get());
-    assertEquals(RawUri.of("sip", "theo@jive.com"), name.getAddress());
+    assertEquals(RawUri.of("sip", "theo@jive.com"), name.address());
     assertEquals(DefaultParameters.from(this.simpleParams), name.getParameters().get());
   }
 
@@ -107,7 +107,7 @@ public class NameAddrParserTest extends BaseParserTest<NameAddr> {
     final NameAddr name = this.parse("Theo (Zourzouvillys) <sip:theo@jive.com>;tag=xxxx");
     assertTrue(name.getName().isPresent());
     assertEquals("Theo (Zourzouvillys)", name.getName().get());
-    assertEquals(RawUri.of("sip", "theo@jive.com"), name.getAddress());
+    assertEquals(RawUri.of("sip", "theo@jive.com"), name.address());
     assertEquals(DefaultParameters.from(this.simpleParams), name.getParameters().get());
   }
 
@@ -115,7 +115,7 @@ public class NameAddrParserTest extends BaseParserTest<NameAddr> {
   public void testNoDiplayNameWithSpecialUri() {
     final NameAddr name = this.parse("<sip:theo@jive.com?hello>;tag=xxxx");
     assertFalse(name.getName().isPresent());
-    assertEquals(RawUri.of("sip", "theo@jive.com?hello"), name.getAddress());
+    assertEquals(RawUri.of("sip", "theo@jive.com?hello"), name.address());
     assertEquals(DefaultParameters.from(this.simpleParams), name.getParameters().get());
   }
 
@@ -123,10 +123,10 @@ public class NameAddrParserTest extends BaseParserTest<NameAddr> {
   public void testUriParameters() {
     final NameAddr name = this.parse("Theo <sip:theo@jive.com;lr>;tag=xxxx");
     assertTrue(name.getName().isPresent());
-    assertEquals(RawUri.of("sip", "theo@jive.com;lr"), name.getAddress());
+    assertEquals(RawUri.of("sip", "theo@jive.com;lr"), name.address());
     assertEquals(DefaultParameters.from(this.simpleParams), name.getParameters().get());
     assertEquals(DefaultParameters.from(Lists.newArrayList(new RawParameter("lr"))),
-      name.getAddress().apply(SipUriExtractor.getInstance()).getParameters().get());
+      name.address().apply(SipUriExtractor.getInstance()).getParameters().get());
   }
 
   @Test
@@ -138,7 +138,7 @@ public class NameAddrParserTest extends BaseParserTest<NameAddr> {
   public void testNoBracketsAndParameters() {
     final NameAddr name = this.parse("sip:theo@jive.com;tag=xxxx");
     assertFalse(name.getName().isPresent());
-    assertEquals(RawUri.of("sip", "theo@jive.com"), name.getAddress());
+    assertEquals(RawUri.of("sip", "theo@jive.com"), name.address());
     assertEquals(DefaultParameters.from(this.simpleParams), name.getParameters().get());
   }
 
@@ -152,7 +152,7 @@ public class NameAddrParserTest extends BaseParserTest<NameAddr> {
     final NameAddr name = this.parse("\"Theo??\" <sip:theo@jive.com>");
     assertTrue(name.getName().isPresent());
     assertEquals("Theo??", name.getName().get());
-    assertEquals(RawUri.of("sip", "theo@jive.com"), name.getAddress());
+    assertEquals(RawUri.of("sip", "theo@jive.com"), name.address());
   }
 
   @Test
@@ -160,7 +160,7 @@ public class NameAddrParserTest extends BaseParserTest<NameAddr> {
     final NameAddr name = this.parse("\"Theo\" <tel:+18009453669>;Phone-Context=pbx");
     assertTrue(name.getName().isPresent());
     assertEquals(name.getName().get(), "Theo");
-    assertEquals(RawUri.of("tel", "+18009453669"), name.getAddress());
+    assertEquals(RawUri.of("tel", "+18009453669"), name.address());
     assertEquals(
       DefaultParameters.from(Lists.newArrayList(new RawParameter("Phone-Context", new TokenParameterValue("pbx")))),
       name.getParameters().get());
@@ -171,11 +171,11 @@ public class NameAddrParserTest extends BaseParserTest<NameAddr> {
     final NameAddr value = NameAddrParser.parse("\"Theo\" <tel:+18009453669>;Phone-Context=pbx");
     assertTrue(value.getName().isPresent());
     assertEquals("Theo", value.getName().orElse(null));
-    assertEquals("tel", value.getAddress().getScheme());
+    assertEquals("tel", value.address().getScheme());
     assertEquals("+18009453669",
-      value.getAddress()
+      value.address()
         .apply(TelUriExtractor.getInstance())
-        .getNumber());
+        .number());
     assertTrue(value.getParameters().isPresent());
     Parameters parameters = value.getParameters().get();
     assertTrue(parameters.contains("Phone-Context"));

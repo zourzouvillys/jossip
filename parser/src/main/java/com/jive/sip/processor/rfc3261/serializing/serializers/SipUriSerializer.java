@@ -54,7 +54,7 @@ public class SipUriSerializer extends AbstractRfcSerializer<SipUri> {
         if (hb.length() > 0) {
           hb.append('&');
         }
-        hb.append(header.getName()).append('=').append(URLEncoder.encode(header.getValue(), "UTF-8"));
+        hb.append(header.name()).append('=').append(URLEncoder.encode(header.value(), "UTF-8"));
       }
 
       sb.append('?').append(hb.toString());

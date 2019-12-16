@@ -17,12 +17,12 @@ public class StringParameterExtractor implements ParameterValueVisitor<String> {
 
   @Override
   public String visit(final TokenParameterValue parameter) {
-    return parameter.getValue().toString();
+    return parameter.value().toString();
   }
 
   @Override
   public String visit(final QuotedStringParameterValue parameter) {
-    return parameter.getValue();
+    return parameter.value();
   }
 
   @Override

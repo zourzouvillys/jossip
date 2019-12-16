@@ -35,7 +35,7 @@ public class RawMessage {
   }
 
   public void addHeader(final RawHeader header) {
-    this.headers.put(header.getName(), header);
+    this.headers.put(header.name(), header);
   }
 
   public Collection<RawHeader> getHeaders() {
@@ -109,7 +109,7 @@ public class RawMessage {
     for (final Entry<String, RawHeader> header : this.headers.entries()) {
       final String name = header.getKey().toLowerCase();
       if (name.equals("content-length") || name.equals("l")) {
-        return Optional.of(Integer.parseInt(header.getValue().getValue()));
+        return Optional.of(Integer.parseInt(header.getValue().value()));
       }
     }
     return Optional.empty();

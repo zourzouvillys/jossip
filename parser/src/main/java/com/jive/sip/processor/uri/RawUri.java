@@ -49,7 +49,7 @@ public final class RawUri implements Uri {
        * com.jive.sip.message.api.uri.UrnUri) that parses out or verfies some some
        * @see com.jive.sip.message.api.uri.UrnUri subclass the untimate gets passed to the visitor.
        */
-      return listener.getUri().apply(visitor);
+      return listener.uri().apply(visitor);
     }
     return visitor.visit(this);
   }

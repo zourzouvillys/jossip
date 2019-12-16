@@ -55,9 +55,9 @@ public class Authorization extends BaseParameterizedObject<Authorization> {
         sb.append(",");
       }
 
-      sb.append(p.getName());
+      sb.append(p.name());
 
-      p.getValue().apply(new ParameterValueVisitor<Void>() {
+      p.value().apply(new ParameterValueVisitor<Void>() {
 
         @Override
         public Void visit(FlagParameterValue parameter) {
@@ -66,19 +66,19 @@ public class Authorization extends BaseParameterizedObject<Authorization> {
 
         @Override
         public Void visit(TokenParameterValue parameter) {
-          sb.append('=').append(parameter.getValue().toString());
+          sb.append('=').append(parameter.value().toString());
           return null;
         }
 
         @Override
         public Void visit(QuotedStringParameterValue parameter) {
-          sb.append('=').append(quote(parameter.getValue().toString()));
+          sb.append('=').append(quote(parameter.value().toString()));
           return null;
         }
 
         @Override
         public Void visit(HostAndPortParameterValue parameter) {
-          sb.append('=').append(parameter.getValue().toString());
+          sb.append('=').append(parameter.value().toString());
           return null;
         }
 

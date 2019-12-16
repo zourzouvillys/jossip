@@ -50,12 +50,12 @@ public class Reason extends BaseParameterizedObject<Reason> {
 
   public static Reason fromSipStatus(final SipResponseStatus status) {
     return new Reason("SIP", DefaultParameters.EMPTY)
-      .withParameter(Cause.getName(), Token.from(status.getCode()))
-      .withParameter(Text.getName(), QuotedString.from(status.getReason()));
+      .withParameter(Cause.name(), Token.from(status.code()))
+      .withParameter(Text.name(), QuotedString.from(status.reason()));
   }
 
   public Optional<SipResponseStatus> asSipStatus() {
-    if ("SIP".equals(getProtocol())) {
+    if ("SIP".equals(protocol())) {
       return Optional.of(SipResponseStatus.fromCode(getCause().get())
         .withReason(getText().orElse(null)));
     }

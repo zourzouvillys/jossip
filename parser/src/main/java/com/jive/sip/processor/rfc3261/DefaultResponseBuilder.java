@@ -54,7 +54,7 @@ public class DefaultResponseBuilder implements ResponseBuilder {
 
     for (final String hn : this.copy) {
       for (final RawHeader header : req.getHeaders()) {
-        if (hn.toLowerCase().equals(header.getName().toLowerCase())) {
+        if (hn.toLowerCase().equals(header.name().toLowerCase())) {
           // loop, otherwise only a single value gets copied (e.g, multiple Via headers).
 
           res.addHeader(header);

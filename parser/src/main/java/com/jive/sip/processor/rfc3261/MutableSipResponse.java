@@ -127,7 +127,7 @@ public class MutableSipResponse extends MutableSipMessage<MutableSipResponse> {
     }
 
     if (req.getCSeq() != null) {
-      res.cseq(req.getCSeq().getSequence().longValue(), req.getCSeq().getMethod());
+      res.cseq(req.getCSeq().sequence().longValue(), req.getCSeq().method());
     }
 
     if ((req.getRecordRoute() != null) && !req.getRecordRoute().isEmpty()) {
@@ -136,7 +136,7 @@ public class MutableSipResponse extends MutableSipMessage<MutableSipResponse> {
 
     final Optional<RawHeader> session = req.getHeader("Session-ID");
     if (session.isPresent()) {
-      res.session(session.get().getValue());
+      res.session(session.get().value());
     }
 
     if (!req.getHistoryInfo().isEmpty()) {

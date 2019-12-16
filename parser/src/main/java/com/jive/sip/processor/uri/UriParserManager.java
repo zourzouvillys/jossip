@@ -18,7 +18,7 @@ public class UriParserManager implements UriSubParserManager<Uri> {
   private final Map<String, Parser<? extends Uri>> registry = Maps.newHashMap();
 
   public <T extends Uri> void register(UriParserDefintion<T> definition) {
-    registry.put(definition.getName(), definition.getParser());
+    registry.put(definition.name(), definition.parser());
   }
 
   public Parser<? extends Uri> getParser(Uri uri) {
