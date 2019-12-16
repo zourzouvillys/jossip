@@ -110,7 +110,7 @@ public class DefaultRequestBuilderTest {
     this.builder.setCallID(new CallId("jhutchins"));
     final SipRequest request = this.builder.build();
 
-    assertEquals(UnsignedInteger.valueOf(70), request.getMaxForwards().get());
+    assertEquals(UnsignedInteger.valueOf(70), request.maxForwards().get());
   }
 
   @Test
@@ -123,7 +123,7 @@ public class DefaultRequestBuilderTest {
     this.builder.setMaxForwards(53);
     final SipRequest request = this.builder.build();
 
-    assertEquals(UnsignedInteger.valueOf(53), request.getMaxForwards().get());
+    assertEquals(UnsignedInteger.valueOf(53), request.maxForwards().get());
   }
 
   @Test
@@ -136,7 +136,7 @@ public class DefaultRequestBuilderTest {
     this.builder.setHeader("Max-Forwards", 43);
     final SipRequest request = this.builder.build();
 
-    assertEquals(UnsignedInteger.valueOf(43), request.getMaxForwards().get());
+    assertEquals(UnsignedInteger.valueOf(43), request.maxForwards().get());
   }
 
   @Test
@@ -149,7 +149,7 @@ public class DefaultRequestBuilderTest {
     this.builder.setHeader("max-ForWaRdS", 43);
     final SipRequest request = this.builder.build();
 
-    assertEquals(UnsignedInteger.valueOf(43), request.getMaxForwards().get());
+    assertEquals(UnsignedInteger.valueOf(43), request.maxForwards().get());
   }
 
   @Test

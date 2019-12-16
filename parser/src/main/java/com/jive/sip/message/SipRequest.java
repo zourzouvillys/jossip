@@ -30,43 +30,43 @@ public interface SipRequest extends SipMessage {
 
   Uri uri();
 
-  Optional<UnsignedInteger> getMaxForwards();
+  Optional<UnsignedInteger> maxForwards();
 
-  Optional<TokenSet> getProxyRequire();
+  Optional<TokenSet> proxyRequire();
 
-  List<Authorization> getProxyAuthorization();
+  List<Authorization> proxyAuthorization();
 
-  List<Authorization> getAuthorization();
+  List<Authorization> authorization();
 
-  Optional<UnsignedInteger> getExpires();
+  Optional<UnsignedInteger> expires();
 
-  List<NameAddr> getPath();
+  List<NameAddr> path();
 
-  Optional<EventSpec> getEvent();
+  Optional<EventSpec> event();
 
-  Optional<CharSequence> getUserAgent();
+  Optional<CharSequence> userAgent();
 
-  Optional<Replaces> getReplaces();
+  Optional<Replaces> replaces();
 
-  Optional<NameAddr> getReferTo();
+  Optional<NameAddr> referTo();
 
-  Optional<NameAddr> getReferredBy();
+  Optional<NameAddr> referredBy();
 
-  Optional<TokenSet> getRequestDisposition();
+  Optional<TokenSet> requestDisposition();
 
-  Optional<TokenSet> getPrivacy();
+  Optional<TokenSet> privacy();
 
-  List<RValue> getResourcePriority();
+  List<RValue> resourcePriority();
 
-  Optional<NameAddr> getPServedUser();
+  Optional<NameAddr> pServedUser();
 
-  Optional<RAck> getRAck();
+  Optional<RAck> rack();
 
-  List<NameAddr> getPAssertedIdentity();
+  List<NameAddr> pAssertedIdentity();
 
-  Optional<Reason> getReason();
+  Optional<Reason> reason();
 
-  Optional<TargetDialog> getTargetDialog();
+  Optional<TargetDialog> targetDialog();
 
   /**
    *

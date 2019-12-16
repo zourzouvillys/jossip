@@ -79,7 +79,7 @@ public class DefaultSipMessageTest {
         Lists.newArrayList(new RawHeader("Expires", maxExpires.toString())),
         null);
 
-    Optional<UnsignedInteger> expires = message.getExpires();
+    Optional<UnsignedInteger> expires = message.expires();
 
     assertTrue(expires.isPresent());
     assertEquals(maxExpires, expires.get());

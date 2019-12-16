@@ -73,37 +73,37 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   }
 
   @Override
-  public Optional<UnsignedInteger> getMaxForwards() {
+  public Optional<UnsignedInteger> maxForwards() {
     return this.getHeader(MAX_FORWARDS);
   }
 
   @Override
-  public Optional<TokenSet> getProxyRequire() {
+  public Optional<TokenSet> proxyRequire() {
     return Optional.empty();
   }
 
   @Override
-  public List<Authorization> getProxyAuthorization() {
+  public List<Authorization> proxyAuthorization() {
     return this.getHeader(PROXY_AUTHORIZATION).orElse(Collections.emptyList());
   }
 
   @Override
-  public List<Authorization> getAuthorization() {
+  public List<Authorization> authorization() {
     return this.getHeader(AUTHORIZATION).orElse(Collections.emptyList());
   }
 
   @Override
-  public Optional<UnsignedInteger> getExpires() {
+  public Optional<UnsignedInteger> expires() {
     return this.getHeader(EXPIRES);
   }
 
   @Override
-  public Optional<CharSequence> getUserAgent() {
+  public Optional<CharSequence> userAgent() {
     return this.getHeader(USER_AGENT);
   }
 
   @Override
-  public Optional<RAck> getRAck() {
+  public Optional<RAck> rack() {
     return this.getHeader(RACK);
   }
 
@@ -115,12 +115,12 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   }
 
   @Override
-  public List<NameAddr> getPath() {
+  public List<NameAddr> path() {
     return this.getHeader(PATH).orElse(Lists.<NameAddr>newArrayList());
   }
 
   @Override
-  public Optional<EventSpec> getEvent() {
+  public Optional<EventSpec> event() {
     return this.getHeader(EVENT);
   }
 
@@ -130,48 +130,48 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   }
 
   @Override
-  public Optional<NameAddr> getPServedUser() {
+  public Optional<NameAddr> pServedUser() {
     return this.getHeader(P_SERVED_USER);
   }
 
   @Override
-  public List<NameAddr> getPAssertedIdentity() {
+  public List<NameAddr> pAssertedIdentity() {
     return this.getHeader(P_ASSERTED_IDENTITY).orElse(Collections.<NameAddr>emptyList());
   }
 
   @Override
-  public List<RValue> getResourcePriority() {
+  public List<RValue> resourcePriority() {
     return this.getHeader(RESOURCE_PRIORITY).orElse(Collections.emptyList());
   }
 
   @Override
-  public Optional<Replaces> getReplaces() {
+  public Optional<Replaces> replaces() {
     return this.getHeader(REPLACES);
   }
 
   @Override
-  public Optional<NameAddr> getReferTo() {
+  public Optional<NameAddr> referTo() {
     return this.getHeader(REFER_TO);
   }
 
   @Override
-  public Optional<NameAddr> getReferredBy() {
+  public Optional<NameAddr> referredBy() {
     return this.getHeader(REFERRED_BY);
   }
 
   @Override
-  public Optional<Reason> getReason() {
+  public Optional<Reason> reason() {
     return this.getHeader(REASON);
 
   }
 
   @Override
-  public Optional<TokenSet> getRequestDisposition() {
+  public Optional<TokenSet> requestDisposition() {
     return this.getHeader(REQUEST_DISPOSITION);
   }
 
   @Override
-  public Optional<TokenSet> getPrivacy() {
+  public Optional<TokenSet> privacy() {
     return this.getHeader(PRIVACY);
   }
 
@@ -433,7 +433,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   }
 
   @Override
-  public Optional<TargetDialog> getTargetDialog() {
+  public Optional<TargetDialog> targetDialog() {
     return this.getHeader(TARGET_DIALOG);
   }
 
