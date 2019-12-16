@@ -5,38 +5,35 @@ package com.jive.sip.uri.api;
 
 import java.util.Optional;
 
-import lombok.Value;
-import lombok.experimental.Wither;
+import org.immutables.value.Value;
+import org.immutables.value.Value.Style.ImplementationVisibility;
 
 /**
- * @author Jeff Hutchins <jhutchins@getjive.com>
- * 
  */
-@Value
-@Wither
-public class UserInfo {
-  private final String user;
-  private final Optional<String> password;
 
-  public UserInfo(String user, Optional<String> password) {
-    this.user = user;
-    this.password = password;
-  }
+@Value.Immutable(builder = false)
+@Value.Style(visibility = ImplementationVisibility.PACKAGE, overshadowImplementation = true)
+public abstract class UserInfo {
 
-  public UserInfo(String user, String password) {
-    this.user = user;
-    this.password = Optional.of(password);
-  }
+  @Value.Parameter
+  public abstract String user();
 
-  public UserInfo(String user) {
-    this.user = user;
-    this.password = Optional.empty();
-  }
+  @Value.Parameter
+  public abstract Optional<String> password();
 
   public String toString() {
-    if (password.isPresent()) {
-      return user + ":" + password.get();
+    if (password().isPresent()) {
+      return user() + ":" + password().get();
     }
-    return user;
+    return user();
   }
+
+  public static UserInfo of(String user, String password) {
+    return ImmutableUserInfo.of(user, Optional.ofNullable(password));
+  }
+
+  public static UserInfo of(String user) {
+    return ImmutableUserInfo.of(user, Optional.empty());
+  }
+
 }

@@ -7,8 +7,8 @@ public class UserInfoSerializer extends AbstractRfcSerializer<UserInfo> {
 
   @Override
   public String serialize(final UserInfo obj) {
-    return obj.getUser()
-      + (obj.getPassword().isPresent() ? ":" + obj.getPassword().get()
+    return obj.user()
+      + (obj.password().isPresent() ? ":" + obj.password().get()
                                        : "");
   }
 

@@ -60,10 +60,10 @@ public class SipUriParser implements UriSchemeParser<SipUri> {
           ctx.position(pos);
           return false;
         }
-        info = new UserInfo(user.toString(), password.toString());
+        info =  UserInfo.of(user.toString(), password.toString());
       }
       else {
-        info = new UserInfo(user.toString());
+        info =  UserInfo.of(user.toString());
       }
 
       if (!ctx.skip(AT)) {

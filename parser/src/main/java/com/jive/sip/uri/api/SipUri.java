@@ -205,16 +205,16 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
   }
 
   public static SipUri fromUserAndHost(final String user, final String host) {
-    return new SipUri(new UserInfo(user), HostAndPort.fromString(host));
+    return new SipUri(UserInfo.of(user), HostAndPort.fromString(host));
   }
 
   public static SipUri fromUserAndHost(final String user, final HostAndPort host) {
-    return new SipUri(new UserInfo(user), host);
+    return new SipUri(UserInfo.of(user), host);
   }
 
   public Optional<String> getUsername() {
     if (this.userinfo.isPresent()) {
-      return Optional.ofNullable(this.userinfo.get().getUser());
+      return Optional.ofNullable(this.userinfo.get().user());
     }
     return Optional.empty();
   }
@@ -262,7 +262,7 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
   }
 
   public SipUri withUser(final String user) {
-    return this.withUserinfo(Optional.of(new UserInfo(user)));
+    return this.withUserinfo(Optional.of(UserInfo.of(user)));
   }
 
   /**
