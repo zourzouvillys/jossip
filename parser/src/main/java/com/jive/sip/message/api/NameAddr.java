@@ -148,4 +148,8 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
     return getParameter(PExpires).map(val -> Integer.parseInt(val.toString()));
   }
 
+  public NameAddr withExpires(int seconds) {
+    return withoutParameter(PExpires.getName()).withParameter(PExpires.getName(), Token.from(seconds));
+  }
+
 }

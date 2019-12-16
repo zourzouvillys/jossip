@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Optional;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.UnsignedInteger;
 import com.jive.sip.auth.headers.Authorization;
 import com.jive.sip.auth.headers.DigestCredentials;
 import com.jive.sip.base.api.RawHeader;
+import com.jive.sip.message.api.NameAddr;
 import com.jive.sip.message.api.SipRequest;
 import com.jive.sip.message.api.SipResponse;
 import com.jive.sip.message.api.SipResponseStatus;
@@ -21,7 +23,7 @@ public class MutableSipResponse extends MutableSipMessage<MutableSipResponse>
 
   private static final QuotedStringParameterValue AUTH = new QuotedStringParameterValue("auth");
 
-  private final SipResponseStatus status;
+  private SipResponseStatus status;
   private Authorization wwwAuthenticate;
   private Authorization proxyAuthenticate;
   private TokenSet unsupported;
@@ -36,6 +38,13 @@ public class MutableSipResponse extends MutableSipMessage<MutableSipResponse>
     this.status = status;
   }
 
+  public MutableSipResponse status(final SipResponseStatus status)
+  {
+    this.status = status;
+    return this;
+  }
+
+  
   public MutableSipResponse retryAfter(final int retryAfterSeconds)
   {
     Preconditions.checkArgument(retryAfterSeconds >= 0);

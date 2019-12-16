@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.net.HostAndPort;
 import com.google.common.primitives.UnsignedInteger;
@@ -244,6 +245,13 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>>
     this.contact = ContactSet.from(Lists.newArrayList(targets));
     return (T) this;
   }
+  
+  public T contacts(Iterable<NameAddr> values) {
+    this.contact = ContactSet.from(ImmutableList.copyOf(values));
+    return (T) this;
+  }
+
+
 
   public T contacts(final Uri[] targets)
   {

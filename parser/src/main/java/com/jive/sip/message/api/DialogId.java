@@ -1,5 +1,8 @@
 package com.jive.sip.message.api;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.google.common.base.Strings.nullToEmpty;
+
 import java.util.Iterator;
 
 import com.google.common.base.Preconditions;
@@ -104,12 +107,16 @@ public class DialogId
   
   public String getToken()
   {
-    return String.format("%s:%s:%s", getCallId().getValue(), getLocalTag(), getRemoteTag());
+    return String.format("%s:%s:%s", getCallId().getValue(), nullToEmpty(getLocalTag()), nullToEmpty(getRemoteTag()));
   }
 
   public DialogId swap()
   {
     return new DialogId(getCallId(), getRemoteTag(), getLocalTag());
+  }
+
+  public boolean hasLocalTag() {
+    return !isNullOrEmpty(getLocalTag());
   }
 
 }

@@ -17,7 +17,8 @@ import lombok.NonNull;
 /**
  * A SIP message.
  *
- * Note that there is no guarantee that a message is valid. You must run the SipMessage through a validator if you wish to ensure it's valid.
+ * Note that there is no guarantee that a message is valid. You must run the SipMessage through a
+ * validator if you wish to ensure it's valid.
  *
  * @author theo
  *
@@ -27,8 +28,7 @@ import lombok.NonNull;
  * @author Jeff Hutchins <jhutchins@getjive.com>
  *
  */
-public interface SipMessage extends Serializable
-{
+public interface SipMessage extends Serializable {
 
   public static final String VERSION = "SIP/2.0";
 
@@ -95,7 +95,8 @@ public interface SipMessage extends Serializable
   /**
    * The value of the 'tag' parameter in the 'From' header,
    *
-   * @return The value or null if the From header doesn't exist or doesn't contain a 'tag' parameter.
+   * @return The value or null if the From header doesn't exist or doesn't contain a 'tag'
+   *         parameter.
    */
 
   String getFromTag();
@@ -114,8 +115,7 @@ public interface SipMessage extends Serializable
    * @return String
    */
 
-  default Uri getFromAddress()
-  {
+  default Uri getFromAddress() {
     return getFrom().getAddress();
   }
 
@@ -175,8 +175,8 @@ public interface SipMessage extends Serializable
   /**
    * Returns a {@link RawHeader} instance for the value of the header with the given name.
    *
-   * Note this will NOT return the compact header form. You will need to pass any names for a header in to retrieve the
-   * values.
+   * Note this will NOT return the compact header form. You will need to pass any names for a header
+   * in to retrieve the values.
    *
    * This method will also not fold any headers, etc.
    *
@@ -187,8 +187,8 @@ public interface SipMessage extends Serializable
   List<RawHeader> getHeaders(final String... names);
 
   /**
-   * Returns a single RawHeader value if one exists with this name (case insensitive). If more than one exists, the
-   * first is returned.
+   * Returns a single RawHeader value if one exists with this name (case insensitive). If more than
+   * one exists, the first is returned.
    */
 
   Optional<RawHeader> getHeader(final String name);
@@ -214,7 +214,6 @@ public interface SipMessage extends Serializable
    */
 
   String getVersion();
-
 
   /**
    *
@@ -243,7 +242,6 @@ public interface SipMessage extends Serializable
 
   List<ParameterizedUri> getAlertInfo();
 
-
   /**
    * Runs through each header and ensures it is valid.
    */
@@ -258,8 +256,6 @@ public interface SipMessage extends Serializable
 
   public BranchId getBranchId();
 
-
-
   public SipMessage withHeader(final RawHeader header);
 
   public <T> SipMessage withReplacedHeader(final SipHeaderDefinition<T> header, final T value);
@@ -269,8 +265,6 @@ public interface SipMessage extends Serializable
   public SipMessage withoutHeaders(final SipHeaderDefinition... headers);
 
   public SipMessage withBody(final String contentType, final byte[] body);
-
-
 
   public Optional<String> getContentType();
 
@@ -297,5 +291,11 @@ public interface SipMessage extends Serializable
 
   Optional<MinSE> getMinSE();
 
+  default Optional<Via> topVia() {
+    if (getVias().isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.of(getVias().get(0));
+  }
 
 }

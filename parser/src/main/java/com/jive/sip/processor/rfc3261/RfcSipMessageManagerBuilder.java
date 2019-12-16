@@ -12,7 +12,7 @@ public class RfcSipMessageManagerBuilder
   private SipMessageManagerListener listener = null;
   private final Set<SipHeaderDefinition<?>> headers = Sets.newHashSet();
 
-  public SipMessageManager build()
+  public RfcSipMessageManager build()
   {
 
     final RfcSipMessageManager manager = new RfcSipMessageManager();

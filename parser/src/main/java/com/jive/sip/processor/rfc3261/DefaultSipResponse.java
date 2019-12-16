@@ -74,7 +74,7 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   @Override
   public String toString()
   {
-    return String.format("SIP/2.0 %d %s", this.getStatus().getCode(), this.getStatus().getReason());
+    return String.format("%d %s", this.getStatus().getCode(), this.getStatus().getReason());
   }
 
   @Override

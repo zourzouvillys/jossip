@@ -120,7 +120,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   @Override
   public String toString()
   {
-    return String.format("%s %s SIP/2.0", getMethod(), getUri());
+    return String.format("%s %s", getMethod(), getUri());
   }
 
   @Override
