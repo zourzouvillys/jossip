@@ -3,6 +3,8 @@ package com.jive.sip.message.api.headers;
 import java.util.List;
 import java.util.Optional;
 
+import org.immutables.value.Value;
+
 import com.google.common.collect.Lists;
 import com.jive.sip.base.api.Token;
 import com.jive.sip.message.api.NameAddr;
@@ -12,8 +14,6 @@ import com.jive.sip.parameters.api.TokenParameterValue;
 import com.jive.sip.parameters.impl.DefaultParameters;
 import com.jive.sip.parameters.tools.ParameterUtils;
 import com.jive.sip.uri.api.Uri;
-
-import lombok.Value;
 
 /**
  * First stab at a History-Info header.
@@ -45,40 +45,51 @@ public class HistoryInfo {
 
   }
 
-  @Value
-  public static class Entry {
+  @Value.Immutable(builder = false)
+  public static abstract class Entry {
 
-    private Uri uri;
-    private int[] index;
-    private ChangeType type;
-    private int[] prev;
+    @Value.Parameter
+    public abstract Uri uri();
+
+    @Value.Parameter
+    public abstract int[] index();
+
+    @Value.Parameter
+    public abstract ChangeType type();
+
+    @Value.Parameter
+    public abstract int[] prev();
 
     public NameAddr toNameAddr() {
       final List<RawParameter> raw = Lists.newLinkedList();
-      switch (this.type) {
+      switch (this.type()) {
         case MP:
-          raw.add(new RawParameter("mp", new TokenParameterValue(Token.from(buildIndex(prev)))));
+          raw.add(new RawParameter("mp", new TokenParameterValue(Token.from(buildIndex(prev())))));
           break;
         case NP:
-          raw.add(new RawParameter("np", new TokenParameterValue(Token.from(buildIndex(prev)))));
+          raw.add(new RawParameter("np", new TokenParameterValue(Token.from(buildIndex(prev())))));
           break;
         case RC:
-          raw.add(new RawParameter("rc", new TokenParameterValue(Token.from(buildIndex(prev)))));
+          raw.add(new RawParameter("rc", new TokenParameterValue(Token.from(buildIndex(prev())))));
           break;
         default:
           break;
       }
 
-      if ((this.index != null) && (this.index.length > 0)) {
-        raw.add(new RawParameter("index", new TokenParameterValue(Token.from(buildIndex(this.index)))));
+      if ((this.index() != null) && (this.index().length > 0)) {
+        raw.add(new RawParameter("index", new TokenParameterValue(Token.from(buildIndex(this.index())))));
       }
 
-      return new NameAddr(this.uri, DefaultParameters.from(raw));
+      return new NameAddr(this.uri(), DefaultParameters.from(raw));
 
     }
 
-    public ChangeType getChangeType() {
-      return this.type;
+    public ChangeType changeType() {
+      return this.type();
+    }
+
+    public static Entry of(Uri address, int[] index, ChangeType type, int[] prev) {
+      return ImmutableEntry.of(address, index, type, prev);
     }
 
   }
@@ -120,7 +131,7 @@ public class HistoryInfo {
     final List<Entry> entries = Lists.newLinkedList();
     for (final NameAddr na : nas) {
       int[] prev = new int[] { 1 };
-      entries.add(new Entry(na.getAddress(), extractIndex(na), extractType(na), prev));
+      entries.add(Entry.of(na.getAddress(), extractIndex(na), extractType(na), prev));
     }
     return new HistoryInfo(entries);
   }
@@ -144,31 +155,31 @@ public class HistoryInfo {
 
   public HistoryInfo withAppended(final Uri target) {
     final List<Entry> entries = Lists.newLinkedList(this.entries);
-    entries.add(new Entry(target, INITIAL_INDEX, ChangeType.MP, new int[] { 1 }));
+    entries.add(Entry.of(target, INITIAL_INDEX, ChangeType.MP, new int[] { 1 }));
     return new HistoryInfo(entries);
   }
 
   public HistoryInfo withRecursion(final Uri target) {
     final List<Entry> entries = Lists.newLinkedList(this.entries);
-    entries.add(new Entry(target, INITIAL_INDEX, ChangeType.RC, new int[] { 1 }));
+    entries.add(Entry.of(target, INITIAL_INDEX, ChangeType.RC, new int[] { 1 }));
     return new HistoryInfo(entries);
   }
 
   public HistoryInfo withRetarget(final Uri target) {
     final List<Entry> entries = Lists.newLinkedList(this.entries);
-    entries.add(new Entry(target, INITIAL_INDEX, ChangeType.MP, new int[] { 1 }));
+    entries.add(Entry.of(target, INITIAL_INDEX, ChangeType.MP, new int[] { 1 }));
     return new HistoryInfo(entries);
   }
 
   public HistoryInfo withNoChange(final Uri target) {
     final List<Entry> entries = Lists.newLinkedList(this.entries);
-    entries.add(new Entry(target, INITIAL_INDEX, ChangeType.NP, new int[] { 1 }));
+    entries.add(Entry.of(target, INITIAL_INDEX, ChangeType.NP, new int[] { 1 }));
     return new HistoryInfo(entries);
   }
 
   public static HistoryInfo fromUnknownRequest(Uri target) {
     final List<Entry> entries = Lists.newLinkedList();
-    entries.add(new Entry(target, INITIAL_INDEX, ChangeType.Unknown, null));
+    entries.add(Entry.of(target, INITIAL_INDEX, ChangeType.Unknown, new int[] {}));
     return new HistoryInfo(entries);
   }
 
