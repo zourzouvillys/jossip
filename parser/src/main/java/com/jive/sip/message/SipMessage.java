@@ -22,6 +22,7 @@ import com.jive.sip.message.api.Via;
 import com.jive.sip.message.api.headers.CallId;
 import com.jive.sip.message.api.headers.HistoryInfo;
 import com.jive.sip.message.api.headers.MIMEType;
+import com.jive.sip.message.api.headers.ParameterizedString;
 import com.jive.sip.message.api.headers.ParameterizedUri;
 import com.jive.sip.uri.Uri;
 
@@ -255,6 +256,12 @@ public interface SipMessage extends Serializable {
    */
 
   List<ParameterizedUri> alertInfo();
+
+  /**
+   *
+   */
+
+  List<ParameterizedString> acceptLanguage();
 
   /**
    * Runs through each header and ensures it is valid.

@@ -19,8 +19,8 @@ public class ReasonParserTest extends BaseParserTest<Reason> {
   public void test() {
     final Reason reason = this.parse("Q.850;cause=12;text=\"Busy Everywhere\";xxx=yyy");
     assertEquals("Q.850", reason.protocol());
-    assertEquals(12, (int) reason.getCause().get());
-    assertEquals("Busy Everywhere", reason.getText().get());
+    assertEquals(12, (int) reason.cause().get());
+    assertEquals("Busy Everywhere", reason.text().get());
     assertEquals(Token.from("yyy"), reason.getParameter(new TokenParameterDefinition("xxx")).get());
   }
 

@@ -41,6 +41,7 @@ import com.jive.sip.processor.rfc3261.serializing.serializers.HistoryInfoSeriali
 import com.jive.sip.processor.rfc3261.serializing.serializers.MIMETypeSerializer;
 import com.jive.sip.processor.rfc3261.serializing.serializers.MinSESerializer;
 import com.jive.sip.processor.rfc3261.serializing.serializers.NameAddrSerializer;
+import com.jive.sip.processor.rfc3261.serializing.serializers.ParameterizedStringSerializer;
 import com.jive.sip.processor.rfc3261.serializing.serializers.ParameterizedUriSerializer;
 import com.jive.sip.processor.rfc3261.serializing.serializers.RAckSerializer;
 import com.jive.sip.processor.rfc3261.serializing.serializers.RawHeaderSerializer;
@@ -103,6 +104,7 @@ public class RfcSerializerManagerBuilder {
     manager.register(SipUri.class, new SipUriSerializer(manager));
     manager.register(TelUri.class, new TelUriSerializer(manager));
     manager.register(TokenSet.class, new TokenSetSerializer());
+    manager.register(ParameterizedString.class, new ParameterizedStringSerializer(manager));
     manager.register(UserInfo.class, new UserInfoSerializer());
     manager.register(Version.class, new VersionSerializer());
     manager.register(Via.class, new ViaSerializer(manager));

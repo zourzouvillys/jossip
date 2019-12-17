@@ -13,6 +13,10 @@ import com.jive.sip.parameters.impl.TokenParameterDefinition;
 
 import lombok.Getter;
 
+/**
+ *
+ */
+
 public class Reason extends BaseParameterizedObject<Reason> {
 
   public static final TokenParameterDefinition Cause = new TokenParameterDefinition("cause");
@@ -20,7 +24,6 @@ public class Reason extends BaseParameterizedObject<Reason> {
     new QuotedStringParameterDefinition(
       "text");
 
-  @Getter
   private final CharSequence protocol;
 
   public Reason(final CharSequence protocol, final Parameters parameters) {
@@ -28,17 +31,31 @@ public class Reason extends BaseParameterizedObject<Reason> {
     this.parameters = parameters;
   }
 
-  public Optional<Integer> getCause() {
+  public CharSequence protocol() {
+    return this.protocol;
+  }
+
+  public Optional<Integer> cause() {
     return getParameter(Cause).map(v -> Integer.parseInt(v.toString()));
   }
 
-  public Optional<String> getText() {
+  public Optional<String> text() {
     return getParameter(Text);
   }
 
   @Override
   public Reason withParameters(final Parameters parameters) {
     return new Reason(this.protocol, parameters);
+  }
+
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Reason(");
+    sb.append(this.protocol());
+    this.cause().ifPresent(value -> sb.append(";cause=").append(value));
+    this.text().ifPresent(value -> sb.append(";text=").append(value));
+    sb.append(")");
+    return sb.toString();
   }
 
   /**
@@ -56,8 +73,8 @@ public class Reason extends BaseParameterizedObject<Reason> {
 
   public Optional<SipResponseStatus> asSipStatus() {
     if ("SIP".equals(protocol())) {
-      return Optional.of(SipResponseStatus.fromCode(getCause().get())
-        .withReason(getText().orElse(null)));
+      return Optional.of(SipResponseStatus.fromCode(cause().get())
+        .withReason(text().orElse(null)));
     }
     return Optional.empty();
   }

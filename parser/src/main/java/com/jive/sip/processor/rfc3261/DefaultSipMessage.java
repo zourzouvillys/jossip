@@ -44,6 +44,7 @@ import com.jive.sip.message.api.Via;
 import com.jive.sip.message.api.headers.CallId;
 import com.jive.sip.message.api.headers.HistoryInfo;
 import com.jive.sip.message.api.headers.MIMEType;
+import com.jive.sip.message.api.headers.ParameterizedString;
 import com.jive.sip.message.api.headers.ParameterizedUri;
 import com.jive.sip.message.api.headers.RValue;
 import com.jive.sip.message.api.headers.RetryAfter;
@@ -56,6 +57,7 @@ import com.jive.sip.processor.rfc3261.message.impl.ContactHeaderDefinition;
 import com.jive.sip.processor.rfc3261.message.impl.HistoryInfoHeaderDefinition;
 import com.jive.sip.processor.rfc3261.message.impl.SingleHeaderDefinition;
 import com.jive.sip.processor.rfc3261.message.impl.TokenSetCollector;
+import com.jive.sip.processor.rfc3261.parsing.parsers.ParameterizedStringParser;
 import com.jive.sip.processor.rfc3261.parsing.parsers.headers.AuthorizationParser;
 import com.jive.sip.processor.rfc3261.parsing.parsers.headers.CSeqParser;
 import com.jive.sip.processor.rfc3261.parsing.parsers.headers.CallIdParser;
@@ -80,7 +82,6 @@ import com.jive.sip.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
 import com.jive.sip.uri.Uri;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NonNull;
 
 @EqualsAndHashCode
@@ -108,9 +109,14 @@ public abstract class DefaultSipMessage implements SipMessage {
   public static final SipHeaderDefinition<List<RValue>> ACCEPT_RESOURCE_PRIORITY = MultiHeaderDefinition.create(new RValueParser(), "Accept-Resource-Priority");
 
   public static final SipHeaderDefinition<List<ParameterizedUri>> ALERT_INFO =
-    MultiHeaderDefinition.create(new ParameterizedUriParser(),
+    MultiHeaderDefinition.create(
+      new ParameterizedUriParser(),
       "Alert-Info");
   public static final SipHeaderDefinition<TokenSet> ALLOW = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Allow");
+
+  public static final SipHeaderDefinition<List<ParameterizedString>> ACCEPT_LANGUAGE =
+    MultiHeaderDefinition
+      .create(new ParameterizedStringParser(), "Accept-Language");
 
   public static final SipHeaderDefinition<List<Authorization>> AUTHORIZATION = MultiHeaderDefinition.create(AUTHORIZATION_PARSER, "Authorization");
 
@@ -286,6 +292,11 @@ public abstract class DefaultSipMessage implements SipMessage {
   @Override
   public Optional<String> contentType() {
     return this.getHeader(CONTENT_TYPE);
+  }
+
+  @Override
+  public List<ParameterizedString> acceptLanguage() {
+    return this.getHeader(ACCEPT_LANGUAGE).orElse(ImmutableList.of());
   }
 
   @Override
