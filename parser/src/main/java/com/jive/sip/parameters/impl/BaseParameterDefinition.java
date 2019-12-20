@@ -2,11 +2,7 @@ package com.jive.sip.parameters.impl;
 
 import com.jive.sip.base.api.Token;
 
-import lombok.Getter;
-
 abstract class BaseParameterDefinition {
-
-  @Getter
   protected final Token name;
 
   protected BaseParameterDefinition(CharSequence name) {
@@ -20,10 +16,12 @@ abstract class BaseParameterDefinition {
   protected boolean matches(final Token name) {
     if (this.name.equals(name)) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
 
+  public Token name() {
+    return this.name;
+  }
 }

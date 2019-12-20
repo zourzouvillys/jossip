@@ -154,10 +154,12 @@ public class ParserUtils {
     return new MultiParser<T, T>(finder, Range.singleton(count), collector);
   }
 
+  @SafeVarargs
   public static <T> Parser<T> or(final Parser<T>... finders) {
     return new OrParser<T>(Lists.newArrayList(finders));
   }
 
+  @SafeVarargs
   public static <T> Parser<T> and(final Parser<T>... finders) {
     return new AndParser<T>(Lists.newArrayList(finders));
   }

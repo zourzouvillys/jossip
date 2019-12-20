@@ -6,11 +6,7 @@ import com.jive.sip.parameters.api.BaseParameterizedObject;
 import com.jive.sip.parameters.api.Parameters;
 import com.jive.sip.parameters.impl.DefaultParameters;
 
-import lombok.Getter;
-
 public class MinSE extends BaseParameterizedObject<MinSE> {
-
-  @Getter
   private Duration duration;
 
   public MinSE(Duration duration) {
@@ -27,4 +23,7 @@ public class MinSE extends BaseParameterizedObject<MinSE> {
     return new MinSE(duration, parameters);
   }
 
+  public Duration duration() {
+    return this.duration;
+  }
 }

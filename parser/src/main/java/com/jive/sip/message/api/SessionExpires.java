@@ -9,16 +9,10 @@ import com.jive.sip.parameters.api.RawParameter;
 import com.jive.sip.parameters.api.TokenParameterValue;
 import com.jive.sip.parameters.impl.DefaultParameters;
 
-import lombok.Getter;
-
 public class SessionExpires extends BaseParameterizedObject<SessionExpires> {
 
   public enum Refresher {
-
-    Server("uas"),
-    Client("uac");
-
-    @Getter
+    Server("uas"), Client("uac");
     private String protocolValue;
 
     private Refresher(String value) {
@@ -27,17 +21,19 @@ public class SessionExpires extends BaseParameterizedObject<SessionExpires> {
 
     public static Refresher fromProtocolValue(String e) {
       switch (e.toLowerCase()) {
-        case "uas":
-          return Server;
-        case "uac":
-          return Client;
+      case "uas": 
+        return Server;
+      case "uac": 
+        return Client;
       }
       throw new RuntimeException(e);
     }
 
+    public String protocolValue() {
+      return this.protocolValue;
+    }
   }
 
-  @Getter
   private long duration;
 
   public SessionExpires(long duration) {
@@ -45,11 +41,7 @@ public class SessionExpires extends BaseParameterizedObject<SessionExpires> {
   }
 
   public SessionExpires(long duration, Refresher refresher) {
-    this(
-      duration,
-      DefaultParameters.from(Lists.newArrayList(new RawParameter(
-        "refresher",
-        new TokenParameterValue(refresher.protocolValue())))));
+    this(duration, DefaultParameters.from(Lists.newArrayList(new RawParameter("refresher", new TokenParameterValue(refresher.protocolValue())))));
   }
 
   public SessionExpires(long duration, Parameters params) {
@@ -66,4 +58,7 @@ public class SessionExpires extends BaseParameterizedObject<SessionExpires> {
     return Optional.ofNullable(parameters.getParameter("refresher").map(e -> Refresher.fromProtocolValue(e)).orElse(null));
   }
 
+  public long duration() {
+    return this.duration;
+  }
 }

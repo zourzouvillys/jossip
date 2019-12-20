@@ -22,11 +22,8 @@ import com.jive.sip.message.api.Via;
 import com.jive.sip.message.api.headers.CallId;
 import com.jive.sip.message.api.headers.HistoryInfo;
 import com.jive.sip.message.api.headers.MIMEType;
-import com.jive.sip.message.api.headers.ParameterizedString;
 import com.jive.sip.message.api.headers.ParameterizedUri;
 import com.jive.sip.uri.Uri;
-
-import lombok.NonNull;
 
 /**
  * A SIP message.
@@ -45,7 +42,7 @@ import lombok.NonNull;
 
 public interface SipMessage extends Serializable {
 
-  public static final String VERSION = "SIP/2.0";
+  String VERSION = "SIP/2.0";
 
   /**
    * Fetches the given value from the message, which is probably a SIP header.
@@ -57,7 +54,7 @@ public interface SipMessage extends Serializable {
    *
    */
 
-  public <T> Optional<T> getHeader(final SipHeaderDefinition<T> header);
+  <T> Optional<T> getHeader(final SipHeaderDefinition<T> header);
 
   /**
    * Returns the headers as raw keys and values.
@@ -212,7 +209,6 @@ public interface SipMessage extends Serializable {
    * Returns the history info header. An empty history info is provided if there are no values.
    */
 
-  @NonNull
   HistoryInfo historyInfo();
 
   /**
@@ -258,16 +254,10 @@ public interface SipMessage extends Serializable {
   List<ParameterizedUri> alertInfo();
 
   /**
-   *
-   */
-
-  List<ParameterizedString> acceptLanguage();
-
-  /**
    * Runs through each header and ensures it is valid.
    */
 
-  public void validate();
+  void validate();
 
   /**
    * Fetches the top via header branch parameter value, if it exists. otherwise null.
@@ -275,19 +265,19 @@ public interface SipMessage extends Serializable {
    * @return
    */
 
-  public BranchId branchId();
+  BranchId branchId();
 
-  public SipMessage withHeader(final RawHeader header);
+  SipMessage withHeader(final RawHeader header);
 
-  public <T> SipMessage withReplacedHeader(final SipHeaderDefinition<T> header, final T value);
+  <T> SipMessage withReplacedHeader(final SipHeaderDefinition<T> header, final T value);
 
-  public SipMessage withoutHeaders(final String... headerNames);
+  SipMessage withoutHeaders(final String... headerNames);
 
-  public SipMessage withoutHeaders(final SipHeaderDefinition... headers);
+  SipMessage withoutHeaders(final SipHeaderDefinition... headers);
 
-  public SipMessage withBody(final String contentType, final byte[] body);
+  SipMessage withBody(final String contentType, final byte[] body);
 
-  public Optional<String> contentType();
+  Optional<String> contentType();
 
   Optional<TokenSet> allow();
 

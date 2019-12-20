@@ -9,9 +9,6 @@ import java.util.Set;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-
 /**
  * Holder for a header name and value, as encountered in a SIP message.
  * 
@@ -19,13 +16,9 @@ import lombok.RequiredArgsConstructor;
  * {@link RawHeader} for parsing at a later point.
  * 
  * @author theo
- * 
  */
-
-@RequiredArgsConstructor(staticName = "create")
 public class RawMessage {
-  
-  @NonNull
+
   private final String initialLine;
   private final Multimap<String, RawHeader> headers = LinkedListMultimap.create();
   private byte[] body;
@@ -115,4 +108,14 @@ public class RawMessage {
     return Optional.empty();
   }
 
+  private RawMessage(final String initialLine) {
+    if (initialLine == null) {
+      throw new NullPointerException("initialLine is marked non-null but is null");
+    }
+    this.initialLine = initialLine;
+  }
+
+  public static RawMessage create(final String initialLine) {
+    return new RawMessage(initialLine);
+  }
 }

@@ -21,19 +21,9 @@ import com.jive.sip.parameters.api.RawParameter;
 import com.jive.sip.parameters.api.SipParameterDefinition;
 import com.jive.sip.parameters.api.TokenParameterValue;
 
-import lombok.AccessLevel;
-import lombok.Value;
-import lombok.experimental.Wither;
-
-@Value(staticConstructor = "from")
-public class DefaultParameters implements Parameters {
-
-  @Wither(AccessLevel.PRIVATE)
+public final class DefaultParameters implements Parameters {
   private final Collection<RawParameter> raw;
-
-  public static final DefaultParameters EMPTY =
-    new DefaultParameters(
-      Lists.<RawParameter>newArrayList());
+  public static final DefaultParameters EMPTY = new DefaultParameters(Lists.<RawParameter>newArrayList());
 
   @Override
   public boolean contains(Token name) {
@@ -62,9 +52,7 @@ public class DefaultParameters implements Parameters {
 
   @Override
   public Optional<String> getParameter(String name) {
-
     Token tok = Token.from(name);
-
     for (RawParameter param : this.raw) {
       if (param.name().equals(tok)) {
         ParameterValueVisitor<String> extractor = StringParameterExtractor.getInstance();
@@ -72,9 +60,7 @@ public class DefaultParameters implements Parameters {
         return Optional.<String>ofNullable(str);
       }
     }
-
     return Optional.empty();
-
   }
 
   @Override
@@ -107,16 +93,13 @@ public class DefaultParameters implements Parameters {
   public Parameters withoutParameter(Token name) {
     Preconditions.checkNotNull(name);
     List<RawParameter> params = Lists.newArrayList();
-
     Iterator<RawParameter> it = raw.iterator();
-
     while (it.hasNext()) {
       RawParameter p = it.next();
       if (!p.name().equals(name)) {
         params.add(p);
       }
     }
-
     return this.withRaw(params);
   }
 
@@ -127,7 +110,6 @@ public class DefaultParameters implements Parameters {
 
   @Override
   public String toString() {
-
     StringBuilder sb = new StringBuilder();
     for (RawParameter param : this.raw) {
       sb.append(';').append(param.toString());
@@ -144,31 +126,24 @@ public class DefaultParameters implements Parameters {
 
   @Override
   public Parameters mergeParameters(Parameters params) {
-
     if (params == null) {
       return this;
     }
-
     Parameters self = this;
-
     for (RawParameter param : params.getRawParameters()) {
       self = self.withoutParameter(param.name()).withParameter(param);
     }
-
     return self;
-
   }
 
   @Override
   public boolean compareCommonParameters(Parameters params) {
     for (RawParameter rp : raw) {
       Optional<String> other = params.getParameter(rp.name().toString());
-      if (other.isPresent()
-        && !other.get().equals(rp.value().apply(StringParameterExtractor.getInstance()))) {
+      if (other.isPresent() && !other.get().equals(rp.value().apply(StringParameterExtractor.getInstance()))) {
         return false;
       }
     }
-
     return true;
   }
 
@@ -192,4 +167,39 @@ public class DefaultParameters implements Parameters {
     return this.withParameter(def.name(), def.toParameterValue(value));
   }
 
+  private DefaultParameters(final Collection<RawParameter> raw) {
+    this.raw = raw;
+  }
+
+  public static DefaultParameters from(final Collection<RawParameter> raw) {
+    return new DefaultParameters(raw);
+  }
+
+  public Collection<RawParameter> raw() {
+    return this.raw;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (o == this) return true;
+    if (!(o instanceof DefaultParameters)) return false;
+    final DefaultParameters other = (DefaultParameters) o;
+    final Object this$raw = this.raw();
+    final Object other$raw = other.raw();
+    if (this$raw == null ? other$raw != null : !this$raw.equals(other$raw)) return false;
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    final int PRIME = 59;
+    int result = 1;
+    final Object $raw = this.raw();
+    result = result * PRIME + ($raw == null ? 43 : $raw.hashCode());
+    return result;
+  }
+
+  private DefaultParameters withRaw(final Collection<RawParameter> raw) {
+    return this.raw == raw ? this : new DefaultParameters(raw);
+  }
 }

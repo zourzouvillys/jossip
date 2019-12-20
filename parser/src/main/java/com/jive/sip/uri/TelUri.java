@@ -9,14 +9,8 @@ import com.jive.sip.parameters.api.Parameters;
 import com.jive.sip.parameters.impl.DefaultParameters;
 import com.jive.sip.parameters.impl.TokenParameterDefinition;
 
-import lombok.EqualsAndHashCode;
-import lombok.Value;
-
-@Value
-@EqualsAndHashCode(callSuper = true)
-public class TelUri extends BaseParameterizedObject<TelUri> implements Uri {
-
-  private String number;
+public final class TelUri extends BaseParameterizedObject<TelUri> implements Uri {
+  private final String number;
   private static final TokenParameterDefinition P_TGRP = new TokenParameterDefinition(Token.from("tgrp"));
 
   public TelUri(final String number) {
@@ -35,18 +29,13 @@ public class TelUri extends BaseParameterizedObject<TelUri> implements Uri {
 
   @Override
   public String toString() {
-
     StringBuilder sb = new StringBuilder();
-
     sb.append(this.getScheme()).append(':');
     sb.append(this.number);
-
     if (this.parameters != null) {
       sb.append(this.parameters);
     }
-
     return sb.toString();
-
   }
 
   @Override
@@ -79,4 +68,33 @@ public class TelUri extends BaseParameterizedObject<TelUri> implements Uri {
     return null;
   }
 
+  public String number() {
+    return this.number;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (o == this) return true;
+    if (!(o instanceof TelUri)) return false;
+    final TelUri other = (TelUri) o;
+    if (!other.canEqual((Object) this)) return false;
+    if (!super.equals(o)) return false;
+    final Object this$number = this.number();
+    final Object other$number = other.number();
+    if (this$number == null ? other$number != null : !this$number.equals(other$number)) return false;
+    return true;
+  }
+
+  protected boolean canEqual(final Object other) {
+    return other instanceof TelUri;
+  }
+
+  @Override
+  public int hashCode() {
+    final int PRIME = 59;
+    int result = super.hashCode();
+    final Object $number = this.number();
+    result = result * PRIME + ($number == null ? 43 : $number.hashCode());
+    return result;
+  }
 }

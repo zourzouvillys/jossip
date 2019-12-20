@@ -1,5 +1,18 @@
 package com.jive.sip.auth.headers;
 
+import static com.jive.sip.auth.headers.DigestCredentials.ALGORITHM;
+import static com.jive.sip.auth.headers.DigestCredentials.CNONCE;
+import static com.jive.sip.auth.headers.DigestCredentials.DIGEST_URI;
+import static com.jive.sip.auth.headers.DigestCredentials.DOMAIN;
+import static com.jive.sip.auth.headers.DigestCredentials.NONCE;
+import static com.jive.sip.auth.headers.DigestCredentials.NONCE_COUNT;
+import static com.jive.sip.auth.headers.DigestCredentials.OPAQUE;
+import static com.jive.sip.auth.headers.DigestCredentials.QOP;
+import static com.jive.sip.auth.headers.DigestCredentials.REALM;
+import static com.jive.sip.auth.headers.DigestCredentials.RESPONSE;
+import static com.jive.sip.auth.headers.DigestCredentials.STALE;
+import static com.jive.sip.auth.headers.DigestCredentials.USERNAME;
+
 import javax.annotation.Nullable;
 
 import org.immutables.value.Value;
@@ -7,7 +20,6 @@ import org.immutables.value.Value;
 import com.jive.sip.base.api.Token;
 import com.jive.sip.parameters.api.Parameters;
 import com.jive.sip.parameters.impl.DefaultParameters;
-import static com.jive.sip.auth.headers.DigestCredentials.*;
 
 @Value.Immutable()
 @Value.Style(typeImmutable = "*", defaultAsDefault = true)

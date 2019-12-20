@@ -1,7 +1,6 @@
 
 plugins {
   id 'java-library'
-  id "io.freefair.lombok" 
   id 'eclipse'
   id 'net.ltgt.apt-eclipse'
 }
@@ -19,18 +18,12 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-
-lombok.config['lombok.accessors.fluent'] = 'true'
-lombok.config['lombok.sneakyThrows.flagUsage'] = 'warning'
-
-	
 eclipse {
   synchronizationTasks 'eclipseJdtApt', 'eclipseFactorypath', 'eclipseJdt'
 }
 
 
 dependencies {
-  runtime 'org.projectlombok:lombok:1.18.10'
   api 'com.google.guava:guava:28.1-jre'
   compileOnly 'org.immutables:value-annotations:2.8.2'
   annotationProcessor 'org.immutables:value:2.8.2'
@@ -55,6 +48,11 @@ test {
   maxHeapSize = "2g"
 }
 
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-Xlint:unchecked'
+    options.deprecation = true
+}
 
 tasks.withType(Javadoc) {
   options.addStringOption('Xdoclint:none', '-quiet')

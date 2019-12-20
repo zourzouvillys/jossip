@@ -15,22 +15,14 @@ import com.jive.sip.parameters.api.RawParameter;
 import com.jive.sip.parameters.api.TokenParameterValue;
 import com.jive.sip.parameters.impl.DefaultParameters;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-
 /**
  * An authorization header is a simple set of key values along with a single token that represents
  * the auth scheme (e.g, Basic, Digest, etc).
  */
-
-@EqualsAndHashCode(callSuper = true)
 public class Authorization extends BaseParameterizedObject<Authorization> {
-
   /**
    * The scheme.
    */
-
-  @Getter
   private final String scheme;
 
   public Authorization(final String scheme) {
@@ -42,23 +34,17 @@ public class Authorization extends BaseParameterizedObject<Authorization> {
     this.parameters = parameters;
   }
 
+  @Override
   public String toString() {
-
     StringBuilder sb = new StringBuilder();
     sb.append(scheme).append(' ');
-
     int count = 0;
-
     for (RawParameter p : this.parameters.getRawParameters()) {
-
       if (count++ > 0) {
         sb.append(",");
       }
-
       sb.append(p.name());
-
       p.value().apply(new ParameterValueVisitor<Void>() {
-
         @Override
         public Void visit(FlagParameterValue parameter) {
           return null;
@@ -81,12 +67,9 @@ public class Authorization extends BaseParameterizedObject<Authorization> {
           sb.append('=').append(parameter.value().toString());
           return null;
         }
-
       });
     }
-
     return sb.toString();
-
   }
 
   @Override
@@ -104,4 +87,46 @@ public class Authorization extends BaseParameterizedObject<Authorization> {
     return '"' + ESCAPER.escape(str) + '"';
   }
 
+  @Override
+  public boolean equals(final Object o) {
+    if (o == this)
+      return true;
+    if (!(o instanceof Authorization))
+      return false;
+    final Authorization other = (Authorization) o;
+    if (!other.canEqual((Object) this))
+      return false;
+    if (!super.equals(o))
+      return false;
+    final Object this$scheme = this.scheme();
+    final Object other$scheme = other.scheme();
+    if (this$scheme == null ? other$scheme != null
+                            : !this$scheme.equals(other$scheme))
+      return false;
+    return true;
+  }
+
+  @Override
+  protected boolean canEqual(final Object other) {
+    return other instanceof Authorization;
+  }
+
+  @Override
+  public int hashCode() {
+    final int PRIME = 59;
+    int result = super.hashCode();
+    final Object $scheme = this.scheme();
+    result =
+      (result * PRIME)
+        + ($scheme == null ? 43
+                           : $scheme.hashCode());
+    return result;
+  }
+
+  /**
+   * The scheme.
+   */
+  public String scheme() {
+    return this.scheme;
+  }
 }

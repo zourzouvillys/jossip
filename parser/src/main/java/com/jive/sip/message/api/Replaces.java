@@ -12,15 +12,10 @@ import com.jive.sip.parameters.impl.DefaultParameters;
 import com.jive.sip.parameters.impl.FlagParameterDefinition;
 import com.jive.sip.parameters.impl.TokenParameterDefinition;
 
-import lombok.Getter;
-
 public class Replaces extends BaseParameterizedObject<Replaces> {
-
   public static TokenParameterDefinition FromTag = new TokenParameterDefinition("from-tag");
   public static TokenParameterDefinition ToTag = new TokenParameterDefinition("to-tag");
   public static FlagParameterDefinition EarlyOnly = new FlagParameterDefinition("early-only");
-
-  @Getter
   private final CallId callId;
 
   public Replaces(final CallId callId, final Parameters params) {
@@ -68,4 +63,7 @@ public class Replaces extends BaseParameterizedObject<Replaces> {
     return new Replaces(callId, DefaultParameters.from(params));
   }
 
+  public CallId callId() {
+    return this.callId;
+  }
 }

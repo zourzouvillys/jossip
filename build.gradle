@@ -1,6 +1,5 @@
 
 plugins {
-  id "io.freefair.lombok" version "4.1.5"
   id 'net.ltgt.apt-eclipse' version '0.21'
 }
 

@@ -11,19 +11,12 @@ import com.jive.sip.message.SipRequest;
 import com.jive.sip.message.SipResponse;
 import com.jive.sip.message.api.headers.CallId;
 
-import lombok.Value;
-import lombok.With;
-
 /**
  * A dialog pair between two endpoints.
  * 
  * @author theo
  */
-
-@Value
-@With
-public class DialogId {
-
+public final class DialogId {
   private final CallId callId;
   private final String localTag;
   private final String remoteTag;
@@ -53,9 +46,7 @@ public class DialogId {
    *           The request had a tag in the 'To' header.
    * 
    * @return The new DialogId
-   * 
    */
-
   public static DialogId fromRemote(final SipRequest req, final String localTag) {
     Preconditions.checkState(req.toTag() == null, "sipreq had tag in To header");
     return new DialogId(req.callId(), localTag, req.fromTag());
@@ -71,7 +62,6 @@ public class DialogId {
    * @param replaces
    * @return
    */
-
   public static DialogId fromRemote(Replaces replaces) {
     return new DialogId(replaces.callId(), replaces.getToTag(), replaces.getFromTag());
   }
@@ -84,7 +74,6 @@ public class DialogId {
    * 
    * @return
    */
-
   public static DialogId fromToken(String token) {
     Iterator<String> it = Splitter.on(':').split(token).iterator();
     CallId callId = new CallId(it.next());
@@ -99,7 +88,6 @@ public class DialogId {
    * 
    * @return
    */
-
   public String getToken() {
     return String.format("%s:%s:%s", callId().getValue(), nullToEmpty(localTag()), nullToEmpty(remoteTag()));
   }
@@ -112,4 +100,68 @@ public class DialogId {
     return !isNullOrEmpty(localTag());
   }
 
+  public DialogId(final CallId callId, final String localTag, final String remoteTag) {
+    this.callId = callId;
+    this.localTag = localTag;
+    this.remoteTag = remoteTag;
+  }
+
+  public CallId callId() {
+    return this.callId;
+  }
+
+  public String localTag() {
+    return this.localTag;
+  }
+
+  public String remoteTag() {
+    return this.remoteTag;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (o == this) return true;
+    if (!(o instanceof DialogId)) return false;
+    final DialogId other = (DialogId) o;
+    final Object this$callId = this.callId();
+    final Object other$callId = other.callId();
+    if (this$callId == null ? other$callId != null : !this$callId.equals(other$callId)) return false;
+    final Object this$localTag = this.localTag();
+    final Object other$localTag = other.localTag();
+    if (this$localTag == null ? other$localTag != null : !this$localTag.equals(other$localTag)) return false;
+    final Object this$remoteTag = this.remoteTag();
+    final Object other$remoteTag = other.remoteTag();
+    if (this$remoteTag == null ? other$remoteTag != null : !this$remoteTag.equals(other$remoteTag)) return false;
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    final int PRIME = 59;
+    int result = 1;
+    final Object $callId = this.callId();
+    result = result * PRIME + ($callId == null ? 43 : $callId.hashCode());
+    final Object $localTag = this.localTag();
+    result = result * PRIME + ($localTag == null ? 43 : $localTag.hashCode());
+    final Object $remoteTag = this.remoteTag();
+    result = result * PRIME + ($remoteTag == null ? 43 : $remoteTag.hashCode());
+    return result;
+  }
+
+  @Override
+  public String toString() {
+    return "DialogId(callId=" + this.callId() + ", localTag=" + this.localTag() + ", remoteTag=" + this.remoteTag() + ")";
+  }
+
+  public DialogId withCallId(final CallId callId) {
+    return this.callId == callId ? this : new DialogId(callId, this.localTag, this.remoteTag);
+  }
+
+  public DialogId withLocalTag(final String localTag) {
+    return this.localTag == localTag ? this : new DialogId(this.callId, localTag, this.remoteTag);
+  }
+
+  public DialogId withRemoteTag(final String remoteTag) {
+    return this.remoteTag == remoteTag ? this : new DialogId(this.callId, this.localTag, remoteTag);
+  }
 }

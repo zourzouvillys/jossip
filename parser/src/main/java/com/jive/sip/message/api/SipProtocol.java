@@ -2,14 +2,10 @@ package com.jive.sip.message.api;
 
 import java.util.Optional;
 
-import lombok.Getter;
-
 public class SipProtocol {
   public static SipProtocol UDP = new SipProtocol("UDP", 5060);
   public static SipProtocol TCP = new SipProtocol("TCP", 5060);
   public static SipProtocol TLS = new SipProtocol("TLS", 5061);
-
-  @Getter
   private final String protocol;
   private final Integer defaultPort;
 
@@ -21,19 +17,20 @@ public class SipProtocol {
   public static SipProtocol fromString(final String transport) {
     if ("UDP".equalsIgnoreCase(transport)) {
       return UDP;
-    }
-    else if ("TCP".equalsIgnoreCase(transport)) {
+    } else if ("TCP".equalsIgnoreCase(transport)) {
       return TCP;
-    }
-    else if ("TLS".equalsIgnoreCase(transport)) {
+    } else if ("TLS".equalsIgnoreCase(transport)) {
       return TLS;
-    }
-    else {
+    } else {
       return new SipProtocol(transport, null);
     }
   }
 
   public Optional<Integer> getDefaultPort() {
     return Optional.ofNullable(this.defaultPort);
+  }
+
+  public String protocol() {
+    return this.protocol;
   }
 }

@@ -11,28 +11,14 @@ import com.jive.sip.parameters.impl.DefaultParameters;
 import com.jive.sip.parameters.impl.QuotedStringParameterDefinition;
 import com.jive.sip.parameters.impl.TokenParameterDefinition;
 
-import lombok.Getter;
-
-/**
- *
- */
-
 public class Reason extends BaseParameterizedObject<Reason> {
-
   public static final TokenParameterDefinition Cause = new TokenParameterDefinition("cause");
-  public static final QuotedStringParameterDefinition Text =
-    new QuotedStringParameterDefinition(
-      "text");
-
+  public static final QuotedStringParameterDefinition Text = new QuotedStringParameterDefinition("text");
   private final CharSequence protocol;
 
   public Reason(final CharSequence protocol, final Parameters parameters) {
     this.protocol = protocol;
     this.parameters = parameters;
-  }
-
-  public CharSequence protocol() {
-    return this.protocol;
   }
 
   public Optional<Integer> cause() {
@@ -48,35 +34,24 @@ public class Reason extends BaseParameterizedObject<Reason> {
     return new Reason(this.protocol, parameters);
   }
 
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("Reason(");
-    sb.append(this.protocol());
-    this.cause().ifPresent(value -> sb.append(";cause=").append(value));
-    this.text().ifPresent(value -> sb.append(";text=").append(value));
-    sb.append(")");
-    return sb.toString();
-  }
-
   /**
    * Helper to create a reason header from a {@link SipResponseStatus}
    *
    * @param status
    * @return
    */
-
   public static Reason fromSipStatus(final SipResponseStatus status) {
-    return new Reason("SIP", DefaultParameters.EMPTY)
-      .withParameter(Cause.name(), Token.from(status.code()))
-      .withParameter(Text.name(), QuotedString.from(status.reason()));
+    return new Reason("SIP", DefaultParameters.EMPTY).withParameter(Cause.name(), Token.from(status.code())).withParameter(Text.name(), QuotedString.from(status.reason()));
   }
 
   public Optional<SipResponseStatus> asSipStatus() {
     if ("SIP".equals(protocol())) {
-      return Optional.of(SipResponseStatus.fromCode(cause().get())
-        .withReason(text().orElse(null)));
+      return Optional.of(SipResponseStatus.fromCode(cause().get()).withReason(text().orElse(null)));
     }
     return Optional.empty();
   }
 
+  public CharSequence protocol() {
+    return this.protocol;
+  }
 }

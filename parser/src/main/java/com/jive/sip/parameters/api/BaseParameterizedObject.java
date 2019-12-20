@@ -5,8 +5,6 @@ import java.util.Optional;
 import com.google.common.net.HostAndPort;
 import com.jive.sip.base.api.Token;
 
-import lombok.EqualsAndHashCode;
-
 /**
  * A collection of SIP parameters.
  * 
@@ -14,18 +12,14 @@ import lombok.EqualsAndHashCode;
  *
  * @param <T>
  */
-
-@EqualsAndHashCode
 public abstract class BaseParameterizedObject<T> implements ParameterizedObject<T> {
-
   protected Parameters parameters;
 
   @Override
   public <R> Optional<R> getParameter(final SipParameterDefinition<R> parameterDefinition) {
     if (this.parameters != null) {
       return parameterDefinition.parse(this.parameters);
-    }
-    else {
+    } else {
       return Optional.empty();
     }
   }
@@ -64,8 +58,7 @@ public abstract class BaseParameterizedObject<T> implements ParameterizedObject<
   public Optional<Parameters> getParameters() {
     if ((this.parameters == null) || this.parameters.getRawParameters().isEmpty()) {
       return Optional.empty();
-    }
-    else {
+    } else {
       return Optional.ofNullable(this.parameters);
     }
   }
@@ -75,6 +68,30 @@ public abstract class BaseParameterizedObject<T> implements ParameterizedObject<
     return withParameters(val.withParameter(def.name(), value));
   }
 
-  abstract public T withParameters(final Parameters parameters);
+  public abstract T withParameters(final Parameters parameters);
 
+  @Override
+  public boolean equals(final Object o) {
+    if (o == this) return true;
+    if (!(o instanceof BaseParameterizedObject)) return false;
+    final BaseParameterizedObject<?> other = (BaseParameterizedObject<?>) o;
+    if (!other.canEqual((Object) this)) return false;
+    final Object this$parameters = this.parameters;
+    final Object other$parameters = other.parameters;
+    if (this$parameters == null ? other$parameters != null : !this$parameters.equals(other$parameters)) return false;
+    return true;
+  }
+
+  protected boolean canEqual(final Object other) {
+    return other instanceof BaseParameterizedObject;
+  }
+
+  @Override
+  public int hashCode() {
+    final int PRIME = 59;
+    int result = 1;
+    final Object $parameters = this.parameters;
+    result = result * PRIME + ($parameters == null ? 43 : $parameters.hashCode());
+    return result;
+  }
 }

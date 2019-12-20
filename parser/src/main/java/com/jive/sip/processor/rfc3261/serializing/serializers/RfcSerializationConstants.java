@@ -11,6 +11,5 @@ public class RfcSerializationConstants {
   public static final String CRLF = "\r\n";
   public static final String COLON = ":";
   public static final String DOT = ".";
-  public static final String COMMA = ",";
 
 }

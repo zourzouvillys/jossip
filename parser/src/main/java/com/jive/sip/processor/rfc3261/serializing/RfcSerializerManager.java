@@ -175,6 +175,30 @@ public class RfcSerializerManager {
     return (RfcSerializer<T>) serializerFor(klass.getSuperclass());
   }
 
+  
+
+  public <T> String serializeValueToString(final T obj) {
+
+    if (obj instanceof Collection) {
+      return this.serializeCollection(Collection.class.cast(obj), "=");
+    }
+    
+    if (Primitives.isWrapperType(obj.getClass()) || (obj instanceof String)) {
+      return "" + obj;
+    }
+
+    final RfcSerializer<?> serialixer = this.classSerializerCache.getUnchecked(obj.getClass());
+
+    if (serialixer == null) {
+      throw new RuntimeException("No serializer registered for " + obj.getClass().getName());
+    }
+
+    return ((RfcSerializer<T>) serialixer).serialize(obj);
+
+  }
+
+  
+  
   public static final RfcSerializerManager defaultSerializer() {
     return INSTANCE;
   }

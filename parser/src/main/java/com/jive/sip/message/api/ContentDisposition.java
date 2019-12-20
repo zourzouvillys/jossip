@@ -11,19 +11,11 @@ import com.jive.sip.parameters.api.TokenParameterValue;
 import com.jive.sip.parameters.impl.DefaultParameters;
 import com.jive.sip.parameters.impl.TokenParameterDefinition;
 
-import lombok.Getter;
-
 public class ContentDisposition extends BaseParameterizedObject<ContentDisposition> {
-
   public static final Token Required = Token.from("required");
-
   public static final Token Optional = Token.from("optional");
-
   public static final ContentDisposition SessionRequired = new ContentDisposition("session", true);
-
   public static TokenParameterDefinition Handling = new TokenParameterDefinition("handling");
-
-  @Getter
   private final String value;
 
   public ContentDisposition(final CharSequence value, final Parameters parameters) {
@@ -38,11 +30,7 @@ public class ContentDisposition extends BaseParameterizedObject<ContentDispositi
   public ContentDisposition(final String name, final boolean required) {
     this(
       name,
-      (required)
-                 ? DefaultParameters.from(
-                   Lists.newArrayList(new RawParameter(
-                     "handling",
-                     new TokenParameterValue(ContentDisposition.Required))))
+      (required) ? DefaultParameters.from(Lists.newArrayList(new RawParameter("handling", new TokenParameterValue(ContentDisposition.Required))))
                  : DefaultParameters.EMPTY);
   }
 
@@ -55,4 +43,7 @@ public class ContentDisposition extends BaseParameterizedObject<ContentDispositi
     return new ContentDisposition(this.value, parameters);
   }
 
+  public String value() {
+    return this.value;
+  }
 }

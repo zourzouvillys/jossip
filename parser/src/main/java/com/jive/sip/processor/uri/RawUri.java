@@ -10,14 +10,9 @@ import com.jive.sip.parsers.core.DefaultParserContext;
 import com.jive.sip.uri.Uri;
 import com.jive.sip.uri.UriVisitor;
 
-import lombok.EqualsAndHashCode;
-
-@EqualsAndHashCode
 public final class RawUri implements Uri {
-
   // TODO: this should be part of the context.
   private static final UriParserManager PARSER = UriParserManagerBuilder.build();
-
   private final String scheme;
   private final String opaque;
 
@@ -67,4 +62,28 @@ public final class RawUri implements Uri {
     return new RawUri(scheme, opaque);
   }
 
+  @Override
+  public boolean equals(final Object o) {
+    if (o == this) return true;
+    if (!(o instanceof RawUri)) return false;
+    final RawUri other = (RawUri) o;
+    final Object this$scheme = this.scheme;
+    final Object other$scheme = other.scheme;
+    if (this$scheme == null ? other$scheme != null : !this$scheme.equals(other$scheme)) return false;
+    final Object this$opaque = this.opaque;
+    final Object other$opaque = other.opaque;
+    if (this$opaque == null ? other$opaque != null : !this$opaque.equals(other$opaque)) return false;
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    final int PRIME = 59;
+    int result = 1;
+    final Object $scheme = this.scheme;
+    result = result * PRIME + ($scheme == null ? 43 : $scheme.hashCode());
+    final Object $opaque = this.opaque;
+    result = result * PRIME + ($opaque == null ? 43 : $opaque.hashCode());
+    return result;
+  }
 }

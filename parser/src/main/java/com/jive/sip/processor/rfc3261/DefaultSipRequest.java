@@ -34,20 +34,12 @@ import com.jive.sip.message.api.TokenSet;
 import com.jive.sip.message.api.headers.RValue;
 import com.jive.sip.uri.Uri;
 
-import lombok.EqualsAndHashCode;
-
-@EqualsAndHashCode(callSuper = true)
 public final class DefaultSipRequest extends DefaultSipMessage implements SipRequest {
-
   /**
-   *
    */
-
   private static final long serialVersionUID = 1L;
-
   private final SipMethod method;
   private final String version;
-
   private final Uri uri;
 
   public DefaultSipRequest(final RfcSipMessageManager manager, final SipMethod method, final Uri uri) {
@@ -58,13 +50,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
     this(manager, method, uri, version, Lists.<RawHeader>newLinkedList(), null);
   }
 
-  public DefaultSipRequest(
-      final RfcSipMessageManager manager,
-      final SipMethod method,
-      final Uri uri,
-      final String version,
-      final Collection<RawHeader> headers,
-      byte[] body) {
+  public DefaultSipRequest(final RfcSipMessageManager manager, final SipMethod method, final Uri uri, final String version, final Collection<RawHeader> headers, byte[] body) {
     super(manager, headers);
     this.method = method;
     this.uri = uri;
@@ -109,8 +95,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
 
   @Override
   public String toString() {
-    if (this.body != null && this.body.length > 0)
-      return String.format("%s %s [%s, %d bytes]", method(), uri(), this.contentType().orElse("???"), this.body.length);
+    if ((this.body != null) && (this.body.length > 0)) return String.format("%s %s [%s, %d bytes]", method(), uri(), this.contentType().orElse("???"), this.body.length);
     return String.format("%s %s", method(), uri());
   }
 
@@ -162,7 +147,6 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   @Override
   public Optional<Reason> reason() {
     return this.getHeader(REASON);
-
   }
 
   @Override
@@ -185,14 +169,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
     final List<RawHeader> headers = Lists.newLinkedList();
     headers.addAll(this.headers);
     headers.add(header);
-    final DefaultSipMessage result =
-      new DefaultSipRequest(
-        this.manager.adapt(RfcSipMessageManager.class),
-        this.method,
-        this.uri,
-        this.version,
-        headers,
-        this.body);
+    final DefaultSipMessage result = new DefaultSipRequest(this.manager.adapt(RfcSipMessageManager.class), this.method, this.uri, this.version, headers, this.body);
     return result;
   }
 
@@ -207,24 +184,14 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
     for (final RawHeader h : this.headers) {
       if (replacementValues.containsKey(h.name())) {
         headerList.add(new RawHeader(h.name(), replacementValues.remove(h.name())));
-      }
-      else {
+      } else {
         headerList.add(h);
       }
     }
-
     for (String name : replacementValues.keySet()) {
       headerList.add(new RawHeader(name, replacementValues.get(name)));
     }
-
-    final DefaultSipMessage result =
-      new DefaultSipRequest(
-        this.manager.adapt(RfcSipMessageManager.class),
-        this.method,
-        this.uri,
-        this.version,
-        headerList,
-        this.body);
+    final DefaultSipMessage result = new DefaultSipRequest(this.manager.adapt(RfcSipMessageManager.class), this.method, this.uri, this.version, headerList, this.body);
     return result;
   }
 
@@ -235,14 +202,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
 
   @Override
   public SipRequest withUri(final Uri uri) {
-    final DefaultSipRequest result =
-      new DefaultSipRequest(
-        this.manager.adapt(RfcSipMessageManager.class),
-        this.method,
-        uri,
-        this.version,
-        this.headers,
-        this.body);
+    final DefaultSipRequest result = new DefaultSipRequest(this.manager.adapt(RfcSipMessageManager.class), this.method, uri, this.version, this.headers, this.body);
     return result;
   }
 
@@ -253,27 +213,13 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
 
   @Override
   public SipRequest withMethod(final SipMethod method) {
-    final DefaultSipRequest result =
-      new DefaultSipRequest(
-        this.manager.adapt(RfcSipMessageManager.class),
-        method,
-        this.uri,
-        this.version,
-        this.headers,
-        this.body);
+    final DefaultSipRequest result = new DefaultSipRequest(this.manager.adapt(RfcSipMessageManager.class), method, this.uri, this.version, this.headers, this.body);
     return result;
   }
 
   @Override
   public SipRequest withBody(final byte[] body) {
-    final DefaultSipRequest result =
-      new DefaultSipRequest(
-        this.manager.adapt(RfcSipMessageManager.class),
-        this.method,
-        this.uri,
-        this.version,
-        this.headers,
-        body);
+    final DefaultSipRequest result = new DefaultSipRequest(this.manager.adapt(RfcSipMessageManager.class), this.method, this.uri, this.version, this.headers, body);
     return (SipRequest) result.withReplacedHeader(DefaultSipMessage.CONTENT_LENGTH, UnsignedInteger.fromIntBits(body.length));
   }
 
@@ -291,100 +237,52 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   public DefaultSipRequest withoutHeaders(final String... headerNames) {
     final List<String> badHeaders = Lists.newArrayList(headerNames);
     final List<RawHeader> keepers = Lists.newArrayList(Iterables.filter(this.headers, header -> !Iterables.contains(badHeaders, header.name())));
-
-    final DefaultSipRequest result =
-      new DefaultSipRequest(
-        this.manager.adapt(RfcSipMessageManager.class),
-        this.method,
-        this.uri,
-        this.version,
-        keepers,
-        this.body);
+    final DefaultSipRequest result = new DefaultSipRequest(this.manager.adapt(RfcSipMessageManager.class), this.method, this.uri, this.version, keepers, this.body);
     return result;
   }
 
   @Override
   public DefaultSipRequest withoutHeaders(final SipHeaderDefinition... headers) {
     final List<SipHeaderDefinition> headerDefinitionList = Arrays.asList(headers);
-
-    final Set<String> longHeaderNamesToRemove =
-      headerDefinitionList.stream()
-        .map(SipHeaderDefinition::getName)
-        .collect(Collectors.toSet());
-
-    final Set<String> compactHeaderNamesToRemove =
-      headerDefinitionList.stream()
-        .map(SipHeaderDefinition::getShortName)
-        .filter(Optional::isPresent)
-        .map(Optional::get)
-        .map((c) -> c.toString())
-        .collect(Collectors.toSet());
-
+    final Set<String> longHeaderNamesToRemove = headerDefinitionList.stream().map(SipHeaderDefinition::getName).collect(Collectors.toSet());
+    final Set<String> compactHeaderNamesToRemove = headerDefinitionList.stream().map(SipHeaderDefinition::getShortName).filter(Optional::isPresent).map(Optional::get).map(c -> c.toString()).collect(Collectors.toSet());
     final List<String> headerNamesToRemove = Sets.union(longHeaderNamesToRemove, compactHeaderNamesToRemove).stream().collect(Collectors.toList());
-
     return this.withoutHeaders(headerNamesToRemove.toArray(new String[headerNamesToRemove.size()]));
   }
 
   @Override
   public SipRequest withPrepended(final String header, final Object value) {
-    final String field = serializer.serialize(value);
+    final String field = serializer.serializeValueToString(value);
     final List<RawHeader> headers = Lists.newArrayList(this.headers);
     headers.add(0, new RawHeader(header, field));
-    final DefaultSipRequest result =
-      new DefaultSipRequest(
-        this.manager.adapt(RfcSipMessageManager.class),
-        this.method,
-        this.uri,
-        this.version,
-        headers,
-        this.body);
+    final DefaultSipRequest result = new DefaultSipRequest(this.manager.adapt(RfcSipMessageManager.class), this.method, this.uri, this.version, headers, this.body);
     return result;
   }
 
   @Override
   public SipRequest withAppended(final String header, final Object value) {
-    final String field = serializer.serialize(value);
+    final String field = serializer.serializeValueToString(value);
     final List<RawHeader> headers = Lists.newArrayList(this.headers);
     // find the last index of this header name,
-
     int last = 0;
-
     for (int i = 0; i < headers.size(); ++i) {
       final RawHeader raw = headers.get(i);
       if (raw.name().equals(header)) {
         last = i;
       }
     }
-
     headers.add(last + 1, new RawHeader(header, field));
-    final DefaultSipRequest result =
-      new DefaultSipRequest(
-        this.manager.adapt(RfcSipMessageManager.class),
-        this.method,
-        this.uri,
-        this.version,
-        headers,
-        this.body);
+    final DefaultSipRequest result = new DefaultSipRequest(this.manager.adapt(RfcSipMessageManager.class), this.method, this.uri, this.version, headers, this.body);
     return result;
   }
 
   @Override
   public <T> SipRequest withParsed(final String name, final List<T> fields) {
-
     final List<RawHeader> headers = Lists.newArrayList(this.headers);
-
     for (final Object field : fields) {
       headers.add(new RawHeader(name, serializer.serialize(field)));
     }
-
-    final DefaultSipRequest result =
-      new DefaultSipRequest(
-        this.manager.adapt(RfcSipMessageManager.class),
-        this.method,
-        this.uri,
-        this.version,
-        headers,
-        this.body);
+    final DefaultSipRequest result = new DefaultSipRequest(this.manager.adapt(RfcSipMessageManager.class), this.method, this.uri, this.version, headers, this.body);
     return result;
   }
 
@@ -422,9 +320,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
 
   @Override
   public SipRequest withCSeq(final long seqNum, final SipMethod method) {
-    return this
-      .withoutHeaders(CSEQ)
-      .withAppended(CSEQ.getName(), new CSeq(seqNum, method));
+    return this.withoutHeaders(CSEQ).withAppended(CSEQ.getName(), new CSeq(seqNum, method));
   }
 
   @Override
@@ -447,4 +343,40 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
     return this.uri;
   }
 
+  @Override
+  public boolean equals(final Object o) {
+    if (o == this) return true;
+    if (!(o instanceof DefaultSipRequest)) return false;
+    final DefaultSipRequest other = (DefaultSipRequest) o;
+    if (!other.canEqual((Object) this)) return false;
+    if (!super.equals(o)) return false;
+    final Object this$method = this.method();
+    final Object other$method = other.method();
+    if (this$method == null ? other$method != null : !this$method.equals(other$method)) return false;
+    final Object this$version = this.version();
+    final Object other$version = other.version();
+    if (this$version == null ? other$version != null : !this$version.equals(other$version)) return false;
+    final Object this$uri = this.uri();
+    final Object other$uri = other.uri();
+    if (this$uri == null ? other$uri != null : !this$uri.equals(other$uri)) return false;
+    return true;
+  }
+
+  @Override
+  protected boolean canEqual(final Object other) {
+    return other instanceof DefaultSipRequest;
+  }
+
+  @Override
+  public int hashCode() {
+    final int PRIME = 59;
+    int result = super.hashCode();
+    final Object $method = this.method();
+    result = (result * PRIME) + ($method == null ? 43 : $method.hashCode());
+    final Object $version = this.version();
+    result = (result * PRIME) + ($version == null ? 43 : $version.hashCode());
+    final Object $uri = this.uri();
+    result = (result * PRIME) + ($uri == null ? 43 : $uri.hashCode());
+    return result;
+  }
 }

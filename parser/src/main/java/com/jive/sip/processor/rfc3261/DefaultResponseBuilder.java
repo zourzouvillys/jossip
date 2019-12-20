@@ -10,16 +10,12 @@ import com.jive.sip.message.SipResponse;
 import com.jive.sip.message.SipResponseStatus;
 import com.jive.sip.processor.rfc3261.message.api.ResponseBuilder;
 
-import lombok.Getter;
-
 /**
  * A {@link ResponseBuilder} which always sends a provided status code.
  * 
  * @author theo
  */
-
 public class DefaultResponseBuilder implements ResponseBuilder {
-  @Getter
   private SipResponseStatus status;
   private final List<RawHeader> headers = Lists.newLinkedList();
   private final RfcSipMessageManager manager;
@@ -46,29 +42,23 @@ public class DefaultResponseBuilder implements ResponseBuilder {
   }
 
   // TODO: this is a bit of a hac. fix.
-  private final String[] copy = new String[] { "From", "Call-ID", "CSeq", "Via", "To", "f", "i", "v", "t" };
+  private final String[] copy = new String[] {"From", "Call-ID", "CSeq", "Via", "To", "f", "i", "v", "t"};
 
   @Override
   public final SipResponse build(final SipRequest req, final SipMessageManager manager) {
     final DefaultSipResponse res = new DefaultSipResponse(this.manager, this.status);
-
     for (final String hn : this.copy) {
       for (final RawHeader header : req.headers()) {
         if (hn.toLowerCase().equals(header.name().toLowerCase())) {
           // loop, otherwise only a single value gets copied (e.g, multiple Via headers).
-
           res.addHeader(header);
-
         }
       }
     }
-
     res.addHeader(new RawHeader("Content-Length", "0"));
-
     for (final RawHeader header : this.headers) {
       res.addHeader(header);
     }
-
     return res;
   }
 
@@ -94,4 +84,7 @@ public class DefaultResponseBuilder implements ResponseBuilder {
     return this;
   }
 
+  public SipResponseStatus status() {
+    return this.status;
+  }
 }

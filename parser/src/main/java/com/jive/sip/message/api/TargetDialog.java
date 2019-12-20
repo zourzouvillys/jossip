@@ -11,11 +11,7 @@ import com.jive.sip.parameters.api.RawParameter;
 import com.jive.sip.parameters.api.TokenParameterValue;
 import com.jive.sip.parameters.impl.DefaultParameters;
 
-import lombok.Getter;
-
 public class TargetDialog extends BaseParameterizedObject<TargetDialog> {
-
-  @Getter
   private CallId callId;
 
   public TargetDialog(CallId callId, Parameters parameters) {
@@ -25,23 +21,12 @@ public class TargetDialog extends BaseParameterizedObject<TargetDialog> {
 
   public TargetDialog(DialogId dialogId) {
     this.callId = dialogId.callId();
-    this.parameters =
-      DefaultParameters.from(Lists.newArrayList(
-        new RawParameter(
-          "local-tag",
-          new TokenParameterValue(
-            Token.from(dialogId.localTag()))),
-        new RawParameter(
-          "remote-tag",
-          new TokenParameterValue(
-            Token.from(dialogId
-              .remoteTag())))));
+    this.parameters = DefaultParameters.from(Lists.newArrayList(new RawParameter("local-tag", new TokenParameterValue(Token.from(dialogId.localTag()))), new RawParameter("remote-tag", new TokenParameterValue(Token.from(dialogId.remoteTag())))));
   }
 
   /**
    * returns the dialog id, or empty if there isn't both a local and remote tag.
    */
-
   public Optional<DialogId> asDialogId() {
     if (getLocalTag().isPresent() && getRemoteTag().isPresent()) {
       return Optional.of(new DialogId(callId(), getLocalTag().get(), getRemoteTag().get()));
@@ -62,4 +47,7 @@ public class TargetDialog extends BaseParameterizedObject<TargetDialog> {
     return new TargetDialog(callId, parameters);
   }
 
+  public CallId callId() {
+    return this.callId;
+  }
 }

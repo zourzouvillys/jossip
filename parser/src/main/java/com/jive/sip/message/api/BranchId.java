@@ -2,13 +2,8 @@ package com.jive.sip.message.api;
 
 import com.jive.sip.base.api.Token;
 
-import lombok.Value;
-
-@Value
-public class BranchId implements Comparable<BranchId> {
-
-  private String value;
-
+public final class BranchId implements Comparable<BranchId> {
+  private final String value;
   public static final String MAGIC_COOKIE = "z9hG4bK";
 
   public boolean hasMagicCookie() {
@@ -28,7 +23,6 @@ public class BranchId implements Comparable<BranchId> {
    *
    * @return
    */
-
   public static BranchId withCookiePrepended(final CharSequence omnomnom) {
     return new BranchId(MAGIC_COOKIE + omnomnom.toString());
   }
@@ -42,12 +36,43 @@ public class BranchId implements Comparable<BranchId> {
   }
 
   public String getValueWithoutCookie() {
-    return (this.value().length() > MAGIC_COOKIE.length()) ? this.value().substring(MAGIC_COOKIE.length())
-                                                           : this.value();
+    return (this.value().length() > MAGIC_COOKIE.length()) ? this.value().substring(MAGIC_COOKIE.length()) : this.value();
   }
 
   public Token asToken() {
     return Token.from(this.value);
   }
 
+  public BranchId(final String value) {
+    this.value = value;
+  }
+
+  public String value() {
+    return this.value;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (o == this) return true;
+    if (!(o instanceof BranchId)) return false;
+    final BranchId other = (BranchId) o;
+    final Object this$value = this.value();
+    final Object other$value = other.value();
+    if (this$value == null ? other$value != null : !this$value.equals(other$value)) return false;
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    final int PRIME = 59;
+    int result = 1;
+    final Object $value = this.value();
+    result = result * PRIME + ($value == null ? 43 : $value.hashCode());
+    return result;
+  }
+
+  @Override
+  public String toString() {
+    return "BranchId(value=" + this.value() + ")";
+  }
 }

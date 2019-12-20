@@ -11,13 +11,8 @@ import com.jive.sip.parameters.api.TokenParameterValue;
 import com.jive.sip.parameters.impl.DefaultParameters;
 import com.jive.sip.parameters.impl.TokenParameterDefinition;
 
-import lombok.Getter;
-
 public class EventSpec extends BaseParameterizedObject<EventSpec> {
-
   public static TokenParameterDefinition Id = new TokenParameterDefinition("id");
-
-  @Getter
   private final String name;
 
   public EventSpec(final CharSequence name, final Parameters parameters) {
@@ -30,10 +25,7 @@ public class EventSpec extends BaseParameterizedObject<EventSpec> {
   }
 
   public EventSpec(final String name, final String id) {
-    this(
-      name,
-      (id != null) ? DefaultParameters.from(Lists.newArrayList(new RawParameter("id", new TokenParameterValue(id))))
-                   : DefaultParameters.EMPTY);
+    this(name, (id != null) ? DefaultParameters.from(Lists.newArrayList(new RawParameter("id", new TokenParameterValue(id)))) : DefaultParameters.EMPTY);
   }
 
   public Optional<Token> getId() {
@@ -45,4 +37,7 @@ public class EventSpec extends BaseParameterizedObject<EventSpec> {
     return new EventSpec(this.name, parameters);
   }
 
+  public String name() {
+    return this.name;
+  }
 }

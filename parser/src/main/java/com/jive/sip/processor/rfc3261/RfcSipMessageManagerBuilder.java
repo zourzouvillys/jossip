@@ -32,7 +32,6 @@ public class RfcSipMessageManagerBuilder {
     manager.register(DefaultSipMessage.ACCEPT);
     manager.register(DefaultSipMessage.ALERT_INFO);
     manager.register(DefaultSipMessage.AUTHORIZATION);
-    manager.register(DefaultSipMessage.ACCEPT_LANGUAGE);
     manager.register(DefaultSipMessage.CSEQ);
     manager.register(DefaultSipMessage.CALL_ID);
     manager.register(DefaultSipMessage.CONTACT);
@@ -67,6 +66,7 @@ public class RfcSipMessageManagerBuilder {
     manager.register(SingleHeaderDefinition.create("Allow"));
     manager.register(SingleHeaderDefinition.create("Accept-Encoding"));
     manager.register(SingleHeaderDefinition.create("Allow-Events", 'u'));
+    manager.register(SingleHeaderDefinition.create("Accept-Language"));
     manager.register(SingleHeaderDefinition.create("Subscription-State"));
     manager.register(SingleHeaderDefinition.create("Remote-Party-ID"));
     manager.register(SingleHeaderDefinition.create("Privacy"));

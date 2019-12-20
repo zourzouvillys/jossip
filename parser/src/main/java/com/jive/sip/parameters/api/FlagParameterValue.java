@@ -1,10 +1,6 @@
 package com.jive.sip.parameters.api;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
 public class FlagParameterValue extends ParameterValue<Void> {
-
   private static final FlagParameterValue INSTANCE = new FlagParameterValue();
 
   public static FlagParameterValue getInstance() {
@@ -36,4 +32,6 @@ public class FlagParameterValue extends ParameterValue<Void> {
     return obj instanceof FlagParameterValue;
   }
 
+  public FlagParameterValue() {
+  }
 }
