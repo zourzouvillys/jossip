@@ -1,5 +1,6 @@
 package com.jive.sip.auth.headers;
 
+import com.jive.sip.auth.headers.DigestValues;
 import com.jive.sip.base.api.Token;
 import com.jive.sip.parameters.api.Parameters;
 import com.jive.sip.parameters.api.QuotedString;

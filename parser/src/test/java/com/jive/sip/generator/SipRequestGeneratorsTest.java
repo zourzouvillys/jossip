@@ -1,9 +1,11 @@
-package io.rtcore.sip.model;
+package com.jive.sip.generator;
 
 import static com.jive.sip.processor.rfc3261.SipMessageManager.defaultManager;
 import static com.jive.sip.processor.rfc3261.serializing.RfcSerializerManager.defaultSerializer;
 
 import org.junit.jupiter.api.Test;
+
+import com.jive.sip.generator.SipRequestGenerators;
 
 class SipRequestGeneratorsTest {
 

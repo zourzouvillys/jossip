@@ -1,4 +1,4 @@
-package io.rtcore.sip.model;
+package com.jive.sip.generator;
 
 import static java.lang.Long.toHexString;
 import static java.util.concurrent.ThreadLocalRandom.current;
