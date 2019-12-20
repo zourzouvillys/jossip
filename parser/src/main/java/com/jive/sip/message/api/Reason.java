@@ -41,7 +41,9 @@ public class Reason extends BaseParameterizedObject<Reason> {
    * @return
    */
   public static Reason fromSipStatus(final SipResponseStatus status) {
-    return new Reason("SIP", DefaultParameters.EMPTY).withParameter(Cause.name(), Token.from(status.code())).withParameter(Text.name(), QuotedString.from(status.reason()));
+    return new Reason("SIP", DefaultParameters.EMPTY)
+      .withParameter(Cause.name(), Token.from(status.code()))
+      .withParameter(Text.name(), QuotedString.from(status.reason()));
   }
 
   public Optional<SipResponseStatus> asSipStatus() {
