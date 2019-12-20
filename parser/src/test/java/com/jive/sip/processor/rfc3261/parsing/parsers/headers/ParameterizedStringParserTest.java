@@ -15,9 +15,21 @@ public class ParameterizedStringParserTest extends BaseParserTest<ParameterizedS
   }
 
   @Test
-  public void testSimple() {
+  public void testBasic() {
     final ParameterizedString value = this.parse("en");
     assertEquals("en", value.value());
+  }
+
+  @Test
+  public void testSimple() {
+    final ParameterizedString value = this.parse("en-US");
+    assertEquals("en-US", value.value());
+  }
+
+  @Test
+  public void testWeightedWildcard() {
+    final ParameterizedString value = this.parse("*;q=0.1");
+    assertEquals("*", value.value());
   }
 
   @Test

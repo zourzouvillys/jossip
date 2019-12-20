@@ -26,4 +26,8 @@ public class ParameterizedString extends BaseParameterizedObject<ParameterizedSt
     return new ParameterizedString(this.value, parameters);
   }
 
+  public static ParameterizedString of(String value) {
+    return new ParameterizedString(value);
+  }
+
 }
