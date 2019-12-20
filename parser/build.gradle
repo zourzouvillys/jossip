@@ -24,10 +24,13 @@ eclipse {
 
 
 dependencies {
+
   api 'com.google.guava:guava:28.1-jre'
+  
   compileOnly 'org.immutables:value-annotations:2.8.2'
   annotationProcessor 'org.immutables:value:2.8.2'
   annotationProcessor 'com.google.auto.service:auto-service:1.0-rc5'
+  
 }
 
 dependencies {
