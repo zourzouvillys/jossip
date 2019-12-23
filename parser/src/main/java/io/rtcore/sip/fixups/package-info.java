@@ -18,4 +18,4 @@
  * 
  */
 
-package io.rtcore.sip.message.fixups;
+package io.rtcore.sip.fixups;

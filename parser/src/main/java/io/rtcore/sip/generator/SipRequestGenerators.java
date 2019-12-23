@@ -1,4 +1,4 @@
-package io.rtcore.sip.message.generator;
+package io.rtcore.sip.generator;
 
 import static java.lang.Long.toHexString;
 import static java.util.concurrent.ThreadLocalRandom.current;

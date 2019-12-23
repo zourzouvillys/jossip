@@ -4,7 +4,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
-import io.rtcore.sip.message.iana.SipOptionTags;
+import io.rtcore.sip.iana.SipOptionTags;
 
 public class CallService {
 

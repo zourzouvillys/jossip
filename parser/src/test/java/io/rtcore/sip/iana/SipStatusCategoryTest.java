@@ -1,7 +1,6 @@
-package io.rtcore.sip.message.iana;
+package io.rtcore.sip.iana;
 
-import static io.rtcore.sip.message.iana.SipStatusCategory.*;
-import static io.rtcore.sip.message.iana.SipStatusCategory.forCode;
+import static io.rtcore.sip.iana.SipStatusCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;

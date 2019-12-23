@@ -7,7 +7,7 @@ import java.util.function.UnaryOperator;
 
 import com.google.common.collect.ImmutableSet;
 
-import io.rtcore.sip.message.iana.SipOptionTags;
+import io.rtcore.sip.iana.SipOptionTags;
 import io.rtcore.sip.signaling.call.SignalRecorder;
 import io.rtcore.sip.signaling.call.SignalState;
 import io.rtcore.sip.signaling.call.OfferAnswerCategorization.Event;

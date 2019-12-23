@@ -1,4 +1,4 @@
-package io.rtcore.sip.message.iana;
+package io.rtcore.sip.iana;
 
 import com.google.common.base.Preconditions;
 

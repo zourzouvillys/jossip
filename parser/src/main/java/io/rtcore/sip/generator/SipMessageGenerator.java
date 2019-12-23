@@ -1,4 +1,4 @@
-package io.rtcore.sip.message.generator;
+package io.rtcore.sip.generator;
 
 public interface SipMessageGenerator {
 

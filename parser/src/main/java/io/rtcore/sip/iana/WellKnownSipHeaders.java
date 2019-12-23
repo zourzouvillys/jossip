@@ -1,6 +1,6 @@
-package io.rtcore.sip.message.iana;
+package io.rtcore.sip.iana;
 
-import static io.rtcore.sip.message.iana.Spec.*;
+import static io.rtcore.sip.iana.Spec.*;
 
 import java.net.URI;
 import java.util.Objects;

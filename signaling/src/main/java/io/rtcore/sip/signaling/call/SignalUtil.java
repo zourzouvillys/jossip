@@ -5,8 +5,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import io.rtcore.sip.message.iana.SipMethods;
-import io.rtcore.sip.message.iana.SipStatusCategory;
+import io.rtcore.sip.iana.SipMethods;
+import io.rtcore.sip.iana.SipStatusCategory;
 import io.rtcore.sip.message.message.api.SipMethod;
 import io.rtcore.sip.signaling.call.OfferAnswerCategorization.Event;
 import io.rtcore.sip.signaling.call.OfferAnswerCategorization.RequestEvent;

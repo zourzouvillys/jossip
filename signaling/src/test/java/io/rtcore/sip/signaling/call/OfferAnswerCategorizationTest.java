@@ -1,6 +1,6 @@
 package io.rtcore.sip.signaling.call;
 
-import static io.rtcore.sip.message.iana.SipOptionTags.$100REL;
+import static io.rtcore.sip.iana.SipOptionTags.$100REL;
 import static io.rtcore.sip.message.message.api.SipMethod.BYE;
 import static io.rtcore.sip.message.message.api.SipMethod.INVITE;
 import static io.rtcore.sip.message.message.api.SipMethod.PRACK;

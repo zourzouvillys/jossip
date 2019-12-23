@@ -1,18 +1,18 @@
-package io.rtcore.sip.message.verifiers;
+package io.rtcore.sip.verifiers;
 
-import static io.rtcore.sip.message.iana.WellKnownSipHeaders.CALL_ID;
-import static io.rtcore.sip.message.iana.WellKnownSipHeaders.CSEQ;
-import static io.rtcore.sip.message.iana.WellKnownSipHeaders.FROM;
-import static io.rtcore.sip.message.iana.WellKnownSipHeaders.MAX_FORWARDS;
-import static io.rtcore.sip.message.iana.WellKnownSipHeaders.TO;
-import static io.rtcore.sip.message.iana.WellKnownSipHeaders.VIA;
+import static io.rtcore.sip.iana.WellKnownSipHeaders.CALL_ID;
+import static io.rtcore.sip.iana.WellKnownSipHeaders.CSEQ;
+import static io.rtcore.sip.iana.WellKnownSipHeaders.FROM;
+import static io.rtcore.sip.iana.WellKnownSipHeaders.MAX_FORWARDS;
+import static io.rtcore.sip.iana.WellKnownSipHeaders.TO;
+import static io.rtcore.sip.iana.WellKnownSipHeaders.VIA;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableSet;
 
-import io.rtcore.sip.message.iana.SipHeader;
+import io.rtcore.sip.iana.SipHeader;
 import io.rtcore.sip.message.message.SipMessage;
 import io.rtcore.sip.message.message.SipRequest;
 import io.rtcore.sip.message.message.SipResponse;

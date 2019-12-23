@@ -7,8 +7,8 @@ import java.util.Set;
 import com.google.common.base.Verify;
 import com.google.common.collect.ImmutableSet;
 
-import io.rtcore.sip.message.iana.SipMethods;
-import io.rtcore.sip.message.iana.SipStatusCategory;
+import io.rtcore.sip.iana.SipMethods;
+import io.rtcore.sip.iana.SipStatusCategory;
 import io.rtcore.sip.message.message.api.SipMethod;
 import io.rtcore.sip.signaling.call.OfferAnswerCategorization.Event;
 import io.rtcore.sip.signaling.call.OfferAnswerCategorization.ResponseEvent;

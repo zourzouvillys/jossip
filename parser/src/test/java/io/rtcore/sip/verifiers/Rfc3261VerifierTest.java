@@ -1,4 +1,4 @@
-package io.rtcore.sip.message.verifiers;
+package io.rtcore.sip.verifiers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,6 +10,8 @@ import com.google.common.net.HostAndPort;
 import io.rtcore.sip.message.message.api.ViaProtocol;
 import io.rtcore.sip.message.processor.rfc3261.MutableSipRequest;
 import io.rtcore.sip.message.uri.SipUri;
+import io.rtcore.sip.verifiers.Rfc3261Verifier;
+import io.rtcore.sip.verifiers.SipVerifyException;
 
 class Rfc3261VerifierTest {
 

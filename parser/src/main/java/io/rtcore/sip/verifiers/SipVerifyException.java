@@ -1,4 +1,4 @@
-package io.rtcore.sip.message.verifiers;
+package io.rtcore.sip.verifiers;
 
 import com.google.common.base.VerifyException;
 
