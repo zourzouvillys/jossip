@@ -2,6 +2,7 @@ package io.rtcore.sip.message.message;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalLong;
 
 import io.rtcore.sip.message.auth.headers.Authorization;
 import io.rtcore.sip.message.base.api.RawHeader;
@@ -25,7 +26,7 @@ public interface SipResponse extends SipMessage {
    *
    */
 
-  Optional<Long> getRSeq();
+  OptionalLong getRSeq();
 
   Optional<String> getServer();
 
@@ -45,7 +46,7 @@ public interface SipResponse extends SipMessage {
    * @return
    */
 
-  public <T> SipResponse withParsed(final String name, final List<T> fields);
+  <T> SipResponse withParsed(final String name, final List<T> fields);
 
   /**
    *

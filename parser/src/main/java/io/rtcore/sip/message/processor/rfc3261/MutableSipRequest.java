@@ -1,7 +1,11 @@
 package io.rtcore.sip.message.processor.rfc3261;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import com.google.common.collect.Lists;
 import com.google.common.net.HostAndPort;
@@ -28,8 +32,8 @@ import io.rtcore.sip.message.uri.Uri;
 
 public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
 
-  private final Uri ruri;
-  private final SipMethod method;
+  private Uri ruri;
+  private SipMethod method;
   private NameAddr referTo = null;
   private NameAddr referredBy;
   private SubscriptionState subscriptionState;
@@ -45,6 +49,17 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
   public MutableSipRequest replaces(final Replaces replaces) {
     this.replaces = replaces;
     return this;
+  }
+
+  public MutableSipRequest() {
+  }
+
+  public MutableSipRequest(final SipMethod method) {
+    this.method = method;
+  }
+
+  public MutableSipRequest(final Uri ruri) {
+    this.ruri = ruri;
   }
 
   public MutableSipRequest(final SipMethod method, final Uri ruri) {
@@ -187,18 +202,22 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
     return req;
   }
 
+  public static MutableSipRequest create(final SipMethod method) {
+    return new MutableSipRequest(method);
+  }
+
   public MutableSipRequest userAgent(final String userAgent) {
     this.userAgent = userAgent;
     return this;
   }
 
   public MutableSipRequest rack(final UnsignedInteger rseq, final CSeq cseq) {
-    this.rack = new RAck(rseq, cseq);
+    this.rack = new RAck(rseq, requireNonNull(cseq));
     return this;
   }
 
   public MutableSipRequest rack(final long rseq, final CSeq cseq) {
-    return rack(UnsignedInteger.valueOf(rseq), cseq);
+    return rack(UnsignedInteger.valueOf(rseq), requireNonNull(cseq));
   }
 
   public MutableSipRequest cseq(final CSeq cseq) {
@@ -249,6 +268,26 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
   @Override
   public SipRequest build() {
     return this.build(MM);
+  }
+
+  public MutableSipRequest cseq(long i) {
+    return cseq(i, this.method);
+  }
+
+  public static MutableSipRequest createPrack(SipResponse res, long localSequence) {
+
+    MutableSipRequest mb = create(SipMethod.PRACK);
+
+    if (res.callId() != null) {
+      mb.callId(res.callId().getValue());
+    }
+
+    mb.rack(res.getRSeq().getAsLong(), res.cseq());
+
+    mb.cseq(localSequence);
+
+    return mb;
+
   }
 
 }

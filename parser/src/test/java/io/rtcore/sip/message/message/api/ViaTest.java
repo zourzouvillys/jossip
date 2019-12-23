@@ -4,7 +4,10 @@
 package io.rtcore.sip.message.message.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,25 +33,32 @@ public class ViaTest {
   @BeforeEach
   public void setup() {
     this.host = HostAndPort.fromString("localhost");
-    this.branch = Token.from(Via.createBranch());
+    this.branch = Token.from(UUID.randomUUID().toString());
   }
 
   @Test
   public void test2ParamConstructor() {
     final Via via = new Via(ViaProtocol.TCP, this.host);
-    assertTrue(via.getParameter(new TokenParameterDefinition(Via.BRANCH)).isPresent());
+    assertFalse(via.getParameter(new TokenParameterDefinition(Via.BRANCH)).isPresent());
   }
 
   @Test
   public void testConstructorWithEmptyParamters() {
     final Via via = new Via(ViaProtocol.TCP, this.host, DefaultParameters.EMPTY);
-    assertTrue(via.getParameter(new TokenParameterDefinition(Via.BRANCH)).isPresent());
+    assertFalse(via.getParameter(new TokenParameterDefinition(Via.BRANCH)).isPresent());
   }
 
   @Test
   public void testConstructorWithParamtersNoBranch() {
-    final Via via = new Via(ViaProtocol.TCP, this.host, DefaultParameters.EMPTY.withParameter(Token.from("foo"), QuotedString.from("bar")));
-    assertTrue(via.getParameter(new TokenParameterDefinition(Via.BRANCH)).isPresent());
+
+    final Via via =
+      new Via(
+        ViaProtocol.TCP,
+        this.host,
+        DefaultParameters.EMPTY.withParameter(Token.from("foo"), QuotedString.from("bar")));
+
+    assertFalse(via.getParameter(new TokenParameterDefinition(Via.BRANCH)).isPresent());
+
   }
 
   @Test

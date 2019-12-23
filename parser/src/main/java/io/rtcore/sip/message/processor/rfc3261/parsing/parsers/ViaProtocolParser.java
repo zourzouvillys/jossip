@@ -19,13 +19,24 @@ public class ViaProtocolParser implements Parser<ViaProtocol> {
     try {
 
       final CharSequence name = context.read(TOKEN);
+
       context.read(SLASH);
+
       final CharSequence version = context.read(TOKEN);
+
       context.read(SLASH);
+
       final CharSequence transport = context.read(TOKEN);
 
       if (proto != null) {
-        proto.set(new ViaProtocol(name, version, transport));
+
+        if ((CharSequence.compare(name, "SIP") == 0) && (CharSequence.compare(version, "2.0") == 0)) {
+          proto.set(ViaProtocol.forString(transport.toString()));
+        }
+        else {
+          proto.set(new ViaProtocol(name, version, transport, 0));
+        }
+
       }
 
       return true;

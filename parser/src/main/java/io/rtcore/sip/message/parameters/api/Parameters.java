@@ -1,11 +1,16 @@
 package io.rtcore.sip.message.parameters.api;
 
+import static io.rtcore.sip.message.processor.rfc3261.serializing.serializers.RfcSerializationConstants.SEMI;
+
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.Optional;
 
 import com.google.common.net.HostAndPort;
 
 import io.rtcore.sip.message.base.api.Token;
+import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManager;
 
 public interface Parameters {
   boolean contains(final Token name);
@@ -43,5 +48,21 @@ public interface Parameters {
   <T> Parameters withParameter(SipParameterDefinition<T> def, long value);
 
   <T> Parameters withParameter(SipParameterDefinition<T> def, HostAndPort value);
+
+  default boolean isNotEmpty() {
+    return !isEmpty();
+  }
+
+  boolean isEmpty();
+
+  default void encodeTo(RfcSerializerManager manager, Writer writer, String start, String separator) {
+    try {
+      writer.append(start);
+      manager.serializeCollection(writer, getRawParameters(), separator);
+    }
+    catch (IOException ex) {
+      throw new RuntimeException(ex);
+    }
+  }
 
 }

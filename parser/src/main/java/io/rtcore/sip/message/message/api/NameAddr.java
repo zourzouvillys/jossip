@@ -14,6 +14,7 @@ import io.rtcore.sip.message.parameters.api.RawParameter;
 import io.rtcore.sip.message.parameters.api.SipParameterDefinition;
 import io.rtcore.sip.message.parameters.impl.DefaultParameters;
 import io.rtcore.sip.message.parameters.tools.ParameterUtils;
+import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManager;
 import io.rtcore.sip.message.uri.Uri;
 
 /**
@@ -64,7 +65,9 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
     Preconditions.checkNotNull(address);
     this.address = address;
     this.name = name;
-    this.parameters = parameters == null ? DefaultParameters.EMPTY : parameters;
+    this.parameters =
+      parameters == null ? DefaultParameters.EMPTY
+                         : parameters;
   }
 
   private NameAddr() {
@@ -79,12 +82,18 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
 
   @Override
   public String toString() {
-    String result = this.name != null ? this.name + " " : "";
+    String result =
+      this.name != null ? this.name + " "
+                        : "";
     result += "<" + this.address.toString() + ">";
     if (this.parameters != null) {
       for (final RawParameter p : this.parameters.getRawParameters()) {
         // TODO: this doesn't keep quoted values ...
-        result += ";" + p.name() + ((p.value() == null) || (p.value() instanceof FlagParameterValue) ? "" : "=" + p.value());
+        result +=
+          ";"
+            + p.name()
+            + ((p.value() == null) || (p.value() instanceof FlagParameterValue) ? ""
+                                                                                : "=" + p.value());
       }
     }
     return result;
@@ -125,20 +134,29 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
 
   @Override
   public boolean equals(final Object o) {
-    if (o == this) return true;
-    if (!(o instanceof NameAddr)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof NameAddr))
+      return false;
     final NameAddr other = (NameAddr) o;
-    if (!other.canEqual((Object) this)) return false;
-    if (!super.equals(o)) return false;
+    if (!other.canEqual((Object) this))
+      return false;
+    if (!super.equals(o))
+      return false;
     final Object this$name = this.name;
     final Object other$name = other.name;
-    if (this$name == null ? other$name != null : !this$name.equals(other$name)) return false;
+    if (this$name == null ? other$name != null
+                          : !this$name.equals(other$name))
+      return false;
     final Object this$address = this.address();
     final Object other$address = other.address();
-    if (this$address == null ? other$address != null : !this$address.equals(other$address)) return false;
+    if (this$address == null ? other$address != null
+                             : !this$address.equals(other$address))
+      return false;
     return true;
   }
 
+  @Override
   protected boolean canEqual(final Object other) {
     return other instanceof NameAddr;
   }
@@ -148,9 +166,15 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
     final int PRIME = 59;
     int result = super.hashCode();
     final Object $name = this.name;
-    result = result * PRIME + ($name == null ? 43 : $name.hashCode());
+    result =
+      (result * PRIME)
+        + ($name == null ? 43
+                         : $name.hashCode());
     final Object $address = this.address();
-    result = result * PRIME + ($address == null ? 43 : $address.hashCode());
+    result =
+      (result * PRIME)
+        + ($address == null ? 43
+                            : $address.hashCode());
     return result;
   }
 
@@ -161,4 +185,13 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
   public Uri address() {
     return this.address;
   }
+
+  public String encode() {
+    return RfcSerializerManager.defaultSerializer().writeValueAsString(this);
+  }
+
+  public static NameAddr of(Uri address) {
+    return new NameAddr(address);
+  }
+  
 }

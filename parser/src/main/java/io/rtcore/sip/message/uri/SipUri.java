@@ -18,6 +18,7 @@ import io.rtcore.sip.message.parameters.api.Parameters;
 import io.rtcore.sip.message.parameters.api.SipParameterDefinition;
 import io.rtcore.sip.message.parameters.impl.DefaultParameters;
 import io.rtcore.sip.message.parameters.impl.TokenParameterDefinition;
+import io.rtcore.sip.message.processor.uri.parsers.SipUriParser;
 
 /**
  * A 'sip' or 'sips' URI.
@@ -173,7 +174,8 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
 
   /*
    * (non-Javadoc)
-   * @see io.rtcore.sip.message.message.api.uri.Uri#apply(io.rtcore.sip.message.message.api.uri.UriVisitor)
+   * @see io.rtcore.sip.message.message.api.uri.Uri#apply(io.rtcore.sip.message.message.api.uri.
+   * UriVisitor)
    */
   @Override
   public <T> T apply(final UriVisitor<T> visitor) {
@@ -331,6 +333,7 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
     return obj instanceof SipUri;
   }
 
+  @Override
   public String getScheme() {
     return this.scheme;
   }
@@ -346,4 +349,9 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
   public Collection<RawHeader> getHeaders() {
     return this.headers;
   }
+
+  public static SipUri parseString(String input) {
+    return SipUriParser.parse(input);
+  }
+
 }

@@ -38,7 +38,7 @@ public class ViaParserTest extends BaseParserTest<Via> {
   public void testViaHeader() throws SipMessageParseFailureException {
     final String test = "SIP / 2.0 / UdP first.example.com: 4000;ttl=16;maddr=224.2.0.1 ;branch=z9hG4bKa7c6a8dlze.1";
     final Via header = this.parse(test);
-    assertEquals(new ViaProtocol("SIP", "2.0", "UdP"), header.protocol());
+    assertEquals(ViaProtocol.of("SIP", "2.0", "UdP"), header.protocol());
     assertEquals("first.example.com:4000", header.sentBy().toString());
     assertEquals(Token.from("16"), new TokenParameterDefinition("ttl").parse(header.getParameters().get()).orElse(null));
     assertEquals(Token.from("224.2.0.1"), new TokenParameterDefinition("maddr").parse(header.getParameters().get()).orElse(null));

@@ -58,6 +58,7 @@ public abstract class TxnKey {
       if (method.isAck()) {
         return SipMethod.INVITE;
       }
+      return method;
     }
     return msg.cseq().method();
   }

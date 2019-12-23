@@ -38,14 +38,18 @@ public final class RAck {
     final int PRIME = 59;
     int result = 1;
     final Object $reliableSequence = this.reliableSequence();
-    result = result * PRIME + ($reliableSequence == null ? 43 : $reliableSequence.hashCode());
+    result = (result * PRIME) + ($reliableSequence == null ? 43 : $reliableSequence.hashCode());
     final Object $sequence = this.sequence();
-    result = result * PRIME + ($sequence == null ? 43 : $sequence.hashCode());
+    result = (result * PRIME) + ($sequence == null ? 43 : $sequence.hashCode());
     return result;
   }
 
   @Override
   public String toString() {
     return "RAck(reliableSequence=" + this.reliableSequence() + ", sequence=" + this.sequence() + ")";
+  }
+
+  public static RAck of(long rseq, CSeq cseq) {
+    return new RAck(UnsignedInteger.valueOf(rseq), cseq);
   }
 }

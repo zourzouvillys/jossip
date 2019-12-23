@@ -3,13 +3,11 @@ package io.rtcore.sip.message.processor.rfc3261;
 import static io.rtcore.sip.message.parsers.core.ParserUtils.TOKEN;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
 
@@ -19,12 +17,13 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.google.common.primitives.UnsignedInteger;
 
 import io.rtcore.sip.message.auth.headers.Authorization;
 import io.rtcore.sip.message.base.api.RawHeader;
 import io.rtcore.sip.message.base.api.Token;
+import io.rtcore.sip.message.content.SipContent;
+import io.rtcore.sip.message.content.SipContentUtils;
 import io.rtcore.sip.message.message.SipMessage;
 import io.rtcore.sip.message.message.api.BranchId;
 import io.rtcore.sip.message.message.api.CSeq;
@@ -81,78 +80,110 @@ import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManagerB
 import io.rtcore.sip.message.uri.Uri;
 
 public abstract class DefaultSipMessage implements SipMessage {
+
   protected static final RfcSerializerManager serializer = new RfcSerializerManagerBuilder().build();
+
   /**
    */
+
   private static final long serialVersionUID = 1L;
+
   private static final Parser<NameAddr> NAME_ADDR_PARSER = new NameAddrParser();
   private static final Parser<Authorization> AUTHORIZATION_PARSER = new AuthorizationParser();
   private static final Parser<MIMEType> MIME_PARSER = new MIMETypeParser();
+
   // CHECKSTYLE:OFF
+
   private static final Supplier<TokenSetCollector> TOKEN_SET_BUILDER = new Supplier<TokenSetCollector>() {
     @Override
     public TokenSetCollector get() {
       return new TokenSetCollector();
     }
   };
-  public static final SipHeaderDefinition<List<MIMEType>> ACCEPT = MultiHeaderDefinition.create(MIME_PARSER, "Accept");
-  public static final SipHeaderDefinition<List<RValue>> ACCEPT_RESOURCE_PRIORITY = MultiHeaderDefinition.create(new RValueParser(), "Accept-Resource-Priority");
-  public static final SipHeaderDefinition<List<ParameterizedUri>> ALERT_INFO = MultiHeaderDefinition.create(new ParameterizedUriParser(), "Alert-Info");
-  public static final SipHeaderDefinition<TokenSet> ALLOW = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Allow");
-  public static final SipHeaderDefinition<List<Authorization>> AUTHORIZATION = MultiHeaderDefinition.create(AUTHORIZATION_PARSER, "Authorization");
-  public static final SipHeaderDefinition<CSeq> CSEQ = SingleHeaderDefinition.create(new CSeqParser(), "CSeq");
-  public static final SipHeaderDefinition<CallId> CALL_ID = SingleHeaderDefinition.create(new CallIdParser(), "Call-ID", 'i');
-  public static final SipHeaderDefinition<ContactSet> CONTACT = new ContactHeaderDefinition();
-  public static final SipHeaderDefinition<UnsignedInteger> CONTENT_LENGTH = SingleHeaderDefinition.create(ParserUtils.uint(1, 5), "Content-Length", 'l');
-  public static final SipHeaderDefinition<ContentDisposition> CONTENT_DISPOSITION =
-    SingleHeaderDefinition.create(new ContentDispositionParser(), "Content-Disposition");
-  public static final SipHeaderDefinition<String> CONTENT_TYPE = SingleHeaderDefinition.create("Content-Type", 'c');
-  public static final SipHeaderDefinition<ZonedDateTime> DATE = SingleHeaderDefinition.create(new DateTimeParser(), "Date");
-  public static final SipHeaderDefinition<List<ParameterizedUri>> ERROR_INFO = MultiHeaderDefinition.create(new ParameterizedUriParser(), "Error-Info");
-  public static final SipHeaderDefinition<UnsignedInteger> EXPIRES = SingleHeaderDefinition.create(ParserUtils.uint(1, 10), "Expires");
-  public static final SipHeaderDefinition<EventSpec> EVENT = SingleHeaderDefinition.create(new EventParser(), "Event", 'o');
-  public static final SipHeaderDefinition<NameAddr> FROM = SingleHeaderDefinition.create(NAME_ADDR_PARSER, "From", 'f');
-  public static final SipHeaderDefinition<HistoryInfo> HISTORY_INFO = new HistoryInfoHeaderDefinition();
-  public static final SipHeaderDefinition<Version> MIME_VERSION = SingleHeaderDefinition.create(new VersionParser(), "MIME-Version");
-  public static final SipHeaderDefinition<MinSE> MIN_SE = SingleHeaderDefinition.create(new MinSEParser(), "Min-SE");
-  public static final SipHeaderDefinition<UnsignedInteger> MAX_FORWARDS = SingleHeaderDefinition.create(ParserUtils.uint(1, 7), "Max-Forwards");
-  public static final SipHeaderDefinition<List<NameAddr>> PATH = MultiHeaderDefinition.create(NAME_ADDR_PARSER, "Path");
-  public static final SipHeaderDefinition<TokenSet> PRIVACY = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Privacy");
-  // public static final SipHeaderDefinition<Credentials> PROXY_AUTHORIZATION = new
-  // CredentialsHeaderDefinition(AUTHORIZATION_PARSER, "Proxy-Authorization");
+
+  // @formatter:off
+
+  public static final SipHeaderDefinition<List<MIMEType>>         ACCEPT                   = MultiHeaderDefinition.create(MIME_PARSER, "Accept");
+
+  public static final SipHeaderDefinition<List<RValue>>           RESOURCE_PRIORITY        = MultiHeaderDefinition.create(new RValueParser(), "Resource-Priority");
+  public static final SipHeaderDefinition<List<RValue>>           ACCEPT_RESOURCE_PRIORITY = MultiHeaderDefinition.create(new RValueParser(), "Accept-Resource-Priority");
+  
+  public static final SipHeaderDefinition<List<Via>>              VIA                      = MultiHeaderDefinition.create(new ViaParser(), "Via", 'v');
+
+  public static final SipHeaderDefinition<List<ParameterizedUri>> ALERT_INFO               = MultiHeaderDefinition.create(new ParameterizedUriParser(), "Alert-Info");
+  public static final SipHeaderDefinition<List<ParameterizedUri>> ERROR_INFO               = MultiHeaderDefinition.create(new ParameterizedUriParser(), "Error-Info");
+
+  public static final SipHeaderDefinition<List<NameAddr>>         PATH                     = MultiHeaderDefinition.create(NAME_ADDR_PARSER, "Path");
+  public static final SipHeaderDefinition<List<NameAddr>>         P_ASSERTED_IDENTITY      = MultiHeaderDefinition.create(NAME_ADDR_PARSER, "P-Asserted-Identity");
+  public static final SipHeaderDefinition<List<NameAddr>>         RECORD_ROUTE             = MultiHeaderDefinition.create(NAME_ADDR_PARSER, "Record-Route");
+  public static final SipHeaderDefinition<List<NameAddr>>         ROUTE                    = MultiHeaderDefinition.create(NAME_ADDR_PARSER, "Route");
+  
+  public static final SipHeaderDefinition<List<Authorization>>    AUTHORIZATION            = MultiHeaderDefinition.create(AUTHORIZATION_PARSER, "Authorization");
+  public static final SipHeaderDefinition<List<Authorization>>    PROXY_AUTHORIZATION      = MultiHeaderDefinition.create(AUTHORIZATION_PARSER, "Proxy-Authorization");
+  public static final SipHeaderDefinition<List<Authorization>>    PROXY_AUTHENTICATE       = MultiHeaderDefinition.create(AUTHORIZATION_PARSER, "Proxy-Authenticate");
+  public static final SipHeaderDefinition<List<Authorization>>    WWW_AUTHENTICATE         = MultiHeaderDefinition.create(AUTHORIZATION_PARSER, "WWW-Authenticate");
+
+  
+  public static final SipHeaderDefinition<TokenSet>               ALLOW                    = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Allow");
+  public static final SipHeaderDefinition<TokenSet>               PRIVACY                  = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Privacy");
+  public static final SipHeaderDefinition<TokenSet>               PROXY_REQUIRE            = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Proxy-Require");
+  public static final SipHeaderDefinition<TokenSet>               REQUIRE                  = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Require");
+  public static final SipHeaderDefinition<TokenSet>               REQUEST_DISPOSITION      = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Request-Disposition");
+  public static final SipHeaderDefinition<TokenSet>               SUPPORTED                = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Supported", 'k');
+  public static final SipHeaderDefinition<TokenSet>               UNSUPPORTED              = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Unsupported");
+
+  // @formatter:on
+
   /**
-   * Proxy-Authorization is a multi-header.
+   * headers which are single values, e.g no separator between then to allow multiple values.
    */
-  public static final SipHeaderDefinition<List<Authorization>> PROXY_AUTHORIZATION = MultiHeaderDefinition.create(AUTHORIZATION_PARSER, "Proxy-Authorization");
-  public static final SipHeaderDefinition<List<Authorization>> PROXY_AUTHENTICATE = MultiHeaderDefinition.create(AUTHORIZATION_PARSER, "Proxy-Authenticate");
-  public static final SipHeaderDefinition<TokenSet> PROXY_REQUIRE = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Proxy-Require");
-  public static final SipHeaderDefinition<List<NameAddr>> P_ASSERTED_IDENTITY = MultiHeaderDefinition.create(NAME_ADDR_PARSER, "P-Asserted-Identity");
-  public static final SipHeaderDefinition<NameAddr> P_SERVED_USER = SingleHeaderDefinition.create(NAME_ADDR_PARSER, "P-Served-User");
-  public static final SipHeaderDefinition<UnsignedInteger> RSEQ = SingleHeaderDefinition.create(ParserUtils.uint(1, 10), "RSeq");
-  public static final SipHeaderDefinition<RAck> RACK = SingleHeaderDefinition.create(new RAckParser(), "RAck");
-  public static final SipHeaderDefinition<List<NameAddr>> RECORD_ROUTE = MultiHeaderDefinition.create(NAME_ADDR_PARSER, "Record-Route");
-  public static final SipHeaderDefinition<Reason> REASON = SingleHeaderDefinition.create(new ReasonParser(), "Reason");
-  public static final SipHeaderDefinition<NameAddr> REFER_TO = SingleHeaderDefinition.create(NAME_ADDR_PARSER, "Refer-To", 'r');
-  public static final SipHeaderDefinition<NameAddr> REFERRED_BY = SingleHeaderDefinition.create(NAME_ADDR_PARSER, "Referred-By", 'b');
-  public static final SipHeaderDefinition<Replaces> REPLACES = SingleHeaderDefinition.create(new ReplacesParser(), "Replaces");
-  public static final SipHeaderDefinition<RetryAfter> RETRY_AFTER = SingleHeaderDefinition.create(new RetryAfterParser(), "Retry-After");
-  public static final SipHeaderDefinition<TokenSet> REQUIRE = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Require");
-  public static final SipHeaderDefinition<TokenSet> REQUEST_DISPOSITION = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Request-Disposition");
-  public static final SipHeaderDefinition<List<RValue>> RESOURCE_PRIORITY = MultiHeaderDefinition.create(new RValueParser(), "Resource-Priority");
-  public static final SipHeaderDefinition<List<NameAddr>> ROUTE = MultiHeaderDefinition.create(NAME_ADDR_PARSER, "Route");
-  public static final SipHeaderDefinition<CharSequence> SERVER = SingleHeaderDefinition.create(ParserUtils.all(), "Server");
-  public static final SipHeaderDefinition<String> SESSION_ID = SingleHeaderDefinition.create(ParserUtils.allString(), "Session-ID");
-  public static final SipHeaderDefinition<SessionExpires> SESSION_EXPIRES = SingleHeaderDefinition.create(new SessionExpiresParser(), "Session-Expires", 'x');
-  public static final SipHeaderDefinition<CharSequence> SUBJECT =
-    SingleHeaderDefinition.create(ParserUtils.optional(Utf8ParserHelper.TEXT_UTF8_TRIM), "Subject", 's');
-  public static final SipHeaderDefinition<TokenSet> SUPPORTED = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Supported", 'k');
-  public static final SipHeaderDefinition<TargetDialog> TARGET_DIALOG = SingleHeaderDefinition.create(new TargetDialogParser(), "Target-Dialog");
-  public static final SipHeaderDefinition<NameAddr> TO = SingleHeaderDefinition.create(NAME_ADDR_PARSER, "To", 't');
-  public static final SipHeaderDefinition<TokenSet> UNSUPPORTED = MultiHeaderDefinition.create(TOKEN, TOKEN_SET_BUILDER, "Unsupported");
-  public static final SipHeaderDefinition<CharSequence> USER_AGENT = SingleHeaderDefinition.create(ParserUtils.all(), "User-Agent");
-  public static final SipHeaderDefinition<List<Via>> VIA = MultiHeaderDefinition.create(new ViaParser(), "Via", 'v');
-  public static final SipHeaderDefinition<List<Authorization>> WWW_AUTHENTICATE = MultiHeaderDefinition.create(AUTHORIZATION_PARSER, "WWW-Authenticate");
-  // CHECKSTYLE.ON
+
+  // @formatter:off
+  
+  public static final SipHeaderDefinition<UnsignedInteger>    CONTENT_LENGTH      = SingleHeaderDefinition.create(ParserUtils.uint(1, 5), "Content-Length", 'l');
+  public static final SipHeaderDefinition<UnsignedInteger>    EXPIRES             = SingleHeaderDefinition.create(ParserUtils.uint(1, 10), "Expires");
+  public static final SipHeaderDefinition<UnsignedInteger>    MAX_FORWARDS        = SingleHeaderDefinition.create(ParserUtils.uint(1, 7), "Max-Forwards");
+  public static final SipHeaderDefinition<UnsignedInteger>    RSEQ                = SingleHeaderDefinition.create(ParserUtils.uint(1, 10), "RSeq");
+
+  
+  public static final SipHeaderDefinition<NameAddr>           FROM                = SingleHeaderDefinition.create(NAME_ADDR_PARSER, "From", 'f');
+  public static final SipHeaderDefinition<NameAddr>           P_SERVED_USER       = SingleHeaderDefinition.create(NAME_ADDR_PARSER, "P-Served-User");
+  public static final SipHeaderDefinition<NameAddr>           REFER_TO            = SingleHeaderDefinition.create(NAME_ADDR_PARSER, "Refer-To", 'r');
+  public static final SipHeaderDefinition<NameAddr>           REFERRED_BY         = SingleHeaderDefinition.create(NAME_ADDR_PARSER, "Referred-By", 'b');
+  public static final SipHeaderDefinition<NameAddr>           TO                  = SingleHeaderDefinition.create(NAME_ADDR_PARSER, "To", 't');
+
+  public static final SipHeaderDefinition<MIMEType>           CONTENT_TYPE        = SingleHeaderDefinition.create(MIME_PARSER, "Content-Type", 'c');
+  
+  public static final SipHeaderDefinition<CSeq>               CSEQ                = SingleHeaderDefinition.create(new CSeqParser(), "CSeq");
+  public static final SipHeaderDefinition<CallId>             CALL_ID             = SingleHeaderDefinition.create(new CallIdParser(), "Call-ID", 'i');
+  public static final SipHeaderDefinition<ContactSet>         CONTACT             = new ContactHeaderDefinition();
+  public static final SipHeaderDefinition<ContentDisposition> CONTENT_DISPOSITION = SingleHeaderDefinition.create(new ContentDispositionParser(), "Content-Disposition");
+  public static final SipHeaderDefinition<ZonedDateTime>      DATE                = SingleHeaderDefinition.create(new DateTimeParser(), "Date");
+  public static final SipHeaderDefinition<EventSpec>          EVENT               = SingleHeaderDefinition.create(new EventParser(), "Event", 'o');
+  public static final SipHeaderDefinition<HistoryInfo>        HISTORY_INFO        = new HistoryInfoHeaderDefinition();
+  public static final SipHeaderDefinition<Version>            MIME_VERSION        = SingleHeaderDefinition.create(new VersionParser(), "MIME-Version");
+  public static final SipHeaderDefinition<MinSE>              MIN_SE              = SingleHeaderDefinition.create(new MinSEParser(), "Min-SE");
+  public static final SipHeaderDefinition<RAck>               RACK                = SingleHeaderDefinition.create(new RAckParser(), "RAck");
+  public static final SipHeaderDefinition<Reason>             REASON              = SingleHeaderDefinition.create(new ReasonParser(), "Reason");
+  public static final SipHeaderDefinition<Replaces>           REPLACES            = SingleHeaderDefinition.create(new ReplacesParser(), "Replaces");
+  public static final SipHeaderDefinition<RetryAfter>         RETRY_AFTER         = SingleHeaderDefinition.create(new RetryAfterParser(), "Retry-After");
+  public static final SipHeaderDefinition<SessionExpires>     SESSION_EXPIRES     = SingleHeaderDefinition.create(new SessionExpiresParser(), "Session-Expires", 'x');
+  public static final SipHeaderDefinition<TargetDialog>       TARGET_DIALOG       = SingleHeaderDefinition.create(new TargetDialogParser(), "Target-Dialog");
+
+  //
+  
+  public static final SipHeaderDefinition<CharSequence>       SUBJECT             = SingleHeaderDefinition.create(ParserUtils.optional(Utf8ParserHelper.TEXT_UTF8_TRIM), "Subject", 's');
+  public static final SipHeaderDefinition<CharSequence>       SERVER              = SingleHeaderDefinition.create(ParserUtils.all(), "Server");
+  public static final SipHeaderDefinition<String>             SESSION_ID          = SingleHeaderDefinition.create(ParserUtils.allString(), "Session-ID");
+  public static final SipHeaderDefinition<CharSequence>       USER_AGENT          = SingleHeaderDefinition.create(ParserUtils.all(), "User-Agent");
+
+  
+  
+  
+  // @formatter:on
+
+  //
+
   protected byte[] body;
   protected Collection<RawHeader> headers;
   protected final SipMessageManager manager;
@@ -160,6 +191,14 @@ public abstract class DefaultSipMessage implements SipMessage {
 
   public DefaultSipMessage(final SipMessageManager manager) {
     this(manager, null);
+  }
+
+  @Override
+  public Optional<SipContent> body(String disposition) {
+    if ((this.body != null) && (this.body.length > 0)) {
+      return Optional.of(SipContentUtils.create(this));
+    }
+    return Optional.empty();    
   }
 
   @Override
@@ -224,7 +263,7 @@ public abstract class DefaultSipMessage implements SipMessage {
   }
 
   @Override
-  public Optional<String> contentType() {
+  public Optional<MIMEType> contentType() {
     return this.getHeader(CONTENT_TYPE);
   }
 
@@ -271,27 +310,14 @@ public abstract class DefaultSipMessage implements SipMessage {
   }
 
   @Override
-  public List<RawHeader> getHeaders(final String... name) {
+  public List<RawHeader> getHeaders(final Collection<String> names) {
     final List<RawHeader> ret = Lists.newLinkedList();
-    final Set<String> names = Sets.newHashSet(name);
     for (final RawHeader header : headers()) {
       if (names.contains(header.name())) {
         ret.add(header);
       }
     }
     return ret;
-  }
-
-  @SuppressWarnings("unchecked")
-  protected <T> List<T> getHeaderList(final Class<T> type, final String name) {
-    // TODO Fix this method since it doesn't work as advertised - jhutchins & zmorin
-    final List<T> result = new ArrayList<T>();
-    for (final RawHeader header : headers()) {
-      if (name.equals(header.name())) {
-        result.add((T) header);
-      }
-    }
-    return result;
   }
 
   @Override
@@ -484,4 +510,5 @@ public abstract class DefaultSipMessage implements SipMessage {
                                   : $parsedHeaders.hashCode());
     return result;
   }
+
 }

@@ -2,9 +2,14 @@ package io.rtcore.sip.message.message;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+
+import io.rtcore.sip.message.message.api.Reason;
 
 /**
  * A SIP status code and reason phrase.
@@ -79,7 +84,8 @@ public final class SipResponseStatus {
       try {
         SipResponseStatus status = (SipResponseStatus) f.get(null);
         statuses.put(status.code(), status);
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
       }
       // swallow.
     }
@@ -135,13 +141,18 @@ public final class SipResponseStatus {
 
   @Override
   public boolean equals(final Object o) {
-    if (o == this) return true;
-    if (!(o instanceof SipResponseStatus)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof SipResponseStatus))
+      return false;
     final SipResponseStatus other = (SipResponseStatus) o;
-    if (this.code() != other.code()) return false;
+    if (this.code() != other.code())
+      return false;
     final Object this$reason = this.reason();
     final Object other$reason = other.reason();
-    if (this$reason == null ? other$reason != null : !this$reason.equals(other$reason)) return false;
+    if (this$reason == null ? other$reason != null
+                            : !this$reason.equals(other$reason))
+      return false;
     return true;
   }
 
@@ -149,9 +160,17 @@ public final class SipResponseStatus {
   public int hashCode() {
     final int PRIME = 59;
     int result = 1;
-    result = result * PRIME + this.code();
+    result = (result * PRIME) + this.code();
     final Object $reason = this.reason();
-    result = result * PRIME + ($reason == null ? 43 : $reason.hashCode());
+    result =
+      (result * PRIME)
+        + ($reason == null ? 43
+                           : $reason.hashCode());
     return result;
   }
+
+  public List<Reason> asReasonList() {
+    return ImmutableList.of(Reason.fromSipStatus(this));
+  }
+
 }

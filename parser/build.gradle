@@ -7,7 +7,6 @@ plugins {
 
 repositories {
   jcenter()
-  maven { url 'https://jitpack.io' }
 }
 
 
@@ -18,8 +17,11 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
+
 eclipse {
   synchronizationTasks 'eclipseJdtApt', 'eclipseFactorypath', 'eclipseJdt'
+  project.name = "jossip:${project.name}"
+  // name = 'jossip:parser'
 }
 
 
@@ -37,12 +39,8 @@ dependencies {
   testRuntimeOnly 'ch.qos.logback:logback-classic:1.2.3'
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter:5.5.2'
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
-
   testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
-  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.2'
-  
-  // testImplementation 'org.junit.jupiter:junit-jupiter-migrationsupport:5.5.2'
-  
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.2'  
 }
 
 test {

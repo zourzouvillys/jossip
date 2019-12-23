@@ -28,6 +28,11 @@ public final class RawParameter {
     this.value = value;
   }
 
+  public static RawParameter of(Token name, Token value) {
+    return new RawParameter(name, new TokenParameterValue(value));
+  }
+
+  @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append(name);
@@ -47,15 +52,21 @@ public final class RawParameter {
 
   @Override
   public boolean equals(final Object o) {
-    if (o == this) return true;
-    if (!(o instanceof RawParameter)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof RawParameter))
+      return false;
     final RawParameter other = (RawParameter) o;
     final Object this$name = this.name();
     final Object other$name = other.name();
-    if (this$name == null ? other$name != null : !this$name.equals(other$name)) return false;
+    if (this$name == null ? other$name != null
+                          : !this$name.equals(other$name))
+      return false;
     final Object this$value = this.value();
     final Object other$value = other.value();
-    if (this$value == null ? other$value != null : !this$value.equals(other$value)) return false;
+    if (this$value == null ? other$value != null
+                           : !this$value.equals(other$value))
+      return false;
     return true;
   }
 
@@ -64,9 +75,16 @@ public final class RawParameter {
     final int PRIME = 59;
     int result = 1;
     final Object $name = this.name();
-    result = result * PRIME + ($name == null ? 43 : $name.hashCode());
+    result =
+      (result * PRIME)
+        + ($name == null ? 43
+                         : $name.hashCode());
     final Object $value = this.value();
-    result = result * PRIME + ($value == null ? 43 : $value.hashCode());
+    result =
+      (result * PRIME)
+        + ($value == null ? 43
+                          : $value.hashCode());
     return result;
   }
+
 }

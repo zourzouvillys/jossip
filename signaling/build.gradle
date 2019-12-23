@@ -1,0 +1,65 @@
+
+plugins {
+  id 'java-library'
+  id 'eclipse'
+  id 'net.ltgt.apt-eclipse'
+}
+
+repositories {
+  jcenter()
+}
+
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+
+eclipse {
+  synchronizationTasks 'eclipseJdtApt', 'eclipseFactorypath', 'eclipseJdt'
+  project.name = "jossip:${project.name}"
+}
+
+
+dependencies {
+
+  api project(':parser')
+
+  api 'com.google.guava:guava:28.1-jre'
+  implementation 'io.reactivex.rxjava3:rxjava:3.0.0-RC6'
+  implementation 'org.slf4j:slf4j-api:1.7.30'
+  
+  compileOnly 'org.immutables:value-annotations:2.8.2'
+  annotationProcessor 'org.immutables:value:2.8.2'
+  annotationProcessor 'com.google.auto.service:auto-service:1.0-rc5'
+}
+
+dependencies {
+  testRuntimeOnly 'ch.qos.logback:logback-classic:1.2.3'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter:5.5.2'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.2'
+  testImplementation 'org.assertj:assertj-core:3.14.0'
+    
+}
+
+test {
+  useJUnitPlatform()
+  minHeapSize = "128m"
+  maxHeapSize = "2g"
+}
+
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-Xlint:unchecked'
+    options.deprecation = true
+}
+
+tasks.withType(Javadoc) {
+  options.addStringOption('Xdoclint:none', '-quiet')
+}
+

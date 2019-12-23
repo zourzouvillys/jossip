@@ -17,7 +17,7 @@ public class ViaProtocolParserTest extends BaseParserTest<ViaProtocol> {
   @Test
   public void test() {
 
-    assertEquals(new ViaProtocol("SIP", "2.0", "UDP"), this.parse("SIP/2.0/UDP"));
+    assertEquals(ViaProtocol.of("SIP", "2.0", "UDP"), this.parse("SIP/2.0/UDP"));
 
   }
 

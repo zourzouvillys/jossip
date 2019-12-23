@@ -1,5 +1,6 @@
 package io.rtcore.sip.message.parameters.impl;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -7,10 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.net.HostAndPort;
 
 import io.rtcore.sip.message.base.api.Token;
+import io.rtcore.sip.message.message.api.BranchId;
 import io.rtcore.sip.message.parameters.api.FlagParameterValue;
 import io.rtcore.sip.message.parameters.api.HostAndPortParameterValue;
 import io.rtcore.sip.message.parameters.api.ParameterValue;
@@ -182,12 +185,16 @@ public final class DefaultParameters implements Parameters {
 
   @Override
   public boolean equals(final Object o) {
-    if (o == this) return true;
-    if (!(o instanceof DefaultParameters)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof DefaultParameters))
+      return false;
     final DefaultParameters other = (DefaultParameters) o;
     final Object this$raw = this.raw();
     final Object other$raw = other.raw();
-    if (this$raw == null ? other$raw != null : !this$raw.equals(other$raw)) return false;
+    if (this$raw == null ? other$raw != null
+                         : !this$raw.equals(other$raw))
+      return false;
     return true;
   }
 
@@ -196,11 +203,32 @@ public final class DefaultParameters implements Parameters {
     final int PRIME = 59;
     int result = 1;
     final Object $raw = this.raw();
-    result = result * PRIME + ($raw == null ? 43 : $raw.hashCode());
+    result =
+      (result * PRIME)
+        + ($raw == null ? 43
+                        : $raw.hashCode());
     return result;
   }
 
   private DefaultParameters withRaw(final Collection<RawParameter> raw) {
-    return this.raw == raw ? this : new DefaultParameters(raw);
+    return this.raw == raw ? this
+                           : new DefaultParameters(raw);
+  }
+
+  public static DefaultParameters of(Token name, Token value) {
+    return DefaultParameters.of(RawParameter.of(name, value));
+  }
+
+  private static DefaultParameters of(RawParameter... vals) {
+    return new DefaultParameters(Arrays.asList(vals));
+  }
+
+  public static DefaultParameters emptyParameters() {
+    return EMPTY;
+  }
+
+  @Override
+  public boolean isEmpty() {
+    return this.raw.isEmpty();
   }
 }

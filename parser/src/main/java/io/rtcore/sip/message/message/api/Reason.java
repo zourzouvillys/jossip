@@ -12,8 +12,10 @@ import io.rtcore.sip.message.parameters.impl.QuotedStringParameterDefinition;
 import io.rtcore.sip.message.parameters.impl.TokenParameterDefinition;
 
 public class Reason extends BaseParameterizedObject<Reason> {
+
   public static final TokenParameterDefinition Cause = new TokenParameterDefinition("cause");
   public static final QuotedStringParameterDefinition Text = new QuotedStringParameterDefinition("text");
+
   private final CharSequence protocol;
 
   public Reason(final CharSequence protocol, final Parameters parameters) {
@@ -56,4 +58,10 @@ public class Reason extends BaseParameterizedObject<Reason> {
   public CharSequence protocol() {
     return this.protocol;
   }
+
+  @Override
+  public String toString() {
+    return String.format("%s%s", this.protocol, this.parameters);
+  }
+
 }

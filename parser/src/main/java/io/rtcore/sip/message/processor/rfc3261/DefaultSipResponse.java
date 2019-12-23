@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalLong;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,7 @@ import io.rtcore.sip.message.message.api.NameAddr;
 import io.rtcore.sip.message.message.api.SipHeaderDefinition;
 import io.rtcore.sip.message.message.api.SipMessageVisitor;
 import io.rtcore.sip.message.message.api.SipMethod;
+import io.rtcore.sip.message.message.api.headers.MIMEType;
 import io.rtcore.sip.message.message.api.headers.RValue;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManager;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
@@ -72,8 +74,8 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
 
     final String bodyString;
 
-    if (this.body != null && this.body.length > 0)
-      bodyString = String.format(" [%s, %d bytes]", this.contentType().orElse("???"), this.body.length);
+    if ((this.body != null) && (this.body.length > 0))
+      bodyString = String.format(" [%s, %d bytes]", this.contentType(), this.body.length);
     else
       bodyString = "";
 
@@ -115,8 +117,8 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   }
 
   @Override
-  public Optional<Long> getRSeq() {
-    return this.getHeader(DefaultSipMessage.RSEQ).map(val -> val.longValue());
+  public OptionalLong getRSeq() {
+    return this.getHeader(DefaultSipMessage.RSEQ).map(val -> OptionalLong.of(val.longValue())).orElse(OptionalLong.empty());
   }
 
   @Override
@@ -190,7 +192,12 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   }
 
   public SipResponse withBody(final byte[] body) {
-    final DefaultSipResponse result = new DefaultSipResponse(this.manager.adapt(RfcSipMessageManager.class), this.version, this.status, this.headers);
+    final DefaultSipResponse result =
+      new DefaultSipResponse(
+        this.manager.adapt(RfcSipMessageManager.class),
+        this.version,
+        this.status,
+        this.headers);
     result.body = body;
     return (SipResponse) result.withReplacedHeader(DefaultSipMessage.CONTENT_LENGTH, UnsignedInteger.fromIntBits(body.length));
   }
@@ -200,7 +207,7 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   }
 
   @Override
-  public DefaultSipResponse withBody(final String contentType, final byte[] body) {
+  public DefaultSipResponse withBody(final MIMEType contentType, final byte[] body) {
     return (DefaultSipResponse) this.withBody(body).withReplacedHeader(DefaultSipMessage.CONTENT_TYPE, contentType);
   }
 

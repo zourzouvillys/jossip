@@ -2,11 +2,14 @@ package io.rtcore.sip.message.message;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import io.rtcore.sip.message.base.api.RawHeader;
+import io.rtcore.sip.message.content.SipContent;
 import io.rtcore.sip.message.message.api.BranchId;
 import io.rtcore.sip.message.message.api.CSeq;
 import io.rtcore.sip.message.message.api.ContactSet;
@@ -23,6 +26,7 @@ import io.rtcore.sip.message.message.api.headers.CallId;
 import io.rtcore.sip.message.message.api.headers.HistoryInfo;
 import io.rtcore.sip.message.message.api.headers.MIMEType;
 import io.rtcore.sip.message.message.api.headers.ParameterizedUri;
+import io.rtcore.sip.message.processor.rfc3261.DefaultSipResponse;
 import io.rtcore.sip.message.uri.Uri;
 
 /**
@@ -196,7 +200,7 @@ public interface SipMessage extends Serializable {
    * @return
    */
 
-  List<RawHeader> getHeaders(final String... names);
+  List<RawHeader> getHeaders(final Collection<String> names);
 
   /**
    * Returns a single RawHeader value if one exists with this name (case insensitive). If more than
@@ -275,9 +279,9 @@ public interface SipMessage extends Serializable {
 
   SipMessage withoutHeaders(final SipHeaderDefinition... headers);
 
-  SipMessage withBody(final String contentType, final byte[] body);
+  SipMessage withBody(final MIMEType contentType, final byte[] body);
 
-  Optional<String> contentType();
+  Optional<MIMEType> contentType();
 
   Optional<TokenSet> allow();
 
@@ -311,6 +315,37 @@ public interface SipMessage extends Serializable {
 
   default <T> T apply(Function<SipMessage, T> applicator) {
     return applicator.apply(this);
+  }
+
+  /**
+   * fetch body. note it may be a reference or some other content, rather than actual binary
+   * payload.
+   */
+
+  Optional<SipContent> body(String disposition);
+
+  default void accept(Consumer<SipRequest> req, Consumer<SipResponse> res) {
+    if (this instanceof SipRequest) {
+      req.accept((SipRequest) this);
+    }
+    else if (this instanceof SipResponse) {
+      res.accept((SipResponse) this);
+    }
+    else {
+      throw new IllegalArgumentException();
+    }
+  }
+
+  default <R> R apply(Function<SipRequest, R> req, Function<SipResponse, R> res) {
+    if (this instanceof SipRequest) {
+      return req.apply((SipRequest) this);
+    }
+    else if (this instanceof SipResponse) {
+      return res.apply((SipResponse) this);
+    }
+    else {
+      throw new IllegalArgumentException();
+    }
   }
 
 }

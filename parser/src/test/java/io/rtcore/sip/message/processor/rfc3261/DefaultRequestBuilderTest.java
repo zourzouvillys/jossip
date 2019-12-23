@@ -175,14 +175,14 @@ public class DefaultRequestBuilderTest {
     final Collection<Via> vias = request.vias();
     assertEquals(vias.size(), 1);
     for (final Via via : vias) {
-      assertEquals(via, expected);
+      assertEquals(expected, via);
     }
   }
 
   @Test
   public void testSetViaByHeader1() throws Exception {
     final String ip = "jeff.jive.com";
-    final Via expected = new Via(ViaProtocol.UDP, HostAndPort.fromParts(ip, 5060));
+    final Via expected = new Via(ViaProtocol.UDP, HostAndPort.fromHost(ip));
 
     this.builder.setMethod(SipMethod.OPTIONS);
     this.builder.setRequestUri(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)));
@@ -195,14 +195,14 @@ public class DefaultRequestBuilderTest {
     final Collection<Via> vias = request.vias();
     assertEquals(vias.size(), 1);
     for (final Via via : vias) {
-      assertEquals(via, expected);
+      assertEquals(expected, via);
     }
   }
 
   @Test
   public void testSetViaByHeader2() throws Exception {
     final String ip = "jeff.jive.com";
-    final Via expected = new Via(ViaProtocol.UDP, HostAndPort.fromParts(ip, 5060));
+    final Via expected = new Via(ViaProtocol.UDP, HostAndPort.fromHost(ip));
 
     this.builder.setMethod(SipMethod.OPTIONS);
     this.builder.setRequestUri(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)));
@@ -215,14 +215,15 @@ public class DefaultRequestBuilderTest {
     final Collection<Via> vias = request.vias();
     assertEquals(vias.size(), 1);
     for (final Via via : vias) {
-      assertEquals(via, expected);
+      assertEquals(expected, via);
     }
   }
 
   @Test
   public void testSetViaByHeader3() throws Exception {
+
     final String ip = "jeff.jive.com";
-    final Via expected = new Via(ViaProtocol.UDP, HostAndPort.fromParts(ip, 5060));
+    final Via expected = new Via(ViaProtocol.UDP, HostAndPort.fromHost(ip));
 
     this.builder.setMethod(SipMethod.OPTIONS);
     this.builder.setRequestUri(new SipUri(HostAndPort.fromParts("127.0.0.1", 5060)));
@@ -235,7 +236,7 @@ public class DefaultRequestBuilderTest {
     final Collection<Via> vias = request.vias();
     assertEquals(vias.size(), 1);
     for (final Via via : vias) {
-      assertEquals(via, expected);
+      assertEquals(expected, via);
     }
   }
 
