@@ -27,8 +27,6 @@ public class DigestCredentials extends Authorization {
   protected static final SipParameterDefinition<String> DOMAIN = ParameterUtils.createQuotedStringParameterDefinition("domain");
   protected static final SipParameterDefinition<Token> STALE = ParameterUtils.createTokenParameterDefinition("stale");
 
-  public static final String MD5 = "MD5";
-
   public DigestCredentials() {
     this(DefaultParameters.EMPTY);
   }

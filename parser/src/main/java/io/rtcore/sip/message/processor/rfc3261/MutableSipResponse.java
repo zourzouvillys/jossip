@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.primitives.UnsignedInteger;
 
+import io.rtcore.sip.message.auth.StdDigestAlgo;
 import io.rtcore.sip.message.auth.headers.Authorization;
 import io.rtcore.sip.message.auth.headers.DigestCredentials;
 import io.rtcore.sip.message.base.api.RawHeader;
@@ -188,7 +189,7 @@ public class MutableSipResponse extends MutableSipMessage<MutableSipResponse> {
         .realm(authRealm)
         .nonce(nonce)
         .stale(stale)
-        .algorithm(DigestCredentials.MD5)
+        .algorithm(StdDigestAlgo.MD5)
         .qop("auth")
         .build()
         .asCredentials();

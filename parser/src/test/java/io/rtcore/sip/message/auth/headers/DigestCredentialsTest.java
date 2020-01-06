@@ -1,6 +1,6 @@
 package io.rtcore.sip.message.auth.headers;
 
-import static io.rtcore.sip.message.auth.headers.DigestCredentials.MD5;
+import static io.rtcore.sip.message.auth.StdDigestAlgo.MD5;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;

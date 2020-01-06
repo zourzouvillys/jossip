@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 
 import org.immutables.value.Value;
 
+import io.rtcore.sip.message.auth.DigestAlgo;
 import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.parameters.api.Parameters;
 import io.rtcore.sip.message.parameters.impl.DefaultParameters;
@@ -42,7 +43,7 @@ public interface AbstractDigestValues {
   }
 
   @Nullable
-  String algorithm();
+  DigestAlgo algorithm();
 
   @Nullable
   String username();
@@ -67,7 +68,7 @@ public interface AbstractDigestValues {
     Parameters params = DefaultParameters.EMPTY;
 
     if (this.algorithm() != null) {
-      params = params.withParameter(ALGORITHM, this.algorithm());
+      params = params.withParameter(ALGORITHM, this.algorithm().algId());
     }
 
     if (this.realm() != null) {
