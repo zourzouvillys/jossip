@@ -7,14 +7,24 @@ apply plugin: 'eclipse'
 apply plugin: 'maven'
 
 
-allprojects {
+allprojects { project ->
 
-	group = 'com.github.zourzouvillys.joss-sip'
-	version = 'master-SNAPSHOT'
+	project.group = 'com.github.zourzouvillys.joss-sip'
+	project.version = 'master-SNAPSHOT'
 
-	repositories {
+	project.repositories {
 	    mavenCentral()
 	}
 
+	project.apply from: "${rootDir}/gradle/eclipse.gradle"    
+
 }
 
+
+task configureBuildship {
+  dependsOn gradle.includedBuilds*.task(':configureBuildship')
+}
+
+eclipse {
+  synchronizationTasks configureBuildship
+}

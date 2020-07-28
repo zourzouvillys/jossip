@@ -1,3 +1,5 @@
 
 include ':parser'
 include ':signaling'
+include ':netty'
+include ':dns'

@@ -1,0 +1,73 @@
+
+plugins {
+  id 'java-library'
+  id 'eclipse'
+  id 'net.ltgt.apt-eclipse'
+}
+
+repositories {
+  jcenter()
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+
+
+
+dependencies {
+
+  implementation("com.squareup.okhttp3:okhttp:4.7.2")
+  implementation("com.squareup.okhttp3:logging-interceptor:4.7.2")
+  implementation 'com.squareup.okhttp3:okhttp-dnsoverhttps:4.7.2'
+  
+  implementation 'io.netty:netty-resolver-dns:4.1.50.Final'
+  
+
+  implementation 'com.fasterxml.jackson.core:jackson-core:2.11.0'
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
+  
+  api project(':parser')
+
+  api 'com.google.guava:guava:28.2-jre'
+  implementation 'io.reactivex.rxjava3:rxjava:3.0.1'
+  implementation 'org.slf4j:slf4j-api:1.7.30'
+  
+  compileOnly 'org.immutables:value-annotations:2.8.3'
+  annotationProcessor 'org.immutables:value:2.8.3'
+  annotationProcessor 'com.google.auto.service:auto-service:1.0-rc6'
+  
+}
+
+
+dependencies {
+  //testImplementation "org.assertj:assertj-core:3.11.1"
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+}
+
+
+
+test {
+  useJUnitPlatform()
+  minHeapSize = "128m"
+  maxHeapSize = "2g"
+}
+
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-Xlint:unchecked'
+    options.deprecation = true
+}
+
+tasks.withType(Javadoc) {
+  options.addStringOption('Xdoclint:none', '-quiet')
+}
+

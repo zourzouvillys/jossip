@@ -9,12 +9,12 @@ repositories {
   jcenter()
 }
 
+sourceCompatibility = 11
+targetCompatibility = 11
 
 java {
     withSourcesJar()
     withJavadocJar()
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 
@@ -28,13 +28,13 @@ dependencies {
 
   api project(':parser')
 
-  api 'com.google.guava:guava:28.1-jre'
-  implementation 'io.reactivex.rxjava3:rxjava:3.0.0-RC6'
+  api 'com.google.guava:guava:28.2-jre'
+  implementation 'io.reactivex.rxjava3:rxjava:3.0.1'
   implementation 'org.slf4j:slf4j-api:1.7.30'
   
-  compileOnly 'org.immutables:value-annotations:2.8.2'
-  annotationProcessor 'org.immutables:value:2.8.2'
-  annotationProcessor 'com.google.auto.service:auto-service:1.0-rc5'
+  compileOnly 'org.immutables:value-annotations:2.8.3'
+  annotationProcessor 'org.immutables:value:2.8.3'
+  annotationProcessor 'com.google.auto.service:auto-service:1.0-rc6'
 }
 
 dependencies {

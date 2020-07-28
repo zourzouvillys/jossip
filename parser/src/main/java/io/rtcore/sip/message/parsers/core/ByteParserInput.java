@@ -23,6 +23,10 @@ public class ByteParserInput extends AbstractParserInput {
     return new ByteParserInput(input.getBytes(StandardCharsets.UTF_8));
   }
 
+  public static ByteParserInput fromCharSequence(final CharSequence input) {
+    return new ByteParserInput(input.toString().getBytes(StandardCharsets.UTF_8));
+  }
+
   @Override
   public byte get(final int pos) {
     Preconditions.checkPositionIndex(pos + this.start, this.input.length - 1);

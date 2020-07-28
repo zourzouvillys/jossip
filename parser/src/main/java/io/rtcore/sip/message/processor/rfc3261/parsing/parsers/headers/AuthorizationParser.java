@@ -30,11 +30,6 @@ import io.rtcore.sip.message.parsers.core.QuotedStringParser;
  *
  */
 public class AuthorizationParser implements Parser<Authorization> {
-  /*
-   * (non-Javadoc)
-   * @see io.rtcore.sip.message.parsers.core.Parser#find(io.rtcore.sip.message.parsers.core.ParserContext,
-   * io.rtcore.sip.message.parsers.core.ValueListener)
-   */
 
   @Override
   public boolean find(final ParserContext ctx, final ValueListener<Authorization> value) {

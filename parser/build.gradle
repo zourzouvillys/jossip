@@ -9,29 +9,29 @@ repositories {
   jcenter()
 }
 
+sourceCompatibility = 11
+targetCompatibility = 11
 
 java {
     withSourcesJar()
     withJavadocJar()
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 
-eclipse {
-  synchronizationTasks 'eclipseJdtApt', 'eclipseFactorypath', 'eclipseJdt'
-  project.name = "jossip:${project.name}"
+//eclipse {
+//  synchronizationTasks 'eclipseJdtApt', 'eclipseFactorypath', 'eclipseJdt'
+//  project.name = "jossip:${project.name}"
   // name = 'jossip:parser'
-}
+//}
 
 
 dependencies {
 
-  api 'com.google.guava:guava:28.1-jre'
+  api 'com.google.guava:guava:28.2-jre'
   
-  compileOnly 'org.immutables:value-annotations:2.8.2'
-  annotationProcessor 'org.immutables:value:2.8.2'
-  annotationProcessor 'com.google.auto.service:auto-service:1.0-rc5'
+  compileOnly 'org.immutables:value-annotations:2.8.3'
+  annotationProcessor 'org.immutables:value:2.8.3'
+  annotationProcessor 'com.google.auto.service:auto-service:1.0-rc6'
   
 }
 

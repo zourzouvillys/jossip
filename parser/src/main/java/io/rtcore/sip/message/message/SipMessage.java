@@ -26,7 +26,6 @@ import io.rtcore.sip.message.message.api.headers.CallId;
 import io.rtcore.sip.message.message.api.headers.HistoryInfo;
 import io.rtcore.sip.message.message.api.headers.MIMEType;
 import io.rtcore.sip.message.message.api.headers.ParameterizedUri;
-import io.rtcore.sip.message.processor.rfc3261.DefaultSipResponse;
 import io.rtcore.sip.message.uri.Uri;
 
 /**
@@ -34,14 +33,6 @@ import io.rtcore.sip.message.uri.Uri;
  *
  * Note that there is no guarantee that a message is valid. You must run the SipMessage through a
  * validator if you wish to ensure it's valid.
- *
- * 
- *
- */
-
-/**
- * 
- *
  */
 
 public interface SipMessage extends Serializable {

@@ -20,6 +20,7 @@ import io.rtcore.sip.message.parameters.impl.DefaultParameters;
  * An authorization header is a simple set of key values along with a single token that represents
  * the auth scheme (e.g, Basic, Digest, etc).
  */
+
 public class Authorization extends BaseParameterizedObject<Authorization> {
   /**
    * The scheme.

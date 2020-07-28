@@ -1,6 +1,5 @@
 package io.rtcore.sip.message.auth.headers;
 
-import io.rtcore.sip.message.auth.headers.DigestValues;
 import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.parameters.api.Parameters;
 import io.rtcore.sip.message.parameters.api.QuotedString;
@@ -112,6 +111,10 @@ public class DigestCredentials extends Authorization {
     return (DigestCredentials) this.withParameter(CNONCE.name(), QuotedString.from(cnonce));
   }
 
+  public DigestCredentials withRealm(String realm) {
+    return (DigestCredentials) this.withParameter(REALM.name(), QuotedString.from(realm));
+  }
+
   public DigestCredentials withNonceCount(long nc) {
     return (DigestCredentials) this.withParameter(NONCE_COUNT.name(), Token.from(String.format("%08x", nc)));
   }
@@ -122,6 +125,22 @@ public class DigestCredentials extends Authorization {
 
   public DigestCredentials withUri(String string) {
     return (DigestCredentials) this.withParameter(DIGEST_URI.name(), QuotedString.from(string));
+  }
+
+  public DigestCredentials withNonce(String string) {
+    return (DigestCredentials) this.withParameter(NONCE.name(), QuotedString.from(string));
+  }
+
+  public DigestCredentials withOpaque(String string) {
+    return (DigestCredentials) this.withParameter(OPAQUE.name(), QuotedString.from(string));
+  }
+
+  public DigestCredentials withQop(String string) {
+    return (DigestCredentials) this.withParameter(QOP.name(), QuotedString.from(string));
+  }
+
+  public DigestCredentials withAlgorithm(String string) {
+    return (DigestCredentials) this.withParameter(ALGORITHM.name(), Token.from(string));
   }
 
 }
