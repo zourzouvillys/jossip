@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import io.rtcore.sip.message.auth.headers.DigestCredentials;
-
 public class DigestCredentialsTest {
 
   @Test
@@ -22,10 +20,6 @@ public class DigestCredentialsTest {
         .username("theo")
         .build()
         .asCredentials();
-
-    assertEquals(
-      MD5,
-      creds.algorithm());
 
     assertEquals(
       "Digest algorithm=MD5,realm=\"example.com\",username=\"theo\",nonce=\"xxx\",stale=false,nc=00001234",
