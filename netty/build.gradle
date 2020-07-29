@@ -20,9 +20,11 @@ java {
 dependencies {
   implementation 'org.slf4j:slf4j-api:1.7.30'
   implementation 'com.google.guava:guava:29.0-jre'
-  implementation 'io.netty:netty-codec:4.1.51.Final'
-  implementation 'io.netty:netty-handler:4.1.51.Final'
-  implementation enforcedPlatform('io.netty:netty-bom:4.1.50.Final')
+  
+  implementation 'io.netty:netty-codec'
+  implementation 'io.netty:netty-handler'
+  implementation enforcedPlatform('io.netty:netty-bom:4.1.51.Final')
+  
 }
 
 eclipse {
