@@ -18,28 +18,27 @@ java {
 }
 
 
-
-
 dependencies {
 
-  implementation("com.squareup.okhttp3:okhttp:4.8.0")
-  implementation("com.squareup.okhttp3:logging-interceptor:4.7.2")
+  implementation 'com.squareup.okhttp3:okhttp:4.8.0'
+  implementation 'com.squareup.okhttp3:logging-interceptor:4.8.0'
   implementation 'com.squareup.okhttp3:okhttp-dnsoverhttps:4.8.0'
   
   implementation 'io.netty:netty-resolver-dns:4.1.51.Final'
   
-
-  implementation 'com.fasterxml.jackson.core:jackson-core:2.11.0'
+  implementation 'com.fasterxml.jackson.core:jackson-core:2.11.1'
   implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
   
   api project(':parser')
 
-  api 'com.google.guava:guava:28.2-jre'
+
+  api 'com.google.guava:guava:29.0-jre'
+  
   implementation 'io.reactivex.rxjava3:rxjava:3.0.1'
   implementation 'org.slf4j:slf4j-api:1.7.30'
   
   compileOnly 'org.immutables:value-annotations:2.8.8'
-  annotationProcessor 'org.immutables:value:2.8.3'
+  annotationProcessor 'org.immutables:value:2.8.8'
   annotationProcessor 'com.google.auto.service:auto-service:1.0-rc7'
   
 }

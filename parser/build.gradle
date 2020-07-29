@@ -27,10 +27,10 @@ java {
 
 dependencies {
 
-  api 'com.google.guava:guava:28.2-jre'
+  api 'com.google.guava:guava:29.0-jre'
   
   compileOnly 'org.immutables:value-annotations:2.8.8'
-  annotationProcessor 'org.immutables:value:2.8.3'
+  annotationProcessor 'org.immutables:value:2.8.8'
   annotationProcessor 'com.google.auto.service:auto-service:1.0-rc7'
   
 }

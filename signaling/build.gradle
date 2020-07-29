@@ -28,23 +28,23 @@ dependencies {
 
   api project(':parser')
 
-  api 'com.google.guava:guava:28.2-jre'
+  api 'com.google.guava:guava:29.0-jre'
+  
   implementation 'io.reactivex.rxjava3:rxjava:3.0.1'
   implementation 'org.slf4j:slf4j-api:1.7.30'
 
   compileOnly 'org.immutables:value-annotations:2.8.8'
-  testCompileOnly 'org.immutables:value-annotations:2.8.3'
-  annotationProcessor 'org.immutables:value:2.8.3'
+  testCompileOnly 'org.immutables:value-annotations:2.8.8'
+  annotationProcessor 'org.immutables:value:2.8.8'
   annotationProcessor 'com.google.auto.service:auto-service:1.0-rc7'
 }
 
 dependencies {
   testRuntimeOnly 'ch.qos.logback:logback-classic:1.2.3'
-  testRuntimeOnly 'org.junit.jupiter:junit-jupiter:5.6.2'
-  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
-  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
-  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.2'
-  testImplementation 'org.assertj:assertj-core:3.14.0'
+  testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.2'
+  testImplementation 'org.assertj:assertj-core:3.16.1'
     
 }
 
