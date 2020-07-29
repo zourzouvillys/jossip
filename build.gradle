@@ -1,6 +1,7 @@
 
 plugins {
-  id 'net.ltgt.apt-eclipse' version '0.21'
+  id 'net.ltgt.apt-eclipse' version '0.21' apply false
+  // id 'maven-publish' apply false
 }
 
 apply plugin: 'eclipse'
@@ -9,7 +10,7 @@ apply plugin: 'maven'
 
 allprojects { project ->
 
-	project.group = 'com.github.zourzouvillys.joss-sip'
+	project.group = 'com.github.zourzouvillys.jossip'
 	project.version = 'master-SNAPSHOT'
 
 	project.repositories {
@@ -27,4 +28,26 @@ task configureBuildship {
 
 eclipse {
   synchronizationTasks configureBuildship
+}
+
+subprojects {
+  apply plugin: "maven-publish"
+  apply plugin: "java-library"
+  publishing {
+    repositories {
+      maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/zourzouvillys/jossip")
+        credentials {
+          username = project.findProperty("gpr.actor") ?: System.getenv("GITHUB_USER")
+          password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+        }
+      }
+    }
+    publications {
+      gpr(MavenPublication) {
+        from(components.java)
+      }
+    }
+  }
 }
