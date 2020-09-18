@@ -23,7 +23,7 @@ dependencies {
   
   implementation 'io.netty:netty-codec'
   implementation 'io.netty:netty-handler'
-  implementation enforcedPlatform('io.netty:netty-bom:4.1.51.Final')
+  implementation enforcedPlatform('io.netty:netty-bom:4.1.52.Final')
   
 }
 
