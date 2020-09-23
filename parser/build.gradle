@@ -5,6 +5,8 @@ plugins {
   id 'net.ltgt.apt-eclipse'
 }
 
+apply plugin: 'maven-publish'
+
 repositories {
   jcenter()
 }

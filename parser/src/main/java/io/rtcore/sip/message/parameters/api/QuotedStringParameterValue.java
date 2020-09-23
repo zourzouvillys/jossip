@@ -1,5 +1,7 @@
 package io.rtcore.sip.message.parameters.api;
 
+import java.util.Objects;
+
 public final class QuotedStringParameterValue extends ParameterValue<String> {
   private final String value;
 
@@ -14,9 +16,11 @@ public final class QuotedStringParameterValue extends ParameterValue<String> {
   }
 
   public QuotedStringParameterValue(final String value) {
+    Objects.requireNonNull(value);
     this.value = value;
   }
 
+  @Override
   public String value() {
     return this.value;
   }
@@ -42,7 +46,7 @@ public final class QuotedStringParameterValue extends ParameterValue<String> {
     final int PRIME = 59;
     int result = 1;
     final Object $value = this.value();
-    result = result * PRIME + ($value == null ? 43 : $value.hashCode());
+    result = (result * PRIME) + ($value == null ? 43 : $value.hashCode());
     return result;
   }
 }

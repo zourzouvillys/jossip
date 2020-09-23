@@ -322,7 +322,7 @@ public class RfcSipMessageManager implements SipMessageManager {
     return res;
   }
 
-  public static SipMessageManager defaultInstance() {
+  public static RfcSipMessageManager defaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
