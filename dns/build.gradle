@@ -24,7 +24,7 @@ dependencies {
   implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
   implementation 'com.squareup.okhttp3:okhttp-dnsoverhttps:4.8.1'
   
-  implementation 'io.netty:netty-resolver-dns:4.1.51.Final'
+  implementation 'io.netty:netty-resolver-dns:4.1.53.Final'
   
   implementation 'com.fasterxml.jackson.core:jackson-core:2.11.2'
   implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
