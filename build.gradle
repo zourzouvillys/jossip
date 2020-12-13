@@ -16,19 +16,6 @@ allprojects { project ->
   }
 
   project.apply from: "${rootDir}/gradle/eclipse.gradle"
-  project.apply plugin: 'com.jfrog.bintray'
-
-  project.bintray {
-    user = project.hasProperty('bintray.user') ? project.property('bintray.user') : System.getenv('BINTRAY_USER')
-    key = project.hasProperty('bintray.key') ? project.property('bintray.key') : System.getenv('BINTRAY_APIKEY')
-    // configurations = ['archives']
-    publications = ['maven']
-    pkg {
-      repo = 'maven'
-      name = 'jossip'
-      userOrg = user
-    }
-  }
 
 }
 

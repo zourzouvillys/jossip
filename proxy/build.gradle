@@ -30,7 +30,7 @@ applicationDefaultJvmArgs = [
 ]
 
 dependencies {
-  implementation enforcedPlatform('io.netty:netty-bom:4.1.52.Final')
+  implementation enforcedPlatform('io.netty:netty-bom:4.1.55.Final')
   implementation enforcedPlatform('net.openhft:chronicle-bom:2.20.70')
   implementation enforcedPlatform('com.fasterxml.jackson:jackson-bom:2.11.1')
   implementation enforcedPlatform('software.amazon.awssdk:bom:2.15.0')  
@@ -45,7 +45,7 @@ dependencies {
   implementation project(':netty')
   implementation 'io.zrz.jpgsql:jpgsql-client:64be224'
   implementation 'org.slf4j:slf4j-api:1.7.30'
-  implementation 'com.google.guava:guava:29.0-jre'
+  implementation 'com.google.guava:guava:30.0-jre'
   implementation 'com.google.re2j:re2j:1.4'
   implementation 'io.netty:netty-codec'
   implementation 'io.netty:netty-handler'
