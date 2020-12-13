@@ -13,6 +13,7 @@ import com.google.common.net.UrlEscapers;
 
 import io.rtcore.sip.message.base.api.RawHeader;
 import io.rtcore.sip.message.base.api.Token;
+import io.rtcore.sip.message.message.api.SipTransport;
 import io.rtcore.sip.message.parameters.api.BaseParameterizedObject;
 import io.rtcore.sip.message.parameters.api.Parameters;
 import io.rtcore.sip.message.parameters.api.SipParameterDefinition;
@@ -26,8 +27,6 @@ import io.rtcore.sip.message.processor.uri.parsers.SipUriParser;
  * Note that ALL of these fields are immutable! Don't modify the current object! Instead, return a
  * new instance with the reflected changes.
  *
- * 
- *
  */
 
 public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
@@ -37,12 +36,9 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
 
   public static final SipUri ANONYMOUS = SipUri.fromUserAndHost("anonymous", "anonymous.invalid");
 
-  private static final TokenParameterDefinition P_USER =
-    new TokenParameterDefinition(
-      Token.from("user"));
-
-  public static final SipParameterDefinition<Token> PMethod =
-    new TokenParameterDefinition("method");
+  public static final TokenParameterDefinition PUser = new TokenParameterDefinition(Token.from("user"));
+  public static final TokenParameterDefinition PTransport = new TokenParameterDefinition(Token.from("transport"));
+  public static final SipParameterDefinition<Token> PMethod = new TokenParameterDefinition("method");
 
   private final String scheme;
   private final Optional<UserInfo> userinfo;
@@ -263,6 +259,10 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
     return new SipUri(this.scheme, userinfo, this.host, this.parameters, this.headers);
   }
 
+  public SipUri withScheme(String scheme) {
+    return new SipUri(scheme, userinfo, this.host, this.parameters, this.headers);
+  }
+
   public SipUri withUser(final String user) {
     return this.withUserinfo(Optional.of(UserInfo.of(user)));
   }
@@ -275,14 +275,13 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
 
   public Optional<String> getUserParameter() {
     if (this.parameters != null) {
-      return this.parameters.getParameter(P_USER).map(new Function<Token, String>() {
+      return this.parameters.getParameter(PUser).map(new Function<Token, String>() {
         @Override
         public String apply(final Token input) {
           return input.toString().toLowerCase();
         }
       });
     }
-
     return null;
   }
 
@@ -352,6 +351,10 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
 
   public static SipUri parseString(String input) {
     return SipUriParser.parse(input);
+  }
+
+  public Optional<SipTransport> transport() {
+    return getParameter(PTransport).map(SipTransport::fromToken);
   }
 
 }

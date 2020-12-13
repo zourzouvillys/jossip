@@ -1,0 +1,119 @@
+query {
+
+  initialLine
+
+  ... on Request {
+    method,
+    uri {
+      ...URI
+    }
+  }
+  
+  ... on Response { 
+    statusCode,
+    reasonPhrase
+  }
+  
+  topVia {
+    sentProtocol {
+      name
+      version
+      transport
+    }
+    sentBy {
+      host
+      port
+    }
+    branch
+  }
+  
+  routes {
+    uri {
+      params {
+        lr
+        dlg: token(name: "dlg")
+      }
+    }
+    params
+  }
+  
+  callId
+  
+  maxForwards
+  
+  allow {
+    method
+  }
+  
+  accept {
+    mimeType
+    weight
+  }
+  
+  pai {
+    uri
+  }
+  
+  privacy {
+    id
+  }
+  
+  supported {
+    token
+  }
+ 
+  cseq {
+    number
+    method
+  }
+  
+  to {
+    displayName
+    uri
+    tag
+  }
+  
+  from {
+    displayName
+    uri
+    tag
+  }
+  
+  unregisterAllBindings: contactIsStar
+  
+  contact: firstContact {
+    uri
+    params
+  }
+  
+  content {
+    type
+    length
+    disposition {
+      handling
+    }
+  }
+  
+  reason {
+    cause
+    text
+  }
+  
+  retryAfter {
+    delay
+  }
+
+}
+
+
+fragment URI on Uri {
+  scheme
+  authority {
+    userinfo
+    host
+    port
+  }
+  path
+  query
+  fragment
+}

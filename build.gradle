@@ -1,26 +1,23 @@
 
 plugins {
   id 'net.ltgt.apt-eclipse' version '0.21' apply false
-  id "com.jfrog.bintray" version "1.+"
 }
 
 apply plugin: 'eclipse'
 apply plugin: 'maven'
 
-
 allprojects { project ->
 
-	project.group = 'com.github.zourzouvillys.jossip'
-	project.version = 'master-SNAPSHOT'
+  project.group = 'io.zrz.jossip'
+  project.version = version = project.hasProperty('versionId') ? project.property('versionId') : 'master'
 
-	project.repositories {
-	    mavenCentral()
-	}
+  project.repositories {
+    mavenCentral()
+  }
 
-	project.apply from: "${rootDir}/gradle/eclipse.gradle"    
+  project.apply from: "${rootDir}/gradle/eclipse.gradle"
 
 }
-
 
 task configureBuildship {
   dependsOn gradle.includedBuilds*.task(':configureBuildship')
@@ -30,40 +27,15 @@ eclipse {
   synchronizationTasks configureBuildship
 }
 
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-}
-
-
-bintray {
-	user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-	key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_APIKEY')
-	configurations = ['archives']
-	pkg {
-	repo = 'generic'
-		name = 'jossip'
-		userOrg = user
-	}
-}
-
 subprojects {
   apply plugin: "maven-publish"
   apply plugin: "java-library"
   publishing {
-    repositories {
-      maven {
-        name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/zourzouvillys/jossip")
-        credentials {
-          username = project.findProperty("gpr.actor") ?: System.getenv("GITHUB_ACTOR")
-          password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
-        }
-      }
-    }
     publications {
-      gpr(MavenPublication) {
+      maven(MavenPublication) {
         from(components.java)
+        pom {
+        }
       }
     }
   }

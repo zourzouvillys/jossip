@@ -18,7 +18,6 @@ import io.rtcore.sip.message.parameters.api.RawParameter;
 import io.rtcore.sip.message.parameters.api.TokenParameterValue;
 import io.rtcore.sip.message.parameters.impl.DefaultParameters;
 import io.rtcore.sip.message.parsers.core.BaseParserTest;
-import io.rtcore.sip.message.processor.uri.parsers.SipUriParser;
 import io.rtcore.sip.message.uri.SipUri;
 import io.rtcore.sip.message.uri.UserInfo;
 
@@ -30,6 +29,11 @@ public class SipUriParserTest extends BaseParserTest<SipUri> {
 
   public SipUriParserTest() {
     super(SipUriParser.SIP);
+  }
+
+  @Test
+  public void testipv6Param() {
+    this.parse("sip:test@1.2.3.4:21060;transport=TCP;some--host=[2605:fb91:e13f:18dd:797f:c709:98fd:8b80]:5060");
   }
 
   @Test

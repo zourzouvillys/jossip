@@ -1,6 +1,5 @@
 package io.rtcore.sip.netty.codec;
 
-
 import io.netty.handler.codec.DecoderResult;
 
 public class InvalidSipMessage implements SipMessage {

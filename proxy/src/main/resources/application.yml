@@ -1,0 +1,6 @@
+micronaut:
+  ssl:
+    enabled: true
+    buildSelfSigned: true 
+  server:
+    http-version: 2.0

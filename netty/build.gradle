@@ -19,11 +19,11 @@ java {
 
 dependencies {
   implementation 'org.slf4j:slf4j-api:1.7.30'
-  implementation 'com.google.guava:guava:29.0-jre'
+  implementation 'com.google.guava:guava:30.0-jre'
   
   implementation 'io.netty:netty-codec'
   implementation 'io.netty:netty-handler'
-  implementation enforcedPlatform('io.netty:netty-bom:4.1.51.Final')
+  implementation enforcedPlatform('io.netty:netty-bom:4.1.55.Final')
   
 }
 
@@ -43,9 +43,9 @@ dependencies {
 
 dependencies {
   testRuntimeOnly 'ch.qos.logback:logback-classic:1.2.3'
-  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
-  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.2'  
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.0'  
   testImplementation 'org.assertj:assertj-core:3.17.1'
 }
 

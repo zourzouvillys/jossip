@@ -41,6 +41,7 @@ public class SipUriParser implements UriSchemeParser<SipUri> {
   private static final Parser<CharSequence> PASSWORD = chars(ALPHANUM_CHARS.concat("-_.!~*'()%&=+$,"));
   private static final Parser<CharSequence> COLON = ch(':');
   private static final Parser<CharSequence> AT = ch('@');
+
   public static final Parser<UserInfo> USERINFO = new Parser<UserInfo>() {
     @Override
     public boolean find(final ParserContext ctx, final ValueListener<UserInfo> value) {
@@ -61,10 +62,10 @@ public class SipUriParser implements UriSchemeParser<SipUri> {
           ctx.position(pos);
           return false;
         }
-        info =  UserInfo.of(user.toString(), password.toString());
+        info = UserInfo.of(user.toString(), password.toString());
       }
       else {
-        info =  UserInfo.of(user.toString());
+        info = UserInfo.of(user.toString());
       }
 
       if (!ctx.skip(AT)) {
@@ -82,7 +83,9 @@ public class SipUriParser implements UriSchemeParser<SipUri> {
     public String toString() {
       return "userinfo";
     }
+
   };
+
   private static final Parser<CharSequence> HEADER_CHARS = chars(ALPHANUM_CHARS.concat("-_.!~*'()[]/?:+$%"));
   private static final Parser<RawHeader> HEADER = new Parser<RawHeader>() {
 
@@ -115,6 +118,7 @@ public class SipUriParser implements UriSchemeParser<SipUri> {
   };
   private static final Parser<CharSequence> QUESTION = ch('?');
   private static final Parser<CharSequence> AMP = ch('&');
+  
   public static final Parser<Collection<RawHeader>> HEADERS = new Parser<Collection<RawHeader>>() {
 
     @Override

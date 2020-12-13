@@ -1,5 +1,7 @@
 package io.rtcore.sip.message.auth.headers;
 
+import java.util.Optional;
+
 import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.parameters.api.Parameters;
 import io.rtcore.sip.message.parameters.api.QuotedString;
@@ -32,6 +34,14 @@ public class DigestCredentials extends Authorization {
 
   public DigestCredentials(final Parameters parameters) {
     super("Digest", parameters);
+  }
+
+  @Override
+  public <T> Optional<T> as(Class<T> klass) {
+    if (klass.isInstance(this)) {
+      return Optional.of(klass.cast(this));
+    }
+    return super.as(klass);
   }
 
   @Override

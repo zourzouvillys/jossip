@@ -9,6 +9,7 @@ import com.google.common.primitives.UnsignedInteger;
 
 import io.rtcore.sip.message.auth.headers.Authorization;
 import io.rtcore.sip.message.base.api.RawHeader;
+import io.rtcore.sip.message.base.api.RawMessage;
 import io.rtcore.sip.message.message.api.CSeq;
 import io.rtcore.sip.message.message.api.ContentDisposition;
 import io.rtcore.sip.message.message.api.EventSpec;
@@ -45,6 +46,7 @@ import io.rtcore.sip.message.processor.rfc3261.serializing.serializers.NameAddrS
 import io.rtcore.sip.message.processor.rfc3261.serializing.serializers.ParameterizedUriSerializer;
 import io.rtcore.sip.message.processor.rfc3261.serializing.serializers.RAckSerializer;
 import io.rtcore.sip.message.processor.rfc3261.serializing.serializers.RawHeaderSerializer;
+import io.rtcore.sip.message.processor.rfc3261.serializing.serializers.RawMessageSerializer;
 import io.rtcore.sip.message.processor.rfc3261.serializing.serializers.RawParameterSerializer;
 import io.rtcore.sip.message.processor.rfc3261.serializing.serializers.RawUriSerializer;
 import io.rtcore.sip.message.processor.rfc3261.serializing.serializers.ReasonSerializer;
@@ -92,6 +94,7 @@ public class RfcSerializerManagerBuilder {
     manager.register(NameAddr.class, new NameAddrSerializer(manager));
     manager.register(ParameterizedString.class, new ParamaterizedStringSerializer(manager));
     manager.register(ParameterizedUri.class, new ParameterizedUriSerializer(manager));
+    manager.register(RawMessage.class, new RawMessageSerializer(manager));
     manager.register(RawHeader.class, new RawHeaderSerializer());
     manager.register(RawParameter.class, new RawParameterSerializer());
     manager.register(RawUri.class, new RawUriSerializer());

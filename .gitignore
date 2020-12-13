@@ -18,3 +18,5 @@ control.tar.gz
 *.sublime*
 .DS_Store
 bin
+gradlew.bat
+gradlew.bat

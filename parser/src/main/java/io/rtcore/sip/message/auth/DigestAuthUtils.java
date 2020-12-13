@@ -45,7 +45,7 @@ public class DigestAuthUtils {
       final SipMethod method,
       final String uri,
       final DigestCredentials auth,
-      final String cnonce,
+      String cnonce,
       final int nc,
       final String user,
       final String pass) {
@@ -62,6 +62,10 @@ public class DigestAuthUtils {
 
     }
     else if (auth.qop().equals("auth")) {
+
+      if (cnonce == null) {
+        cnonce = generateNonce();
+      }
 
       final String mnc = String.format("%08x", nc).toUpperCase();
 

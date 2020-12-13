@@ -3,6 +3,9 @@
  */
 package io.rtcore.sip.message.auth.headers;
 
+import java.util.Objects;
+import java.util.Optional;
+
 import com.google.common.escape.Escaper;
 import com.google.common.escape.Escapers;
 
@@ -131,4 +134,9 @@ public class Authorization extends BaseParameterizedObject<Authorization> {
   public String scheme() {
     return this.scheme;
   }
+
+  public <T> Optional<T> as(Class<T> klass) {
+    return Optional.empty();
+  }
+
 }
