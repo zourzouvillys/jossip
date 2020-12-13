@@ -1,12 +1,10 @@
 
 plugins {
   id 'net.ltgt.apt-eclipse' version '0.21' apply false
-  id "com.jfrog.bintray" version "1.+"
 }
 
 apply plugin: 'eclipse'
 apply plugin: 'maven'
-
 
 allprojects { project ->
 
@@ -21,30 +19,12 @@ allprojects { project ->
 
 }
 
-
 task configureBuildship {
   dependsOn gradle.includedBuilds*.task(':configureBuildship')
 }
 
 eclipse {
   synchronizationTasks configureBuildship
-}
-
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-}
-
-
-bintray {
-	user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-	key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_APIKEY')
-	configurations = ['archives']
-	pkg {
-	repo = 'generic'
-		name = 'jossip'
-		userOrg = user
-	}
 }
 
 subprojects {
