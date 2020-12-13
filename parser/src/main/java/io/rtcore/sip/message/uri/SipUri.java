@@ -36,10 +36,8 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
 
   public static final SipUri ANONYMOUS = SipUri.fromUserAndHost("anonymous", "anonymous.invalid");
 
-  private static final TokenParameterDefinition P_USER = new TokenParameterDefinition(Token.from("user"));
-
-  private static final TokenParameterDefinition PTransport = new TokenParameterDefinition(Token.from("transport"));
-
+  public static final TokenParameterDefinition PUser = new TokenParameterDefinition(Token.from("user"));
+  public static final TokenParameterDefinition PTransport = new TokenParameterDefinition(Token.from("transport"));
   public static final SipParameterDefinition<Token> PMethod = new TokenParameterDefinition("method");
 
   private final String scheme;
@@ -277,14 +275,13 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
 
   public Optional<String> getUserParameter() {
     if (this.parameters != null) {
-      return this.parameters.getParameter(P_USER).map(new Function<Token, String>() {
+      return this.parameters.getParameter(PUser).map(new Function<Token, String>() {
         @Override
         public String apply(final Token input) {
           return input.toString().toLowerCase();
         }
       });
     }
-
     return null;
   }
 

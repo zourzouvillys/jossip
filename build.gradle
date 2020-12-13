@@ -8,14 +8,27 @@ apply plugin: 'maven'
 
 allprojects { project ->
 
-	project.group = 'com.github.zourzouvillys.jossip'
-	project.version = 'master-SNAPSHOT'
+  project.group = 'io.zrz.jossip'
+  project.version = version = project.hasProperty('versionId') ? project.property('versionId') : 'master'
 
-	project.repositories {
-	    mavenCentral()
-	}
+  project.repositories {
+    mavenCentral()
+  }
 
-	project.apply from: "${rootDir}/gradle/eclipse.gradle"    
+  project.apply from: "${rootDir}/gradle/eclipse.gradle"
+  project.apply plugin: 'com.jfrog.bintray'
+
+  project.bintray {
+    user = project.hasProperty('bintray.user') ? project.property('bintray.user') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintray.key') ? project.property('bintray.key') : System.getenv('BINTRAY_APIKEY')
+    // configurations = ['archives']
+    publications = ['maven']
+    pkg {
+      repo = 'maven'
+      name = 'jossip'
+      userOrg = user
+    }
+  }
 
 }
 
@@ -31,19 +44,11 @@ subprojects {
   apply plugin: "maven-publish"
   apply plugin: "java-library"
   publishing {
-    repositories {
-      maven {
-        name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/zourzouvillys/jossip")
-        credentials {
-          username = project.findProperty("gpr.actor") ?: System.getenv("GITHUB_ACTOR")
-          password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
-        }
-      }
-    }
     publications {
-      gpr(MavenPublication) {
+      maven(MavenPublication) {
         from(components.java)
+        pom {
+        }
       }
     }
   }

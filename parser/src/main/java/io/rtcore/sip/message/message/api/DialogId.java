@@ -18,6 +18,7 @@ import io.rtcore.sip.message.message.api.headers.CallId;
  * 
  */
 public final class DialogId {
+
   private final CallId callId;
   private final String localTag;
   private final String remoteTag;
@@ -121,18 +122,26 @@ public final class DialogId {
 
   @Override
   public boolean equals(final Object o) {
-    if (o == this) return true;
-    if (!(o instanceof DialogId)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof DialogId))
+      return false;
     final DialogId other = (DialogId) o;
     final Object this$callId = this.callId();
     final Object other$callId = other.callId();
-    if (this$callId == null ? other$callId != null : !this$callId.equals(other$callId)) return false;
+    if (this$callId == null ? other$callId != null
+                            : !this$callId.equals(other$callId))
+      return false;
     final Object this$localTag = this.localTag();
     final Object other$localTag = other.localTag();
-    if (this$localTag == null ? other$localTag != null : !this$localTag.equals(other$localTag)) return false;
+    if (this$localTag == null ? other$localTag != null
+                              : !this$localTag.equals(other$localTag))
+      return false;
     final Object this$remoteTag = this.remoteTag();
     final Object other$remoteTag = other.remoteTag();
-    if (this$remoteTag == null ? other$remoteTag != null : !this$remoteTag.equals(other$remoteTag)) return false;
+    if (this$remoteTag == null ? other$remoteTag != null
+                               : !this$remoteTag.equals(other$remoteTag))
+      return false;
     return true;
   }
 
@@ -141,11 +150,20 @@ public final class DialogId {
     final int PRIME = 59;
     int result = 1;
     final Object $callId = this.callId();
-    result = result * PRIME + ($callId == null ? 43 : $callId.hashCode());
+    result =
+      (result * PRIME)
+        + ($callId == null ? 43
+                           : $callId.hashCode());
     final Object $localTag = this.localTag();
-    result = result * PRIME + ($localTag == null ? 43 : $localTag.hashCode());
+    result =
+      (result * PRIME)
+        + ($localTag == null ? 43
+                             : $localTag.hashCode());
     final Object $remoteTag = this.remoteTag();
-    result = result * PRIME + ($remoteTag == null ? 43 : $remoteTag.hashCode());
+    result =
+      (result * PRIME)
+        + ($remoteTag == null ? 43
+                              : $remoteTag.hashCode());
     return result;
   }
 
@@ -155,14 +173,17 @@ public final class DialogId {
   }
 
   public DialogId withCallId(final CallId callId) {
-    return this.callId == callId ? this : new DialogId(callId, this.localTag, this.remoteTag);
+    return this.callId == callId ? this
+                                 : new DialogId(callId, this.localTag, this.remoteTag);
   }
 
   public DialogId withLocalTag(final String localTag) {
-    return this.localTag == localTag ? this : new DialogId(this.callId, localTag, this.remoteTag);
+    return this.localTag == localTag ? this
+                                     : new DialogId(this.callId, localTag, this.remoteTag);
   }
 
   public DialogId withRemoteTag(final String remoteTag) {
-    return this.remoteTag == remoteTag ? this : new DialogId(this.callId, this.localTag, remoteTag);
+    return this.remoteTag == remoteTag ? this
+                                       : new DialogId(this.callId, this.localTag, remoteTag);
   }
 }
