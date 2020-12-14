@@ -1,21 +1,7 @@
-
 plugins {
   id 'application'
   id 'eclipse'
   id 'net.ltgt.apt-eclipse'
-}
-
-repositories {
-  jcenter()
-  maven { url "https://dl.bintray.com/zourzouvillys/maven" }
-}
-
-sourceCompatibility = 11
-targetCompatibility = 11
-
-java {
-    withSourcesJar()
-    withJavadocJar()
 }
 
 mainClassName = 'io.rtcore.sip.proxy.EntryPoint'
@@ -29,16 +15,6 @@ applicationDefaultJvmArgs = [
   //'--add-exports', 'java.base/sun.nio.ch=ALL-UNNAMED',  
 ]
 
-dependencies {
-  implementation enforcedPlatform('io.netty:netty-bom:4.1.55.Final')
-  implementation enforcedPlatform('net.openhft:chronicle-bom:2.20.70')
-  implementation enforcedPlatform('com.fasterxml.jackson:jackson-bom:2.11.1')
-  implementation enforcedPlatform('software.amazon.awssdk:bom:2.13.64')
-  annotationProcessor(platform("io.micronaut:micronaut-bom:2.0.3"))
-  implementation(platform("io.micronaut:micronaut-bom:2.0.3"))
-  testAnnotationProcessor(enforcedPlatform("io.micronaut:micronaut-bom:2.0.3"))
-  testImplementation(enforcedPlatform("io.micronaut:micronaut-bom:2.0.3"))  
-}
 
 dependencies {
   implementation project(':parser')

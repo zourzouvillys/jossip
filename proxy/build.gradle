@@ -5,45 +5,17 @@ plugins {
   id 'net.ltgt.apt-eclipse'
 }
 
-repositories {
-  jcenter()
-  maven { url "https://dl.bintray.com/zourzouvillys/maven" }
-}
-
-sourceCompatibility = 11
-targetCompatibility = 11
-
-java {
-    withSourcesJar()
-    withJavadocJar()
-}
-
 mainClassName = 'io.rtcore.sip.proxy.EntryPoint'
 
 applicationDefaultJvmArgs = [
   '--illegal-access=permit',
   '--add-exports', 'java.base/jdk.internal.ref=ALL-UNNAMED',
-  //'--add-exports', 'java.base/jdk.internal.misc=ALL-UNNAMED',
-  //'--add-opens', 'java.base/jdk.internal.module=ALL-UNNAMED',
-  //'--add-exports', 'java.base/java.lang.reflect=ALL-UNNAMED',
-  //'--add-exports', 'java.base/sun.nio.ch=ALL-UNNAMED',  
 ]
-
-dependencies {
-  implementation enforcedPlatform('io.netty:netty-bom:4.1.55.Final')
-  implementation enforcedPlatform('net.openhft:chronicle-bom:2.20.70')
-  implementation enforcedPlatform('com.fasterxml.jackson:jackson-bom:2.11.1')
-  implementation enforcedPlatform('software.amazon.awssdk:bom:2.15.0')  
-  annotationProcessor(platform("io.micronaut:micronaut-bom:2.0.3"))
-  implementation(platform("io.micronaut:micronaut-bom:2.0.3"))
-  testAnnotationProcessor(enforcedPlatform("io.micronaut:micronaut-bom:2.0.3"))
-  testImplementation(enforcedPlatform("io.micronaut:micronaut-bom:2.0.3"))  
-}
 
 dependencies {
   implementation project(':parser')
   implementation project(':netty')
-  implementation 'io.zrz.jpgsql:jpgsql-client:64be224'
+  // implementation 'io.zrz.jpgsql:jpgsql-client:64be224'
   implementation 'org.slf4j:slf4j-api:1.7.30'
   implementation 'com.google.guava:guava:30.0-jre'
   implementation 'com.google.re2j:re2j:1.4'
@@ -60,40 +32,24 @@ dependencies {
 dependencies {
   implementation 'software.amazon.awssdk:sts'
   implementation 'software.amazon.awssdk:sqs'
-  implementation 'software.amazon.awssdk:xray'
-  implementation 'software.amazon.awssdk:rds'
-  implementation 'software.amazon.awssdk:secretsmanager'
-  implementation 'org.rocksdb:rocksdbjni:6.11.4:osx'
+  //implementation 'software.amazon.awssdk:xray'
+  //implementation 'software.amazon.awssdk:rds'
+  //implementation 'software.amazon.awssdk:secretsmanager'
 }
 
 
 dependencies {
 
-//implementation 'io.micronaut.jaxrs:micronaut-jaxrs-server'
-//implementation 'io.micronaut.jaxrs:micronaut-jaxrs-processor'
-
-  annotationProcessor("io.micronaut:micronaut-inject-java")
-  annotationProcessor("io.micronaut:micronaut-validation")
-  implementation("io.micronaut:micronaut-inject")
-  implementation("io.micronaut:micronaut-validation")
-  implementation("io.micronaut:micronaut-runtime")
-  implementation("javax.annotation:javax.annotation-api")
-  implementation("io.micronaut:micronaut-http-server-netty")
-  implementation("io.micronaut:micronaut-http-client") 
-  implementation("io.micronaut:micronaut-http-server-netty")
-
+  implementation 'org.rocksdb:rocksdbjni:6.13.3'
 
   implementation 'info.picocli:picocli:4.4.0'
   implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-avro'
-  implementation 'io.reactivex.rxjava3:rxjava:3.0.4'
+  implementation 'io.reactivex.rxjava3:rxjava:3.0.8'
   implementation 'com.fasterxml.jackson.core:jackson-core'
   implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
   implementation 'com.fasterxml.jackson.datatype:jackson-datatype-guava'
   implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
   //implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jaxrs'
-  
-  
-  
   
   implementation('net.openhft:chronicle-queue') {
     exclude group: "net.openhft", module: "affinity"
@@ -102,33 +58,6 @@ dependencies {
   
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-    options.compilerArgs.addAll([
-        '-parameters',
-        // enables incremental compilation
-        '-Amicronaut.processing.incremental=true',
-        '-Amicronaut.processing.annotations=io.rtcore.sip.proxy.*',
-        "-Amicronaut.processing.group=$project.group",
-        "-Amicronaut.processing.module=$project.name",
-    ])
-}
-
-tasks.withType(JavaExec) {
-    //classpath += configurations.developmentOnly
-    jvmArgs('-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
-    if (gradle.startParameter.continuous) {
-        systemProperties(
-            'micronaut.io.watch.restart':'true',
-            'micronaut.io.watch.enabled':'true',
-            "micronaut.io.watch.paths":"src/main"
-        )
-    }
-}
-
-
-
-
 dependencies {
   compileOnly 'org.immutables:value-annotations:2.8.8'
   annotationProcessor 'org.immutables:value:2.8.8'
@@ -136,29 +65,9 @@ dependencies {
 }
 
 dependencies {
-  
-  runtimeOnly 'ch.qos.logback:logback-classic:1.2.3'
-  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
-  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.2'  
-  testImplementation 'org.assertj:assertj-core:3.18.1'
-  
+  runtimeOnly 'ch.qos.logback:logback-classic:1.2.3'  
 }
 
-test {
-  useJUnitPlatform()
-  minHeapSize = "128m"
-  maxHeapSize = "2g"
-}
-
-tasks.withType(JavaCompile) {
-    options.compilerArgs << '-Xlint:unchecked'
-    options.deprecation = true
-}
-
-tasks.withType(Javadoc) {
-  options.addStringOption('Xdoclint:none', '-quiet')
-}
 
 eclipse {
   synchronizationTasks 'eclipseJdtApt', 'eclipseFactorypath', 'eclipseJdt'

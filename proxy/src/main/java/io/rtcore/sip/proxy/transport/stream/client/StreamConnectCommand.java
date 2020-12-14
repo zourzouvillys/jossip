@@ -180,7 +180,7 @@ public class StreamConnectCommand implements Runnable {
     List<Service> services = new ArrayList<>();
     services.add(HttpServer.forPort(eventBus, 8088));
 
-    services.add(new MicronautService(ClientApplication.class, eventBus, this.registry));
+    // services.add(new MicronautService(ClientApplication.class, eventBus, this.registry));
 
     ServiceManager manager = new ServiceManager(services);
 

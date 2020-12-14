@@ -5,19 +5,6 @@ plugins {
   id 'net.ltgt.apt-eclipse'
 }
 
-repositories {
-  jcenter()
-}
-
-sourceCompatibility = 11
-targetCompatibility = 11
-
-java {
-    withSourcesJar()
-    withJavadocJar()
-}
-
-
 eclipse {
   synchronizationTasks 'eclipseJdtApt', 'eclipseFactorypath', 'eclipseJdt'
   project.name = "jossip:${project.name}"
@@ -37,30 +24,5 @@ dependencies {
   testCompileOnly 'org.immutables:value-annotations:2.8.8'
   annotationProcessor 'org.immutables:value:2.8.8'
   annotationProcessor 'com.google.auto.service:auto-service:1.0-rc7'
-}
-
-dependencies {
-  testRuntimeOnly 'ch.qos.logback:logback-classic:1.2.3'
-  testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
-  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.2'
-  testImplementation 'org.assertj:assertj-core:3.18.1'
-    
-}
-
-test {
-  useJUnitPlatform()
-  minHeapSize = "128m"
-  maxHeapSize = "2g"
-}
-
-
-tasks.withType(JavaCompile) {
-    options.compilerArgs << '-Xlint:unchecked'
-    options.deprecation = true
-}
-
-tasks.withType(Javadoc) {
-  options.addStringOption('Xdoclint:none', '-quiet')
 }
 

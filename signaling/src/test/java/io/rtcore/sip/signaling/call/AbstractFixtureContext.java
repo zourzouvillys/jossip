@@ -1,10 +1,5 @@
 package io.rtcore.sip.signaling.call;
 
-import io.rtcore.sip.signaling.call.SignalQueries;
-import io.rtcore.sip.signaling.call.SignalState;
-import io.rtcore.sip.signaling.call.SignalUtil;
-import io.rtcore.sip.signaling.call.UaRole;
-
 public class AbstractFixtureContext<T extends AbstractFixtureContext<T>> {
 
   protected final SignalState currentState;

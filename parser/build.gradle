@@ -7,54 +7,9 @@ plugins {
 
 apply plugin: 'maven-publish'
 
-repositories {
-  jcenter()
-}
-
-sourceCompatibility = 11
-targetCompatibility = 11
-
-java {
-    withSourcesJar()
-    withJavadocJar()
-}
-
-
-//eclipse {
-//  synchronizationTasks 'eclipseJdtApt', 'eclipseFactorypath', 'eclipseJdt'
-//  project.name = "jossip:${project.name}"
-  // name = 'jossip:parser'
-//}
-
-
 dependencies {
-
   api 'com.google.guava:guava:30.0-jre'
   compileOnly 'org.immutables:value-annotations:2.8.8'
   annotationProcessor 'org.immutables:value:2.8.8'
-  annotationProcessor 'com.google.auto.service:auto-service:1.0-rc7'
-  
-}
-
-dependencies {
-  testRuntimeOnly 'ch.qos.logback:logback-classic:1.2.3'
-  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.0'  
-}
-
-test {
-  useJUnitPlatform()
-  minHeapSize = "128m"
-  maxHeapSize = "2g"
-}
-
-
-tasks.withType(JavaCompile) {
-    options.compilerArgs << '-Xlint:unchecked'
-    options.deprecation = true
-}
-
-tasks.withType(Javadoc) {
-  options.addStringOption('Xdoclint:none', '-quiet')
+  annotationProcessor 'com.google.auto.service:auto-service:1.0-rc7'  
 }
