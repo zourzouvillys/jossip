@@ -1,0 +1,35 @@
+
+plugins {
+  id 'java-library'
+  id 'eclipse'
+  id 'net.ltgt.apt-eclipse'
+}
+
+dependencies {
+  implementation 'org.slf4j:slf4j-api:1.7.30'
+  implementation 'com.google.guava:guava:30.0-jre'
+  implementation 'io.netty:netty-codec'
+  implementation 'io.netty:netty-handler'
+  implementation 'io.netty:netty-codec-http2'
+  implementation 'io.reactivex.rxjava3:rxjava:3.0.8'
+  
+  implementation 'com.fasterxml.jackson.core:jackson-core'
+  implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
+  implementation 'com.fasterxml.jackson.datatype:jackson-datatype-guava'
+  implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+  
+  
+}
+
+dependencies {
+  compileOnly 'org.immutables:value-annotations:2.8.8'
+  annotationProcessor 'org.immutables:value:2.8.8'
+  annotationProcessor 'com.google.auto.service:auto-service:1.0-rc7'
+}
+
+eclipse {
+  synchronizationTasks 'eclipseJdtApt', 'eclipseFactorypath', 'eclipseJdt'
+  project.name = "jossip:${project.name}"
+}
+
+
