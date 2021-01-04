@@ -58,7 +58,7 @@ dependencies {
   implementation("io.micronaut:micronaut-http-server-netty")
 
 
-  implementation 'info.picocli:picocli:4.4.0'
+  implementation 'info.picocli:picocli:4.6.1'
   implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-avro'
   implementation 'io.reactivex.rxjava3:rxjava:3.0.4'
   implementation 'com.fasterxml.jackson.core:jackson-core'
