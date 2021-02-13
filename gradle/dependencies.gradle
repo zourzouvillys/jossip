@@ -16,13 +16,12 @@ dependencies {
   implementation enforcedPlatform('org.apache.logging.log4j:log4j-bom:2.14.0')
   implementation enforcedPlatform('io.netty:netty-bom:4.1.59.Final')
   implementation enforcedPlatform('net.openhft:chronicle-bom:2.21ea48')
+  implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.1"))
 
-  annotationProcessor(platform("io.micronaut:micronaut-bom:2.2.1"))
-  
+  annotationProcessor(platform("io.micronaut:micronaut-bom:2.2.1"))  
   implementation(platform("io.micronaut:micronaut-bom:2.2.1"))
-  
-  testAnnotationProcessor(enforcedPlatform("io.micronaut:micronaut-bom:2.2.1"))
-  
+
+  testAnnotationProcessor(enforcedPlatform("io.micronaut:micronaut-bom:2.2.1"))  
   testImplementation(enforcedPlatform("io.micronaut:micronaut-bom:2.2.1"))
   testImplementation enforcedPlatform('org.junit:junit-bom:5.7.1')
   
