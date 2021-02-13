@@ -9,13 +9,13 @@ repositories {
 
 dependencies {
 
-  implementation enforcedPlatform('software.amazon.awssdk:bom:2.15.45')
-  implementation enforcedPlatform('com.fasterxml.jackson:jackson-bom:2.12.0')
+  implementation enforcedPlatform('software.amazon.awssdk:bom:2.15.81')
+  implementation enforcedPlatform('com.fasterxml.jackson:jackson-bom:2.12.1')
   implementation enforcedPlatform('com.google.guava:guava-bom:30.0-jre')
   
   implementation enforcedPlatform('org.apache.logging.log4j:log4j-bom:2.14.0')
-  implementation enforcedPlatform('io.netty:netty-bom:4.1.55.Final')
-  implementation enforcedPlatform('net.openhft:chronicle-bom:2.20.205')
+  implementation enforcedPlatform('io.netty:netty-bom:4.1.59.Final')
+  implementation enforcedPlatform('net.openhft:chronicle-bom:2.21ea48')
 
   annotationProcessor(platform("io.micronaut:micronaut-bom:2.2.1"))
   
@@ -31,11 +31,11 @@ dependencies {
 
 dependencies {
   //testImplementation "org.assertj:assertj-core:3.11.1"
-  testImplementation 'org.assertj:assertj-core:3.18.1'
-  testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
-  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.0'
-  testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+  testImplementation 'org.assertj:assertj-core:3.19.0'
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.1'
+  testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
   testRuntimeOnly 'ch.qos.logback:logback-classic:1.2.3'
 }
 
