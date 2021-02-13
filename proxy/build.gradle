@@ -25,7 +25,7 @@ dependencies {
   implementation 'com.squareup.retrofit2:retrofit:2.9.0'
   implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
   implementation 'com.amazonaws:amazon-kinesis-producer:0.14.4'
-  implementation 'software.amazon.kinesis:amazon-kinesis-client:2.3.0'
+  implementation 'software.amazon.kinesis:amazon-kinesis-client:2.3.3'
 }
 
 // aws plugin
