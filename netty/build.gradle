@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
   implementation 'org.slf4j:slf4j-api:1.7.30'
-  implementation 'com.google.guava:guava:30.0-jre'
+  implementation 'com.google.guava:guava:30.1-jre'
   implementation 'io.netty:netty-codec'
   implementation 'io.netty:netty-handler'
 }

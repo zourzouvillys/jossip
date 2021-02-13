@@ -21,7 +21,7 @@ dependencies {
   implementation project(':netty')
   implementation 'io.zrz.jpgsql:jpgsql-client:64be224'
   implementation 'org.slf4j:slf4j-api:1.7.30'
-  implementation 'com.google.guava:guava:30.0-jre'
+  implementation 'com.google.guava:guava:30.1-jre'
   implementation 'com.google.re2j:re2j:1.5'
   implementation 'io.netty:netty-codec'
   implementation 'io.netty:netty-handler'
@@ -38,7 +38,7 @@ dependencies {
   implementation 'software.amazon.awssdk:xray'
   implementation 'software.amazon.awssdk:rds'
   implementation 'software.amazon.awssdk:secretsmanager'
-  implementation 'org.rocksdb:rocksdbjni:6.13.3'
+  implementation 'org.rocksdb:rocksdbjni:6.15.2'
 }
 
 
@@ -58,9 +58,9 @@ dependencies {
   implementation("io.micronaut:micronaut-http-server-netty")
 
 
-  implementation 'info.picocli:picocli:4.4.0'
+  implementation 'info.picocli:picocli:4.6.1'
   implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-avro'
-  implementation 'io.reactivex.rxjava3:rxjava:3.0.4'
+  implementation 'io.reactivex.rxjava3:rxjava:3.0.10'
   implementation 'com.fasterxml.jackson.core:jackson-core'
   implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
   implementation 'com.fasterxml.jackson.datatype:jackson-datatype-guava'

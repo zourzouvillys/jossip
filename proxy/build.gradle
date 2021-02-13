@@ -17,14 +17,14 @@ dependencies {
   implementation project(':netty')
   // implementation 'io.zrz.jpgsql:jpgsql-client:64be224'
   implementation 'org.slf4j:slf4j-api:1.7.30'
-  implementation 'com.google.guava:guava:30.0-jre'
+  implementation 'com.google.guava:guava:30.1-jre'
   implementation 'com.google.re2j:re2j:1.5'
   implementation 'io.netty:netty-codec'
   implementation 'io.netty:netty-handler'
   implementation 'io.netty:netty-codec-http2'
   implementation 'com.squareup.retrofit2:retrofit:2.9.0'
   implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
-  implementation 'com.amazonaws:amazon-kinesis-producer:0.14.1'
+  implementation 'com.amazonaws:amazon-kinesis-producer:0.14.4'
   implementation 'software.amazon.kinesis:amazon-kinesis-client:2.3.0'
 }
 
@@ -40,11 +40,11 @@ dependencies {
 
 dependencies {
 
-  implementation 'org.rocksdb:rocksdbjni:6.13.3'
+  implementation 'org.rocksdb:rocksdbjni:6.15.2'
 
-  implementation 'info.picocli:picocli:4.4.0'
+  implementation 'info.picocli:picocli:4.6.1'
   implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-avro'
-  implementation 'io.reactivex.rxjava3:rxjava:3.0.8'
+  implementation 'io.reactivex.rxjava3:rxjava:3.0.10'
   implementation 'com.fasterxml.jackson.core:jackson-core'
   implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
   implementation 'com.fasterxml.jackson.datatype:jackson-datatype-guava'
