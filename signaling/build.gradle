@@ -17,7 +17,7 @@ dependencies {
 
   api 'com.google.guava:guava:30.1-jre'
   
-  implementation 'io.reactivex.rxjava3:rxjava:3.0.10'
+  implementation 'io.reactivex.rxjava3:rxjava:3.0.11'
   implementation 'org.slf4j:slf4j-api:1.7.30'
 
   compileOnly 'org.immutables:value-annotations:2.8.8'
