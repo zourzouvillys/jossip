@@ -38,7 +38,7 @@ dependencies {
   implementation 'software.amazon.awssdk:xray'
   implementation 'software.amazon.awssdk:rds'
   implementation 'software.amazon.awssdk:secretsmanager'
-  implementation 'org.rocksdb:rocksdbjni:6.15.2'
+  implementation 'org.rocksdb:rocksdbjni:6.16.4'
 }
 
 
