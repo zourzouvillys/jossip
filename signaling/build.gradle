@@ -5,17 +5,12 @@ plugins {
   id 'net.ltgt.apt-eclipse'
 }
 
-eclipse {
-  synchronizationTasks 'eclipseJdtApt', 'eclipseFactorypath', 'eclipseJdt'
-  project.name = "jossip:${project.name}"
-}
-
 
 dependencies {
 
   api project(':parser')
 
-  api 'com.google.guava:guava:30.1-jre'
+  api 'com.google.guava:guava'
   
   implementation 'io.reactivex.rxjava3:rxjava:3.0.10'
   implementation 'org.slf4j:slf4j-api:1.7.30'
