@@ -13,9 +13,7 @@ applicationDefaultJvmArgs = [
 ]
 
 dependencies {
-  implementation project(':parser')
   implementation project(':netty')
-  // implementation 'io.zrz.jpgsql:jpgsql-client:64be224'
   implementation 'org.slf4j:slf4j-api:1.7.30'
   implementation 'com.google.guava:guava'
   implementation 'com.google.re2j:re2j:1.5'
@@ -24,17 +22,22 @@ dependencies {
   implementation 'io.netty:netty-codec-http2'
   implementation 'com.squareup.retrofit2:retrofit:2.9.0'
   implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
-  implementation 'com.amazonaws:amazon-kinesis-producer:0.14.4'
+  implementation 'com.amazonaws:amazon-kinesis-producer:0.14.5'
   implementation 'software.amazon.kinesis:amazon-kinesis-client:2.3.3'
 }
 
 // aws plugin
 dependencies {
+
+  implementation 'software.amazon.awssdk:auth'
   implementation 'software.amazon.awssdk:sts'
   implementation 'software.amazon.awssdk:sqs'
-  //implementation 'software.amazon.awssdk:xray'
-  //implementation 'software.amazon.awssdk:rds'
-  //implementation 'software.amazon.awssdk:secretsmanager'
+  implementation 'software.amazon.awssdk:kms'
+  
+  // implementation 'software.amazon.awssdk:'
+  // implementation 'software.amazon.awssdk:xray'
+  // implementation 'software.amazon.awssdk:rds'
+  // implementation 'software.amazon.awssdk:secretsmanager'
 }
 
 
