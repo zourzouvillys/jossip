@@ -16,7 +16,7 @@ dependencies {
   implementation project(':netty')
   implementation 'org.slf4j:slf4j-api:1.7.30'
   implementation 'com.google.guava:guava'
-  implementation 'com.google.re2j:re2j:1.5'
+  implementation 'com.google.re2j:re2j:1.6'
   implementation 'io.netty:netty-codec'
   implementation 'io.netty:netty-handler'
   implementation 'io.netty:netty-codec-http2'
