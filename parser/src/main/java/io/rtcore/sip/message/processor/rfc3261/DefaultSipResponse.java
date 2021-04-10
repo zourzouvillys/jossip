@@ -249,7 +249,7 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   }
 
   @Override
-  public <T> SipMessage withReplacedHeader(final SipHeaderDefinition<T> header, final T value) {
+  public <T> SipResponse withReplacedHeader(final SipHeaderDefinition<T> header, final T value) {
     return this.withoutHeaders(header).withParsed(header.getName(), Lists.newArrayList(value));
   }
 
@@ -297,6 +297,16 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   @Override
   public SipResponseStatus getStatus() {
     return this.status;
+  }
+
+  @Override
+  public boolean isRequest() {
+    return false;
+  }
+
+  @Override
+  public boolean isResponse() {
+    return true;
   }
 
 }

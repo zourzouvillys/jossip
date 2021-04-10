@@ -208,7 +208,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   }
 
   @Override
-  public <T> SipMessage withReplacedHeader(final SipHeaderDefinition<T> header, final T value) {
+  public <T> SipRequest withReplacedHeader(final SipHeaderDefinition<T> header, final T value) {
     return this.withoutHeaders(header).withParsed(header.getName(), Lists.newArrayList(value));
   }
 
@@ -422,6 +422,16 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
         + ($uri == null ? 43
                         : $uri.hashCode());
     return result;
+  }
+
+  @Override
+  public boolean isRequest() {
+    return true;
+  }
+
+  @Override
+  public boolean isResponse() {
+    return false;
   }
 
 }

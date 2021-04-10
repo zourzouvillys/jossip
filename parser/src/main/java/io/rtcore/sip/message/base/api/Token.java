@@ -54,6 +54,10 @@ public class Token {
     return false;
   }
 
+  public String asString() {
+    return this.value;
+  }
+
   @Override
   public int hashCode() {
     return this.value.toLowerCase().hashCode();

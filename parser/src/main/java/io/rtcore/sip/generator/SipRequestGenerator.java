@@ -8,4 +8,8 @@ public interface SipRequestGenerator extends SipMessageGenerator {
 
   SipRequest generate(SipMessageManager mgr);
 
+  default SipRequest generate() {
+    return generate(SipMessageManager.defaultManager());
+  }
+
 }

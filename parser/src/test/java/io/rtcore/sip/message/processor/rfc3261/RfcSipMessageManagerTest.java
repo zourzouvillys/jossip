@@ -11,7 +11,6 @@ import io.rtcore.sip.message.message.api.Replaces;
 import io.rtcore.sip.message.message.api.SipMethod;
 import io.rtcore.sip.message.message.api.headers.CallId;
 import io.rtcore.sip.message.parsers.core.ParseFailureException;
-import io.rtcore.sip.message.processor.rfc3261.RfcSipMessageManager;
 import io.rtcore.sip.message.processor.uri.parsers.SipUriParser;
 import io.rtcore.sip.message.uri.SipUri;
 

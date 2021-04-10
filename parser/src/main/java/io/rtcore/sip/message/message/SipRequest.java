@@ -2,6 +2,7 @@ package io.rtcore.sip.message.message;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 import com.google.common.primitives.UnsignedInteger;
 
@@ -17,7 +18,9 @@ import io.rtcore.sip.message.message.api.SipMethod;
 import io.rtcore.sip.message.message.api.TargetDialog;
 import io.rtcore.sip.message.message.api.TokenSet;
 import io.rtcore.sip.message.message.api.headers.RValue;
+import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManager;
 import io.rtcore.sip.message.uri.Uri;
+import io.rtcore.sip.message.uri.UriVisitor;
 
 /**
  * Representation of a SIP request.
@@ -91,6 +94,9 @@ public interface SipRequest extends SipMessage {
   @Override
   SipRequest withoutHeaders(final SipHeaderDefinition... headers);
 
+  @Override
+  <T> SipRequest withReplacedHeader(final SipHeaderDefinition<T> header, final T value);
+
   /**
    * Prepends a field to a collection header (e.g, one which is List<T>).
    *
@@ -136,5 +142,19 @@ public interface SipRequest extends SipMessage {
 
   @Override
   SipRequest withIncrementedCSeq(final SipMethod method);
+
+  @Override
+  default String asString() {
+    return RfcSerializerManager.defaultSerializer().serialize(this);
+  }
+
+  default <T> T uri(UriVisitor<T> visitor) {
+    return uri().apply(visitor);
+  }
+
+  default OptionalInt expiresSeconds() {
+    Optional<UnsignedInteger> expires = expires();
+    return expires.map(e -> OptionalInt.of(e.intValue())).orElse(OptionalInt.empty());
+  }
 
 }

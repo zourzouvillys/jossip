@@ -26,6 +26,7 @@ import io.rtcore.sip.message.message.api.headers.CallId;
 import io.rtcore.sip.message.message.api.headers.HistoryInfo;
 import io.rtcore.sip.message.message.api.headers.MIMEType;
 import io.rtcore.sip.message.message.api.headers.ParameterizedUri;
+import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManager;
 import io.rtcore.sip.message.uri.Uri;
 
 /**
@@ -337,6 +338,29 @@ public interface SipMessage extends Serializable {
     else {
       throw new IllegalArgumentException();
     }
+  }
+
+  /**
+   * attempts to adapt this instance to the specified class, otherwise returns an empty optional.
+   * 
+   * @param <T>
+   * @param klass
+   * @return
+   */
+
+  default <T> Optional<T> adapt(Class<T> klass) {
+    if (klass.isInstance(this)) {
+      return Optional.of(klass.cast(this));
+    }
+    return Optional.empty();
+  }
+
+  boolean isRequest();
+
+  boolean isResponse();
+
+  default String asString() {
+    return RfcSerializerManager.defaultSerializer().serialize(this);
   }
 
 }

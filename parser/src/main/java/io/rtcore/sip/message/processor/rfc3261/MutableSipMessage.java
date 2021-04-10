@@ -3,6 +3,11 @@ package io.rtcore.sip.message.processor.rfc3261;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -23,10 +28,10 @@ import io.rtcore.sip.message.message.api.ContentDisposition;
 import io.rtcore.sip.message.message.api.MinSE;
 import io.rtcore.sip.message.message.api.NameAddr;
 import io.rtcore.sip.message.message.api.SessionExpires;
+import io.rtcore.sip.message.message.api.SessionExpires.Refresher;
 import io.rtcore.sip.message.message.api.SipMethod;
 import io.rtcore.sip.message.message.api.TokenSet;
 import io.rtcore.sip.message.message.api.Via;
-import io.rtcore.sip.message.message.api.SessionExpires.Refresher;
 import io.rtcore.sip.message.message.api.headers.CallId;
 import io.rtcore.sip.message.message.api.headers.HistoryInfo;
 import io.rtcore.sip.message.message.api.headers.MIMEType;
@@ -77,6 +82,7 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
   private ContentDisposition contentDisposition;
   private SessionExpires sessionExpires;
   private MinSE minse;
+  private Temporal date;
 
   protected static final RfcSerializerManager serializer = new RfcSerializerManagerBuilder().build();
 
@@ -146,6 +152,17 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
     return (T) this;
   }
 
+  public T prependVia(final Via via) {
+    if (this.vias != null) {
+      this.vias = Lists.newArrayList(vias);
+      this.vias.add(via);
+    }
+    else {
+      this.vias = Lists.newArrayList(via);
+    }
+    return (T) this;
+  }
+
   public T to(final Uri uri) {
     return this.to(new NameAddr(uri));
   }
@@ -197,6 +214,11 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
       na = na.withParameter(Token.from("tag"), Token.from(tag));
     }
     return this.from(na);
+  }
+
+  public T fromTag(final String tag) {
+    this.from = this.from.withParameter(Token.from("tag"), Token.from(tag));
+    return (T) this;
   }
 
   public T callId(final String callId) {
@@ -334,6 +356,11 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
     return (T) this;
   }
 
+  public T date(Instant date) {
+    this.date = date.atZone(ZoneId.of("GMT"));
+    return (T) this;
+  }
+
   /**
    * TODO: can we not create an object formed message here and serialize that?
    *
@@ -386,6 +413,10 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
       for (final NameAddr rr : this.recordRoute) {
         headers.add(new RawHeader("Record-Route", MutableSipMessage.serializer.serialize(rr)));
       }
+    }
+
+    if (this.date != null) {
+      headers.add(new RawHeader("Date", DateTimeFormatter.RFC_1123_DATE_TIME.format(this.date)));
     }
 
     if (this.body != null) {

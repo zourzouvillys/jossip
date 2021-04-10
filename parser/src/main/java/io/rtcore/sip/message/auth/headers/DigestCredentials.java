@@ -153,4 +153,10 @@ public class DigestCredentials extends Authorization {
     return (DigestCredentials) this.withParameter(ALGORITHM.name(), Token.from(string));
   }
 
+  public DigestCredentials withStale(boolean value) {
+    return (DigestCredentials) this.withParameter(STALE.name(),
+      Token.from(value ? "true"
+                       : "false"));
+  }
+
 }

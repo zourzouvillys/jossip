@@ -56,6 +56,9 @@ public interface SipResponse extends SipMessage {
 
   List<Authorization> getProxyAuthenticate();
 
+  @Override
+  <T> SipResponse withReplacedHeader(final SipHeaderDefinition<T> header, final T value);
+
   // -----
 
   SipResponse withPrepended(final RawHeader rawHeader);
