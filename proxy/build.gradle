@@ -43,7 +43,7 @@ dependencies {
 
 dependencies {
 
-  implementation 'org.rocksdb:rocksdbjni:6.16.4'
+  implementation 'org.rocksdb:rocksdbjni:6.20.3'
 
   implementation 'info.picocli:picocli:4.6.1'
   implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-avro'
