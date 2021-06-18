@@ -20,7 +20,7 @@ dependencies {
   implementation project(':parser')
   implementation project(':netty')
   implementation 'io.zrz.jpgsql:jpgsql-client:64be224'
-  implementation 'org.slf4j:slf4j-api:1.7.30'
+  implementation 'org.slf4j:slf4j-api:1.7.31'
   implementation 'com.google.guava:guava:30.1.1-jre'
   implementation 'com.google.re2j:re2j:1.6'
   implementation 'io.netty:netty-codec'
