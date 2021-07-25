@@ -15,12 +15,14 @@ import io.rtcore.sip.message.message.api.SipMethod;
 
 public class DigestAuthUtils {
 
+  @SuppressWarnings("deprecation")
   private static final HashFunction md5 = Hashing.md5();
   private static final Joiner COLON = Joiner.on(":").useForNull("");
 
+  @SuppressWarnings("deprecation")
   public static String generateHA1(final String user, final String realm, final String password) {
     final String val = COLON.join(user, realm, password);
-    return Hashing.md5().hashString(val, StandardCharsets.UTF_8).toString();
+    return md5.hashString(val, StandardCharsets.UTF_8).toString();
   }
 
   public static String generateHA2(final SipMethod method, final String uri) {

@@ -1,0 +1,48 @@
+
+plugins {
+  id "com.diffplug.eclipse.apt" version "3.30.2" apply false
+}
+
+apply plugin: 'eclipse'
+
+
+allprojects { project ->
+
+  project.group = 'io.zrz.jossip'
+  project.version = version = project.hasProperty('versionId') ? project.property('versionId') : 'development'
+
+  project.repositories {
+    mavenCentral()
+  }
+
+  project.apply from: "${rootDir}/gradle/eclipse.gradle"
+
+}
+
+subprojects { project ->
+  project.pluginManager.withPlugin('java') {
+    project.apply from: "${rootDir}/gradle/dependencies.gradle"
+  }
+}
+
+task configureBuildship {
+  dependsOn gradle.includedBuilds.findAll{ ib -> ib.build.rootProject.tasks.findByName('configureBuildship') }*.task(':configureBuildship')
+}
+
+eclipse {
+  synchronizationTasks configureBuildship
+}
+
+subprojects {
+  apply plugin: "maven-publish"
+  apply plugin: "java-library"
+  publishing {
+    publications {
+      maven(MavenPublication) {
+        from(components.java)
+        pom {
+        }
+      }
+    }
+  }
+}

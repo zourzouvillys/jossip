@@ -1,5 +1,5 @@
-
 plugins {
+<<<<<<< Updated upstream
   id 'net.ltgt.apt-eclipse' version '0.21' apply false
 }
 
@@ -12,21 +12,37 @@ allprojects { project ->
 
   project.group = 'io.zrz.jossip'
   project.version = version = project.hasProperty('versionId') ? project.property('versionId') : 'master'
+=======
+  id 'com.diffplug.eclipse.apt' version '3.30.0' apply false
+  id 'eclipse'
+}
+
+subprojects { project ->
+  
+  project.group = 'io.zrz.minstore'
+  project.version = version = project.hasProperty('versionId') ? project.property('versionId') : 'development'
+>>>>>>> Stashed changes
 
   project.repositories {
     mavenCentral()
   }
-
+  
   project.apply from: "${rootDir}/gradle/eclipse.gradle"
-
+  
 }
 
+<<<<<<< Updated upstream
 
 subprojects { project ->
   project.pluginManager.withPlugin('java') {
     project.apply from: "${rootDir}/gradle/dependencies.gradle"
   }
 }
+=======
+//eclipse {
+//  project.name = "${rootProject.name}"
+//}
+>>>>>>> Stashed changes
 
 
 task configureBuildship {
@@ -35,18 +51,4 @@ task configureBuildship {
 
 eclipse {
   synchronizationTasks configureBuildship
-}
-
-subprojects {
-  apply plugin: "maven-publish"
-  apply plugin: "java-library"
-  publishing {
-    publications {
-      maven(MavenPublication) {
-        from(components.java)
-        pom {
-        }
-      }
-    }
-  }
 }

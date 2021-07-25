@@ -5,46 +5,30 @@ project.apply plugin: 'net.ltgt.apt-eclipse'
 project.afterEvaluate {
 
   if (project.tasks.findByName('cleanEclipseFactorypath')) {
-
 	  project.rootProject.tasks['configureBuildship'].dependsOn(
-	  
 	    project.tasks['cleanEclipseFactorypath'],
 	    project.tasks['cleanEclipseClasspath'],
 	    project.tasks['cleanEclipseJdtApt'],
 	    project.tasks['cleanEclipseJdt'],
-	    
+	    project.tasks['cleanEclipseProject'],
 	    project.tasks['eclipseClasspath'],
 	    project.tasks['eclipseFactorypath'],
 	    project.tasks['eclipseJdt'],
 	    project.tasks['eclipseJdtApt'],
 	    project.tasks['eclipseProject']
-	    
 	  )
-  
   }  
   else if (project.tasks.findByName('eclipseFactorypath')) {
-
 	  project.rootProject.tasks['configureBuildship'].dependsOn(
-	  	    
 	    project.tasks['eclipseClasspath'],
 	    project.tasks['eclipseFactorypath'],
 	    project.tasks['eclipseJdt'],
 	    project.tasks['eclipseJdtApt'],
 	    project.tasks['eclipseProject']
-	    
 	  )
-
   }  
-  
-  project.eclipse {
-    project.name = createProjectDisplayName()
-    project.natures << 'org.eclipse.buildship.core.gradleprojectnature'
-  }
-  
-  
 
-  project.eclipse.classpath {
-
+<<<<<<< Updated upstream
     defaultOutputDir = file('build/classes/java/main')
 
     file.whenMerged {
@@ -78,9 +62,15 @@ project.afterEvaluate {
       }
       
     }      
+=======
+>>>>>>> Stashed changes
 
+  eclipse {
+    project {
+      name = createProjectDisplayName()
+    }
   }
-
+  
 
 }
 
@@ -91,4 +81,7 @@ def createProjectDisplayName() {
   }
   return "${project.rootProject.name}${project.path}"
 }
+
+
+  
 
