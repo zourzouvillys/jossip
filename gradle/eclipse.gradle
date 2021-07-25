@@ -1,6 +1,6 @@
 
 project.apply plugin: 'eclipse'
-project.apply plugin: 'net.ltgt.apt-eclipse'
+project.apply plugin: 'com.diffplug.eclipse.apt'
 
 project.afterEvaluate {
 
