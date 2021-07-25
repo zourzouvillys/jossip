@@ -22,13 +22,13 @@ java {
     languageVersion = JavaLanguageVersion.of(11)
   }
   // withJavadocJar()
-  withSourcesJar()
+  // withSourcesJar()
   modularity.inferModulePath = true
 }
 
-artifacts {
-  archives sourcesJar
-}
+// artifacts {
+//   archives sourcesJar
+// }
 
 signing {
   useGpgCmd()
@@ -40,9 +40,9 @@ publishing {
   publications {
     mavenJava(MavenPublication) {
       from components.java
-      artifact sourcesJar {
-        classifier "sources"
-      }
+      // artifact sourcesJar {
+      //   classifier "sources"
+      // }
       pom {
         name = 'jossip-parser'
         packaging = 'jar'
