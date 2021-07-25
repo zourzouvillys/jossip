@@ -105,6 +105,10 @@ public final class Via extends BaseParameterizedObject<Via> {
     return this.parameters.getParameter(Branch).map(tok -> tok.toString());
   }
 
+  public Optional<BranchId> branch() {
+    return getBranch().map(BranchId::fromString);
+  }
+
   /**
    * @return true if there is an rport parameter (not if there is any value!)
    */

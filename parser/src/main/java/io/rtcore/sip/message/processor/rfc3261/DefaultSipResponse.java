@@ -3,7 +3,6 @@ package io.rtcore.sip.message.processor.rfc3261;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +25,7 @@ import io.rtcore.sip.message.message.api.NameAddr;
 import io.rtcore.sip.message.message.api.SipHeaderDefinition;
 import io.rtcore.sip.message.message.api.SipMessageVisitor;
 import io.rtcore.sip.message.message.api.SipMethod;
+import io.rtcore.sip.message.message.api.headers.CallId;
 import io.rtcore.sip.message.message.api.headers.MIMEType;
 import io.rtcore.sip.message.message.api.headers.RValue;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManager;
@@ -54,7 +54,7 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
       final SipMessageManager manager,
       final String version,
       final SipResponseStatus status,
-      final Collection<RawHeader> headers) {
+      final Iterable<RawHeader> headers) {
     this(manager, version, status, headers, null);
   }
 
@@ -62,7 +62,7 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
       final SipMessageManager manager,
       final String version,
       final SipResponseStatus status,
-      final Collection<RawHeader> headers,
+      final Iterable<RawHeader> headers,
       final byte[] body) {
     super(manager, headers, body);
     this.status = status;
@@ -285,6 +285,13 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
     return this.withCSeq(
       this.cseq().sequence().plus(UnsignedInteger.ONE).longValue(),
       method);
+  }
+
+  @Override
+  public SipResponse withCallId(String value) {
+    return this
+      .withoutHeaders(CALL_ID)
+      .withAppended(CALL_ID.getName(), new CallId(value));
   }
 
   @Override

@@ -1,5 +1,7 @@
 package io.rtcore.sip.message.message.api;
 
+import java.util.Optional;
+
 import io.rtcore.sip.message.base.api.Token;
 
 public final class BranchId implements Comparable<BranchId> {
@@ -35,8 +37,9 @@ public final class BranchId implements Comparable<BranchId> {
     return new BranchId(token.toString());
   }
 
-  public String getValueWithoutCookie() {
-    return (this.value().length() > MAGIC_COOKIE.length()) ? this.value().substring(MAGIC_COOKIE.length()) : this.value();
+  public Optional<String> getValueWithoutCookie() {
+    return this.value.startsWith(MAGIC_COOKIE) ? Optional.of(this.value().substring(MAGIC_COOKIE.length()))
+                                               : Optional.empty();
   }
 
   public Token asToken() {
@@ -53,12 +56,16 @@ public final class BranchId implements Comparable<BranchId> {
 
   @Override
   public boolean equals(final Object o) {
-    if (o == this) return true;
-    if (!(o instanceof BranchId)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof BranchId))
+      return false;
     final BranchId other = (BranchId) o;
     final Object this$value = this.value();
     final Object other$value = other.value();
-    if (this$value == null ? other$value != null : !this$value.equals(other$value)) return false;
+    if (this$value == null ? other$value != null
+                           : !this$value.equals(other$value))
+      return false;
     return true;
   }
 
@@ -67,7 +74,10 @@ public final class BranchId implements Comparable<BranchId> {
     final int PRIME = 59;
     int result = 1;
     final Object $value = this.value();
-    result = result * PRIME + ($value == null ? 43 : $value.hashCode());
+    result =
+      (result * PRIME)
+        + ($value == null ? 43
+                          : $value.hashCode());
     return result;
   }
 

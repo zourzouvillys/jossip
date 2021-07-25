@@ -263,6 +263,8 @@ public interface SipMessage extends Serializable {
 
   BranchId branchId();
 
+  Optional<String> topViaBranchWithoutCookie();
+
   SipMessage withHeader(final RawHeader header);
 
   <T> SipMessage withReplacedHeader(final SipHeaderDefinition<T> header, final T value);
@@ -293,6 +295,8 @@ public interface SipMessage extends Serializable {
   SipMessage withCSeq(final long seqNum, final SipMethod method);
 
   SipMessage withIncrementedCSeq(final SipMethod method);
+
+  SipMessage withCallId(String callId);
 
   Optional<ContentDisposition> contentDisposition();
 

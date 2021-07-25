@@ -1,15 +1,13 @@
 package io.rtcore.sip.message.message.api.headers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.immutables.value.Value;
 
-import com.google.common.collect.Lists;
-
 import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.message.api.NameAddr;
-import io.rtcore.sip.message.message.api.headers.ImmutableEntry;
 import io.rtcore.sip.message.parameters.api.RawParameter;
 import io.rtcore.sip.message.parameters.api.SipParameterDefinition;
 import io.rtcore.sip.message.parameters.api.TokenParameterValue;
@@ -30,7 +28,7 @@ public class HistoryInfo {
   public static final SipParameterDefinition<Token> P_MP = ParameterUtils.createFlagParameterDefinition(Token.from("mp"));
   public static final SipParameterDefinition<Token> P_NP = ParameterUtils.createFlagParameterDefinition(Token.from("np"));
 
-  public static enum ChangeType {
+  public enum ChangeType {
     // o "rc": The Request-URI has changed while the target user associated
     // with the original Request-URI prior to retargeting has been
     // retained.
@@ -48,6 +46,9 @@ public class HistoryInfo {
   }
 
   @Value.Immutable(builder = false)
+  @Value.Style(
+      jdkOnly = true,
+      allowedClasspathAnnotations = { Override.class })
   public static abstract class Entry {
 
     @Value.Parameter
@@ -63,7 +64,7 @@ public class HistoryInfo {
     public abstract int[] prev();
 
     public NameAddr toNameAddr() {
-      final List<RawParameter> raw = Lists.newLinkedList();
+      final List<RawParameter> raw = new ArrayList<>();
       switch (this.type()) {
         case MP:
           raw.add(new RawParameter("mp", new TokenParameterValue(Token.from(buildIndex(prev())))));
@@ -96,7 +97,7 @@ public class HistoryInfo {
 
   }
 
-  public static final HistoryInfo EMPTY = new HistoryInfo(Lists.<Entry>newLinkedList());
+  public static final HistoryInfo EMPTY = new HistoryInfo(List.of());
   private static final int[] INITIAL_INDEX =
     { 1 };
   private final List<Entry> entries;
@@ -130,7 +131,7 @@ public class HistoryInfo {
   }
 
   public static HistoryInfo build(final List<NameAddr> nas) {
-    final List<Entry> entries = Lists.newLinkedList();
+    final List<Entry> entries = new ArrayList<>();
     for (final NameAddr na : nas) {
       int[] prev = new int[] { 1 };
       entries.add(Entry.of(na.address(), extractIndex(na), extractType(na), prev));
@@ -156,32 +157,35 @@ public class HistoryInfo {
   }
 
   public HistoryInfo withAppended(final Uri target) {
-    final List<Entry> entries = Lists.newLinkedList(this.entries);
+    final List<Entry> entries = new ArrayList<>();
+    entries.addAll(this.entries);
     entries.add(Entry.of(target, INITIAL_INDEX, ChangeType.MP, new int[] { 1 }));
     return new HistoryInfo(entries);
   }
 
   public HistoryInfo withRecursion(final Uri target) {
-    final List<Entry> entries = Lists.newLinkedList(this.entries);
+    final List<Entry> entries = new ArrayList<>();
+    entries.addAll(this.entries);
     entries.add(Entry.of(target, INITIAL_INDEX, ChangeType.RC, new int[] { 1 }));
     return new HistoryInfo(entries);
   }
 
   public HistoryInfo withRetarget(final Uri target) {
-    final List<Entry> entries = Lists.newLinkedList(this.entries);
+    final List<Entry> entries = new ArrayList<>();
+    entries.addAll(this.entries);
     entries.add(Entry.of(target, INITIAL_INDEX, ChangeType.MP, new int[] { 1 }));
     return new HistoryInfo(entries);
   }
 
   public HistoryInfo withNoChange(final Uri target) {
-    final List<Entry> entries = Lists.newLinkedList(this.entries);
+    final List<Entry> entries = new ArrayList<>();
+    entries.addAll(this.entries);
     entries.add(Entry.of(target, INITIAL_INDEX, ChangeType.NP, new int[] { 1 }));
     return new HistoryInfo(entries);
   }
 
   public static HistoryInfo fromUnknownRequest(Uri target) {
-    final List<Entry> entries = Lists.newLinkedList();
-    entries.add(Entry.of(target, INITIAL_INDEX, ChangeType.Unknown, new int[] {}));
+    final List<Entry> entries = List.of(Entry.of(target, INITIAL_INDEX, ChangeType.Unknown, new int[] {}));
     return new HistoryInfo(entries);
   }
 

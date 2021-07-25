@@ -1,6 +1,6 @@
 package io.rtcore.sip.message.processor.rfc3261;
 
-import java.util.Collection;
+import java.nio.ByteBuffer;
 import java.util.List;
 
 import io.rtcore.sip.message.base.api.RawHeader;
@@ -55,7 +55,7 @@ public interface SipMessageManager {
    * @return
    */
 
-  DefaultSipRequest createRequest(final SipMethod method, final Uri ruri, final Collection<RawHeader> headers, final byte[] body);
+  SipRequest createRequest(final SipMethod method, final Uri ruri, final Iterable<RawHeader> headers, final byte[] body);
 
   /**
    * 
@@ -65,7 +65,7 @@ public interface SipMessageManager {
    * @return
    */
 
-  DefaultSipResponse createResponse(final SipResponseStatus status, final List<RawHeader> build, final byte[] body);
+  SipResponse createResponse(final SipResponseStatus status, final Iterable<RawHeader> build, final byte[] body);
 
   /**
    * Create an ACK for the given response.
@@ -137,6 +137,16 @@ public interface SipMessageManager {
 
   static SipMessageManager defaultManager() {
     return RfcSipMessageManager.defaultInstance();
+  }
+
+  SipMessage parseMessage(ByteBuffer buf);
+
+  default SipRequest parseRequest(String method, String uri, Iterable<RawHeader> headers, byte[] body) {
+    return this.createRequest(SipMethod.fromString(method), parseUri(uri), headers, body);
+  }
+
+  default SipResponse parseResponse(int statusCode, String reasonPhrase, Iterable<RawHeader> headers, byte[] body) {
+    return this.createResponse(SipResponseStatus.fromCode(statusCode).withReason(reasonPhrase), headers, body);
   }
 
 }

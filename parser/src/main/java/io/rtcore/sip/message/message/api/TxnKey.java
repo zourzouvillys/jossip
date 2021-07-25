@@ -6,9 +6,11 @@ import com.google.common.net.HostAndPort;
 
 import io.rtcore.sip.message.message.SipMessage;
 import io.rtcore.sip.message.message.SipRequest;
-import io.rtcore.sip.message.message.api.ImmutableTxnKey;
 
 @Value.Immutable
+@Value.Style(
+    jdkOnly = true,
+    allowedClasspathAnnotations = { Override.class })
 public abstract class TxnKey {
 
   /**
@@ -49,7 +51,7 @@ public abstract class TxnKey {
       .of(
         msg.topVia().orElseThrow().sentBy(),
         methodFor(msg),
-        msg.branchId().getValueWithoutCookie());
+        msg.branchId().getValueWithoutCookie().orElseThrow());
   }
 
   public static SipMethod methodFor(SipMessage msg) {

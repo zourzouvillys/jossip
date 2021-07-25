@@ -8,13 +8,15 @@ import java.util.Optional;
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
-import io.rtcore.sip.message.uri.ImmutableUserInfo;
-
 /**
  */
 
 @Value.Immutable(builder = false)
-@Value.Style(visibility = ImplementationVisibility.PACKAGE, overshadowImplementation = true)
+@Value.Style(
+    jdkOnly = true,
+    allowedClasspathAnnotations = { Override.class },
+    visibility = ImplementationVisibility.PACKAGE,
+    overshadowImplementation = true)
 public abstract class UserInfo {
 
   @Value.Parameter
@@ -23,6 +25,7 @@ public abstract class UserInfo {
   @Value.Parameter
   public abstract Optional<String> password();
 
+  @Override
   public String toString() {
     if (password().isPresent()) {
       return user() + ":" + password().get();

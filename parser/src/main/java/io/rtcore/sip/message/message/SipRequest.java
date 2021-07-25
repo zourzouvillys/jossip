@@ -144,6 +144,9 @@ public interface SipRequest extends SipMessage {
   SipRequest withIncrementedCSeq(final SipMethod method);
 
   @Override
+  SipRequest withCallId(String callId);
+
+  @Override
   default String asString() {
     return RfcSerializerManager.defaultSerializer().serialize(this);
   }
@@ -156,5 +159,8 @@ public interface SipRequest extends SipMessage {
     Optional<UnsignedInteger> expires = expires();
     return expires.map(e -> OptionalInt.of(e.intValue())).orElse(OptionalInt.empty());
   }
+
+  SipRequest withMaxForwards(int i);
+
 
 }

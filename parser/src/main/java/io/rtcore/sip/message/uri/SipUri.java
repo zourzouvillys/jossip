@@ -357,4 +357,8 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
     return getParameter(PTransport).map(SipTransport::fromToken);
   }
 
+  public String hostName() {
+    return this.getHost().getHost();
+  }
+
 }

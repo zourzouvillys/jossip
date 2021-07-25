@@ -58,7 +58,7 @@ public class RfcSerializerManager {
    * @return
    */
 
-  @Deprecated
+  // @Deprecated
   @SuppressWarnings("unchecked")
   public <T> String serialize(final T obj) {
 
@@ -175,14 +175,12 @@ public class RfcSerializerManager {
     return (RfcSerializer<T>) serializerFor(klass.getSuperclass());
   }
 
-  
-
   public <T> String serializeValueToString(final T obj) {
 
     if (obj instanceof Collection) {
       return this.serializeCollection(Collection.class.cast(obj), "=");
     }
-    
+
     if (Primitives.isWrapperType(obj.getClass()) || (obj instanceof String)) {
       return "" + obj;
     }
@@ -197,8 +195,6 @@ public class RfcSerializerManager {
 
   }
 
-  
-  
   public static final RfcSerializerManager defaultSerializer() {
     return INSTANCE;
   }

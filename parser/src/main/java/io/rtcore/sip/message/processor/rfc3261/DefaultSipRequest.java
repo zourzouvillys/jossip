@@ -3,7 +3,6 @@ package io.rtcore.sip.message.processor.rfc3261;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +31,7 @@ import io.rtcore.sip.message.message.api.SipMessageVisitor;
 import io.rtcore.sip.message.message.api.SipMethod;
 import io.rtcore.sip.message.message.api.TargetDialog;
 import io.rtcore.sip.message.message.api.TokenSet;
+import io.rtcore.sip.message.message.api.headers.CallId;
 import io.rtcore.sip.message.message.api.headers.MIMEType;
 import io.rtcore.sip.message.message.api.headers.RValue;
 import io.rtcore.sip.message.uri.Uri;
@@ -57,7 +57,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
       final SipMethod method,
       final Uri uri,
       final String version,
-      final Collection<RawHeader> headers,
+      final Iterable<RawHeader> headers,
       byte[] body) {
     super(manager, headers);
     this.method = method;
@@ -351,6 +351,20 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   @Override
   public SipRequest withIncrementedCSeq(final SipMethod method) {
     return this.withCSeq(this.cseq().sequence().plus(UnsignedInteger.ONE).longValue(), method);
+  }
+
+  @Override
+  public SipRequest withCallId(String value) {
+    return this
+      .withoutHeaders(CALL_ID)
+      .withAppended(CALL_ID.getName(), new CallId(value));
+  }
+
+  @Override
+  public SipRequest withMaxForwards(int value) {
+    return this
+      .withoutHeaders(MAX_FORWARDS)
+      .withAppended(MAX_FORWARDS.getName(), UnsignedInteger.valueOf(value));
   }
 
   @Override

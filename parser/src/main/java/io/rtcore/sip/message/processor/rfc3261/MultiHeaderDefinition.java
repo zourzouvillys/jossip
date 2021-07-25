@@ -115,4 +115,5 @@ public class MultiHeaderDefinition<T, R> extends BaseHeaderDefinition implements
     return collector.value();
 
   }
+
 }

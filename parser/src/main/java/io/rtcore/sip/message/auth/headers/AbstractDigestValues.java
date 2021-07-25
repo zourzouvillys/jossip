@@ -13,7 +13,7 @@ import static io.rtcore.sip.message.auth.headers.DigestCredentials.RESPONSE;
 import static io.rtcore.sip.message.auth.headers.DigestCredentials.STALE;
 import static io.rtcore.sip.message.auth.headers.DigestCredentials.USERNAME;
 
-import javax.annotation.Nullable;
+import java.util.Optional;
 
 import org.immutables.value.Value;
 
@@ -23,84 +23,77 @@ import io.rtcore.sip.message.parameters.api.Parameters;
 import io.rtcore.sip.message.parameters.impl.DefaultParameters;
 
 @Value.Immutable()
-@Value.Style(typeImmutable = "*", defaultAsDefault = true)
+@Value.Style(
+    jdkOnly = true,
+    allowedClasspathAnnotations = { Override.class },
+    typeImmutable = "*",
+    defaultAsDefault = true)
 public interface AbstractDigestValues {
 
-  @Nullable
-  String realm();
+  Optional<String> realm();
 
-  @Nullable
-  String domain();
+  Optional<String> domain();
 
-  @Nullable
-  String nonce();
+  Optional<String> nonce();
 
-  @Nullable
-  String opaque();
+  Optional<String> opaque();
 
   default boolean stale() {
     return false;
   }
 
-  @Nullable
-  DigestAlgo algorithm();
+  Optional<DigestAlgo> algorithm();
 
-  @Nullable
-  String username();
+  Optional<String> username();
 
-  @Nullable
-  String uri();
+  Optional<String> uri();
 
-  @Nullable
-  String response();
+  Optional<String> response();
 
-  @Nullable
-  String cnonce();
+  Optional<String> cnonce();
 
-  @Nullable
-  String qop();
+  Optional<String> qop();
 
-  @Nullable
-  Integer nonceCount();
+  Optional<Integer> nonceCount();
 
   default DigestCredentials asCredentials() {
 
     Parameters params = DefaultParameters.EMPTY;
 
-    if (this.algorithm() != null) {
-      params = params.withParameter(ALGORITHM, this.algorithm().algId());
+    if (this.algorithm().isPresent()) {
+      params = params.withParameter(ALGORITHM, this.algorithm().get().algId());
     }
 
-    if (this.realm() != null) {
-      params = params.withParameter(REALM, this.realm());
+    if (this.realm().isPresent()) {
+      params = params.withParameter(REALM, this.realm().get());
     }
 
-    if (this.response() != null) {
-      params = params.withParameter(RESPONSE, this.response());
+    if (this.response().isPresent()) {
+      params = params.withParameter(RESPONSE, this.response().get());
     }
 
-    if (this.username() != null) {
-      params = params.withParameter(USERNAME, this.username());
+    if (this.username().isPresent()) {
+      params = params.withParameter(USERNAME, this.username().get());
     }
 
-    if (this.domain() != null) {
-      params = params.withParameter(DOMAIN, this.realm());
+    if (this.domain().isPresent()) {
+      params = params.withParameter(DOMAIN, this.domain().get());
     }
 
-    if (this.cnonce() != null) {
-      params = params.withParameter(CNONCE, this.cnonce());
+    if (this.cnonce().isPresent()) {
+      params = params.withParameter(CNONCE, this.cnonce().get());
     }
 
-    if (this.uri() != null) {
-      params = params.withParameter(DIGEST_URI, this.uri());
+    if (this.uri().isPresent()) {
+      params = params.withParameter(DIGEST_URI, this.uri().get());
     }
 
-    if (this.nonce() != null) {
-      params = params.withParameter(NONCE, this.nonce());
+    if (this.nonce().isPresent()) {
+      params = params.withParameter(NONCE, this.nonce().get());
     }
 
-    if (this.opaque() != null) {
-      params = params.withParameter(OPAQUE, this.opaque());
+    if (this.opaque().isPresent()) {
+      params = params.withParameter(OPAQUE, this.opaque().get());
     }
 
     params =
@@ -108,12 +101,12 @@ public interface AbstractDigestValues {
         this.stale() ? Token.TRUE
                      : Token.FALSE);
 
-    if (this.qop() != null) {
-      params = params.withParameter(QOP, this.qop());
+    if (this.qop().isPresent()) {
+      params = params.withParameter(QOP, this.qop().get());
     }
 
-    if (this.nonceCount() != null) {
-      params = params.withParameter(NONCE_COUNT, String.format("%08d", this.nonceCount()));
+    if (this.nonceCount().isPresent()) {
+      params = params.withParameter(NONCE_COUNT, String.format("%08d", this.nonceCount().get()));
     }
 
     return new DigestCredentials(params);

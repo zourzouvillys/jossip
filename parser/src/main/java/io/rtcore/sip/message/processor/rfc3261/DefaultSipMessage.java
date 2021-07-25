@@ -198,7 +198,7 @@ public abstract class DefaultSipMessage implements SipMessage {
     if ((this.body != null) && (this.body.length > 0)) {
       return Optional.of(SipContentUtils.create(this));
     }
-    return Optional.empty();    
+    return Optional.empty();
   }
 
   @Override
@@ -210,13 +210,14 @@ public abstract class DefaultSipMessage implements SipMessage {
     return this.manager;
   }
 
-  public DefaultSipMessage(final SipMessageManager manager, final Collection<RawHeader> headers) {
+  public DefaultSipMessage(final SipMessageManager manager, final Iterable<RawHeader> headers) {
     this(manager, headers, null);
   }
 
-  public DefaultSipMessage(final SipMessageManager manager, final Collection<RawHeader> headers, final byte[] body) {
+  public DefaultSipMessage(final SipMessageManager manager, final Iterable<RawHeader> headers, final byte[] body) {
     this.manager = manager;
-    this.headers = headers;
+    // TODO: this is a mess, should not be mutable.
+    this.headers = Lists.newArrayList(headers);
     setBody(body);
     final DefaultSipMessage message = this;
     this.parsedHeaders = CacheBuilder.newBuilder().build(new CacheLoader<SipHeaderDefinition<?>, Optional<?>>() {
@@ -410,9 +411,10 @@ public abstract class DefaultSipMessage implements SipMessage {
 
   @Override
   public void validate() {
+    // TODO remove the need for a RFCSipMessageManager here. - Hutch
+    RfcSipMessageManager smm = this.manager.adapt(RfcSipMessageManager.class);
     for (final RawHeader header : this.headers) {
-      // TODO remove the need for a RFCSipMessageManager here. - Hutch
-      final SipHeaderDefinition<?> parser = this.manager.adapt(RfcSipMessageManager.class).getParser(header.name(), null);
+      final SipHeaderDefinition<?> parser = smm.getParser(header.name(), null);
       if (parser != null) {
         this.getHeader(parser);
       }
@@ -421,19 +423,12 @@ public abstract class DefaultSipMessage implements SipMessage {
 
   @Override
   public BranchId branchId() {
-    final List<Via> vias = vias();
-    if (vias.isEmpty()) {
-      return null;
-    }
-    else {
-      final Token branch = vias.get(0).getParameter(ParameterUtils.Branch).orElse(null);
-      if (branch == null) {
-        return null;
-      }
-      else {
-        return BranchId.fromToken(branch);
-      }
-    }
+    return topVia().flatMap(Via::branch).orElse(null);
+  }
+
+  @Override
+  public Optional<String> topViaBranchWithoutCookie() {
+    return topVia().flatMap(Via::branch).flatMap(BranchId::getValueWithoutCookie);
   }
 
   public void addHeader(final String name, final String rawValue, final Object parsedValue) {

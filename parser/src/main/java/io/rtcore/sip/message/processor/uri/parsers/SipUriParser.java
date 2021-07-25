@@ -7,7 +7,6 @@ import static io.rtcore.sip.message.parsers.core.ParserUtils.chars;
 import static io.rtcore.sip.message.parsers.core.ParserUtils.read;
 
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
 import com.google.common.collect.Lists;
@@ -106,7 +105,7 @@ public class SipUriParser implements UriSchemeParser<SipUri> {
       if (value != null) {
         value.set(new RawHeader(
           hname.toString(),
-          hvalue != null ? URLDecoder.decode(hvalue.toString(), StandardCharsets.UTF_8)
+          hvalue != null ? URLDecoder.decode(hvalue.toString())
                          : ""));
       }
       return true;

@@ -3,6 +3,7 @@ package io.rtcore.sip.message.processor.rfc3261;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.primitives.UnsignedInteger;
@@ -10,6 +11,7 @@ import com.google.common.primitives.UnsignedInteger;
 import io.rtcore.sip.message.auth.StdDigestAlgo;
 import io.rtcore.sip.message.auth.headers.Authorization;
 import io.rtcore.sip.message.auth.headers.DigestCredentials;
+import io.rtcore.sip.message.auth.headers.DigestValues;
 import io.rtcore.sip.message.base.api.RawHeader;
 import io.rtcore.sip.message.message.SipRequest;
 import io.rtcore.sip.message.message.SipResponse;
@@ -182,26 +184,25 @@ public class MutableSipResponse extends MutableSipMessage<MutableSipResponse> {
     return this.rseq(UnsignedInteger.valueOf(i));
   }
 
-  public void proxyAuthenticateQopMD5(final String authRealm, final String nonce, final boolean stale) {
+  public MutableSipResponse proxyAuthenticate(Consumer<DigestValues.Builder> handler) {
+    DigestValues.Builder b = DigestCredentials.builder();
+    handler.accept(b);
+    return this.proxyAuthenticate(b.build().asCredentials());
+  }
 
-    final DigestCredentials creds =
-      DigestCredentials.builder()
-        .realm(authRealm)
-        .nonce(nonce)
-        .stale(stale)
-        .algorithm(StdDigestAlgo.MD5)
-        .qop("auth")
-        .build()
-        .asCredentials();
-
-    this.proxyAuthenticate(creds);
-
+  public MutableSipResponse proxyAuthenticateQopAuthMD5(final String authRealm, final String nonce, final boolean stale, String opaque) {
+    return proxyAuthenticate(b -> b
+      .realm(authRealm)
+      .nonce(nonce)
+      .stale(stale)
+      .algorithm(StdDigestAlgo.MD5)
+      .qop("auth")
+      .opaque(opaque));
   }
 
   @Override
   public SipResponse build() {
     return this.build(MM);
   }
-
 
 }

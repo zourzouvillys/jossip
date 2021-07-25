@@ -111,5 +111,8 @@ public final class CSeq {
     return new CSeq(sequenceNumber, method);
   }
 
+  public static CSeq of(SipMethod method) {
+    return of(method.getMethod());
+  }
 
 }

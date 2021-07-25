@@ -8,6 +8,9 @@ import io.rtcore.sip.message.message.api.ContentDisposition;
 import io.rtcore.sip.message.message.api.headers.MIMEType;
 
 @Value.Immutable
+@Value.Style(
+    jdkOnly = true,
+    allowedClasspathAnnotations = { Override.class })
 public interface ByteSipContent extends SipContent {
 
   @Value.Parameter

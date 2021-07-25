@@ -1,5 +1,6 @@
 package io.rtcore.sip.message.processor.rfc3261;
 
+import java.nio.ByteBuffer;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.List;
@@ -30,6 +31,8 @@ import io.rtcore.sip.message.parsers.core.ParameterParser;
 import io.rtcore.sip.message.parsers.core.ParserUtils;
 import io.rtcore.sip.message.processor.rfc3261.message.api.ResponseBuilder;
 import io.rtcore.sip.message.processor.rfc3261.message.impl.SingleHeaderParseContext;
+import io.rtcore.sip.message.processor.rfc3261.parsing.RfcMessageParserBuilder;
+import io.rtcore.sip.message.processor.rfc3261.parsing.RfcSipMessageParser;
 import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.NameAddrParser;
 import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.uri.UriParser;
 import io.rtcore.sip.message.uri.SipUri;
@@ -45,6 +48,7 @@ import io.rtcore.sip.message.uri.Uri;
 public class RfcSipMessageManager implements SipMessageManager {
 
   private static final RfcSipMessageManager DEFAULT_INSTANCE = new RfcSipMessageManagerBuilder().build();
+  private static final RfcSipMessageParser DEFAULT_MESSAGE_PARSER = new RfcMessageParserBuilder().build();
 
   private static final String SIP_2_0 = "SIP/2.0";
   private static final char COLON = ':';
@@ -78,6 +82,12 @@ public class RfcSipMessageManager implements SipMessageManager {
   @Override
   public SipMessage convert(final RawMessage raw) {
     return this.convert(raw, true);
+  }
+
+  @Override
+  public SipMessage parseMessage(ByteBuffer buf) {
+    final RawMessage raw = DEFAULT_MESSAGE_PARSER.parse(buf);
+    return convert(raw, false);
   }
 
   @Override
@@ -225,7 +235,7 @@ public class RfcSipMessageManager implements SipMessageManager {
   public DefaultSipRequest createRequest(
       final SipMethod method,
       final Uri ruri,
-      final Collection<RawHeader> headers,
+      final Iterable<RawHeader> headers,
       final byte[] body) {
     return new DefaultSipRequest(this, method, ruri, SipMessage.VERSION, headers, body);
   }
@@ -233,7 +243,7 @@ public class RfcSipMessageManager implements SipMessageManager {
   @Override
   public DefaultSipResponse createResponse(
       final SipResponseStatus status,
-      final List<RawHeader> headers,
+      final Iterable<RawHeader> headers,
       final byte[] body) {
     return new DefaultSipResponse(this, SipMessage.VERSION, status, headers, body);
   }
