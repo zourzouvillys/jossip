@@ -1,6 +1,7 @@
 
 plugins {
   id 'java-library'
+  id 'maven-publish'
 }
 
 dependencies {
@@ -24,3 +25,49 @@ java {
   modularity.inferModulePath = true
 }
 
+
+publishing {
+
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+      artifact sourcesJar {
+        classifier "sources"
+      }
+      pom {
+        name = 'jossip-parser'
+        packaging = 'jar'
+        description = 'Java Open Source SIP'
+        scm {
+          connection = 'scm:git:https://github.com/zourzouvillys/jossip.git'
+          developerConnection = 'scm:git:https://github.com/zourzouvillys/jossip.git'
+          url = 'https://github.com/zourzouvillys/jossip'
+        }
+        licenses {
+          license {
+            name = 'The Apache License, Version 2.0'
+            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+        developers {
+          developer {
+            id = 'zourzouvillys'
+            name = 'Theo Zourzouvillys'
+            email = 'theo@zrz.io'
+          }
+        }
+      }
+    }
+  }
+
+  repositories {
+    maven {
+      name = "GitHubPackages"
+      url = "https://maven.pkg.github.com/zourzouvillys/jossip"
+      credentials {
+        username = System.getenv("GITHUB_ACTOR")
+        password = System.getenv("GITHUB_TOKEN")
+      }
+    }
+  }
+}
