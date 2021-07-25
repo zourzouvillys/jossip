@@ -28,50 +28,12 @@ project.afterEvaluate {
 	  )
   }  
 
-<<<<<<< Updated upstream
-    defaultOutputDir = file('build/classes/java/main')
-
-    file.whenMerged {
-    
-      entries.each { source ->
-        if (source.kind == 'src' && source.toString().contains('output') && source.output == 'bin/main') {
-           source.output = 'build/classes/java/main'
-        }
-        if (source.kind == 'src' && source.toString().contains('output') && source.output == 'bin/test') {
-           source.output = 'build/classes/java/test'
-        }
-      }
-
-      def aptSource = new org.gradle.plugins.ide.eclipse.model.SourceFolder('.apt_generated','build/classes/java/main')
-      aptSource.entryAttributes['optional'] = 'true'
-      aptSource.entryAttributes['ignore_optional_problems'] = 'true'
-      entries += aptSource      
-    
-      project.plugins.withId('com.google.protobuf') {
-        def protoSource = new org.gradle.plugins.ide.eclipse.model.SourceFolder('build/generated/source/proto/main/java','bin/main')
-        protoSource.entryAttributes['optional'] = 'true'
-        protoSource.entryAttributes['ignore_optional_problems'] = 'true'
-        entries += protoSource
-      }
-      
-      project.plugins.withId('antlr') {
-        def protoSource = new org.gradle.plugins.ide.eclipse.model.SourceFolder('build/generated-src/antlr/main','bin/main')
-        protoSource.entryAttributes['optional'] = 'true'
-        protoSource.entryAttributes['ignore_optional_problems'] = 'true'
-        entries += protoSource
-      }
-      
-    }      
-=======
->>>>>>> Stashed changes
-
   eclipse {
     project {
       name = createProjectDisplayName()
     }
   }
   
-
 }
 
 

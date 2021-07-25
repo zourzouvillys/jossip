@@ -1,14 +1,3 @@
 rootProject.name = 'jossip'
 
-<<<<<<< Updated upstream
-include ':parser'
-include ':signaling'
-include ':netty'
-include ':dns'
-include ':proxy'
-// include ':bind'
-include ':core'
-=======
 include('parser')
-
->>>>>>> Stashed changes
