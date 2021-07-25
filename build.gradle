@@ -5,8 +5,8 @@ plugins {
 
 subprojects { project ->
   
-  project.group = 'io.zrz.minstore'
-  project.version = version = project.hasProperty('versionId') ? project.property('versionId') : 'development'
+  project.group = 'io.zrz.rtcore.sip'
+  project.version = version = project.hasProperty('currentVersion') ? project.property('currentVersion') : 'development'
 
   project.repositories {
     mavenCentral()
@@ -15,10 +15,6 @@ subprojects { project ->
   project.apply from: "${rootDir}/gradle/eclipse.gradle"
   
 }
-
-//eclipse {
-//  project.name = "${rootProject.name}"
-//}
 
 task configureBuildship {
   dependsOn gradle.includedBuilds*.task(':configureBuildship')
