@@ -14,7 +14,7 @@ applicationDefaultJvmArgs = [
 
 dependencies {
   implementation project(':netty')
-  implementation 'org.slf4j:slf4j-api:1.7.30'
+  implementation 'org.slf4j:slf4j-api:1.7.32'
   implementation 'com.google.guava:guava'
   implementation 'com.google.re2j:re2j:1.6'
   implementation 'io.netty:netty-codec'
