@@ -139,6 +139,10 @@ public interface SipMessageManager {
     return RfcSipMessageManager.defaultInstance();
   }
 
+  /**
+   * parse the message without validating. call {@link SipMessage#validate()} to validate.
+   */
+
   SipMessage parseMessage(ByteBuffer buf);
 
   default SipRequest parseRequest(String method, String uri, Iterable<RawHeader> headers, byte[] body) {

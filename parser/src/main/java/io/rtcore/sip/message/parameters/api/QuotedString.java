@@ -1,6 +1,7 @@
 package io.rtcore.sip.message.parameters.api;
 
 public final class QuotedString {
+
   private final String value;
 
   public static QuotedString from(String value) {
@@ -17,12 +18,16 @@ public final class QuotedString {
 
   @Override
   public boolean equals(final Object o) {
-    if (o == this) return true;
-    if (!(o instanceof QuotedString)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof QuotedString))
+      return false;
     final QuotedString other = (QuotedString) o;
     final Object this$value = this.value();
     final Object other$value = other.value();
-    if (this$value == null ? other$value != null : !this$value.equals(other$value)) return false;
+    if (this$value == null ? other$value != null
+                           : !this$value.equals(other$value))
+      return false;
     return true;
   }
 
@@ -31,7 +36,10 @@ public final class QuotedString {
     final int PRIME = 59;
     int result = 1;
     final Object $value = this.value();
-    result = result * PRIME + ($value == null ? 43 : $value.hashCode());
+    result =
+      (result * PRIME)
+        + ($value == null ? 43
+                          : $value.hashCode());
     return result;
   }
 
@@ -39,4 +47,5 @@ public final class QuotedString {
   public String toString() {
     return "QuotedString(value=" + this.value() + ")";
   }
+
 }

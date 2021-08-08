@@ -4,6 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.UnaryOperator;
 
 import com.google.common.collect.Lists;
 import com.google.common.net.HostAndPort;
@@ -26,6 +28,7 @@ import io.rtcore.sip.message.message.api.ViaProtocol;
 import io.rtcore.sip.message.parameters.api.RawParameter;
 import io.rtcore.sip.message.parameters.api.TokenParameterValue;
 import io.rtcore.sip.message.parameters.impl.DefaultParameters;
+import io.rtcore.sip.message.uri.SipUri;
 import io.rtcore.sip.message.uri.Uri;
 
 public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
@@ -170,7 +173,13 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
       }
     }
 
-    return manager.createRequest(this.method, this.ruri, headers, super.getBody());
+    Uri ruri = this.ruri;
+
+    if (ruri == null) {
+      ruri = SipUri.create(HostAndPort.fromHost("unknown.invalid"));
+    }
+
+    return manager.createRequest(this.method, ruri, headers, super.getBody());
 
   }
 

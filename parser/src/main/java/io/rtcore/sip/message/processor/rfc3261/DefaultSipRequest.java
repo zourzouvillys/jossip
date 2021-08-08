@@ -339,6 +339,11 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   }
 
   @Override
+  public SipRequest withPrependedRecordRoute(NameAddr route) {
+    return withPrepended(RECORD_ROUTE.getName(), route);
+  }
+
+  @Override
   public DefaultSipRequest withContact(final Uri uri) {
     return withContact(new NameAddr(uri));
   }

@@ -33,7 +33,7 @@ public class UriParser implements Parser<Uri> {
 
   public static final Parser<Uri> URI = new UriParser();
 
-  public static final Parser<Uri> URI_WITHBRACKETS = new Parser<Uri>() {
+  public static final Parser<Uri> URI_WITHBRACKETS = ParserUtils.name(new Parser<Uri>() {
 
     @Override
     public boolean find(final ParserContext ctx, final ValueListener<Uri> value) {
@@ -60,9 +60,10 @@ public class UriParser implements Parser<Uri> {
 
       return true;
     }
-  };
 
-  public static final Parser<Uri> URI_WITHOUT_PARAMS = new Parser<Uri>() {
+  }, "uri-with-brackets");
+
+  public static final Parser<Uri> URI_WITHOUT_PARAMS = ParserUtils.name(new Parser<Uri>() {
     @Override
     public boolean find(final ParserContext ctx, final ValueListener<Uri> value) {
       final int pos = ctx.position();
@@ -102,13 +103,15 @@ public class UriParser implements Parser<Uri> {
         return false;
       }
     }
-  };
+
+  }, "uri-without-params");
 
   public static final Parser<CharSequence> URIC =
     name(or(
       chars(RESERVED_CHARS.concat(UNRESERVED_CHARS)),
       and(str("%"), HEXDIG, HEXDIG)), "uric");
-  private static final Parser<CharSequence> OPAQUE = new Parser<CharSequence>() {
+
+  private static final Parser<CharSequence> OPAQUE = name(new Parser<CharSequence>() {
 
     @Override
     public boolean find(final ParserContext ctx, final ValueListener<CharSequence> value) {
@@ -134,7 +137,8 @@ public class UriParser implements Parser<Uri> {
     public String toString() {
       return "opaque";
     }
-  };
+
+  }, "opaque");
 
   @Override
   public boolean find(final ParserContext ctx, final ValueListener<Uri> value) {

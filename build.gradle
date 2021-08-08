@@ -1,6 +1,8 @@
 plugins {
   id 'com.diffplug.eclipse.apt' version '3.30.0' apply false
   id 'eclipse'
+  id 'maven-publish'
+  id 'signing'  
 }
 
 subprojects { project ->
@@ -23,3 +25,4 @@ task configureBuildship {
 eclipse {
   synchronizationTasks configureBuildship
 }
+

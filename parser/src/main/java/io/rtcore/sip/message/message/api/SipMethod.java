@@ -184,4 +184,13 @@ public final class SipMethod {
   public boolean isOptions() {
     return this.equals(SipMethod.OPTIONS);
   }
+
+  public boolean in(SipMethod... methods) {
+    for (SipMethod method : methods) {
+      if (method.getMethod().equals(this.method)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

@@ -8,6 +8,8 @@ import com.google.common.primitives.UnsignedInteger;
 
 import io.rtcore.sip.message.auth.headers.Authorization;
 import io.rtcore.sip.message.base.api.RawHeader;
+import io.rtcore.sip.message.base.api.Token;
+import io.rtcore.sip.message.message.api.ContactSet;
 import io.rtcore.sip.message.message.api.EventSpec;
 import io.rtcore.sip.message.message.api.NameAddr;
 import io.rtcore.sip.message.message.api.RAck;
@@ -19,6 +21,7 @@ import io.rtcore.sip.message.message.api.TargetDialog;
 import io.rtcore.sip.message.message.api.TokenSet;
 import io.rtcore.sip.message.message.api.headers.RValue;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManager;
+import io.rtcore.sip.message.uri.SipUri;
 import io.rtcore.sip.message.uri.Uri;
 import io.rtcore.sip.message.uri.UriVisitor;
 
@@ -162,5 +165,15 @@ public interface SipRequest extends SipMessage {
 
   SipRequest withMaxForwards(int i);
 
+  SipRequest withPrependedRecordRoute(NameAddr na);
+
+  /**
+   * adds a Record-Route, which likely should include a 'lr' parameter. generally, they shuold
+   * always be SIP uris.
+   */
+
+  default SipRequest withPrependedRecordRoute(SipUri address) {
+    return withPrependedRecordRoute(NameAddr.of(address));
+  }
 
 }

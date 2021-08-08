@@ -87,7 +87,7 @@ public class RfcSipMessageManager implements SipMessageManager {
   @Override
   public SipMessage parseMessage(ByteBuffer buf) {
     final RawMessage raw = DEFAULT_MESSAGE_PARSER.parse(buf);
-    return convert(raw, false);
+    return convert(raw, true);
   }
 
   @Override

@@ -65,6 +65,11 @@ public class DigestCredentials extends Authorization {
     return this.getParameter(NONCE).orElse(null);
   }
 
+
+  public String username() {
+    return this.getParameter(USERNAME).orElse(null);
+  }
+
   public String opqaue() {
     return this.getParameter(OPAQUE).orElse(null);
   }
@@ -158,5 +163,6 @@ public class DigestCredentials extends Authorization {
       Token.from(value ? "true"
                        : "false"));
   }
+
 
 }

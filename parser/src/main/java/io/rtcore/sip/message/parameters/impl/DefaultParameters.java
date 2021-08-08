@@ -6,14 +6,13 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.net.HostAndPort;
 
 import io.rtcore.sip.message.base.api.Token;
-import io.rtcore.sip.message.message.api.BranchId;
 import io.rtcore.sip.message.parameters.api.FlagParameterValue;
 import io.rtcore.sip.message.parameters.api.HostAndPortParameterValue;
 import io.rtcore.sip.message.parameters.api.ParameterValue;
@@ -37,6 +36,16 @@ public final class DefaultParameters implements Parameters {
       }
     }
     return false;
+  }
+
+  @Override
+  public Iterator<RawParameter> iterator() {
+    return this.raw.iterator();
+  }
+
+  @Override
+  public Stream<RawParameter> stream() {
+    return this.raw.stream();
   }
 
   @Override

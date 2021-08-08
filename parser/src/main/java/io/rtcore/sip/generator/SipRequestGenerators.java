@@ -31,6 +31,10 @@ public class SipRequestGenerators {
     };
   }
 
+  public static SipRequestGenerator options(HostAndPort target) {
+    return options(target, 1);
+  }
+
   public static SipRequestGenerator options(HostAndPort target, long seq) {
     SipUri remote = SipUri.create(target);
     SipUri local = SipUri.create(HostAndPort.fromString("localhost"));

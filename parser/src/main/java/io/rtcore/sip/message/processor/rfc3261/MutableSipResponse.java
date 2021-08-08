@@ -54,6 +54,22 @@ public class MutableSipResponse extends MutableSipMessage<MutableSipResponse> {
     return this;
   }
 
+  public MutableSipResponse wwwAuthenticate(Consumer<DigestValues.Builder> handler) {
+    DigestValues.Builder b = DigestCredentials.builder();
+    handler.accept(b);
+    return this.wwwAuthenticate(b.build().asCredentials());
+  }
+
+  public MutableSipResponse wwwAuthenticate(final String authRealm, final String nonce, final boolean stale, String opaque) {
+    return wwwAuthenticate(b -> b
+      .realm(authRealm)
+      .nonce(nonce)
+      .stale(stale)
+      .algorithm(StdDigestAlgo.MD5)
+      .qop("auth")
+      .opaque(opaque));
+  }
+
   public MutableSipResponse proxyAuthenticate(final Authorization auth) {
     this.proxyAuthenticate = auth;
     return this;

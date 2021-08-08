@@ -50,6 +50,7 @@ import io.rtcore.sip.message.message.api.headers.RetryAfter;
 import io.rtcore.sip.message.message.api.headers.Version;
 import io.rtcore.sip.message.parameters.tools.ParameterUtils;
 import io.rtcore.sip.message.parsers.api.Parser;
+import io.rtcore.sip.message.parsers.core.ParseFailureException;
 import io.rtcore.sip.message.parsers.core.ParserUtils;
 import io.rtcore.sip.message.parsers.core.Utf8ParserHelper;
 import io.rtcore.sip.message.processor.rfc3261.message.impl.ContactHeaderDefinition;
@@ -223,7 +224,12 @@ public abstract class DefaultSipMessage implements SipMessage {
     this.parsedHeaders = CacheBuilder.newBuilder().build(new CacheLoader<SipHeaderDefinition<?>, Optional<?>>() {
       @Override
       public Optional<?> load(final SipHeaderDefinition<?> definition) {
-        return Optional.ofNullable(definition.parse(message.headers));
+        try {
+          return Optional.ofNullable(definition.parse(message.headers));
+        }
+        catch (ParseFailureException ex) {
+          throw new ParseFailureException(String.format("while processing %s", definition.getName()), ex);
+        }
       }
     });
   }

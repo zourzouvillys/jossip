@@ -26,9 +26,8 @@ import io.rtcore.sip.message.parameters.impl.DefaultParameters;
 @Value.Style(
     jdkOnly = true,
     allowedClasspathAnnotations = { Override.class },
-    typeImmutable = "*",
     defaultAsDefault = true)
-public interface AbstractDigestValues {
+public interface DigestValues {
 
   Optional<String> realm();
 
@@ -112,4 +111,12 @@ public interface AbstractDigestValues {
     return new DigestCredentials(params);
 
   }
+
+  public class Builder extends ImmutableDigestValues.Builder {
+  }
+  
+  static Builder builder() {
+    return new Builder();
+  }
+
 }

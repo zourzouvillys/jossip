@@ -5,12 +5,12 @@ import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Strings;
@@ -144,6 +144,11 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
 
   public T via(final Via via) {
     this.vias = Lists.newArrayList(via);
+    return (T) this;
+  }
+
+  public T updateVia(int index, UnaryOperator<Via> handler) {
+    this.vias.set(index, handler.apply(this.vias.get(index)));
     return (T) this;
   }
 

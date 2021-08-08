@@ -1,11 +1,11 @@
 package io.rtcore.sip.message.parameters.api;
 
-import static io.rtcore.sip.message.processor.rfc3261.serializing.serializers.RfcSerializationConstants.SEMI;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import com.google.common.net.HostAndPort;
 
@@ -13,6 +13,7 @@ import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManager;
 
 public interface Parameters {
+
   boolean contains(final Token name);
 
   boolean contains(final String name);
@@ -64,5 +65,9 @@ public interface Parameters {
       throw new RuntimeException(ex);
     }
   }
+
+  Iterator<RawParameter> iterator();
+
+  Stream<RawParameter> stream();
 
 }
