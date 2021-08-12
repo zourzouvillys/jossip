@@ -1,3 +1,6 @@
+import org.gradle.plugins.ide.eclipse.model.ProjectDependency
+import org.gradle.plugins.ide.eclipse.model.SourceFolder
+
 
 project.apply plugin: 'eclipse'
 project.apply plugin: 'com.diffplug.eclipse.apt'
@@ -33,6 +36,55 @@ project.afterEvaluate {
       name = createProjectDisplayName()
     }
   }
+  
+  
+
+  eclipse.classpath.file.whenMerged { classpath ->
+    classpath.entries.find { it.path == '.apt_generated' }.each {
+      classpath.entries.remove(it)
+    }
+    // ignore compilation warnings in the apt-generated code		
+    def lib = new org.gradle.plugins.ide.eclipse.model.SourceFolder('.apt_generated', null)
+    lib.entryAttributes['ignore_optional_problems'] = true
+    lib.entryAttributes['optional'] = true
+    classpath.entries.add(lib)  
+  }
+
+  eclipse.classpath.file.whenMerged { classpath ->
+
+    classpath.entries.findAll { it instanceof ProjectDependency }.each {
+    
+      // delete from original position
+	  classpath.entries.remove(it)
+
+	// append to end of classpath	
+	  def dep = new ProjectDependency(it.path) {
+	    @Override
+        public void appendNode(Node node) {
+          Map<String, Object> attrs = new HashMap<>();
+          attrs.put("combineaccessrules", "false")
+          addClasspathEntry(node, attrs);
+        }
+	  }
+	
+  	  dep.entryAttributes['module'] = true
+	
+	  //dep.entryAttributes['gradle_scope'] = 'main'
+	  //dep.entryAttributes['gradle_used_by_scope'] = 'main,test'
+	  //dep.entryAttributes['without_test_code'] = 'false' 
+	
+	  classpath.entries.add(dep)
+	
+    }
+  
+  }
+
+
+
+
+  
+  
+  
   
 }
 

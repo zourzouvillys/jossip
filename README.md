@@ -7,8 +7,9 @@ Library which provides an extensible SIP message API and RFC 3261 parser.  It do
 
 The models are immutable.  Helper message builders are provided for creating or modifying messages.
 
-## Signaling Engine
+## SIP Channels
 
-Provides a high level API and serializable state machines for handling of SIP INVITE based dialogs and the negotiation needed to process calls and offer/answers.
+the sip-channels module provides an API for interacting with other SIP endpoints, both as a UAC and UAS.  The APIs are all async, reactive, and with flow control.
 
- 
+the sip-channels-netty module provides a netty based implementation of UDP, TCP, TLS, and WS(S) transports.
+
