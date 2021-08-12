@@ -1,5 +1,5 @@
 plugins {
-  id 'com.diffplug.eclipse.apt' version '3.30.0' apply false
+  id 'com.diffplug.eclipse.apt' version '3.31.0' apply false
   id 'eclipse'
   id 'maven-publish'
   id 'signing'  
