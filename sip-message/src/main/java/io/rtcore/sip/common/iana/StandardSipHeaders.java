@@ -1,6 +1,52 @@
-package io.rtcore.sip.iana;
+package io.rtcore.sip.common.iana;
 
-import static io.rtcore.sip.iana.Spec.*;
+import static io.rtcore.sip.common.iana.Spec.RFC3261;
+import static io.rtcore.sip.common.iana.Spec.RFC3262;
+import static io.rtcore.sip.common.iana.Spec.RFC3313;
+import static io.rtcore.sip.common.iana.Spec.RFC3323;
+import static io.rtcore.sip.common.iana.Spec.RFC3325;
+import static io.rtcore.sip.common.iana.Spec.RFC3326;
+import static io.rtcore.sip.common.iana.Spec.RFC3327;
+import static io.rtcore.sip.common.iana.Spec.RFC3329;
+import static io.rtcore.sip.common.iana.Spec.RFC3515;
+import static io.rtcore.sip.common.iana.Spec.RFC3608;
+import static io.rtcore.sip.common.iana.Spec.RFC3841;
+import static io.rtcore.sip.common.iana.Spec.RFC3891;
+import static io.rtcore.sip.common.iana.Spec.RFC3892;
+import static io.rtcore.sip.common.iana.Spec.RFC3903;
+import static io.rtcore.sip.common.iana.Spec.RFC3911;
+import static io.rtcore.sip.common.iana.Spec.RFC4028;
+import static io.rtcore.sip.common.iana.Spec.RFC4412;
+import static io.rtcore.sip.common.iana.Spec.RFC4457;
+import static io.rtcore.sip.common.iana.Spec.RFC4488;
+import static io.rtcore.sip.common.iana.Spec.RFC4538;
+import static io.rtcore.sip.common.iana.Spec.RFC4964;
+import static io.rtcore.sip.common.iana.Spec.RFC5002;
+import static io.rtcore.sip.common.iana.Spec.RFC5009;
+import static io.rtcore.sip.common.iana.Spec.RFC5318;
+import static io.rtcore.sip.common.iana.Spec.RFC5360;
+import static io.rtcore.sip.common.iana.Spec.RFC5373;
+import static io.rtcore.sip.common.iana.Spec.RFC5393;
+import static io.rtcore.sip.common.iana.Spec.RFC5503;
+import static io.rtcore.sip.common.iana.Spec.RFC5626;
+import static io.rtcore.sip.common.iana.Spec.RFC5839;
+import static io.rtcore.sip.common.iana.Spec.RFC6050;
+import static io.rtcore.sip.common.iana.Spec.RFC6086;
+import static io.rtcore.sip.common.iana.Spec.RFC6442;
+import static io.rtcore.sip.common.iana.Spec.RFC6446;
+import static io.rtcore.sip.common.iana.Spec.RFC6665;
+import static io.rtcore.sip.common.iana.Spec.RFC6794;
+import static io.rtcore.sip.common.iana.Spec.RFC6809;
+import static io.rtcore.sip.common.iana.Spec.RFC7044;
+import static io.rtcore.sip.common.iana.Spec.RFC7315;
+import static io.rtcore.sip.common.iana.Spec.RFC7316;
+import static io.rtcore.sip.common.iana.Spec.RFC7433;
+import static io.rtcore.sip.common.iana.Spec.RFC7614;
+import static io.rtcore.sip.common.iana.Spec.RFC7989;
+import static io.rtcore.sip.common.iana.Spec.RFC8224;
+import static io.rtcore.sip.common.iana.Spec.RFC8262;
+import static io.rtcore.sip.common.iana.Spec.RFC8496;
+import static io.rtcore.sip.common.iana.Spec.RFC8498;
 
 import java.net.URI;
 import java.util.Objects;
@@ -11,10 +57,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 // @formatter:off
-// csvq --format FIXED -N 'select "\n/** " || REPLACE(Reference, "\n", "") || " */\n" || UPPER(REPLACE(`Header Name`, "-", "_")) || "(\"" || `Header Name` || "\"" || COALESCE(", \"" || compact || "\"", "") || ")," from `sip-parameters-2.csv`' 
+// csvq --format FIXED -N 'select "\n/** " || REPLACE(Reference, "\n", "") || " */\n" || UPPER(REPLACE(`Header Name`, "-", "_")) || "(\"" || `Header Name` || "\"" || COALESCE(", \"" || compact || "\"", "") || ")," from `sip-parameters-2.csv`'
 // @formatter:on
 
-public enum WellKnownSipHeaders implements SipHeader {
+public enum StandardSipHeaders implements SipHeaderId {
 
   /** [RFC3261] */
   ACCEPT("Accept", RFC3261),
@@ -402,9 +448,9 @@ public enum WellKnownSipHeaders implements SipHeader {
   ;
 
   static {
-    ImmutableMap.Builder<String, WellKnownSipHeaders> nb = ImmutableMap.builder();
-    ImmutableMap.Builder<Character, WellKnownSipHeaders> cb = ImmutableMap.builder();
-    for (WellKnownSipHeaders h : values()) {
+    final ImmutableMap.Builder<String, StandardSipHeaders> nb = ImmutableMap.builder();
+    final ImmutableMap.Builder<Character, StandardSipHeaders> cb = ImmutableMap.builder();
+    for (final StandardSipHeaders h : values()) {
       nb.put(h.normalized, h);
       if (h.compact != null) {
         nb.put(h.compact.toString(), h);
@@ -415,8 +461,8 @@ public enum WellKnownSipHeaders implements SipHeader {
     compactNameLookup = cb.build();
   }
 
-  private static final ImmutableMap<String, WellKnownSipHeaders> normalizedNameLookup;
-  private static final ImmutableMap<Character, WellKnownSipHeaders> compactNameLookup;
+  private static final ImmutableMap<String, StandardSipHeaders> normalizedNameLookup;
+  private static final ImmutableMap<Character, StandardSipHeaders> compactNameLookup;
 
   private final String value;
   private final String normalized;
@@ -425,24 +471,24 @@ public enum WellKnownSipHeaders implements SipHeader {
   private final ImmutableSet<String> names;
   private final URI id;
 
-  private WellKnownSipHeaders(String value, Character compact, Spec spec) {
+  StandardSipHeaders(final String value, final Character compact, final Spec spec) {
     this.value = value;
     this.normalized = value.toLowerCase();
     this.compact = compact;
     this.spec = spec;
     this.names =
-      compact == null ? ImmutableSet.of(value)
-                      : ImmutableSet.of(value, compact.toString());
+        compact == null ? ImmutableSet.of(value)
+                        : ImmutableSet.of(value, compact.toString());
 
     this.id = URI.create(spec.urn() + ":" + this.normalized);
 
   }
 
-  private WellKnownSipHeaders(String value, Spec spec) {
+  StandardSipHeaders(final String value, final Spec spec) {
     this(value, (Character) null, spec);
   }
 
-  private WellKnownSipHeaders(String value, String compact, Spec spec) {
+  StandardSipHeaders(final String value, final String compact, final Spec spec) {
     this(value, compact.charAt(0), spec);
     if (compact.length() != 1) {
       throw new IllegalArgumentException();
@@ -464,14 +510,14 @@ public enum WellKnownSipHeaders implements SipHeader {
     return this.id;
   }
 
-  public static WellKnownSipHeaders fromString(CharSequence name) {
+  public static StandardSipHeaders fromString(final CharSequence name) {
     Objects.requireNonNull(name);
     return normalizedNameLookup.get(name.toString().toLowerCase());
   }
 
-  public static String normalizeName(CharSequence name) {
+  public static String normalizeName(final CharSequence name) {
     if (name.length() == 1) {
-      WellKnownSipHeaders lookup = compactNameLookup.get(Character.toLowerCase(name.charAt(0)));
+      final StandardSipHeaders lookup = compactNameLookup.get(Character.toLowerCase(name.charAt(0)));
       if (lookup != null) {
         return lookup.value;
       }
@@ -479,12 +525,12 @@ public enum WellKnownSipHeaders implements SipHeader {
     return name.toString().toLowerCase();
   }
 
-  public boolean nameMatches(String name) {
+  public boolean nameMatches(final String name) {
     return normalizeName(name).compareTo(this.normalized) == 0;
   }
 
-  public static void forEach(Consumer<WellKnownSipHeaders> consumer) {
-    for (WellKnownSipHeaders hdr : values()) {
+  public static void forEach(final Consumer<StandardSipHeaders> consumer) {
+    for (final StandardSipHeaders hdr : values()) {
       consumer.accept(hdr);
     }
   }

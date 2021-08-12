@@ -1,9 +1,9 @@
-package io.rtcore.sip.iana;
+package io.rtcore.sip.common.iana;
 
 import java.net.URI;
 import java.util.Set;
 
-public interface SipHeader {
+public interface SipHeaderId {
 
   /**
    * a unique normalized header URL identifier.
@@ -11,10 +11,14 @@ public interface SipHeader {
 
   URI headerId();
 
+  /**
+   * all of the possible names this header matches, e.g ['f', 'From']
+   */
+
   Set<String> headerNames();
 
   /**
-   * the name for displaying, e.g 'Record-Route'.
+   * the name for displaying (non-compact form), e.g 'Record-Route'.
    */
 
   String prettyName();
