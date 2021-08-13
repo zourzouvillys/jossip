@@ -21,7 +21,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Publish with Gradle
-      run: ./gradlew publish -DossrhUsername=${{ secrets.OSSRH_USERNAME }} -DossrhPassword=${{ secrets.OSSRH_TOKEN }} -Dsignatory.keyId=E1DCAAA2
+      run: ./gradlew publish -DossrhUsername=${{ secrets.OSSRH_USERNAME }} -DossrhPassword=${{ secrets.OSSRH_TOKEN }} -Dsigning.gnupg.keyName=E1DCAAA2
       env:
         GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
