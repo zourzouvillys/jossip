@@ -1,0 +1,119 @@
+== Stateless Behavior
+
+:diagram-svg-type: inline
+:mermaid-format: svg
+:mermaid-config: mermaid.json
+
+=== Request Processing
+
+If the request dialog creating, then we add `Record-Route: R1C` to the request, which includes all the state needed to handle in-dialog requests from the UAS towards the UAC.  This response Record-Route header will be replaced before forwarding back to the UAC (assuming it's a dialog forming response), to reflect all the state needed to handle in-dialog requests from the UAC towards the UAS.  This is `Record-Route: R1S`.
+
+[mermaid]
+----
+sequenceDiagram
+
+  autonumber
+
+  participant C as SIP Device
+  participant P as RTCore Edge
+  participant S as Internal SIP Endpoint
+
+  C->>P: INVITE
+  P->>S: INVITE w/Record-Route: <R1C>
+  S->>P: 200 OK w/Record-Route: <R1C>
+  P->>C: 200 OK w/Record-Route: <R1S>
+  Note over C,S: Dialog Established
+  C->>P: ACK w/Route: <R1S>
+  P->>S: ACK
+
+  alt UAC
+    C->>P: BYE w/Route: <R1S>
+    P->>S: BYE 
+    S->>P: 200 OK 
+    P->>C: 200 OK
+  else UAS
+    S->>P: BYE w/Route: <R1C>
+    P->>C: BYE 
+    C->>P: 200 OK 
+    P->>S: 200 OK
+  end
+ 
+
+----
+
+
+=== Endpoint Registration
+
+["mermaid"]
+----
+sequenceDiagram
+
+  autonumber
+
+  participant C as SIP Device
+  participant P as RTCore Edge
+  participant L as External Function
+
+  C->>P: REGISTER w/Contact: <C>
+  activate P
+  P->>L: Register(AOR, R1E)
+  P->>C: 200 OK w/Contact: <C>
+  deactivate P
+
+----
+
+=== AOR Contact Targetted
+
+["mermaid"]
+----
+sequenceDiagram
+
+  autonumber
+
+  participant C as Internal SIP Endpoint
+  participant P as RTCore Edge
+  participant S as SIP Device
+
+  C->>P: INVITE w/Route: <R1E>
+  P->>S: INVITE w/Record-Route: <R1C>
+  S->>P: 200 OK w/Record-Route: <R1C>
+  P->>C: 200 OK w/Record-Route: <R1S>
+  Note over C,S: Dialog Established
+  C->>P: ACK w/Route: <R1S>
+  P->>S: ACK
+  
+----
+
+
+
+=== Signature Behavior
+
+Generating a non-2xx stateless response to-tag:
+
+```
+
+magic = 'JJJ'
+
+generator = 'A1' // target for receiving
+category = 'SF' // e.g, stateless failure
+tenant = 'T1A4A4B8'
+
+opaque = join(generator, category, tenant)
+
+epoch = secondsSinceEpoch()
+
+hash = sipHash(
+  via-sentby,
+  branch-cookie,
+  call-id,
+  csequence,
+  from-tag,
+  epoch,
+  opaque
+)
+
+to-tag = join(magic, hash(8), epoch, opaque)
+
+example: JJJ.Y2x1c3Rl.60FF796C.A1.SF.TENANT
+
+```

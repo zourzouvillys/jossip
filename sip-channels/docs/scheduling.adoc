@@ -1,0 +1,14 @@
+== Prioritization
+
+
+- empty buffers as quickly as possible
+- write into queue
+- process higher priority items
+- perform random early offload (drop, reject, respond, etc) of lower priority items
+- back-propogate filters to socket
+
+
+
+== Sketches
+
+- broadcast & merge sketches of heavy-hitters

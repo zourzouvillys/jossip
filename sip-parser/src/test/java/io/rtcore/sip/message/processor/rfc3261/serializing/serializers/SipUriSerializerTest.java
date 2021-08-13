@@ -16,7 +16,6 @@ import com.google.common.net.HostAndPort;
 import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializer;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
-import io.rtcore.sip.message.processor.rfc3261.serializing.serializers.SipUriSerializer;
 import io.rtcore.sip.message.uri.SipUri;
 
 /**

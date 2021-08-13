@@ -40,7 +40,7 @@ module io.rtcore.sip.parser {
 
   requires transitive io.rtcore.sip.common;
 
-  requires static org.immutables.value.annotations;
+  requires static transitive org.immutables.value.annotations;
   requires transitive com.google.common;
 
 }

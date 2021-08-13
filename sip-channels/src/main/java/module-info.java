@@ -7,7 +7,10 @@ module io.rtcore.sip.channels {
   uses ManagedSipChannelProvider;
 
   exports io.rtcore.sip.channels;
+  exports io.rtcore.sip.channels.utils;
   exports io.rtcore.sip.channels.dispatch;
+  exports io.rtcore.sip.channels.handlers;
+  exports io.rtcore.sip.channels.endpoint;
 
   requires transitive io.rtcore.sip.common;
   requires transitive io.rtcore.sip.parser;

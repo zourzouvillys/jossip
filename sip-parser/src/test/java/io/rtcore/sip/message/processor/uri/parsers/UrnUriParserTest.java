@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import io.rtcore.sip.message.parsers.core.BaseParserTest;
-import io.rtcore.sip.message.processor.uri.parsers.UrnUriParser;
 import io.rtcore.sip.message.uri.UrnService;
 import io.rtcore.sip.message.uri.UrnUri;
 

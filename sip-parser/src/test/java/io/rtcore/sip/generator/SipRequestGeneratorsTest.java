@@ -6,9 +6,7 @@ import static io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerM
 import org.junit.jupiter.api.Test;
 
 import com.google.common.net.HostAndPort;
-import com.google.common.net.InetAddresses;
 
-import io.rtcore.sip.generator.SipRequestGenerators;
 import io.rtcore.sip.message.processor.rfc3261.RfcSipMessageManager;
 
 class SipRequestGeneratorsTest {
@@ -16,7 +14,7 @@ class SipRequestGeneratorsTest {
   @Test
   void test() {
 
-    String buf =
+    final String buf =
       SipRequestGenerators
         .invite("sip:theo@rtcore.io")
         .generate(defaultManager())
@@ -28,7 +26,7 @@ class SipRequestGeneratorsTest {
 
   @Test
   void testKeepalive() {
-    String req =
+    final String req =
       SipRequestGenerators.options(HostAndPort.fromParts("example.com", 11111), 1)
         .generate(RfcSipMessageManager.defaultInstance())
         .apply(defaultSerializer()::writeValueAsString);

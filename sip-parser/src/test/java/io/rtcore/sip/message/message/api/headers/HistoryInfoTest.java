@@ -1,13 +1,13 @@
 package io.rtcore.sip.message.message.api.headers;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.Test;
 
 import com.google.common.net.HostAndPort;
 
-import io.rtcore.sip.message.message.api.headers.HistoryInfo;
 import io.rtcore.sip.message.message.api.headers.HistoryInfo.ChangeType;
 import io.rtcore.sip.message.message.api.headers.HistoryInfo.Entry;
 import io.rtcore.sip.message.processor.uri.parsers.TelUriParser;

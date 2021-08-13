@@ -1,11 +1,11 @@
 package io.rtcore.sip.message.parsers.core.terminal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Range;
-
-import io.rtcore.sip.message.parsers.core.terminal.MultiParser;
 
 public class MultiParserTest {
 

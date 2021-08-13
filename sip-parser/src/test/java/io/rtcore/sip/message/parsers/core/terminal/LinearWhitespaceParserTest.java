@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import io.rtcore.sip.message.parsers.core.BaseParserTest;
-import io.rtcore.sip.message.parsers.core.terminal.LinearWhitespaceParser;
 
 public class LinearWhitespaceParserTest extends BaseParserTest<CharSequence> {
 

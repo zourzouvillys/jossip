@@ -12,7 +12,6 @@ import io.rtcore.sip.message.message.api.headers.MIMEType;
 import io.rtcore.sip.message.parameters.impl.TokenParameterDefinition;
 import io.rtcore.sip.message.parsers.core.BaseParserTest;
 import io.rtcore.sip.message.processor.rfc3261.parsing.SipMessageParseFailureException;
-import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.MIMETypeParser;
 
 /**
  * 

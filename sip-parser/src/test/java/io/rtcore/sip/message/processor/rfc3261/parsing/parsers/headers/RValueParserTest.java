@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import io.rtcore.sip.message.message.api.headers.RValue;
 import io.rtcore.sip.message.parsers.core.BaseParserTest;
 import io.rtcore.sip.message.processor.rfc3261.parsing.SipMessageParseFailureException;
-import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.RValueParser;
 
 public class RValueParserTest extends BaseParserTest<RValue> {
 

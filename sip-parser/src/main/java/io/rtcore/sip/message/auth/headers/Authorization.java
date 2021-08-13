@@ -3,7 +3,6 @@
  */
 package io.rtcore.sip.message.auth.headers;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import com.google.common.escape.Escaper;

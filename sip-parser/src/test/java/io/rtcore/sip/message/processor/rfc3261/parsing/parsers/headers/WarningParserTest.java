@@ -12,7 +12,6 @@ import io.rtcore.sip.message.message.api.headers.Warning;
 import io.rtcore.sip.message.parsers.core.BaseParserTest;
 import io.rtcore.sip.message.parsers.core.ParseFailureException;
 import io.rtcore.sip.message.processor.rfc3261.parsing.SipMessageParseFailureException;
-import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.WarningParser;
 
 /**
  * 

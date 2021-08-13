@@ -1,0 +1,9 @@
+{
+  "theme": "base",
+  "sequence": {
+    "mirrorActors": false,
+    "fontFamily": null,
+    "fontSize": null,
+    "fontWeight": null
+  }
+}

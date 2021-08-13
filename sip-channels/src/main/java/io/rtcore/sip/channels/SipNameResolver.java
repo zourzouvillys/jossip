@@ -63,9 +63,8 @@ public interface SipNameResolver extends Flow.Publisher<ResolutionResult> {
     SipNameResolver newNameResolver(URI targetUri);
 
     /**
-     * Returns the default scheme, which will be used to construct a URI when
-     * {@link ManagedSipChannelBuilder#forTarget(String)} is given an authority string instead of a
-     * compliant URI.
+     * Returns the default scheme, which will be used to construct a URI when new channel is given
+     * an authority string instead of a compliant URI.
      */
 
     String getDefaultScheme();

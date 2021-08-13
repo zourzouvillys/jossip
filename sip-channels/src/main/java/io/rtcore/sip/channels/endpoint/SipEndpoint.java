@@ -13,7 +13,7 @@ public interface SipEndpoint extends SipChannel {
   }
 
   /**
-   * Create a builder that can be used to configure and create a {@link DynamoDbAsyncClient}.
+   * Create a builder that can be used to configure and create a {@link SipEndpointBuilder}.
    */
 
   static SipEndpointBuilder builder() {

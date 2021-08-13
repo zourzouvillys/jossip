@@ -26,7 +26,7 @@ public class QuotedStringParameterDefinition extends BaseParameterDefinition imp
     return Optional.empty();
   }
 
-  private String convert(final ParameterValue value) {
+  private String convert(final ParameterValue<?> value) {
     final Object obj = value.value();
     return obj == null ? null
                        : obj.toString();

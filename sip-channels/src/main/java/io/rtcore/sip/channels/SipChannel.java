@@ -22,9 +22,6 @@ public interface SipChannel {
 
   /**
    * start a new request over this SipChannel.
-   *
-   * @param request
-   * @return
    */
 
   SipClientCall exchange(SipRequest sender, SipCallOptions options);

@@ -16,7 +16,6 @@ import io.rtcore.sip.message.parameters.api.RawParameter;
 import io.rtcore.sip.message.parameters.impl.DefaultParameters;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializer;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
-import io.rtcore.sip.message.processor.rfc3261.serializing.serializers.AuthorizationSerializer;
 
 /**
  * 

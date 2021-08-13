@@ -1,7 +1,14 @@
 package io.rtcore.sip.iana;
 
-import static io.rtcore.sip.common.iana.SipStatusCategory.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static io.rtcore.sip.common.iana.SipStatusCategory.GLOBAL_FAILURE;
+import static io.rtcore.sip.common.iana.SipStatusCategory.PROVISIONAL;
+import static io.rtcore.sip.common.iana.SipStatusCategory.REDIRECTION;
+import static io.rtcore.sip.common.iana.SipStatusCategory.REQUEST_FAILURE;
+import static io.rtcore.sip.common.iana.SipStatusCategory.SERVER_FAILURE;
+import static io.rtcore.sip.common.iana.SipStatusCategory.SUCCESSFUL;
+import static io.rtcore.sip.common.iana.SipStatusCategory.forCode;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 

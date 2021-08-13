@@ -1,0 +1,138 @@
+########################################################################################
+[versions]
+########################################################################################
+
+immutables            = "2.8.8"
+autoService           = "1.0"
+netty                 = "4.1.66.Final"
+jackson               = "2.12.1"
+picocli               = "4.6.1"
+resilience4j          = "1.7.1"
+opentelemetry         = "1.4.1"
+opentelemetry-alpha   = "1.4.1-alpha"
+slf4j                 = "1.7.32"
+log4j                 = "2.14.1"
+dagger                = "2.38.1"
+eclipse-microprofile  = "4.1"
+guava                 = "30.1.1-jre"
+rtsip                 = "3.1.0-SNAPSHOT"
+reactor               = "3.4.8"
+caffeine              = "3.0.3"
+awssdk                = "2.17.14"
+rxjava3               = "3.0.13"
+grpc                  = "1.39.0"
+protobuf              = "‎3.17.3"
+bouncycastle          = "1.69"
+
+########################################################################################
+[libraries]
+########################################################################################
+
+
+
+
+##
+
+immutables-valueProcessor = { module = "org.immutables:value", version.ref = "immutables" }
+immutables-valueAnnotations = { module = "org.immutables:value-annotations", version.ref = "immutables" }
+
+##
+
+autoService = { module = "com.google.auto.service:auto-service", version.ref = "autoService" }
+
+##
+
+netty-bom = { module = "io.netty:netty-bom", version.ref = "netty" }
+netty-transport = { module = "io.netty:netty-transport", version.ref = "netty" }
+netty-buffer = { module = "io.netty:netty-buffer", version.ref = "netty" }
+netty-codec = { module = "io.netty:netty-codec", version.ref = "netty" }
+netty-handler = { module = "io.netty:netty-handler", version.ref = "netty" }
+netty-testsuite = { module = "io.netty:netty-testsuite", version.ref = "netty" }
+netty-resolver-dns = { module = "io.netty:netty-resolver-dns", version.ref = "netty" }
+
+##
+
+jackson-bom = { module = "com.fasterxml.jackson:jackson-bom", version.ref = "jackson" }
+
+##
+
+picocli = { module = "info.picocli:picocli", version.ref = "picocli" }
+
+##
+
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+
+##
+
+rtcore-sip-parser = { module = "io.zrz.rtcore.sip:sip-parser", version.ref = "rtsip" }
+rtcore-sip-channels = { module = "io.zrz.rtcore.sip:sip-channels", version.ref = "rtsip" }
+
+##
+
+resilience4j-bom = { module = "io.github.resilience4j:resilience4j-bom", version.ref = "resilience4j" }
+
+resilience4j-ratelimiter = { module = "io.github.resilience4j:resilience4j-ratelimiter", version.ref = "resilience4j" }
+resilience4j-timelimiter = { module = "io.github.resilience4j:resilience4j-timelimiter", version.ref = "resilience4j" }
+resilience4j-retry = { module = "io.github.resilience4j:resilience4j-retry", version.ref = "resilience4j" }
+resilience4j-circularbuffer = { module = "io.github.resilience4j:resilience4j-circularbuffer", version.ref = "resilience4j" }
+resilience4j-circuitbreaker = { module = "io.github.resilience4j:resilience4j-circuitbreaker", version.ref = "resilience4j" }
+resilience4j-cache = { module = "io.github.resilience4j:resilience4j-cache", version.ref = "resilience4j" }
+resilience4j-bulkhead = { module = "io.github.resilience4j:resilience4j-bulkhead", version.ref = "resilience4j" }
+resilience4j-annotations = { module = "io.github.resilience4j:resilience4j-annotations", version.ref = "resilience4j" }
+
+
+opentelemetry-bom = { module = "io.opentelemetry:opentelemetry-bom", version.ref = "opentelemetry" }
+opentelemetry-api = { module = "io.opentelemetry:opentelemetry-api", version.ref = "opentelemetry" }
+opentelemetry-sdk = { module = "io.opentelemetry:opentelemetry-sdk", version.ref = "opentelemetry" }
+
+opentelemetry-sdk-extension-autoconfigure = { module = "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure", version.ref = "opentelemetry-alpha" }
+
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+
+log4j-bom = { module = "org.apache.logging.log4j:log4j-bom", version.ref = "log4j" }
+log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
+log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
+
+
+dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" } 
+dagger-spi = { module = "com.google.dagger:dagger-spi", version.ref = "dagger" } 
+dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" } 
+
+## the jakarta version 1 uses the javax package
+javax-inject = "jakarta.inject:jakarta.inject-api:1.0.3"
+
+## the jakarta version 1 uses the javax package
+javax-annotation = "jakarta.annotation:jakarta.annotation-api:1.3.5"
+
+## 
+eclipse-microprofile-bom = { module = "org.eclipse.microprofile:microprofile", version.ref = "eclipse-microprofile" }
+eclipse-microprofile-contextPropagation = { module = "org.eclipse.microprofile.context-propagation:microprofile-context-propagation-api", version = "1.2" }
+
+##
+reactor-core = { module = "io.projectreactor:reactor-core", version.ref = "reactor" }
+
+##
+caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "caffeine" }
+
+##
+awssdk-bom = { module = "software.amazon.awssdk:bom", version.ref = "awssdk" }
+
+##
+rxjava3 = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava3" }
+rxjava3-jdk9interop = { module = "com.github.akarnokd:rxjava3-jdk9-interop", version = "3.0.0" }
+
+
+##
+grpc-bom = { module = "io.grpc:grpc-bom", version.ref = "grpc" }
+grpc-protocGenRpcJava = { module = "io.grpc:protoc-gen-grpc-java", version.ref = "grpc" } 
+      
+##
+
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
+protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
+
+
+##
+bouncycastle-bcpkix = { module = 'org.bouncycastle:bcpkix-jdk15on', version.ref = 'bouncycastle' }
+
+

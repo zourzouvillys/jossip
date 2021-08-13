@@ -23,7 +23,7 @@ public class ManagedSipUdpSocketRegistry {
    * Register a provider.
    *
    * <p>
-   * If the provider's {@link ManagedChannelProvider#isAvailable isAvailable()} returns
+   * If the provider's {@link ManagedSipUdpSocketProvider#isAvailable isAvailable()} returns
    * {@code false}, this method will throw {@link IllegalArgumentException}.
    *
    * <p>
@@ -136,7 +136,10 @@ public class ManagedSipUdpSocketRegistry {
     }
   }
 
-  /** Thrown when no suitable {@link ManagedChannelProvider} objects can be found. */
+  /**
+   * Thrown when no suitable providers objects can be found.
+   */
+
   public static final class ProviderNotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = 1;

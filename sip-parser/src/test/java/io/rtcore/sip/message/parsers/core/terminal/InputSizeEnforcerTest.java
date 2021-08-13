@@ -9,7 +9,6 @@ import com.google.common.collect.Range;
 import io.rtcore.sip.message.parsers.api.Parser;
 import io.rtcore.sip.message.parsers.core.BaseParserTest;
 import io.rtcore.sip.message.parsers.core.ParserUtils;
-import io.rtcore.sip.message.parsers.core.terminal.InputSizeEnforcer;
 
 public class InputSizeEnforcerTest extends BaseParserTest<CharSequence> {
 

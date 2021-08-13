@@ -10,18 +10,15 @@ import io.rtcore.sip.message.parsers.api.Parser;
 import io.rtcore.sip.message.parsers.api.ParserContext;
 import io.rtcore.sip.message.parsers.core.ByteParserInput;
 import io.rtcore.sip.message.parsers.core.DefaultParserContext;
-import io.rtcore.sip.message.parsers.core.terminal.AndParser;
-import io.rtcore.sip.message.parsers.core.terminal.CharactersParser;
 
 public class AndParserTest {
 
-  @SuppressWarnings("unchecked")
   @Test
   public void test() {
 
     final ParserContext context = new DefaultParserContext(ByteParserInput.fromString("ab"));
 
-    assertTrue(new AndParser<CharSequence>(
+    assertTrue(new AndParser<>(
       Lists.<Parser<CharSequence>>newArrayList(
         new CharactersParser("a"),
         new CharactersParser("b")))

@@ -1,7 +1,8 @@
 package io.rtcore.sip.message.processor.rfc3261.parsing.parsers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.common.primitives.UnsignedInteger;
 

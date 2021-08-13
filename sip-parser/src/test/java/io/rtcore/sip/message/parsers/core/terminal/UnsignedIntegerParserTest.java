@@ -9,7 +9,6 @@ import com.google.common.primitives.UnsignedInteger;
 import io.rtcore.sip.message.parsers.api.ParserInput;
 import io.rtcore.sip.message.parsers.core.ByteParserInput;
 import io.rtcore.sip.message.parsers.core.DefaultParserContext;
-import io.rtcore.sip.message.parsers.core.terminal.UnsignedIntegerParser;
 
 public class UnsignedIntegerParserTest {
 

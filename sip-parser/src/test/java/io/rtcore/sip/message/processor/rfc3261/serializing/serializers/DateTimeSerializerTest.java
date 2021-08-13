@@ -7,8 +7,6 @@ import java.time.ZonedDateTime;
 
 import org.junit.jupiter.api.Test;
 
-import io.rtcore.sip.message.processor.rfc3261.serializing.serializers.DateTimeSerializer;
-
 public class DateTimeSerializerTest {
 
   @Test

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package io.rtcore.sip.message.message.api.header;
 
@@ -19,8 +19,8 @@ import io.rtcore.sip.message.processor.rfc3261.parsing.SipMessageParseFailureExc
 import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.ViaParser;
 
 /**
- * 
- * 
+ *
+ *
  */
 public class ViaParserTest extends BaseParserTest<Via> {
 
@@ -31,7 +31,7 @@ public class ViaParserTest extends BaseParserTest<Via> {
   /**
    * Test method for
    * {@link io.rtcore.sip.message.processor.rfc3261.headers.Via#Via(java.lang.String, java.lang.String)}.
-   * 
+   *
    * @throws SipMessageParseFailureException
    */
   @Test
@@ -39,7 +39,7 @@ public class ViaParserTest extends BaseParserTest<Via> {
     final String test = "SIP / 2.0 / UdP first.example.com: 4000;ttl=16;maddr=224.2.0.1 ;branch=z9hG4bKa7c6a8dlze.1";
     final Via header = this.parse(test);
     assertEquals(ViaProtocol.of("SIP", "2.0", "UdP"), header.protocol());
-    assertEquals("first.example.com:4000", header.sentBy().toString());
+    assertEquals("first.example.com:4000", header.sentBy().toUriString());
     assertEquals(Token.from("16"), new TokenParameterDefinition("ttl").parse(header.getParameters().get()).orElse(null));
     assertEquals(Token.from("224.2.0.1"), new TokenParameterDefinition("maddr").parse(header.getParameters().get()).orElse(null));
     assertEquals(Token.from("z9hG4bKa7c6a8dlze.1"), ParameterUtils.Branch.parse(header.getParameters().get()).orElse(null));
@@ -56,7 +56,7 @@ public class ViaParserTest extends BaseParserTest<Via> {
     assertEquals("2.0", header.protocol().version());
     assertEquals("XXX", header.protocol().transport());
 
-    assertEquals("172.20.103.51", header.sentBy().toString());
+    assertEquals("172.20.103.51", header.sentBy().toUriString());
     assertEquals(Token.from("z9hG4bK-ac271308"), ParameterUtils.Branch.parse(header.getParameters().get()).orElse(null));
     assertTrue(new FlagParameterDefinition("rport").parse(header.getParameters().get()).isPresent());
 

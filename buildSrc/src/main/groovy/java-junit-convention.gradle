@@ -1,0 +1,14 @@
+plugins {
+  id 'java'
+}
+
+dependencies {
+  testImplementation(platform(testLibs.junit.bom))
+  testImplementation(testLibs.junit.jupiter)
+  testImplementation(libs.log4j.core)
+    
+}
+
+test {
+  useJUnitPlatform()  
+}

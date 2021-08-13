@@ -51,9 +51,6 @@ public class RfcSipMessageManager implements SipMessageManager {
   private static final RfcSipMessageParser DEFAULT_MESSAGE_PARSER = new RfcMessageParserBuilder().build();
 
   private static final String SIP_2_0 = "SIP/2.0";
-  private static final char COLON = ':';
-  private static final char SPACE = ' ';
-  private static final String CRLF = "\r\n";
 
   // / max length of the initial line in a request. includes URI, so potentially
   // longer.
@@ -85,9 +82,9 @@ public class RfcSipMessageManager implements SipMessageManager {
   }
 
   @Override
-  public SipMessage parseMessage(ByteBuffer buf) {
+  public SipMessage parseMessage(final ByteBuffer buf) {
     final RawMessage raw = DEFAULT_MESSAGE_PARSER.parse(buf);
-    return convert(raw, true);
+    return this.convert(raw, true);
   }
 
   @Override
@@ -102,7 +99,7 @@ public class RfcSipMessageManager implements SipMessageManager {
       msg = this.createRequest(raw.getInitialLine(), raw.getHeaders());
     }
 
-    if (lazy == false) {
+    if (!lazy) {
       msg.validate();
     }
 
@@ -288,7 +285,7 @@ public class RfcSipMessageManager implements SipMessageManager {
   }
 
   @Override
-  public SipRequest fromUri(final SipUri target, SipMethod defaultMethod) {
+  public SipRequest fromUri(final SipUri target, final SipMethod defaultMethod) {
     final SipMethod method = target.getParameter(SipUri.PMethod).map(SipMethod.tokenConverter()).orElse(defaultMethod);
     return this.createRequest(method,
       target.withoutHeaders().withoutParameter(SipUri.PMethod),

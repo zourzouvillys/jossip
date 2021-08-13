@@ -1,9 +1,7 @@
 /**
- * 
+ *
  */
 package io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers;
-
-import static io.rtcore.sip.message.parsers.core.ParserUtils.TOKEN;
 
 import java.util.Collection;
 
@@ -22,20 +20,20 @@ import io.rtcore.sip.message.parsers.core.ParserUtils;
 import io.rtcore.sip.message.parsers.core.QuotedStringParser;
 
 /**
- * 
- * 
+ *
+ *
  */
 public class MIMETypeParser implements Parser<MIMEType> {
   /*
    * (non-Javadoc)
-   * @see io.rtcore.sip.message.parsers.core.Parser#find(io.rtcore.sip.message.parsers.core.ParserContext,
-   * io.rtcore.sip.message.parsers.core.ValueListener)
+   * @see io.rtcore.sip.message.parsers.core.Parser#find(io.rtcore.sip.message.parsers.core.
+   * ParserContext, io.rtcore.sip.message.parsers.core.ValueListener)
    */
   @Override
-  public boolean find(ParserContext ctx, ValueListener<MIMEType> value) {
-    int pos = ctx.position();
+  public boolean find(final ParserContext ctx, final ValueListener<MIMEType> value) {
+    final int pos = ctx.position();
 
-    CharSequence type = ParserUtils.read(ctx, ParserUtils.TOKEN);
+    final CharSequence type = ParserUtils.read(ctx, ParserUtils.TOKEN);
     if (type == null) {
       return false;
     }
@@ -43,21 +41,17 @@ public class MIMETypeParser implements Parser<MIMEType> {
       ctx.position(pos);
       return false;
     }
-    CharSequence subType = ParserUtils.read(ctx, ParserUtils.TOKEN);
+    final CharSequence subType = ParserUtils.read(ctx, ParserUtils.TOKEN);
     if (subType == null) {
       ctx.position(pos);
       return false;
     }
 
-    Collection<RawParameter> params = Lists.newArrayList();
+    final Collection<RawParameter> params = Lists.newArrayList();
 
     while (ctx.skip(ParserUtils.SEMI)) {
-      CharSequence pname = ParserUtils.read(ctx, ParserUtils.TOKEN);
-      if (pname == null) {
-        ctx.position(pos);
-        return false;
-      }
-      if (!ctx.skip(ParserUtils.EQUALS)) {
+      final CharSequence pname = ParserUtils.read(ctx, ParserUtils.TOKEN);
+      if ((pname == null) || !ctx.skip(ParserUtils.EQUALS)) {
         ctx.position(pos);
         return false;
       }
@@ -68,7 +62,7 @@ public class MIMETypeParser implements Parser<MIMEType> {
         continue;
       }
 
-      authValue = ParserUtils.read(ctx, TOKEN);
+      authValue = ParserUtils.read(ctx, ParserUtils.TOKEN);
       if (authValue != null) {
         params.add(new RawParameter(Token.from(pname), new TokenParameterValue(authValue.toString())));
         continue;

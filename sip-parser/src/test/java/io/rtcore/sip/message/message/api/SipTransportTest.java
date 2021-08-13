@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import io.rtcore.sip.message.message.api.SipTransport;
-
 public class SipTransportTest {
 
   @Test

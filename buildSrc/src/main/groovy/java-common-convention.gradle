@@ -1,0 +1,36 @@
+
+plugins {
+  id 'java'
+  id 'java-quality-convention'
+}
+
+configurations.all {
+  resolutionStrategy {
+    failOnVersionConflict()
+    preferProjectModules()
+    cacheDynamicVersionsFor 1, 'days'
+    cacheChangingModulesFor 1, 'hours'
+  }  
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(16)
+  }
+  modularity.inferModulePath = true
+}
+
+javadoc {
+  modularity.inferModulePath = true
+}
+
+tasks.withType(JavaCompile) {
+  options.warnings = true
+  options.compilerArgs = [ '-Xlint:all' ]   
+}
+
+tasks.withType(Javadoc) {
+  options.addEnumOption('Xlint:all')
+  options.addStringOption('Xdoclint:none', '-quiet')  
+  options.addEnumOption('public')
+}

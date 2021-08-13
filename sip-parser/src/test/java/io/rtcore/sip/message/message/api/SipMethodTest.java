@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
-import io.rtcore.sip.message.message.api.SipMethod;
-
 /**
  * Tests the {@link SipMethod} class.
  * 

@@ -1,23 +1,14 @@
 plugins {
+  id 'org.asciidoctor.jvm.convert' version "3.3.2" apply false
   id 'com.diffplug.eclipse.apt' version '3.31.0' apply false
+  id 'com.diffplug.eclipse.excludebuildfolder' version '3.31.0' apply false
+  id 'com.diffplug.eclipse.resourcefilters' version '3.31.0' apply false  
+  id 'com.github.spotbugs' version '4.7.2' apply false
+  id 'com.google.protobuf' version '0.8.17' apply false
   id 'eclipse'
-  id 'maven-publish'
-  id 'signing'  
 }
 
-subprojects { project ->
-  
-  project.group = 'io.zrz.rtcore.sip'
-  project.version = version = project.hasProperty('currentVersion') ? project.property('currentVersion') : 'development'
-
-  project.repositories {
-    mavenCentral()
-  }
-  
-  project.apply from: "${rootDir}/gradle/eclipse.gradle"
-  
-}
-
+// a standard name for triggering imported composite builds.
 task configureBuildship {
   dependsOn gradle.includedBuilds*.task(':configureBuildship')
 }
@@ -26,3 +17,9 @@ eclipse {
   synchronizationTasks configureBuildship
 }
 
+
+subprojects { project ->
+  project.group = 'io.zrz.rtcore.sip'
+  project.version = version = project.hasProperty('currentVersion') ? project.property('currentVersion') : 'development'
+  // project.apply from: "${rootDir}/gradle/eclipse.gradle"  
+}

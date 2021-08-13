@@ -35,11 +35,11 @@ public class TokenParameterDefinition extends BaseParameterDefinition implements
     return Optional.empty();
   }
 
-  private Token convert(final ParameterValue value) {
+  private Token convert(final ParameterValue<?> value) {
     if (value instanceof TokenParameterValue) {
       return (Token) value.value();
     }
-    else if (value instanceof QuotedStringParameterValue) {
+    if (value instanceof QuotedStringParameterValue) {
       Token token = null;
       try {
         token = Token.from((String) value.value());

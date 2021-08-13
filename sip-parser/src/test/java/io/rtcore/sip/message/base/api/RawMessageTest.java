@@ -9,8 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import io.rtcore.sip.message.base.api.RawMessage;
-
 public class RawMessageTest {
 
   @Test

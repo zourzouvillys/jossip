@@ -18,11 +18,8 @@ import io.rtcore.sip.message.message.SipResponse;
 import io.rtcore.sip.message.message.SipResponseStatus;
 import io.rtcore.sip.message.message.api.TokenSet;
 import io.rtcore.sip.message.message.api.headers.Warning;
-import io.rtcore.sip.message.parameters.api.QuotedStringParameterValue;
 
 public class MutableSipResponse extends MutableSipMessage<MutableSipResponse> {
-
-  private static final QuotedStringParameterValue AUTH = new QuotedStringParameterValue("auth");
 
   private SipResponseStatus status;
   private Authorization wwwAuthenticate;
@@ -54,14 +51,14 @@ public class MutableSipResponse extends MutableSipMessage<MutableSipResponse> {
     return this;
   }
 
-  public MutableSipResponse wwwAuthenticate(Consumer<DigestValues.Builder> handler) {
-    DigestValues.Builder b = DigestCredentials.builder();
+  public MutableSipResponse wwwAuthenticate(final Consumer<DigestValues.Builder> handler) {
+    final DigestValues.Builder b = DigestCredentials.builder();
     handler.accept(b);
     return this.wwwAuthenticate(b.build().asCredentials());
   }
 
-  public MutableSipResponse wwwAuthenticate(final String authRealm, final String nonce, final boolean stale, String opaque) {
-    return wwwAuthenticate(b -> b
+  public MutableSipResponse wwwAuthenticate(final String authRealm, final String nonce, final boolean stale, final String opaque) {
+    return this.wwwAuthenticate(b -> b
       .realm(authRealm)
       .nonce(nonce)
       .stale(stale)
@@ -200,14 +197,14 @@ public class MutableSipResponse extends MutableSipMessage<MutableSipResponse> {
     return this.rseq(UnsignedInteger.valueOf(i));
   }
 
-  public MutableSipResponse proxyAuthenticate(Consumer<DigestValues.Builder> handler) {
-    DigestValues.Builder b = DigestCredentials.builder();
+  public MutableSipResponse proxyAuthenticate(final Consumer<DigestValues.Builder> handler) {
+    final DigestValues.Builder b = DigestCredentials.builder();
     handler.accept(b);
     return this.proxyAuthenticate(b.build().asCredentials());
   }
 
-  public MutableSipResponse proxyAuthenticateQopAuthMD5(final String authRealm, final String nonce, final boolean stale, String opaque) {
-    return proxyAuthenticate(b -> b
+  public MutableSipResponse proxyAuthenticateQopAuthMD5(final String authRealm, final String nonce, final boolean stale, final String opaque) {
+    return this.proxyAuthenticate(b -> b
       .realm(authRealm)
       .nonce(nonce)
       .stale(stale)

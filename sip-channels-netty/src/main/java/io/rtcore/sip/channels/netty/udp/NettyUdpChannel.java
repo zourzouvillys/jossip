@@ -147,8 +147,6 @@ public class NettyUdpChannel extends SimpleChannelInboundHandler<DatagramPacket>
 
   /**
    * write a writer
-   *
-   * @return
    */
 
   @Override

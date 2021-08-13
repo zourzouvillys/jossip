@@ -1,0 +1,37 @@
+plugins {
+  id 'io.rtcore.java'
+  id 'io.rtcore.javadoc'
+}
+
+configurations {
+  immutablesAnnotationProcessor
+}
+
+dependencies {
+
+  immutablesAnnotationProcessor libs.immutables.valueProcessor
+
+  compileOnly libs.immutables.valueAnnotations
+  compileOnly libs.javax.annotation
+  
+  // applied for eclipse.
+  annotationProcessor libs.immutables.valueProcessor
+  
+}
+
+task immutables(type: JavaCompile, group: 'build', description: 'Generates the immutables.org types') {
+  source = sourceSets.main.java
+  classpath = configurations.compileClasspath
+  options.annotationProcessorPath = configurations.immutablesAnnotationProcessor             
+  options.compilerArgs = [ '-proc:only', '-implicit:none' ]    
+  destinationDir = file('generated/sources/immutables')
+}
+
+tasks.named('javadoc', Javadoc) {
+  source = [
+    file('generated/sources/immutables'),
+    sourceSets.main.allJava,
+  ]
+  dependsOn immutables
+}
+

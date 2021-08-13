@@ -30,11 +30,11 @@ public class HostParameterDefinition extends BaseParameterDefinition implements 
     return Optional.empty();
   }
 
-  private HostAndPort convert(final ParameterValue value) {
+  private HostAndPort convert(final ParameterValue<?> value) {
     if (value instanceof HostAndPortParameterValue) {
       return ((HostAndPortParameterValue) value).value();
     }
-    else if ((value instanceof TokenParameterValue) || (value instanceof QuotedStringParameterValue)) {
+    if ((value instanceof TokenParameterValue) || (value instanceof QuotedStringParameterValue)) {
       try {
         return HostAndPort.fromString(value.value().toString());
       }

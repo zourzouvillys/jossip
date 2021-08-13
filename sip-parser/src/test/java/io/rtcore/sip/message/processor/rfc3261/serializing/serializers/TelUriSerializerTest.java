@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializer;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
-import io.rtcore.sip.message.processor.rfc3261.serializing.serializers.TelUriSerializer;
 import io.rtcore.sip.message.uri.TelUri;
 
 public class TelUriSerializerTest {

@@ -11,7 +11,6 @@ import io.rtcore.sip.message.message.api.CSeq;
 import io.rtcore.sip.message.message.api.SipMethod;
 import io.rtcore.sip.message.parsers.core.BaseParserTest;
 import io.rtcore.sip.message.processor.rfc3261.parsing.SipMessageParseFailureException;
-import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.CSeqParser;
 
 /**
  */

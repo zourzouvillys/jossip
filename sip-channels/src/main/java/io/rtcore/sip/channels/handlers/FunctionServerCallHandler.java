@@ -35,4 +35,11 @@ public final class FunctionServerCallHandler implements SipServerCallHandler {
     return new FunctionServerCallHandler(requests, acks);
   }
 
+  public static FunctionServerCallHandler create(final Function<SipRequest, SipResponse> requests) {
+    return new FunctionServerCallHandler(
+      requests,
+      acks -> {
+      });
+  }
+
 }

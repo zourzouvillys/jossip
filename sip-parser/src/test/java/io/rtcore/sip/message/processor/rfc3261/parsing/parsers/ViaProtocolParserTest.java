@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import io.rtcore.sip.message.message.api.ViaProtocol;
 import io.rtcore.sip.message.parsers.core.BaseParserTest;
-import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.ViaProtocolParser;
 
 public class ViaProtocolParserTest extends BaseParserTest<ViaProtocol> {
 

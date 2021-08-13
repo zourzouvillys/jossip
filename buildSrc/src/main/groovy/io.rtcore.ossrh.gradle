@@ -1,0 +1,80 @@
+
+plugins {
+  id 'maven-publish'
+  id 'signing'  
+  id 'io.rtcore.java'
+}
+
+signing {
+  useGpgCmd()
+  sign publishing.publications
+}
+
+publishing {
+
+  publications {
+  
+    mavenJava(MavenPublication) {
+    
+      artifactId jar.baseName
+      from components.java
+      
+      artifact sourcesJar {
+        classifier = 'sources'
+      }
+      
+      artifact javadocJar {
+        classifier = 'javadoc'
+      }
+      
+      pom {
+        name = 'sip-channels-netty'
+        packaging = 'jar'
+        description = 'Java Open Source SIP'
+        url = 'https://github.com/zourzouvillys/jossip/'
+        
+        scm {
+          connection = 'scm:git:https://github.com/zourzouvillys/jossip.git'
+          developerConnection = 'scm:git:https://github.com/zourzouvillys/jossip.git'
+          url = 'https://github.com/zourzouvillys/jossip'
+        }
+        licenses {
+          license {
+            name = 'The Apache License, Version 2.0'
+            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+        developers {
+          developer {
+            id = 'zourzouvillys'
+            name = 'Theo Zourzouvillys'
+            email = 'theo@zrz.io'
+          }
+        }
+      }
+    }
+  }
+
+  repositories {
+  /*
+    maven {
+      name = "GitHubPackages"
+      url = "https://maven.pkg.github.com/zourzouvillys/jossip"
+      credentials {
+        username = System.getenv("GITHUB_ACTOR")
+        password = System.getenv("GITHUB_TOKEN")
+      }
+    }
+    */
+    maven {
+      url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+      // url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+      credentials {
+        username ossrhUsername
+        password ossrhPassword
+      }
+    }
+  }
+  
+  
+}

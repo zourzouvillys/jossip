@@ -1,0 +1,7 @@
+plugins {
+  id 'java-common-convention'
+  id 'java-junit-convention'
+  id 'java-library'
+}
+
+// https://github.com/apiguardian-team/apiguardian

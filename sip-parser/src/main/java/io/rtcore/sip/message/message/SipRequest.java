@@ -8,8 +8,6 @@ import com.google.common.primitives.UnsignedInteger;
 
 import io.rtcore.sip.message.auth.headers.Authorization;
 import io.rtcore.sip.message.base.api.RawHeader;
-import io.rtcore.sip.message.base.api.Token;
-import io.rtcore.sip.message.message.api.ContactSet;
 import io.rtcore.sip.message.message.api.EventSpec;
 import io.rtcore.sip.message.message.api.NameAddr;
 import io.rtcore.sip.message.message.api.RAck;
@@ -28,7 +26,7 @@ import io.rtcore.sip.message.uri.UriVisitor;
 /**
  * Representation of a SIP request.
  *
- * 
+ *
  *
  */
 public interface SipRequest extends SipMessage {
@@ -95,7 +93,7 @@ public interface SipRequest extends SipMessage {
   SipRequest withoutHeaders(final String... headerNames);
 
   @Override
-  SipRequest withoutHeaders(final SipHeaderDefinition... headers);
+  SipRequest withoutHeaders(final SipHeaderDefinition<?>... headers);
 
   @Override
   <T> SipRequest withReplacedHeader(final SipHeaderDefinition<T> header, final T value);
@@ -154,12 +152,12 @@ public interface SipRequest extends SipMessage {
     return RfcSerializerManager.defaultSerializer().serialize(this);
   }
 
-  default <T> T uri(UriVisitor<T> visitor) {
-    return uri().apply(visitor);
+  default <T> T uri(final UriVisitor<T> visitor) {
+    return this.uri().apply(visitor);
   }
 
   default OptionalInt expiresSeconds() {
-    Optional<UnsignedInteger> expires = expires();
+    final Optional<UnsignedInteger> expires = this.expires();
     return expires.map(e -> OptionalInt.of(e.intValue())).orElse(OptionalInt.empty());
   }
 
@@ -172,8 +170,8 @@ public interface SipRequest extends SipMessage {
    * always be SIP uris.
    */
 
-  default SipRequest withPrependedRecordRoute(SipUri address) {
-    return withPrependedRecordRoute(NameAddr.of(address));
+  default SipRequest withPrependedRecordRoute(final SipUri address) {
+    return this.withPrependedRecordRoute(NameAddr.of(address));
   }
 
 }

@@ -15,12 +15,14 @@ import io.rtcore.sip.message.message.api.SipMethod;
 
 public class DigestAuthUtils {
 
+  @SuppressWarnings("deprecation")
   private static final HashFunction md5 = Hashing.md5();
+
   private static final Joiner COLON = Joiner.on(":").useForNull("");
 
   public static String generateHA1(final String user, final String realm, final String password) {
     final String val = COLON.join(user, realm, password);
-    return Hashing.md5().hashString(val, StandardCharsets.UTF_8).toString();
+    return md5.hashString(val, StandardCharsets.UTF_8).toString();
   }
 
   public static String generateHA2(final SipMethod method, final String uri) {
@@ -56,12 +58,12 @@ public class DigestAuthUtils {
     if (auth.qop() == null) {
 
       return auth
-        .withUri(uri)
-        .withUsername(user)
-        .withResponse(generateResponse(HA1, auth.nonce(), HA2));
+          .withUri(uri)
+          .withUsername(user)
+          .withResponse(generateResponse(HA1, auth.nonce(), HA2));
 
     }
-    else if (auth.qop().equals("auth")) {
+    if (auth.qop().equals("auth")) {
 
       if (cnonce == null) {
         cnonce = generateNonce();
@@ -70,11 +72,11 @@ public class DigestAuthUtils {
       final String mnc = String.format("%08x", nc).toUpperCase();
 
       return auth
-        .withUri(uri)
-        .withUsername(user)
-        .withResponse(generateResponse(HA1, auth.nonce(), mnc, cnonce, "auth", HA2))
-        .withCnonce(cnonce)
-        .withNonceCount(nc);
+          .withUri(uri)
+          .withUsername(user)
+          .withResponse(generateResponse(HA1, auth.nonce(), mnc, cnonce, "auth", HA2))
+          .withCnonce(cnonce)
+          .withNonceCount(nc);
 
     }
 

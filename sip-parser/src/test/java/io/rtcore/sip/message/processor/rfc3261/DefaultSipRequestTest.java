@@ -13,8 +13,6 @@ import io.rtcore.sip.message.message.api.NameAddr;
 import io.rtcore.sip.message.message.api.RequestBuilder;
 import io.rtcore.sip.message.message.api.SipMethod;
 import io.rtcore.sip.message.message.api.headers.CallId;
-import io.rtcore.sip.message.processor.rfc3261.DefaultRequestBuilder;
-import io.rtcore.sip.message.processor.rfc3261.DefaultSipMessage;
 import io.rtcore.sip.message.uri.SipUri;
 
 public class DefaultSipRequestTest {

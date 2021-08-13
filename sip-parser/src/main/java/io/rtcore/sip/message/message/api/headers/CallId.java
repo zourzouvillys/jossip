@@ -6,14 +6,15 @@ package io.rtcore.sip.message.message.api.headers;
 import java.io.Serializable;
 
 /**
- * 
+ *
  */
 
 public final class CallId implements Serializable {
 
+  private static final long serialVersionUID = 1L;
   private final String value;
 
-  public CallId(CharSequence value) {
+  public CallId(final CharSequence value) {
     this.value = value.toString();
   }
 
@@ -32,16 +33,18 @@ public final class CallId implements Serializable {
 
   @Override
   public boolean equals(final Object o) {
-    if (o == this)
+    if (o == this) {
       return true;
-    if (!(o instanceof CallId))
+    }
+    if (!(o instanceof CallId other)) {
       return false;
-    final CallId other = (CallId) o;
+    }
     final Object this$value = this.value();
     final Object other$value = other.value();
     if (this$value == null ? other$value != null
-                           : !this$value.equals(other$value))
+        : !this$value.equals(other$value)) {
       return false;
+    }
     return true;
   }
 
@@ -50,11 +53,9 @@ public final class CallId implements Serializable {
     final int PRIME = 59;
     int result = 1;
     final Object $value = this.value();
-    result =
-      (result * PRIME)
+    return (result * PRIME)
         + ($value == null ? 43
                           : $value.hashCode());
-    return result;
   }
 
   @Override

@@ -46,25 +46,6 @@ final class SipTransactions {
   }
 
   /**
-   * if this response matches a transaction, dispatches within it. otherwise it
-   *
-   * @param res
-   * @return
-   */
-
-  private FlowableSubscriber<SipResponse> subscriberFor(final SipResponse res) {
-
-    final FlowableSubscriber<SipResponse> txn = this.pending.get(res.branchId().getValueWithoutCookie().get());
-
-    if (txn != null) {
-      return txn;
-    }
-
-    return this.unknownResponses;
-
-  }
-
-  /**
    * each transmission over a SIP transport requires a branch identifier to correlate the response
    * to the original request.
    *

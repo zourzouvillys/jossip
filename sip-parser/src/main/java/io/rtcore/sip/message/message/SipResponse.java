@@ -15,7 +15,7 @@ import io.rtcore.sip.message.uri.Uri;
 /**
  * Representation of a SIP response.
  *
- * 
+ *
  *
  */
 public interface SipResponse extends SipMessage {
@@ -73,7 +73,7 @@ public interface SipResponse extends SipMessage {
   SipResponse withoutHeaders(final String... headerNames);
 
   @Override
-  SipResponse withoutHeaders(final SipHeaderDefinition... headers);
+  SipResponse withoutHeaders(final SipHeaderDefinition<?>... headers);
 
   @Override
   SipResponse withFrom(final NameAddr na);

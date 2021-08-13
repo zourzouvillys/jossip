@@ -1,0 +1,94 @@
+import static SourceSet.MAIN_SOURCE_SET_NAME
+
+plugins {
+  id 'java-common-convention'
+  id 'java-junit-convention'
+  id 'eclipse-convention'
+}
+
+/////
+
+test {
+  useJUnitPlatform()
+}
+
+
+tasks.named('test') {
+  useJUnitPlatform()
+  testLogging {
+    events 'failed', 'skipped', 'passed'
+    exceptionFormat 'full'
+    // set options for log level DEBUG
+    debug {
+      events "started", "skipped", "failed"
+      exceptionFormat "full"
+    }
+    // remove standard output/error logging from --info builds
+    info.events = ["failed", "skipped"]  
+    displayGranularity = 2
+    showStackTraces = true
+    showExceptions = true
+    showCauses = true
+    outputs.upToDateWhen {false}
+    showStandardStreams = true
+  }
+}
+
+/////
+
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier = 'javadoc'
+  from javadoc
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+artifacts {
+  archives sourcesJar
+  archives javadocJar
+}
+
+
+/////
+
+dependencies {
+  // all java projects get this api.
+  implementation(libs.log4j.api)
+}
+
+dependencies {
+  compileOnly libs.autoService  
+  annotationProcessor libs.autoService
+  annotationProcessor libs.javax.inject
+  
+}
+
+dependencies {
+  modules {
+    module('javax.inject:javax.inject') {
+      replacedBy('jakarta.inject:jakarta.inject-api', 'Jakarta Inject API 1.x')
+    }
+    module('javax.annotation:jsr250-api') {
+      replacedBy('jakarta.annotation:jakarta.annotation-api', 'Jakarta Annotations API 1.x')
+    }
+  }
+}
+
+configurations.compileClasspath {
+  //exclude group: 'com.google.guava', module: 'failureaccess'
+}
+
+configurations.runtimeClasspath {
+   exclude group: 'com.google.guava', module: 'failureaccess'
+   exclude group: 'com.google.guava', module: 'listenablefuture'
+   exclude group: 'com.google.code.findbugs', module: 'jsr305'
+   exclude group: 'org.checkerframework', module: 'checker-qual'
+   exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
+   exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
+}
+
+

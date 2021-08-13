@@ -7,6 +7,7 @@ import static io.rtcore.sip.message.parsers.core.ParserUtils.chars;
 import static io.rtcore.sip.message.parsers.core.ParserUtils.read;
 
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
 import com.google.common.collect.Lists;
@@ -36,13 +37,13 @@ public class SipUriParser implements UriSchemeParser<SipUri> {
   public static final SipUriParser SIPS = new SipUriParser(SipUri.SIPS);
 
   private static final Parser<CharSequence> USER =
-    chars(
-      ALPHANUM_CHARS.concat("-_.!~*'()%&=+$,;?/").concat("#[]"));
+      chars(
+        ALPHANUM_CHARS.concat("-_.!~*'()%&=+$,;?/").concat("#[]"));
   private static final Parser<CharSequence> PASSWORD = chars(ALPHANUM_CHARS.concat("-_.!~*'()%&=+$,"));
   private static final Parser<CharSequence> COLON = ch(':');
   private static final Parser<CharSequence> AT = ch('@');
 
-  public static final Parser<UserInfo> USERINFO = new Parser<UserInfo>() {
+  public static final Parser<UserInfo> USERINFO = new Parser<>() {
     @Override
     public boolean find(final ParserContext ctx, final ValueListener<UserInfo> value) {
 
@@ -87,7 +88,7 @@ public class SipUriParser implements UriSchemeParser<SipUri> {
   };
 
   private static final Parser<CharSequence> HEADER_CHARS = chars(ALPHANUM_CHARS.concat("-_.!~*'()[]/?:+$%"));
-  private static final Parser<RawHeader> HEADER = new Parser<RawHeader>() {
+  private static final Parser<RawHeader> HEADER = new Parser<>() {
 
     @Override
     public boolean find(final ParserContext ctx, final ValueListener<RawHeader> value) {
@@ -105,7 +106,7 @@ public class SipUriParser implements UriSchemeParser<SipUri> {
       if (value != null) {
         value.set(new RawHeader(
           hname.toString(),
-          hvalue != null ? URLDecoder.decode(hvalue.toString())
+          hvalue != null ? URLDecoder.decode(hvalue.toString(), StandardCharsets.UTF_8)
                          : ""));
       }
       return true;
@@ -118,8 +119,8 @@ public class SipUriParser implements UriSchemeParser<SipUri> {
   };
   private static final Parser<CharSequence> QUESTION = ch('?');
   private static final Parser<CharSequence> AMP = ch('&');
-  
-  public static final Parser<Collection<RawHeader>> HEADERS = new Parser<Collection<RawHeader>>() {
+
+  public static final Parser<Collection<RawHeader>> HEADERS = new Parser<>() {
 
     @Override
     public boolean find(final ParserContext ctx, final ValueListener<Collection<RawHeader>> value) {

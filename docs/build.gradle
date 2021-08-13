@@ -1,0 +1,39 @@
+plugins {
+  id 'org.asciidoctor.jvm.convert'
+}
+
+asciidoctorj {
+  modules {
+   diagram.use()
+  }
+  attributes docinfo : 'shared'
+  attributes stylesheet : 'asciidoctor.css'
+  attributes toc : 'left'
+  attributes toclevel : 2
+}
+
+asciidoctor {
+
+  baseDir file('.')
+  sourceDir file('.')
+  
+  sources {
+    include 'index.adoc'
+  }
+  
+  outputDir file('build/docs')
+  
+  logDocuments = true
+  
+  attributes 'source-highlighter': 'coderay',
+             'coderay-linenums-mode': 'table',
+             'project-version': version,
+             icons: 'font',
+             imagesdir: 'img',
+             'data-uri': '',
+             linkattrs: true,
+             linkcss: true
+             // 'git-tag': badassJlinkPluginTag,
+             // 'blob-root': "https://github.com/beryx/badass-jlink-plugin/blob/$badassJlinkPluginTag"  
+}
+

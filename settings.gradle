@@ -6,3 +6,42 @@ include('sip-parser')
 include('sip-channels')
 include('sip-channels-netty')
 
+include('docs')
+
+// ---
+
+enableFeaturePreview('VERSION_CATALOGS')
+
+dependencyResolutionManagement {
+  defaultLibrariesExtensionName.set('deps')
+}
+
+dependencyResolutionManagement {
+
+  versionCatalogs {
+    libs {
+      from(files("gradle/libs.versions.toml"))
+    }
+    testLibs {
+      from(files('gradle/test-libs.versions.toml'))
+    }        
+  }
+
+  repositories {
+    
+    google() {
+      content {
+        includeGroupByRegex 'com\\.google\\..+'
+      }
+    }
+    
+    mavenCentral() {
+    }
+    
+  }
+
+  // do not allow project specific repos.      
+  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    
+}
+

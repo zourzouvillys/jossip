@@ -74,10 +74,12 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
 
     final String bodyString;
 
-    if ((this.body != null) && (this.body.length > 0))
+    if ((this.body != null) && (this.body.length > 0)) {
       bodyString = String.format(" [%s, %d bytes]", this.contentType(), this.body.length);
-    else
+    }
+    else {
       bodyString = "";
+    }
 
     if (this.cseq() == null) {
       return String.format("%d %s",
@@ -102,11 +104,11 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
     headers.add(header);
     headers.addAll(this.headers);
     final DefaultSipResponse result =
-      new DefaultSipResponse(
-        this.manager.adapt(RfcSipMessageManager.class),
-        this.version,
-        this.status,
-        headers);
+        new DefaultSipResponse(
+          this.manager.adapt(RfcSipMessageManager.class),
+          this.version,
+          this.status,
+          headers);
     result.body = this.body;
     return result;
   }
@@ -123,7 +125,7 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
 
   @Override
   public Optional<String> getServer() {
-    return this.getHeader(DefaultSipMessage.SERVER).map(e -> e.toString());
+    return this.getHeader(DefaultSipMessage.SERVER).map(CharSequence::toString);
   }
 
   @Override
@@ -151,24 +153,24 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   }
 
   @Override
-  public DefaultSipResponse withoutHeaders(final SipHeaderDefinition... headers) {
-    final List<SipHeaderDefinition> headerDefinitionList = Arrays.asList(headers);
+  public DefaultSipResponse withoutHeaders(final SipHeaderDefinition<?>... headers) {
+    final List<SipHeaderDefinition<?>> headerDefinitionList = Arrays.asList(headers);
 
     final Set<String> longHeaderNamesToRemove =
-      headerDefinitionList.stream()
+        headerDefinitionList.stream()
         .map(SipHeaderDefinition::getName)
         .collect(Collectors.toSet());
 
     final Set<String> compactHeaderNamesToRemove =
-      headerDefinitionList.stream()
+        headerDefinitionList.stream()
         .map(SipHeaderDefinition::getShortName)
         .filter(Optional::isPresent)
         .map(Optional::get)
-        .map((c) -> c.toString())
+        .map(c -> c.toString())
         .collect(Collectors.toSet());
 
     final List<String> headerNamesToRemove =
-      Sets
+        Sets
         .union(longHeaderNamesToRemove, compactHeaderNamesToRemove)
         .stream()
         .collect(Collectors.toList());
@@ -187,19 +189,18 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
       headers.add(new RawHeader(name, serializer.serialize(field)));
     }
 
-    final DefaultSipResponse result = new DefaultSipResponse(this.manager.adapt(RfcSipMessageManager.class), this.version, this.status, headers, this.body);
-    return result;
+    return new DefaultSipResponse(this.manager.adapt(RfcSipMessageManager.class), this.version, this.status, headers, this.body);
   }
 
   public SipResponse withBody(final byte[] body) {
     final DefaultSipResponse result =
-      new DefaultSipResponse(
-        this.manager.adapt(RfcSipMessageManager.class),
-        this.version,
-        this.status,
-        this.headers);
+        new DefaultSipResponse(
+          this.manager.adapt(RfcSipMessageManager.class),
+          this.version,
+          this.status,
+          this.headers);
     result.body = body;
-    return (SipResponse) result.withReplacedHeader(DefaultSipMessage.CONTENT_LENGTH, UnsignedInteger.fromIntBits(body.length));
+    return result.withReplacedHeader(DefaultSipMessage.CONTENT_LENGTH, UnsignedInteger.fromIntBits(body.length));
   }
 
   public SipResponse withBody(final String body) {
@@ -223,14 +224,12 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
     final String field = serializer.serialize(value);
     final List<RawHeader> headers = Lists.newArrayList(this.headers);
     headers.add(0, new RawHeader(header, field));
-    final DefaultSipResponse result =
-      new DefaultSipResponse(
-        this.manager.adapt(RfcSipMessageManager.class),
-        this.version,
-        this.status,
-        headers,
-        this.body);
-    return result;
+    return new DefaultSipResponse(
+      this.manager.adapt(RfcSipMessageManager.class),
+      this.version,
+      this.status,
+      headers,
+      this.body);
   }
 
   @Override
@@ -238,14 +237,12 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
     final String field = serializer.serialize(value);
     final List<RawHeader> headers = Lists.newArrayList(this.headers);
     headers.add(new RawHeader(header, field));
-    final DefaultSipResponse result =
-      new DefaultSipResponse(
-        this.manager.adapt(RfcSipMessageManager.class),
-        this.version,
-        this.status,
-        headers,
-        this.body);
-    return result;
+    return new DefaultSipResponse(
+      this.manager.adapt(RfcSipMessageManager.class),
+      this.version,
+      this.status,
+      headers,
+      this.body);
   }
 
   @Override
@@ -276,8 +273,8 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   @Override
   public SipResponse withCSeq(final long seqNum, final SipMethod method) {
     return this
-      .withoutHeaders(CSEQ)
-      .withAppended(CSEQ.getName(), new CSeq(seqNum, method));
+        .withoutHeaders(CSEQ)
+        .withAppended(CSEQ.getName(), new CSeq(seqNum, method));
   }
 
   @Override
@@ -288,17 +285,17 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   }
 
   @Override
-  public SipResponse withCallId(String value) {
+  public SipResponse withCallId(final String value) {
     return this
-      .withoutHeaders(CALL_ID)
-      .withAppended(CALL_ID.getName(), new CallId(value));
+        .withoutHeaders(CALL_ID)
+        .withAppended(CALL_ID.getName(), new CallId(value));
   }
 
   @Override
   public SipResponse withServer(final String value) {
     return this
-      .withoutHeaders(SERVER)
-      .withAppended(SERVER.getName(), value);
+        .withoutHeaders(SERVER)
+        .withAppended(SERVER.getName(), value);
   }
 
   @Override

@@ -14,7 +14,6 @@ import io.rtcore.sip.message.message.SipResponse;
 import io.rtcore.sip.message.processor.rfc3261.RfcSipMessageManager;
 import io.rtcore.sip.message.processor.rfc3261.SipMessageManager;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManagerBuilder;
-import io.rtcore.sip.message.processor.rfc3261.serializing.serializers.SipResponseSerializer;
 
 /**
  * 

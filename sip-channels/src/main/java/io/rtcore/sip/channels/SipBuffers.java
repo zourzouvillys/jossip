@@ -83,8 +83,8 @@ public final class SipBuffers {
    * <p>
    * A normal usage of this API is to extend the lifetime of the data source owned by the original
    * instance for doing extra processing before releasing it. For example, when combined with
-   * {@link HasByteBuffer}, a custom {@link io.grpc.MethodDescriptor.Marshaller} can take over the
-   * ownership of buffers containing inbound data and perform delayed deserialization.
+   * {@link HasByteBuffer}, a custom Marshaller can take over the ownership of buffers containing
+   * inbound data and perform delayed deserialization.
    */
 
   public interface Detachable {

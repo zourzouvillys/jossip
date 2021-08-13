@@ -8,7 +8,6 @@ import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.message.api.Reason;
 import io.rtcore.sip.message.parameters.impl.TokenParameterDefinition;
 import io.rtcore.sip.message.parsers.core.BaseParserTest;
-import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.ReasonParser;
 
 public class ReasonParserTest extends BaseParserTest<Reason> {
 

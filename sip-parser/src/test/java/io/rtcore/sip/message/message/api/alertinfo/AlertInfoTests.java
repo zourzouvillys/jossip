@@ -4,9 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import io.rtcore.sip.message.message.api.alertinfo.AlertInfoUriExtractor;
-import io.rtcore.sip.message.message.api.alertinfo.HttpUriAlertInfo;
-import io.rtcore.sip.message.message.api.alertinfo.WellKnownAlertInfo;
 import io.rtcore.sip.message.message.api.headers.ParameterizedUri;
 import io.rtcore.sip.message.uri.HttpUri;
 import io.rtcore.sip.message.uri.UrnService;

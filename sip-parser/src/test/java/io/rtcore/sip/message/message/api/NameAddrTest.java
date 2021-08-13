@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import com.google.common.net.HostAndPort;
 
 import io.rtcore.sip.message.base.api.Token;
-import io.rtcore.sip.message.message.api.NameAddr;
 import io.rtcore.sip.message.parameters.impl.TokenParameterDefinition;
 import io.rtcore.sip.message.uri.SipUri;
 

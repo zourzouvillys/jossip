@@ -5,7 +5,6 @@ package io.rtcore.sip.message.message.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
 
@@ -15,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import com.google.common.net.HostAndPort;
 
 import io.rtcore.sip.message.base.api.Token;
-import io.rtcore.sip.message.message.api.Via;
-import io.rtcore.sip.message.message.api.ViaProtocol;
 import io.rtcore.sip.message.parameters.api.QuotedString;
 import io.rtcore.sip.message.parameters.impl.DefaultParameters;
 import io.rtcore.sip.message.parameters.impl.TokenParameterDefinition;

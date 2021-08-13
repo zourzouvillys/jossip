@@ -13,7 +13,6 @@ import io.rtcore.sip.message.parameters.api.RawParameter;
 import io.rtcore.sip.message.parameters.api.TokenParameterValue;
 import io.rtcore.sip.message.parameters.impl.DefaultParameters;
 import io.rtcore.sip.message.parsers.core.BaseParserTest;
-import io.rtcore.sip.message.processor.uri.parsers.TelUriParser;
 import io.rtcore.sip.message.uri.TelUri;
 
 /**

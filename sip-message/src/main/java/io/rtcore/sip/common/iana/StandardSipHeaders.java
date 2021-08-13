@@ -537,7 +537,7 @@ public enum StandardSipHeaders implements SipHeaderId {
 
   @Override
   public String toString() {
-    return this.id.toString() + " " + this.headerNames();
+    return this.id.toString() + " " + this.headerNames() + " (" + this.spec + ")";
   }
 
 }

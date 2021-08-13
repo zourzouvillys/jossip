@@ -1,5 +1,8 @@
 package io.rtcore.sip.channels.endpoint;
 
+import java.net.InetSocketAddress;
+
+import io.rtcore.sip.channels.SipChannels;
 import io.rtcore.sip.channels.SipServerCallHandler;
 import io.rtcore.sip.channels.SipUdpSocket;
 
@@ -23,5 +26,9 @@ public interface SipEndpointBuilder extends SipSdkBuilder<SipEndpointBuilder, Si
 
   @Override
   ManagedSipEndpoint build();
+
+  default SipEndpointBuilder udp(final InetSocketAddress listenAddress) {
+    return this.socket(SipChannels.newUdpSocketBuilder().bindNow(listenAddress));
+  }
 
 }

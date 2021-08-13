@@ -124,7 +124,7 @@ public interface SipMessage extends Serializable {
    */
 
   default Uri fromAddress() {
-    return from().address();
+    return this.from().address();
   }
 
   /**
@@ -271,7 +271,7 @@ public interface SipMessage extends Serializable {
 
   SipMessage withoutHeaders(final String... headerNames);
 
-  SipMessage withoutHeaders(final SipHeaderDefinition... headers);
+  SipMessage withoutHeaders(final SipHeaderDefinition<?>... headers);
 
   SipMessage withBody(final MIMEType contentType, final byte[] body);
 
@@ -303,13 +303,13 @@ public interface SipMessage extends Serializable {
   Optional<MinSE> minSE();
 
   default Optional<Via> topVia() {
-    if (vias().isEmpty()) {
+    if (this.vias().isEmpty()) {
       return Optional.empty();
     }
-    return Optional.of(vias().get(0));
+    return Optional.of(this.vias().get(0));
   }
 
-  default <T> T apply(Function<SipMessage, T> applicator) {
+  default <T> T apply(final Function<SipMessage, T> applicator) {
     return applicator.apply(this);
   }
 
@@ -320,7 +320,7 @@ public interface SipMessage extends Serializable {
 
   Optional<SipContent> body(String disposition);
 
-  default void accept(Consumer<SipRequest> req, Consumer<SipResponse> res) {
+  default void accept(final Consumer<SipRequest> req, final Consumer<SipResponse> res) {
     if (this instanceof SipRequest) {
       req.accept((SipRequest) this);
     }
@@ -332,11 +332,11 @@ public interface SipMessage extends Serializable {
     }
   }
 
-  default <R> R apply(Function<SipRequest, R> req, Function<SipResponse, R> res) {
+  default <R> R apply(final Function<SipRequest, R> req, final Function<SipResponse, R> res) {
     if (this instanceof SipRequest) {
       return req.apply((SipRequest) this);
     }
-    else if (this instanceof SipResponse) {
+    if (this instanceof SipResponse) {
       return res.apply((SipResponse) this);
     }
     else {
@@ -346,13 +346,13 @@ public interface SipMessage extends Serializable {
 
   /**
    * attempts to adapt this instance to the specified class, otherwise returns an empty optional.
-   * 
+   *
    * @param <T>
    * @param klass
    * @return
    */
 
-  default <T> Optional<T> adapt(Class<T> klass) {
+  default <T> Optional<T> adapt(final Class<T> klass) {
     if (klass.isInstance(this)) {
       return Optional.of(klass.cast(this));
     }

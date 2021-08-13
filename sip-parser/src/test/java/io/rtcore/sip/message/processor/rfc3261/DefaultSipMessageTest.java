@@ -21,7 +21,6 @@ import io.rtcore.sip.message.message.SipRequest;
 import io.rtcore.sip.message.message.api.ContactSet;
 import io.rtcore.sip.message.message.api.NameAddr;
 import io.rtcore.sip.message.message.api.SipMethod;
-import io.rtcore.sip.message.processor.rfc3261.DefaultSipRequest;
 import io.rtcore.sip.message.processor.uri.RawUri;
 import io.rtcore.sip.message.uri.SipUri;
 

@@ -1,0 +1,19 @@
+= RTCore
+:authors: Theo Zourzouvillys
+:email: theo@zrz.io
+:version-label!:
+:sectanchors:
+:doctype: book
+:license: Apache License v2.0
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectnumlevels: 2
+:icons: font
+Theo Zourzouvillys <theo@zrz.io>
+3.0-SNAPSHOT, 30th July, 2021: Initial
+:toc:
+
+include::./preface.adoc[]
+include::./flows.adoc[]
+

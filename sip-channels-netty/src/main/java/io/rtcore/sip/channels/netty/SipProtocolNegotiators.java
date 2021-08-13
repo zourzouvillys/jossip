@@ -1,13 +1,11 @@
 package io.rtcore.sip.channels.netty;
 
-
 import io.netty.channel.ChannelHandler;
 import io.rtcore.sip.channels.SipChannelCredentials;
 import io.rtcore.sip.channels.TlsChannelCredentials;
 
 class SipProtocolNegotiators {
 
-  private static final int DEFAULT_SIP_TCP_PORT = 5060;
   private static final int DEFAULT_SIP_TLS_PORT = 5061;
 
   static SipProtocolNegotiator.ClientFactory forClient(final SipChannelCredentials creds) {

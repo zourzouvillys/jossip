@@ -16,8 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.net.HostAndPort;
 
-import io.rtcore.sip.message.parsers.core.HostAndPortParser;
-
 /**
  * 
  * 

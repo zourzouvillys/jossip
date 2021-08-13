@@ -15,11 +15,11 @@ public class PassTortureTests extends AbstractTortureTests {
 
   @ParameterizedTest(name = "{1}")
   @MethodSource("listMessages")
-  public void testPasses(Path file, String name) throws Exception {
-    test(file.toFile(), read(file.toFile()));
+  public void testPasses(final Path file, final String name) throws Exception {
+    this.test(file.toFile(), this.read(file.toFile()));
   }
 
-  public static Collection<Arguments> listMessages() {
+  static Collection<Arguments> listMessages() {
     final List<Arguments> files = Lists.newLinkedList();
     final File base = new File(FailTortureTests.class.getResource("/messages").getFile());
     for (final File msg : new File(base.getAbsolutePath() + File.separator + "/pass").listFiles()) {
