@@ -6,6 +6,8 @@ plugins {
   id 'io.rtcore.ossrh'
 }
 
+description = 'RTCore SIP: Netty implementation'
+
 dependencies {
   api project(':sip-parser')
   api project(':sip-channels')

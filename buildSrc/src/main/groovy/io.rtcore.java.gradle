@@ -4,6 +4,7 @@ plugins {
   id 'java-common-convention'
   id 'java-junit-convention'
   id 'eclipse-convention'
+  id 'maven-publish'
 }
 
 /////
@@ -16,11 +17,11 @@ test {
 tasks.named('test') {
   useJUnitPlatform()
   testLogging {
-    events 'failed', 'skipped', 'passed'
+    events 'failed', 'skipped'
     exceptionFormat 'full'
     // set options for log level DEBUG
     debug {
-      events "started", "skipped", "failed"
+      events 'passed', "started", "skipped", "failed"
       exceptionFormat "full"
     }
     // remove standard output/error logging from --info builds
@@ -90,5 +91,4 @@ configurations.runtimeClasspath {
    exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
    exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
 }
-
 

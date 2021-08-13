@@ -1,10 +1,8 @@
 plugins {
-  id 'org.asciidoctor.jvm.convert' version "3.3.2" apply false
-  id 'com.diffplug.eclipse.apt' version '3.31.0' apply false
-  id 'com.diffplug.eclipse.excludebuildfolder' version '3.31.0' apply false
-  id 'com.diffplug.eclipse.resourcefilters' version '3.31.0' apply false  
-  id 'com.github.spotbugs' version '4.7.2' apply false
-  id 'com.google.protobuf' version '0.8.17' apply false
+  id "com.google.osdetector" apply false
+  id "me.champeau.gradle.japicmp" apply false
+  id "net.ltgt.errorprone" apply false
+  id 'com.diffplug.eclipse.apt' apply false
   id 'eclipse'
 }
 
@@ -21,5 +19,4 @@ eclipse {
 subprojects { project ->
   project.group = 'io.zrz.rtcore.sip'
   project.version = version = project.hasProperty('currentVersion') ? project.property('currentVersion') : 'development'
-  // project.apply from: "${rootDir}/gradle/eclipse.gradle"  
 }

@@ -3,7 +3,10 @@ plugins {
   id 'java-library'
   id 'io.rtcore.java'
   id 'io.rtcore.immutables'
+  id 'io.rtcore.ossrh'
 }
+
+description = 'RTCore SIP: SIP Parser (Implementation)'
 
 dependencies {
   // common shared non parser related classes.
