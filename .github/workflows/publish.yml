@@ -18,20 +18,10 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 16
-    # - name: Cache
-    #   uses: actions/cache@v2.1.0
-    #   with:
-    #     # A list of files, directories, and wildcard patterns to cache and restore
-    #     path: |
-    #       ~/.gradle/caches
-    #       ~/.gradle/wrapper
-    #     key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-gradle-     
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Publish with Gradle
-      run: ./gradlew publish -DossrhUsername=${{ secrets.OSSRH_USERNAME }} -DossrhPassword=${{ secrets.OSSRH_TOKEN }}
+      run: ./gradlew publish -DossrhUsername=${{ secrets.OSSRH_USERNAME }} -DossrhPassword=${{ secrets.OSSRH_TOKEN }} -Dsignatory.keyId=E1DCAAA2
       env:
         GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
