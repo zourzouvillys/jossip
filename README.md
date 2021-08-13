@@ -1,5 +1,11 @@
 # Java SIP Stuff
 
+## Quick Start
+
+```
+implementation 'io.zrz.rtcore.sip:sip-parser:x.x.x'
+```
+
 
 ## RFC 3261 Message & Parser Library
 
