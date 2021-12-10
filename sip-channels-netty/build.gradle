@@ -17,7 +17,7 @@ dependencies {
   compileOnly 'com.google.auto.service:auto-service-annotations:1.0'
   annotationProcessor 'com.google.auto.service:auto-service:1.0'
   implementation 'io.reactivex.rxjava3:rxjava:3.1.0'  
-  api platform('io.netty:netty-bom:4.1.66.Final')
+  api platform('io.netty:netty-bom:4.1.71.Final')
   api 'io.netty:netty-codec'
   api 'io.netty:netty-transport'
   api 'io.netty:netty-buffer'
