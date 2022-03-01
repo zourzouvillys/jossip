@@ -74,7 +74,7 @@ public final class TlsSipConnection implements SipConnection {
         .connect(route.remoteAddress(), route.localAddress().orElseGet(() -> new InetSocketAddress(0)));
 
     this.channel =
-      toCompletableFuture(f)
+     toCompletableFuture(f)
         .thenCompose(c -> toCompletableFuture(c.pipeline().get(SslHandler.class).handshakeFuture()));
 
   }

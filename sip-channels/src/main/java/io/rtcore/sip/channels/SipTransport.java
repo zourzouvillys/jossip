@@ -6,7 +6,6 @@ import javax.net.ssl.SSLSession;
 
 import io.rtcore.sip.common.ImmutableHostPort;
 import io.rtcore.sip.common.iana.StandardSipTransportName;
-import io.rtcore.sip.message.message.api.Via;
 
 public interface SipTransport {
 

@@ -6,11 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.net.HostAndPort;
 
-import hu.akarnokd.rxjava3.jdk9interop.FlowInterop;
-import io.rtcore.sip.channels.SipCallOptions;
 import io.rtcore.sip.channels.endpoint.SipEndpoint;
 import io.rtcore.sip.channels.handlers.FunctionServerCallHandler;
-import io.rtcore.sip.common.Host;
 import io.rtcore.sip.message.message.SipResponseStatus;
 import io.rtcore.sip.message.message.api.SipMethod;
 import io.rtcore.sip.message.message.api.ViaProtocol;

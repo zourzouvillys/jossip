@@ -1,21 +1,15 @@
 package io.rtcore.sip.channels.netty.tcp;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
-
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLParameters;
 
 import io.netty.buffer.ByteBufAllocator;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslHandler;
-import io.netty.handler.timeout.IdleStateHandler;
 import io.rtcore.sip.channels.netty.codec.SipCodec;
-import io.rtcore.sip.channels.netty.codec.SipFrame;
 
 class TlsServerHandler extends ChannelInitializer<NioSocketChannel> {
 
