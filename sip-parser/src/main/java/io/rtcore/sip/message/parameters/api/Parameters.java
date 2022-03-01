@@ -12,7 +12,7 @@ import com.google.common.net.HostAndPort;
 import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManager;
 
-public interface Parameters {
+public interface Parameters extends io.rtcore.sip.common.Parameters {
 
   boolean contains(final Token name);
 
@@ -69,5 +69,10 @@ public interface Parameters {
   Iterator<RawParameter> iterator();
 
   Stream<RawParameter> stream();
+
+  Parameters withParameter(String token);
+
+  Parameters withToken(String token, String value);
+
 
 }

@@ -42,12 +42,12 @@ public enum StandardSipTransportName {
     return this.id;
   }
 
-  public Optional<StandardSipTransportName> of(final String name) {
+  public static Optional<StandardSipTransportName> of(final CharSequence name) {
     // all are uppercase, so we can just force to uppercase to confirm.
-    return Optional.ofNullable(lookup.get(name.toUpperCase()));
+    return Optional.ofNullable(lookup.get(name.toString().toUpperCase()));
   }
 
   private static final Map<String, StandardSipTransportName> lookup =
-      Arrays.stream(values()).collect(Collectors.toUnmodifiableMap(StandardSipTransportName::id, Function.identity()));
+    Arrays.stream(values()).collect(Collectors.toUnmodifiableMap(StandardSipTransportName::id, Function.identity()));
 
 }

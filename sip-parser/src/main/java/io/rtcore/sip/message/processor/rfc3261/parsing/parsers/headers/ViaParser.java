@@ -26,6 +26,8 @@ import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.ViaProtocolParser
  */
 public class ViaParser implements Parser<Via> {
 
+  public static final ViaParser INSTANCE = new ViaParser();
+
   public static Parser<ViaProtocol> PROTOCOL_PARSER = new ViaProtocolParser();
 
   @Override

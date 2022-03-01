@@ -82,6 +82,16 @@ public final class DefaultParameters implements Parameters {
   }
 
   @Override
+  public Parameters withParameter(String token) {
+    return withParameter(Token.from(token));
+  }
+
+  @Override
+  public Parameters withToken(String token, String value) {
+    return withParameter(Token.from(token), Token.from(value));
+  }
+
+  @Override
   public Parameters withParameter(Token name, Token value) {
     return this.withParameter(name, new TokenParameterValue(value));
   }
@@ -236,8 +246,13 @@ public final class DefaultParameters implements Parameters {
     return EMPTY;
   }
 
+  public static DefaultParameters of() {
+    return EMPTY;
+  }
+
   @Override
   public boolean isEmpty() {
     return this.raw.isEmpty();
   }
+
 }

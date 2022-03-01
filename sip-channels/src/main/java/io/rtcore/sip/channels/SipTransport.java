@@ -51,7 +51,7 @@ public interface SipTransport {
    *
    */
 
-  SipAttributes.Key<Via> ATTR_VIA = SipAttributes.Key.create("local-via");
+  // SipAttributes.Key<Via> ATTR_VIA = SipAttributes.Key.create("local-via");
 
   /**
    * the branch value (without magic cookie) set for incoming and outgoing messages. it is set by

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import io.rtcore.sip.common.iana.SipMethodId;
+import io.rtcore.sip.common.iana.SipMethods;
 import io.rtcore.sip.message.base.api.Token;
 
 /**
@@ -69,6 +71,7 @@ public final class SipMethod {
   }
 
   private final String method;
+  private final SipMethodId methodId;
 
   /**
    * We keep this private to allow us to use flyweight pattern.
@@ -78,6 +81,7 @@ public final class SipMethod {
 
   private SipMethod(final String method) {
     this.method = method.intern();
+    this.methodId = SipMethods.toMethodId(method);
   }
 
   /**
@@ -119,6 +123,10 @@ public final class SipMethod {
   @Override
   public String toString() {
     return this.method;
+  }
+
+  public SipMethodId methodId() {
+    return this.methodId;
   }
 
   public static SipMethod of(final CharSequence method) {
@@ -193,4 +201,5 @@ public final class SipMethod {
     }
     return false;
   }
+
 }

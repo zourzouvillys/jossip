@@ -1,6 +1,5 @@
 package io.rtcore.sip.channels.netty;
 
-
 import io.netty.channel.ChannelHandler;
 
 public interface SipProtocolNegotiator {
@@ -57,6 +56,8 @@ public interface SipProtocolNegotiator {
 
     @Override
     SipProtocolNegotiator newNegotiator();
+
+    int getDefaultPort();
 
   }
 

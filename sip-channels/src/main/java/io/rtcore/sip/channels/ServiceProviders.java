@@ -126,6 +126,7 @@ final class ServiceProviders {
    * An interface that allows us to get priority information about a provider.
    */
   public interface PriorityAccessor<T> {
+
     /**
      * Checks this provider is available for use, taking the current environment into consideration.
      * If {@code false}, no other methods are safe to be called.
@@ -139,5 +140,7 @@ final class ServiceProviders {
      * should be last in line.
      */
     int getPriority(T provider);
+
   }
+
 }

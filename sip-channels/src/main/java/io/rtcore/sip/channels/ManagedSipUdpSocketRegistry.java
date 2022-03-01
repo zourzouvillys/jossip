@@ -134,6 +134,7 @@ public class ManagedSipUdpSocketRegistry {
     public int getPriority(final ManagedSipUdpSocketProvider provider) {
       return provider.priority();
     }
+
   }
 
   /**

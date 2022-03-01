@@ -4,8 +4,10 @@ import java.util.OptionalInt;
 
 import org.immutables.value.Value;
 
+import com.google.common.net.HostAndPort;
+
 /**
- * provides guarunteed normalized host and port.
+ * provides guarunteed normalized host and optional port.
  *
  * hosts will be normalized per InternetDomainName.
  *
@@ -49,7 +51,18 @@ public interface HostPort {
     return of(Host.fromString(host));
   }
 
+  /**
+   *
+   * @param host
+   * @param port
+   *          if -1, same as no port.
+   * @return
+   */
+
   static HostPort fromParts(final String host, final int port) {
+    if (port == -1) {
+      return of(Host.fromString(host));
+    }
     return of(Host.fromString(host), port);
   }
 
@@ -57,4 +70,9 @@ public interface HostPort {
     return of(Host.fromString(host), port);
   }
 
+  static HostPort fromString(final String host) {
+    // strip optional brackets from IPv6 literals.
+    final HostAndPort parsedHost = HostAndPort.fromHost(host);
+    return fromParts(parsedHost.getHost(), parsedHost.getPortOrDefault(-1));
+  }
 }

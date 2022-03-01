@@ -15,9 +15,9 @@ configurations.all {
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(16)
+    languageVersion = JavaLanguageVersion.of(17)
   }
-  modularity.inferModulePath = true
+  //modularity.inferModulePath = true
 }
 
 javadoc {

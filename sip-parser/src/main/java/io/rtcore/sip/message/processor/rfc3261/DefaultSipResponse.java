@@ -1,6 +1,7 @@
 package io.rtcore.sip.message.processor.rfc3261;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,8 +43,20 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   private final SipResponseStatus status;
   private final String version;
 
+  public DefaultSipResponse(final int code) {
+    this(SipResponseStatus.fromCode(code));
+  }
+
+  public DefaultSipResponse(final int code, String reason) {
+    this(SipResponseStatus.fromCode(code).withReason(reason));
+  }
+
+  public DefaultSipResponse(final SipResponseStatus status) {
+    this(RfcSipMessageManager.defaultInstance(), status);
+  }
+
   public DefaultSipResponse(final SipMessageManager manager, final String version, final SipResponseStatus status) {
-    this(manager, version, status, null);
+    this(manager, version, status, List.of());
   }
 
   public DefaultSipResponse(final SipMessageManager manager, final SipResponseStatus status) {
@@ -56,6 +69,18 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
       final SipResponseStatus status,
       final Iterable<RawHeader> headers) {
     this(manager, version, status, headers, null);
+  }
+
+  public DefaultSipResponse(
+      final SipResponseStatus status,
+      final Iterable<RawHeader> headers,
+      final byte[] body) {
+    this(
+      RfcSipMessageManager.defaultInstance(),
+      VERSION,
+      status,
+      headers,
+      body);
   }
 
   public DefaultSipResponse(
@@ -94,8 +119,13 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   }
 
   @Override
-  public void accept(final SipMessageVisitor visitor) throws IOException {
-    visitor.visit(this);
+  public void accept(final SipMessageVisitor visitor) {
+    try {
+      visitor.visit(this);
+    }
+    catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
   }
 
   @Override
@@ -104,11 +134,11 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
     headers.add(header);
     headers.addAll(this.headers);
     final DefaultSipResponse result =
-        new DefaultSipResponse(
-          this.manager.adapt(RfcSipMessageManager.class),
-          this.version,
-          this.status,
-          headers);
+      new DefaultSipResponse(
+        this.manager.adapt(RfcSipMessageManager.class),
+        this.version,
+        this.status,
+        headers);
     result.body = this.body;
     return result;
   }
@@ -157,12 +187,12 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
     final List<SipHeaderDefinition<?>> headerDefinitionList = Arrays.asList(headers);
 
     final Set<String> longHeaderNamesToRemove =
-        headerDefinitionList.stream()
+      headerDefinitionList.stream()
         .map(SipHeaderDefinition::getName)
         .collect(Collectors.toSet());
 
     final Set<String> compactHeaderNamesToRemove =
-        headerDefinitionList.stream()
+      headerDefinitionList.stream()
         .map(SipHeaderDefinition::getShortName)
         .filter(Optional::isPresent)
         .map(Optional::get)
@@ -170,7 +200,7 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
         .collect(Collectors.toSet());
 
     final List<String> headerNamesToRemove =
-        Sets
+      Sets
         .union(longHeaderNamesToRemove, compactHeaderNamesToRemove)
         .stream()
         .collect(Collectors.toList());
@@ -194,11 +224,11 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
 
   public SipResponse withBody(final byte[] body) {
     final DefaultSipResponse result =
-        new DefaultSipResponse(
-          this.manager.adapt(RfcSipMessageManager.class),
-          this.version,
-          this.status,
-          this.headers);
+      new DefaultSipResponse(
+        this.manager.adapt(RfcSipMessageManager.class),
+        this.version,
+        this.status,
+        this.headers);
     result.body = body;
     return result.withReplacedHeader(DefaultSipMessage.CONTENT_LENGTH, UnsignedInteger.fromIntBits(body.length));
   }
@@ -273,8 +303,8 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   @Override
   public SipResponse withCSeq(final long seqNum, final SipMethod method) {
     return this
-        .withoutHeaders(CSEQ)
-        .withAppended(CSEQ.getName(), new CSeq(seqNum, method));
+      .withoutHeaders(CSEQ)
+      .withAppended(CSEQ.getName(), new CSeq(seqNum, method));
   }
 
   @Override
@@ -287,15 +317,15 @@ public final class DefaultSipResponse extends DefaultSipMessage implements SipRe
   @Override
   public SipResponse withCallId(final String value) {
     return this
-        .withoutHeaders(CALL_ID)
-        .withAppended(CALL_ID.getName(), new CallId(value));
+      .withoutHeaders(CALL_ID)
+      .withAppended(CALL_ID.getName(), new CallId(value));
   }
 
   @Override
   public SipResponse withServer(final String value) {
     return this
-        .withoutHeaders(SERVER)
-        .withAppended(SERVER.getName(), value);
+      .withoutHeaders(SERVER)
+      .withAppended(SERVER.getName(), value);
   }
 
   @Override

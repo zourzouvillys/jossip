@@ -14,6 +14,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.net.HostAndPort;
 
 import io.rtcore.sip.common.HostPort;
+import io.rtcore.sip.common.iana.StandardSipTransportName;
 import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.parameters.api.BaseParameterizedObject;
 import io.rtcore.sip.message.parameters.api.Parameters;
@@ -59,9 +60,9 @@ public final class Via extends BaseParameterizedObject<Via> {
   public Via(final ViaProtocol protocol, final HostAndPort host, final Parameters parameters) {
     this.protocol = protocol;
     this.sentBy =
-        HostPort.fromParts(host.getHost(),
-          host.hasPort() ? OptionalInt.of(host.getPort())
-                         : OptionalInt.empty());
+      HostPort.fromParts(host.getHost(),
+        host.hasPort() ? OptionalInt.of(host.getPort())
+                       : OptionalInt.empty());
 
     this.parameters = Optional.ofNullable(parameters).orElse(DefaultParameters.EMPTY);
   }
@@ -75,6 +76,10 @@ public final class Via extends BaseParameterizedObject<Via> {
   // -------
   //
   // -------
+
+  public StandardSipTransportName transportId() {
+    return StandardSipTransportName.of(this.protocol.transport()).orElseThrow();
+  }
 
   public ViaProtocol protocol() {
     return this.protocol;
@@ -153,13 +158,13 @@ public final class Via extends BaseParameterizedObject<Via> {
     int result = super.hashCode();
     final Object $protocol = this.protocol();
     result =
-        (result * PRIME)
+      (result * PRIME)
         + ($protocol == null ? 43
                              : $protocol.hashCode());
     final Object $sentBy = this.sentBy();
     return (result * PRIME)
-        + ($sentBy == null ? 43
-                           : $sentBy.hashCode());
+      + ($sentBy == null ? 43
+                         : $sentBy.hashCode());
   }
 
   @Override
@@ -177,13 +182,13 @@ public final class Via extends BaseParameterizedObject<Via> {
     final Object this$protocol = this.protocol();
     final Object other$protocol = other.protocol();
     if (this$protocol == null ? other$protocol != null
-        : !this$protocol.equals(other$protocol)) {
+                              : !this$protocol.equals(other$protocol)) {
       return false;
     }
     final Object this$sentBy = this.sentBy();
     final Object other$sentBy = other.sentBy();
     if (this$sentBy == null ? other$sentBy != null
-        : !this$sentBy.equals(other$sentBy)) {
+                            : !this$sentBy.equals(other$sentBy)) {
       return false;
     }
     return true;
@@ -203,6 +208,15 @@ public final class Via extends BaseParameterizedObject<Via> {
 
   public Optional<String> branchWithoutCookie() {
     return this.branch().flatMap(BranchId::getValueWithoutCookie);
+  }
+
+  public static Via of(ViaProtocol protocol, HostPort localName, BranchId branchId) {
+
+    if (localName.port().isPresent()) {
+      return of(protocol, HostAndPort.fromParts(localName.host().toUriString(), localName.port().getAsInt()), branchId);
+    }
+
+    return of(protocol, HostAndPort.fromHost(localName.host().toUriString()), branchId);
   }
 
 }

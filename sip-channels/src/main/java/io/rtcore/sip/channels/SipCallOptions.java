@@ -22,7 +22,8 @@ public interface SipCallOptions {
   Optional<SipCallCredentials> credentials();
 
   /**
-   * the target authority for this call.
+   * the target authority for this call. if not set, will be extracted from the runtime host or the
+   * message itself.
    */
 
   Optional<Host> authority();

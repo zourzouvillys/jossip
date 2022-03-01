@@ -1,8 +1,10 @@
 package io.rtcore.sip.message.uri;
 
+import java.net.URI;
 import java.util.Optional;
 import java.util.function.Function;
 
+import io.rtcore.sip.common.Host;
 import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.parameters.api.BaseParameterizedObject;
 import io.rtcore.sip.message.parameters.api.Parameters;
@@ -25,6 +27,11 @@ public final class TelUri extends BaseParameterizedObject<TelUri> implements Uri
   @Override
   public String getScheme() {
     return "tel";
+  }
+
+  @Override
+  public URI uri() {
+    return URI.create(this.toString());
   }
 
   @Override
@@ -74,14 +81,20 @@ public final class TelUri extends BaseParameterizedObject<TelUri> implements Uri
 
   @Override
   public boolean equals(final Object o) {
-    if (o == this) return true;
-    if (!(o instanceof TelUri)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof TelUri))
+      return false;
     final TelUri other = (TelUri) o;
-    if (!other.canEqual((Object) this)) return false;
-    if (!super.equals(o)) return false;
+    if (!other.canEqual((Object) this))
+      return false;
+    if (!super.equals(o))
+      return false;
     final Object this$number = this.number();
     final Object other$number = other.number();
-    if (this$number == null ? other$number != null : !this$number.equals(other$number)) return false;
+    if (this$number == null ? other$number != null
+                            : !this$number.equals(other$number))
+      return false;
     return true;
   }
 
@@ -94,7 +107,14 @@ public final class TelUri extends BaseParameterizedObject<TelUri> implements Uri
     final int PRIME = 59;
     int result = super.hashCode();
     final Object $number = this.number();
-    result = result * PRIME + ($number == null ? 43 : $number.hashCode());
+    result =
+      result * PRIME
+        + ($number == null ? 43
+                           : $number.hashCode());
     return result;
+  }
+
+  public SipUri toSipUri(Host host) {
+    return SipUri.fromTelUri(this, host);
   }
 }

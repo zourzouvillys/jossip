@@ -8,6 +8,7 @@ import io.rtcore.sip.message.parameters.api.QuotedString;
 import io.rtcore.sip.message.parameters.api.SipParameterDefinition;
 import io.rtcore.sip.message.parameters.impl.DefaultParameters;
 import io.rtcore.sip.message.parameters.tools.ParameterUtils;
+import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.AuthorizationParser;
 
 public class DigestCredentials extends Authorization {
 
@@ -65,7 +66,6 @@ public class DigestCredentials extends Authorization {
     return this.getParameter(NONCE).orElse(null);
   }
 
-
   public String username() {
     return this.getParameter(USERNAME).orElse(null);
   }
@@ -104,6 +104,14 @@ public class DigestCredentials extends Authorization {
 
   public Long nonceCount() {
     return this.getParameter(NONCE_COUNT).map(e -> Long.parseLong(e.toString())).orElse(null);
+  }
+
+  /**
+   * null if not set.
+   */
+
+  public String nc() {
+    return this.getParameter(NONCE_COUNT).map(Token::asString).orElse(null);
   }
 
   /**
@@ -164,5 +172,11 @@ public class DigestCredentials extends Authorization {
                        : "false"));
   }
 
+  public static DigestCredentials parseValue(String value) {
+    if (!value.startsWith("Digest ")) {
+      return null;
+    }
+    return new DigestCredentials(AuthorizationParser.INSTANCE.parseValue(value).parameters());
+  }
 
 }

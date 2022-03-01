@@ -1,10 +1,12 @@
 import io.rtcore.sip.channels.ManagedSipChannelProvider;
 import io.rtcore.sip.channels.ManagedSipUdpSocketProvider;
+import io.rtcore.sip.channels.SipNameResolver;
 
 module io.rtcore.sip.channels {
 
   uses ManagedSipUdpSocketProvider;
   uses ManagedSipChannelProvider;
+  uses SipNameResolver.Provider;
 
   exports io.rtcore.sip.channels;
   exports io.rtcore.sip.channels.utils;
@@ -21,7 +23,8 @@ module io.rtcore.sip.channels {
   requires java.base;
   requires com.google.common;
   requires io.reactivex.rxjava3;
-  requires org.immutables.value.annotations;
+  requires static org.immutables.value.annotations;
   requires java.logging;
+  requires com.github.akarnokd.rxjava3jdk9interop;
 
 }

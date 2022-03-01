@@ -18,8 +18,11 @@ import io.rtcore.sip.message.parsers.core.ParserUtils;
 
 public class CSeqParser implements Parser<CSeq> {
 
+  public static final CSeqParser INSTANCE = new CSeqParser();
+
   @Override
   public boolean find(final ParserContext ctx, final ValueListener<CSeq> value) {
+
     final int pos = ctx.position();
 
     final UnsignedInteger seq = ctx.read(ParserUtils.uint(1, 10), null);

@@ -32,10 +32,15 @@ class SipObjectDecoder extends ByteToMessageDecoder {
     this(8192, 1024);
   }
 
+  public SipObjectDecoder(int maxMessageSize) {
+    this(maxMessageSize, 1024);
+  }
+
   public SipObjectDecoder(final int maxMessageSize, final int initialBufferSize) {
     // super.setSingleDecode(false);
     // super.setDiscardAfterReads(4);
     this.maxMessageSize = maxMessageSize;
+    super.setSingleDecode(true);
   }
 
   @Override

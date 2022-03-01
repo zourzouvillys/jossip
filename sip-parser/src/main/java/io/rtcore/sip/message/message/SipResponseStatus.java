@@ -4,10 +4,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 
+import io.rtcore.sip.common.iana.SipStatusCategory;
+import io.rtcore.sip.common.iana.SipStatusCodes;
 import io.rtcore.sip.message.message.api.Reason;
 
 /**
@@ -170,6 +173,14 @@ public final class SipResponseStatus {
 
   public List<Reason> asReasonList() {
     return ImmutableList.of(Reason.fromSipStatus(this));
+  }
+
+  public SipStatusCategory category() {
+    return SipStatusCategory.forCode(this.code);
+  }
+
+  public Optional<SipStatusCodes> asStandardCode() {
+    return Optional.ofNullable(SipStatusCodes.forStatusCode(this.code));
   }
 
 }

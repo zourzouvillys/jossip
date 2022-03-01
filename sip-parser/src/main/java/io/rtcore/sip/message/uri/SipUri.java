@@ -1,16 +1,19 @@
 package io.rtcore.sip.message.uri;
 
 import java.net.InetSocketAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.OptionalInt;
 
 import com.google.common.net.HostAndPort;
 import com.google.common.net.UrlEscapers;
 
+import io.rtcore.sip.common.Host;
 import io.rtcore.sip.message.base.api.RawHeader;
 import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.message.api.SipTransport;
@@ -121,6 +124,16 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
     this.headers =
       headers == null ? new LinkedHashSet<>()
                       : headers;
+  }
+
+  @Override
+  public URI uri() {
+    try {
+      return URI.create(this.toString()).parseServerAuthority();
+    }
+    catch (URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   /**
@@ -235,6 +248,10 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
         Token.from("phone"));
   }
 
+  public static SipUri fromTelUri(TelUri tel, Host host) {
+    return fromTelUri(tel, HostAndPort.fromHost(host.toUriString()));
+  }
+
   public SipUri withHeader(final String name, final String value) {
     final Collection<RawHeader> headers = new LinkedList<>(this.headers);
     headers.add(new RawHeader(name, value));
@@ -259,8 +276,8 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
     return new SipUri(this.scheme, userinfo, this.host, this.parameters, this.headers);
   }
 
-  public SipUri withScheme(String scheme) {
-    return new SipUri(scheme, userinfo, this.host, this.parameters, this.headers);
+  public SipUri withScheme(final String scheme) {
+    return new SipUri(scheme, this.userinfo, this.host, this.parameters, this.headers);
   }
 
   public SipUri withUser(final String user) {
@@ -275,12 +292,7 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
 
   public Optional<String> getUserParameter() {
     if (this.parameters != null) {
-      return this.parameters.getParameter(PUser).map(new Function<Token, String>() {
-        @Override
-        public String apply(final Token input) {
-          return input.toString().toLowerCase();
-        }
-      });
+      return this.parameters.getParameter(PUser).map(input -> input.toString().toLowerCase());
     }
     return null;
   }
@@ -318,9 +330,7 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
         // Check other parameters
         && this.parameters.compareCommonParameters(other.parameters);
     }
-    else {
-      return false;
-    }
+    return false;
   }
 
   @Override
@@ -349,16 +359,28 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
     return this.headers;
   }
 
-  public static SipUri parseString(String input) {
+  public static SipUri parseString(final String input) {
     return SipUriParser.parse(input);
   }
 
   public Optional<SipTransport> transport() {
-    return getParameter(PTransport).map(SipTransport::fromToken);
+    return this.getParameter(PTransport).map(SipTransport::fromToken);
   }
 
   public String hostName() {
     return this.getHost().getHost();
   }
+
+  public Host host() {
+    return Host.fromString(this.hostName());
+  }
+
+  public OptionalInt port() {
+    if (this.getHost().hasPort()) {
+      return OptionalInt.of(this.getHost().getPort());
+    }
+    return OptionalInt.empty();
+  }
+
 
 }

@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
+import io.rtcore.sip.common.iana.SipHeaderId;
 import io.rtcore.sip.message.base.api.RawHeader;
 import io.rtcore.sip.message.content.SipContent;
 import io.rtcore.sip.message.message.api.BranchId;
@@ -214,7 +216,7 @@ public interface SipMessage extends Serializable {
    * @throws IOException
    */
 
-  void accept(final SipMessageVisitor visitor) throws IOException;
+  void accept(final SipMessageVisitor visitor);
 
   /**
    * The SIP version, e.g "SIP/2.0".
@@ -365,6 +367,10 @@ public interface SipMessage extends Serializable {
 
   default String asString() {
     return RfcSerializerManager.defaultSerializer().serialize(this);
+  }
+
+  default Stream<String> headerValues(SipHeaderId header) {
+    return this.getHeaders(header.headerNames()).stream().map(RawHeader::value);
   }
 
 }

@@ -1,0 +1,31 @@
+== TCP Connections
+
+:diagram-svg-type: inline
+:mermaid-format: svg
+:mermaid-config: mermaid.json
+
+=== TCP Flow Control
+
+incoming TCP connections are accepted at a TCP layer and kept in the pending event loop.  once a SIP message is received, we initiate processing.  this deferred behavior avoids work when for example the port is scanned.  if the incoming data is garbage, or nothing read in a short period the connection is closed and no backend events triggered.
+
+all incoming requests are dispatched independently, although any repeat transmissions are ignored.  we track the number of outstanding transactions and their types, which allows us to rate limit as well as keep track of connection usage.
+
+unexpected SIP responses received over a connection will be handled to the reply correlator.
+
+=== Dispatching
+
+messages are initially synchronized for admission control - this allows things which inherently need to be processed synchronously to provide stable results:
+
+  - limiting of the number of active transactions
+  - rates of new transactions (maybe of specific methods, out-of-dialog, etc)
+  - number of failed authentication attempts
+  - number of distinct usernames attempted
+
+dispatching clearance is different from actual execution.  for low rates of messages, there may not need to be any dispatching logic; we just let it happen.  only once a specific rate is hit would we move into serialized mode.
+
+the dispatcher can declare dependencies on other transactions - useful for ensuring a REGISTER transaction fully completes before processing an INVITE, for example.
+
+if the connection is terminated while processing a transaction, a cancellation is indicated.
+
+invocation responses to the dispatcher can include connection control messages, or they can be controlled directly.
+

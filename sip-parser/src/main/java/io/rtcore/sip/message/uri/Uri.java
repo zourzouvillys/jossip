@@ -1,5 +1,7 @@
 package io.rtcore.sip.message.uri;
 
+import java.net.URI;
+
 import io.rtcore.sip.common.Address;
 
 /**
@@ -16,5 +18,7 @@ public interface Uri extends Address {
   default String scheme() {
     return this.getScheme();
   }
+
+  URI uri();
 
 }

@@ -11,7 +11,7 @@ import com.google.common.collect.Lists;
 
 import io.rtcore.sip.message.uri.Uri;
 
-public class ContactSet implements Iterable<NameAddr> {
+public final class ContactSet implements Iterable<NameAddr> {
 
   public static ContactSet STAR = new ContactSet();
 

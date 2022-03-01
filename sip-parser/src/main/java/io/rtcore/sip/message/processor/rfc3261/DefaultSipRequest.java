@@ -1,6 +1,7 @@
 package io.rtcore.sip.message.processor.rfc3261;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,16 +45,16 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   private final String version;
   private final Uri uri;
 
-  public DefaultSipRequest(final RfcSipMessageManager manager, final SipMethod method, final Uri uri) {
+  public DefaultSipRequest(final SipMessageManager manager, final SipMethod method, final Uri uri) {
     this(manager, method, uri, VERSION);
   }
 
-  public DefaultSipRequest(final RfcSipMessageManager manager, final SipMethod method, final Uri uri, final String version) {
+  public DefaultSipRequest(final SipMessageManager manager, final SipMethod method, final Uri uri, final String version) {
     this(manager, method, uri, version, Lists.<RawHeader>newLinkedList(), null);
   }
 
   public DefaultSipRequest(
-      final RfcSipMessageManager manager,
+      final SipMessageManager manager,
       final SipMethod method,
       final Uri uri,
       final String version,
@@ -170,8 +171,13 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   }
 
   @Override
-  public void accept(final SipMessageVisitor visitor) throws IOException {
-    visitor.visit(this);
+  public void accept(final SipMessageVisitor visitor) {
+    try {
+      visitor.visit(this);
+    }
+    catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
   }
 
   @Override
@@ -227,7 +233,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   @Override
   public SipRequest withBody(final byte[] body) {
     final DefaultSipRequest result =
-        new DefaultSipRequest(this.manager.adapt(RfcSipMessageManager.class), this.method, this.uri, this.version, this.headers, body);
+      new DefaultSipRequest(this.manager.adapt(RfcSipMessageManager.class), this.method, this.uri, this.version, this.headers, body);
     return result.withReplacedHeader(DefaultSipMessage.CONTENT_LENGTH, UnsignedInteger.fromIntBits(body.length));
   }
 
@@ -253,7 +259,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
     final List<SipHeaderDefinition<?>> headerDefinitionList = Arrays.asList(headers);
     final Set<String> longHeaderNamesToRemove = headerDefinitionList.stream().map(SipHeaderDefinition::getName).collect(Collectors.toSet());
     final Set<String> compactHeaderNamesToRemove =
-        headerDefinitionList.stream()
+      headerDefinitionList.stream()
         .map(SipHeaderDefinition::getShortName)
         .filter(Optional::isPresent)
         .map(Optional::get)
@@ -346,15 +352,15 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   @Override
   public SipRequest withCallId(final String value) {
     return this
-        .withoutHeaders(CALL_ID)
-        .withAppended(CALL_ID.getName(), new CallId(value));
+      .withoutHeaders(CALL_ID)
+      .withAppended(CALL_ID.getName(), new CallId(value));
   }
 
   @Override
   public SipRequest withMaxForwards(final int value) {
     return this
-        .withoutHeaders(MAX_FORWARDS)
-        .withAppended(MAX_FORWARDS.getName(), UnsignedInteger.valueOf(value));
+      .withoutHeaders(MAX_FORWARDS)
+      .withAppended(MAX_FORWARDS.getName(), UnsignedInteger.valueOf(value));
   }
 
   @Override
@@ -383,19 +389,19 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
     final Object this$method = this.method();
     final Object other$method = other.method();
     if (this$method == null ? other$method != null
-        : !this$method.equals(other$method)) {
+                            : !this$method.equals(other$method)) {
       return false;
     }
     final Object this$version = this.version();
     final Object other$version = other.version();
     if (this$version == null ? other$version != null
-        : !this$version.equals(other$version)) {
+                             : !this$version.equals(other$version)) {
       return false;
     }
     final Object this$uri = this.uri();
     final Object other$uri = other.uri();
     if (this$uri == null ? other$uri != null
-        : !this$uri.equals(other$uri)) {
+                         : !this$uri.equals(other$uri)) {
       return false;
     }
     return true;
@@ -412,18 +418,18 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
     int result = super.hashCode();
     final Object $method = this.method();
     result =
-        (result * PRIME)
+      (result * PRIME)
         + ($method == null ? 43
                            : $method.hashCode());
     final Object $version = this.version();
     result =
-        (result * PRIME)
+      (result * PRIME)
         + ($version == null ? 43
                             : $version.hashCode());
     final Object $uri = this.uri();
     return (result * PRIME)
-        + ($uri == null ? 43
-                        : $uri.hashCode());
+      + ($uri == null ? 43
+                      : $uri.hashCode());
   }
 
   @Override

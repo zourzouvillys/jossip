@@ -56,6 +56,8 @@ import java.util.function.Consumer;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import io.rtcore.sip.common.SipHeaderLine;
+
 // @formatter:off
 // csvq --format FIXED -N 'select "\n/** " || REPLACE(Reference, "\n", "") || " */\n" || UPPER(REPLACE(`Header Name`, "-", "_")) || "(\"" || `Header Name` || "\"" || COALESCE(", \"" || compact || "\"", "") || ")," from `sip-parameters-2.csv`'
 // @formatter:on
@@ -477,8 +479,8 @@ public enum StandardSipHeaders implements SipHeaderId {
     this.compact = compact;
     this.spec = spec;
     this.names =
-        compact == null ? ImmutableSet.of(value)
-                        : ImmutableSet.of(value, compact.toString());
+      compact == null ? ImmutableSet.of(value)
+                      : ImmutableSet.of(value, compact.toString());
 
     this.id = URI.create(spec.urn() + ":" + this.normalized);
 
@@ -538,6 +540,10 @@ public enum StandardSipHeaders implements SipHeaderId {
   @Override
   public String toString() {
     return this.id.toString() + " " + this.headerNames() + " (" + this.spec + ")";
+  }
+
+  public SipHeaderLine ofLine(String line) {
+    return SipHeaderLine.of(this, line);
   }
 
 }

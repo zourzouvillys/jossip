@@ -1,12 +1,17 @@
 package io.rtcore.sip.message.uri;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 public final class HttpUri implements Uri {
+
   private final boolean secure;
   private final String opaque;
 
   @Override
   public String getScheme() {
-    return secure ? "https" : "http";
+    return secure ? "https"
+                  : "http";
   }
 
   public String toString() {
@@ -43,14 +48,29 @@ public final class HttpUri implements Uri {
   }
 
   @Override
+  public URI uri() {
+    try {
+      return URI.create(this.toString()).parseServerAuthority();
+    }
+    catch (URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
   public boolean equals(final Object o) {
-    if (o == this) return true;
-    if (!(o instanceof HttpUri)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof HttpUri))
+      return false;
     final HttpUri other = (HttpUri) o;
-    if (this.secure() != other.secure()) return false;
+    if (this.secure() != other.secure())
+      return false;
     final Object this$opaque = this.opaque();
     final Object other$opaque = other.opaque();
-    if (this$opaque == null ? other$opaque != null : !this$opaque.equals(other$opaque)) return false;
+    if (this$opaque == null ? other$opaque != null
+                            : !this$opaque.equals(other$opaque))
+      return false;
     return true;
   }
 
@@ -58,9 +78,16 @@ public final class HttpUri implements Uri {
   public int hashCode() {
     final int PRIME = 59;
     int result = 1;
-    result = result * PRIME + (this.secure() ? 79 : 97);
+    result =
+      result * PRIME
+        + (this.secure() ? 79
+                         : 97);
     final Object $opaque = this.opaque();
-    result = result * PRIME + ($opaque == null ? 43 : $opaque.hashCode());
+    result =
+      result * PRIME
+        + ($opaque == null ? 43
+                           : $opaque.hashCode());
     return result;
   }
+
 }

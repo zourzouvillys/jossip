@@ -16,19 +16,21 @@ import org.reactivestreams.FlowAdapters;
 import com.google.common.base.Verify;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.DefaultAddressedEnvelope;
 import io.netty.channel.ReflectiveChannelFactory;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.handler.codec.DatagramPacketEncoder;
 import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.subjects.CompletableSubject;
 import io.reactivex.rxjava3.subscribers.ResourceSubscriber;
 import io.rtcore.sip.channels.SipAttributes;
 import io.rtcore.sip.channels.SipTransport;
@@ -36,7 +38,7 @@ import io.rtcore.sip.channels.SipUdpSocket;
 import io.rtcore.sip.channels.SipWirePacket;
 import io.rtcore.sip.channels.SipWireProducer;
 import io.rtcore.sip.channels.netty.codec.SipObjectEncoder;
-import io.rtcore.sip.channels.netty.internal.RefCounted;
+import io.rtcore.sip.channels.netty.internal.NettySharedLoop;
 import io.rtcore.sip.common.ImmutableHostPort;
 import io.rtcore.sip.common.iana.StandardSipTransportName;
 import io.rtcore.sip.message.message.SipMessage;
@@ -44,12 +46,6 @@ import io.rtcore.sip.message.processor.rfc3261.RfcSipMessageManager;
 import io.rtcore.sip.message.processor.rfc3261.parsing.SipMessageParseFailureException;
 
 public class NettyUdpChannel extends SimpleChannelInboundHandler<DatagramPacket> implements SipUdpSocket {
-
-  // todo: this is a hack, fix.
-  private static final RefCounted<NioEventLoopGroup> defaultEventLoopGroup =
-      RefCounted.create(
-        NioEventLoopGroup::new,
-        NioEventLoopGroup::shutdownGracefully);
 
   private final DatagramChannel ch;
   private final Demand demand = new Demand();
@@ -76,7 +72,7 @@ public class NettyUdpChannel extends SimpleChannelInboundHandler<DatagramPacket>
     Objects.requireNonNull(bindAddress, "bindAddress");
 
     if (bootstrap.config().group() == null) {
-      bootstrap.group(defaultEventLoopGroup.get());
+      bootstrap.group(NettySharedLoop.allocate());
     }
 
     if (bootstrap.config().channelFactory() == null) {
@@ -84,7 +80,7 @@ public class NettyUdpChannel extends SimpleChannelInboundHandler<DatagramPacket>
     }
 
     this.ch =
-        (DatagramChannel) bootstrap
+      (DatagramChannel) bootstrap
         .handler(new UdpChannelInitializer())
         // we never auto-close on write failure, as a single write failure to one destinasiton does
         // not imply permanent failure.
@@ -125,7 +121,7 @@ public class NettyUdpChannel extends SimpleChannelInboundHandler<DatagramPacket>
           // only allow one at a time
           // todo: don't request more until buffer available...
           NettyUdpChannel.this.ch.writeAndFlush(new DefaultAddressedEnvelope<>(message, UdpFlow.this.target))
-          .addListener(f -> this.request(1));
+            .addListener(f -> this.request(1));
         }
 
         @Override
@@ -206,7 +202,7 @@ public class NettyUdpChannel extends SimpleChannelInboundHandler<DatagramPacket>
           final SipMessage msg = RfcSipMessageManager.defaultInstance().parseMessage(pkt.content().nioBuffer());
 
           final SipAttributes.Builder ab =
-              SipAttributes.newBuilder()
+            SipAttributes.newBuilder()
               .set(SipTransport.ATTR_TRANSPORT, StandardSipTransportName.UDP)
               .set(SipTransport.ATTR_LOCAL_ADDR, pkt.recipient())
               .set(SipTransport.ATTR_REMOTE_ADDR, pkt.sender());
@@ -281,6 +277,7 @@ public class NettyUdpChannel extends SimpleChannelInboundHandler<DatagramPacket>
 
   @Override
   public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
+    cause.toString();
     // todo: handle
     super.exceptionCaught(ctx, cause);
   }
@@ -308,12 +305,31 @@ public class NettyUdpChannel extends SimpleChannelInboundHandler<DatagramPacket>
       @Override
       public void cancel() {
         NettyUdpChannel.this.ch.close()
-        .addListener(f -> {
-          subscriber.onComplete();
-        });
+          .addListener(f -> {
+            subscriber.onComplete();
+          });
       }
 
     });
+
+  }
+
+  public Completable writeAndFlush(InetSocketAddress recipient, SipMessage msg) {
+
+    CompletableSubject subject = CompletableSubject.create();
+
+    ChannelFuture f = this.ch.writeAndFlush(new DefaultAddressedEnvelope<>(msg, recipient));
+
+    f.addListener(d -> {
+
+      if (f.isSuccess())
+        subject.onComplete();
+      else
+        subject.onError(f.cause());
+
+    });
+
+    return subject;
 
   }
 

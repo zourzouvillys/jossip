@@ -52,6 +52,7 @@ public class DigestAuthUtils {
       final String user,
       final String pass) {
 
+    
     final String HA1 = generateHA1(user, auth.realm(), pass);
     final String HA2 = generateHA2(method, uri);
 

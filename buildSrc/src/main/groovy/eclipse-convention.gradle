@@ -60,6 +60,8 @@ eclipse {
       
 }
 
+/*
+
 eclipse.classpath.file.whenMerged { classpath ->
   classpath.entries.find { it.path == '.apt_generated' }.each {
     classpath.entries.remove(it)
@@ -100,7 +102,7 @@ eclipse.classpath.file.whenMerged { classpath ->
   
 }
 
-
+*/
 
 
 def createProjectDisplayName() {

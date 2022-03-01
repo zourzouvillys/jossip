@@ -1,5 +1,7 @@
 package io.rtcore.sip.message.uri;
 
+import java.net.URI;
+
 /**
  * Matches a URN based URI, e.g rfc5031
  * 
@@ -42,16 +44,27 @@ public final class UrnUri implements Uri {
   }
 
   @Override
+  public URI uri() {
+    return URI.create(this.toString());
+  }
+
+  @Override
   public boolean equals(final Object o) {
-    if (o == this) return true;
-    if (!(o instanceof UrnUri)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof UrnUri))
+      return false;
     final UrnUri other = (UrnUri) o;
     final Object this$scheme = this.scheme();
     final Object other$scheme = other.scheme();
-    if (this$scheme == null ? other$scheme != null : !this$scheme.equals(other$scheme)) return false;
+    if (this$scheme == null ? other$scheme != null
+                            : !this$scheme.equals(other$scheme))
+      return false;
     final Object this$service = this.service();
     final Object other$service = other.service();
-    if (this$service == null ? other$service != null : !this$service.equals(other$service)) return false;
+    if (this$service == null ? other$service != null
+                             : !this$service.equals(other$service))
+      return false;
     return true;
   }
 
@@ -60,9 +73,15 @@ public final class UrnUri implements Uri {
     final int PRIME = 59;
     int result = 1;
     final Object $scheme = this.scheme();
-    result = result * PRIME + ($scheme == null ? 43 : $scheme.hashCode());
+    result =
+      result * PRIME
+        + ($scheme == null ? 43
+                           : $scheme.hashCode());
     final Object $service = this.service();
-    result = result * PRIME + ($service == null ? 43 : $service.hashCode());
+    result =
+      result * PRIME
+        + ($service == null ? 43
+                            : $service.hashCode());
     return result;
   }
 }

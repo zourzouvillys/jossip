@@ -1,0 +1,6 @@
+== Core Handling
+
+:diagram-svg-type: inline
+:mermaid-format: svg
+:mermaid-config: mermaid.json
+

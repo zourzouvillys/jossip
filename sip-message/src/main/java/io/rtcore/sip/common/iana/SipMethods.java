@@ -1,6 +1,9 @@
 package io.rtcore.sip.common.iana;
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -8,7 +11,7 @@ import com.google.common.collect.ImmutableMap;
 // csvq -q -N -f FIXED 'SELECT "/** " || Reference || " */\n" || Methods || "(\"" || Methods || "\")," FROM `sip-parameters-6.csv`'
 //@formatter:on
 
-public enum SipMethods {
+public enum SipMethods implements SipMethodId {
 
   /** [RFC3261] */
   ACK("ACK"),
@@ -42,7 +45,7 @@ public enum SipMethods {
 
   private final String method;
 
-  SipMethods(String method) {
+  private SipMethods(String method) {
     this.method = method;
   }
 
@@ -64,9 +67,35 @@ public enum SipMethods {
     return tokenToValue.get(token);
   }
 
-  private static final ImmutableMap<String, SipMethods> tokenToValue;
+  private static final Map<String, SipMethods> tokenToValue;
   static {
-    tokenToValue = Arrays.stream(values()).collect(ImmutableMap.toImmutableMap(e -> e.name(), e -> e));
+    tokenToValue = Arrays.stream(values()).collect(Collectors.toUnmodifiableMap(e -> e.name(), e -> e));
   }
-  
+
+  /**
+   * returns the standard enum value if known, else returns an {@link UnknownSipMethod} instance.
+   * 
+   * @param methodToken
+   * 
+   * @return
+   */
+
+  public static SipMethodId toMethodId(String methodToken) {
+
+    SipMethodId method = SipMethods.fromToken(methodToken);
+
+    if (method == null) {
+      // an unknown method, validate to make sure it only contains supported tokens.
+      return UnknownSipMethod.of(methodToken);
+    }
+
+    return method;
+
+  }
+
+  @Override
+  public SipMethods toStandard() {
+    return this;
+  }
+
 }

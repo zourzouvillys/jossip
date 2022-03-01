@@ -18,7 +18,7 @@ public interface DnsHost extends Host {
   @Value.Lazy
   @Override
   default String toUriString() {
-    return this.domainName().toString();
+    return this.domainName();
   }
 
   static ImmutableDnsHost of(final String domain) {

@@ -1,5 +1,8 @@
 package io.rtcore.sip.message.parsers.api;
 
+import io.rtcore.sip.message.parsers.core.ByteParserInput;
+import io.rtcore.sip.message.parsers.core.DefaultParserContext;
+
 /**
  * Base interface for all {@link Parser} implementations.
  * 
@@ -33,5 +36,34 @@ public interface Parser<T> {
    */
 
   boolean find(final ParserContext ctx, final ValueListener<T> value);
+
+  /**
+   * 
+   * @param na
+   * @return
+   */
+
+  default T parseValue(final String na) {
+    final ParserInput input = ByteParserInput.fromString(na);
+    final ParserContext context = new DefaultParserContext(input);
+    try {
+      return context.read(this);
+    }
+    finally {
+      if (input.remaining() > 0) {
+        throw new RuntimeException("trailing data");
+      }
+    }
+  }
+
+  /**
+   * parse the leading value, not failing if there is trailing data.
+   */
+
+  default T parseFirstValue(final String na) {
+    final ParserInput input = ByteParserInput.fromString(na);
+    final ParserContext context = new DefaultParserContext(input);
+    return context.read(this);
+  }
 
 }

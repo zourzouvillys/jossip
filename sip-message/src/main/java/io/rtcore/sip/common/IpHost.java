@@ -19,4 +19,8 @@ public interface IpHost extends Host {
     return InetAddresses.toUriString(this.inetAddress());
   }
 
+  static IpHost of(String address) {
+    return ImmutableIpHost.of(InetAddresses.forString(address));
+  }
+
 }

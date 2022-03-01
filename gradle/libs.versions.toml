@@ -4,7 +4,7 @@
 
 immutables            = "2.8.8"
 autoService           = "1.0"
-netty                 = "4.1.66.Final"
+netty                 = "4.1.68.Final"
 jackson               = "2.12.1"
 picocli               = "4.6.1"
 resilience4j          = "1.7.1"

@@ -2,6 +2,10 @@ package io.rtcore.sip.channels;
 
 import java.util.concurrent.Flow;
 
+/**
+ * provides an API for accepting incoming transport connections.
+ */
+
 public interface SipServer {
 
   /**

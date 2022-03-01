@@ -5,6 +5,7 @@ package io.rtcore.sip.message.message.api;
 
 import com.google.common.primitives.UnsignedInteger;
 
+import io.rtcore.sip.common.iana.SipMethodId;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManager;
 
 /**
@@ -41,6 +42,10 @@ public final class CSeq {
 
   public SipMethod method() {
     return this.method;
+  }
+
+  public SipMethodId methodId() {
+    return this.method.methodId();
   }
 
   @Override

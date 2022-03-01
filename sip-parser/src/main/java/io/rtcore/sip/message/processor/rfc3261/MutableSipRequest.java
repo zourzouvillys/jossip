@@ -4,13 +4,19 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.google.common.collect.Lists;
+import com.google.common.io.BaseEncoding;
+import com.google.common.math.IntMath;
 import com.google.common.net.HostAndPort;
+import com.google.common.primitives.Longs;
 import com.google.common.primitives.UnsignedInteger;
 
 import io.rtcore.sip.message.auth.headers.Authorization;
 import io.rtcore.sip.message.base.api.RawHeader;
+import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.message.SipRequest;
 import io.rtcore.sip.message.message.SipResponse;
 import io.rtcore.sip.message.message.api.CSeq;
@@ -293,6 +299,26 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
 
     return mb;
 
+  }
+
+  public static MutableSipRequest createDefaults(SipMethod method) {
+
+    String tag = BaseEncoding.base32().omitPadding().encode(Longs.toByteArray(ThreadLocalRandom.current().nextLong()));
+
+    final MutableSipRequest req = MutableSipRequest.create(method);
+
+    req.cseq(ThreadLocalRandom.current().nextInt(1, IntMath.pow(2, 30)), method);
+    req.callId(UUID.randomUUID().toString());
+    req.from(NameAddr.of(SipUri.create(HostAndPort.fromHost("unknown.invalid"))).withTag(tag));
+    req.to(SipUri.create(HostAndPort.fromHost("unknown.invalid")));
+
+    return req;
+
+  }
+
+  public MutableSipRequest ruri(Uri ruri) {
+    this.ruri = ruri;
+    return this;
   }
 
 }

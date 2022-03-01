@@ -1,11 +1,14 @@
 package io.rtcore.sip.message.message.api;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.function.Function;
 
 import com.google.common.base.Preconditions;
 
+import io.rtcore.sip.common.NameAddress;
 import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.parameters.api.BaseParameterizedObject;
 import io.rtcore.sip.message.parameters.api.FlagParameterValue;
@@ -23,7 +26,7 @@ import io.rtcore.sip.message.uri.Uri;
  * 
  */
 @SuppressWarnings("serial")
-public class NameAddr extends BaseParameterizedObject<NameAddr> implements Serializable {
+public class NameAddr extends BaseParameterizedObject<NameAddr> implements Serializable, NameAddress {
   /**
    * Static singleton *
    */
@@ -76,6 +79,10 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
     this.parameters = null;
   }
 
+  public URI uri() {
+    return this.address.uri();
+  }
+
   public Optional<String> getName() {
     return Optional.ofNullable(this.name);
   }
@@ -126,6 +133,10 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
 
   public Optional<Integer> getExpires() {
     return getParameter(PExpires).map(val -> Integer.parseInt(val.toString()));
+  }
+
+  public OptionalInt expiresSeconds() {
+    return getParameter(PExpires).map(val -> OptionalInt.of(Integer.parseInt(val.toString()))).orElse(OptionalInt.empty());
   }
 
   public NameAddr withExpires(int seconds) {
@@ -193,5 +204,10 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
   public static NameAddr of(Uri address) {
     return new NameAddr(address);
   }
-  
+
+  @Override
+  public Optional<String> displayName() {
+    return Optional.ofNullable(this.name);
+  }
+
 }

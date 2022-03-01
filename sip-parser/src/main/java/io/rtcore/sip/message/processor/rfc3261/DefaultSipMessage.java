@@ -191,7 +191,7 @@ public abstract class DefaultSipMessage implements SipMessage {
   private LoadingCache<SipHeaderDefinition<?>, Optional<?>> parsedHeaders;
 
   public DefaultSipMessage(final SipMessageManager manager) {
-    this(manager, null);
+    this(manager, List.of());
   }
 
   @Override

@@ -1,5 +1,7 @@
 package io.rtcore.sip.message.content;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 import org.immutables.value.Value;
@@ -21,5 +23,9 @@ public interface ByteSipContent extends SipContent {
 
   @Value.Parameter
   ByteBuffer content();
+
+  public default InputStream bufferedReader() {
+    return new ByteArrayInputStream(content().array());
+  }
 
 }

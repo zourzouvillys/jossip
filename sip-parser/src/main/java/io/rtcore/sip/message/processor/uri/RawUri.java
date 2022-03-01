@@ -1,5 +1,6 @@
 package io.rtcore.sip.message.processor.uri;
 
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 import io.rtcore.sip.message.parsers.api.Parser;
@@ -19,6 +20,11 @@ public final class RawUri implements Uri {
   private RawUri(String scheme, String opaque) {
     this.scheme = scheme;
     this.opaque = opaque;
+  }
+
+  @Override
+  public URI uri() {
+    return URI.create(this.toString());
   }
 
   @Override
@@ -42,7 +48,8 @@ public final class RawUri implements Uri {
        * the visitor so that other URI objects can do other sub-parsing or processing in their own
        * apply methods. One example could be parsing out a URN URI as defined in RFC 5031 (@see
        * io.rtcore.sip.message.message.api.uri.UrnUri) that parses out or verfies some some
-       * @see io.rtcore.sip.message.message.api.uri.UrnUri subclass the untimate gets passed to the visitor.
+       * @see io.rtcore.sip.message.message.api.uri.UrnUri subclass the untimate gets passed to the
+       * visitor.
        */
       return listener.uri().apply(visitor);
     }
@@ -64,15 +71,21 @@ public final class RawUri implements Uri {
 
   @Override
   public boolean equals(final Object o) {
-    if (o == this) return true;
-    if (!(o instanceof RawUri)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof RawUri))
+      return false;
     final RawUri other = (RawUri) o;
     final Object this$scheme = this.scheme;
     final Object other$scheme = other.scheme;
-    if (this$scheme == null ? other$scheme != null : !this$scheme.equals(other$scheme)) return false;
+    if (this$scheme == null ? other$scheme != null
+                            : !this$scheme.equals(other$scheme))
+      return false;
     final Object this$opaque = this.opaque;
     final Object other$opaque = other.opaque;
-    if (this$opaque == null ? other$opaque != null : !this$opaque.equals(other$opaque)) return false;
+    if (this$opaque == null ? other$opaque != null
+                            : !this$opaque.equals(other$opaque))
+      return false;
     return true;
   }
 
@@ -81,9 +94,15 @@ public final class RawUri implements Uri {
     final int PRIME = 59;
     int result = 1;
     final Object $scheme = this.scheme;
-    result = result * PRIME + ($scheme == null ? 43 : $scheme.hashCode());
+    result =
+      result * PRIME
+        + ($scheme == null ? 43
+                           : $scheme.hashCode());
     final Object $opaque = this.opaque;
-    result = result * PRIME + ($opaque == null ? 43 : $opaque.hashCode());
+    result =
+      result * PRIME
+        + ($opaque == null ? 43
+                           : $opaque.hashCode());
     return result;
   }
 }
