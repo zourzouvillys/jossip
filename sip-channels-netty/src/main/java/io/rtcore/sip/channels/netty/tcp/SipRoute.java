@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.net.ssl.SNIServerName;
-
 import org.immutables.value.Value;
 
 import io.rtcore.sip.common.DnsHost;
@@ -51,7 +49,7 @@ public interface SipRoute {
    * common name or subjectAltName.
    */
 
-  Set<SNIServerName> remoteServerNames();
+  Set<String> remoteServerNames();
 
   /**
    * the set of SOCKS proxies to traverse to get to the remote address. these values must be an

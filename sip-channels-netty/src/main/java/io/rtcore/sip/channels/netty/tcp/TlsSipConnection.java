@@ -27,9 +27,10 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslHandler;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.processors.UnicastProcessor;
-import io.rtcore.sip.channels.netty.codec.SipFrame;
-import io.rtcore.sip.channels.netty.codec.SipRequestFrame;
-import io.rtcore.sip.channels.netty.codec.SipResponseFrame;
+import io.rtcore.sip.channels.connection.SipConnection;
+import io.rtcore.sip.channels.connection.SipFrame;
+import io.rtcore.sip.channels.connection.SipRequestFrame;
+import io.rtcore.sip.channels.connection.SipResponseFrame;
 import io.rtcore.sip.common.HostPort;
 import io.rtcore.sip.common.SipHeaderLine;
 import io.rtcore.sip.common.iana.SipMethodId;
@@ -74,8 +75,22 @@ public final class TlsSipConnection implements SipConnection {
         .connect(route.remoteAddress(), route.localAddress().orElseGet(() -> new InetSocketAddress(0)));
 
     this.channel =
-     toCompletableFuture(f)
+      toCompletableFuture(f)
         .thenCompose(c -> toCompletableFuture(c.pipeline().get(SslHandler.class).handshakeFuture()));
+
+    this.channel.handle((ch, err) -> {
+      if (err != null) {
+        logger.info("error opening channel: {}", err);
+      }
+      else {
+        logger.info("connected to {}", ch);
+        this.closeFuture().handle((__, closeError) -> {
+          logger.info("connection {} closed, error: {}", ch, closeError);
+          return null;
+        });
+      }
+      return null;
+    });
 
   }
 
@@ -208,7 +223,17 @@ public final class TlsSipConnection implements SipConnection {
   @Override
   public CompletableFuture<?> send(SipFrame frame) {
     logger.debug("sending {}", frame);
-    return this.channel.thenApplyAsync(ch -> toCompletableFuture(ch.writeAndFlush(frame)));
+    // wait for the channel to become ready itself.
+    return this.channel
+      // then send.
+      .thenComposeAsync(ch -> toCompletableFuture(ch.writeAndFlush(frame)))
+    //
+    ;
+  }
+
+  @Override
+  public CompletionStage<?> closeFuture() {
+    return this.channel.thenComposeAsync(ch -> toCompletableFuture(ch.closeFuture()));
   }
 
   /**

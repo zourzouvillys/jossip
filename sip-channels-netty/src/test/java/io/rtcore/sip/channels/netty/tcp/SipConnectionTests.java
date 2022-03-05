@@ -18,9 +18,10 @@ import com.google.common.hash.Hashing;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 import io.reactivex.rxjava3.annotations.NonNull;
+import io.rtcore.sip.channels.connection.SipConnection;
+import io.rtcore.sip.channels.connection.SipRequestFrame;
+import io.rtcore.sip.channels.connection.SipClientExchange.Event;
 import io.rtcore.sip.channels.netty.codec.SipFrameUtils;
-import io.rtcore.sip.channels.netty.codec.SipRequestFrame;
-import io.rtcore.sip.channels.netty.tcp.SipClientExchange.Event;
 import io.rtcore.sip.common.iana.SipMethods;
 import io.rtcore.sip.common.iana.SipStatusCodes;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
@@ -63,7 +64,7 @@ class SipConnectionTests {
         ImmutableSipRoute route =
           ImmutableSipRoute.builder()
             .transportProtocol(StandardSipTransportName.TLS)
-            .addRemoteServerNames(new SNIHostName("localhost"))
+            .addRemoteServerNames("localhost")
             .remoteAddress(server.localAddress())
             .build();
 

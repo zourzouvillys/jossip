@@ -64,8 +64,7 @@ dependencies {
 dependencies {
   compileOnly libs.autoService  
   annotationProcessor libs.autoService
-  annotationProcessor libs.javax.inject
-  
+  annotationProcessor libs.javax.inject    
 }
 
 dependencies {

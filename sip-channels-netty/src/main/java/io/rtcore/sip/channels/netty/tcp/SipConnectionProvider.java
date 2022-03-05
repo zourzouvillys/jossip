@@ -1,5 +1,7 @@
 package io.rtcore.sip.channels.netty.tcp;
 
+import io.rtcore.sip.channels.connection.SipConnection;
+
 public interface SipConnectionProvider {
 
   /**

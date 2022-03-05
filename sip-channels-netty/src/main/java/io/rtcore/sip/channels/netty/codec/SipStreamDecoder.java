@@ -17,6 +17,8 @@ import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.TooLongFrameException;
 import io.netty.util.ByteProcessor;
 import io.netty.util.internal.AppendableCharSequence;
+import io.rtcore.sip.channels.connection.ImmutableSipRequestFrame;
+import io.rtcore.sip.channels.connection.ImmutableSipResponseFrame;
 import io.rtcore.sip.common.ImmutableSipHeaderLine;
 import io.rtcore.sip.common.SipHeaderLine;
 import io.rtcore.sip.common.SipInitialLine;

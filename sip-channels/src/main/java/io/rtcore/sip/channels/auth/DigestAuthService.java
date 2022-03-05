@@ -59,8 +59,6 @@ public interface DigestAuthService {
 
   /**
    * 
-   * @param req
-   * @return
    */
 
   static DigestContext createDigestContext(SipRequest req, String realm) {

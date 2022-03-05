@@ -1,7 +1,6 @@
-package io.rtcore.sip.channels.netty.tcp;
+package io.rtcore.sip.channels.connection;
 
 import io.reactivex.rxjava3.core.Flowable;
-import io.rtcore.sip.channels.netty.codec.SipResponseFrame;
 
 public interface SipClientExchange extends SipExchange {
 

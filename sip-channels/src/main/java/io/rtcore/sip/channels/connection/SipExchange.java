@@ -1,6 +1,4 @@
-package io.rtcore.sip.channels.netty.tcp;
-
-import io.rtcore.sip.channels.netty.codec.SipRequestFrame;
+package io.rtcore.sip.channels.connection;
 
 public interface SipExchange {
 

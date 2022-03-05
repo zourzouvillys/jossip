@@ -1,18 +1,23 @@
-package io.rtcore.sip.channels.netty.tcp;
+package io.rtcore.sip.channels.connection;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 import io.reactivex.rxjava3.core.Flowable;
-import io.rtcore.sip.channels.netty.codec.SipFrame;
-import io.rtcore.sip.channels.netty.codec.SipRequestFrame;
 
 public interface SipConnection {
+
+  /**
+   * the close future.
+   */
+
+  CompletionStage<?> closeFuture();
 
   /**
    * perform a SIP exchange over this connection.
    */
 
-  SipStreamClientExchange exchange(SipRequestFrame req);
+  SipClientExchange exchange(SipRequestFrame req);
 
   /**
    * send a single SIP frame, as is.
@@ -29,7 +34,7 @@ public interface SipConnection {
   /**
    * close the connection.
    */
-  
+
   void close();
 
 }

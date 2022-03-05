@@ -7,7 +7,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-import java.util.stream.Collectors;
 
 import com.google.common.base.Joiner;
 import com.google.common.hash.HashFunction;
@@ -43,7 +42,7 @@ public class DigestAuthorizer implements DigestAuthService {
 
   @Override
   public CompletionStage<DigestChallengeRequest> calculateChallenge(DigestContext ctx) {
-    return CompletableFuture.failedStage(new IllegalArgumentException());
+    return CompletableFuture.completedStage(new DigestChallengeRequest(ctx.realm()));
   }
 
   /**
@@ -148,13 +147,13 @@ public class DigestAuthorizer implements DigestAuthService {
     return hashFunction.hashBytes(req.body()).toString();
   }
 
-  private List<DigestCredentials> extractDigestResponse(List<Authorization> auths, String realm) {
+  public Optional<DigestCredentials> extractCredentials(List<Authorization> auths, String realm) {
     return auths.stream()
       .map(auth -> auth.as(DigestCredentials.class))
       .filter(Optional::isPresent)
       .map(Optional::get)
       .filter(creds -> realmMatch(realm, creds.realm()))
-      .collect(Collectors.toList());
+      .findFirst();
   }
 
   private boolean realmMatch(String wanted, String provided) {

@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.rtcore.sip.channels.netty.codec.SipFrame;
+import io.rtcore.sip.channels.connection.SipFrame;
 
 /**
  * handler which publishes incoming messages to a specified publisher.

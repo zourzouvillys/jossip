@@ -4,7 +4,9 @@ import java.util.Optional;
 
 import org.immutables.value.Value;
 
+import io.rtcore.sip.common.iana.SipHeaderId;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
+import io.rtcore.sip.common.iana.UnknownSipHeaderId;
 
 @Value.Immutable
 @Value.Style(jdkOnly = true, allowedClasspathAnnotations = { Override.class })
@@ -34,12 +36,21 @@ public interface SipHeaderLine extends WithSipHeaderLine {
     return Optional.ofNullable(StandardSipHeaders.fromString(headerName()));
   }
 
+  @Value.Derived
+  default SipHeaderId headerId() {
+    return Optional.<SipHeaderId>ofNullable(StandardSipHeaders.fromString(headerName())).orElseGet(() -> UnknownSipHeaderId.of(headerName()));
+  }
+
   /**
    * 
    */
 
   static SipHeaderLine of(StandardSipHeaders name, String value) {
     return ImmutableSipHeaderLine.of(name.prettyName(), value);
+  }
+
+  static SipHeaderLine of(String name, String value) {
+    return ImmutableSipHeaderLine.of(name, value);
   }
 
 }

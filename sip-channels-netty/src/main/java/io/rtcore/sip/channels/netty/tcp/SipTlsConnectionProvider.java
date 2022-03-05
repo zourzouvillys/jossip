@@ -2,6 +2,7 @@ package io.rtcore.sip.channels.netty.tcp;
 
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.ssl.SslContext;
+import io.rtcore.sip.channels.connection.SipConnection;
 
 public class SipTlsConnectionProvider implements SipConnectionProvider {
 

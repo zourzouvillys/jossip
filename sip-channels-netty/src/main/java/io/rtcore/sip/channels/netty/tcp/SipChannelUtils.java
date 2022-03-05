@@ -2,7 +2,7 @@ package io.rtcore.sip.channels.netty.tcp;
 
 import java.io.PrintStream;
 
-import io.rtcore.sip.channels.netty.codec.SipFrame;
+import io.rtcore.sip.channels.connection.SipFrame;
 import io.rtcore.sip.common.SipHeaderLine;
 import io.rtcore.sip.common.SipInitialLine;
 import io.rtcore.sip.common.SipInitialLine.RequestLine;

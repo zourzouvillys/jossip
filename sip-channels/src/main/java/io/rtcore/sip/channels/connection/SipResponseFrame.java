@@ -1,4 +1,4 @@
-package io.rtcore.sip.channels.netty.codec;
+package io.rtcore.sip.channels.connection;
 
 import java.util.List;
 import java.util.Optional;

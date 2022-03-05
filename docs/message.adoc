@@ -1,0 +1,30 @@
+## Common
+
+- To (NameAddr)
+- From (NameAddr)
+- Call-ID (String)
+- CSeq (CSeq)
+
+
+- Via (ViaList)
+- Contact (ContactSet)
+
+## 
+
+- Route (RouteSet)
+- Record-Route (RouteSet)
+
+
+## Request
+
+- Max-Forwards (Int)
+- User-Agent (UserAgent)
+
+## Response
+
+- Server (UserAgent)
+
+## Body
+
+- Content-Length 
+- Content-Type

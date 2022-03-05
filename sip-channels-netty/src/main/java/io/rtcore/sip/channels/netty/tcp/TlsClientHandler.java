@@ -1,9 +1,10 @@
 package io.rtcore.sip.channels.netty.tcp;
 
 import java.net.InetSocketAddress;
-import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
+import javax.net.ssl.SNIHostName;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLParameters;
 
@@ -15,8 +16,8 @@ import io.netty.handler.proxy.Socks5ProxyHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.IdleStateHandler;
+import io.rtcore.sip.channels.connection.SipFrame;
 import io.rtcore.sip.channels.netty.codec.SipCodec;
-import io.rtcore.sip.channels.netty.codec.SipFrame;
 
 class TlsClientHandler extends ChannelInitializer<NioSocketChannel> {
 
@@ -45,7 +46,11 @@ class TlsClientHandler extends ChannelInitializer<NioSocketChannel> {
     SSLEngine sslEngine = handler.engine();
     SSLParameters sslParameters = sslEngine.getSSLParameters();
     sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
-    sslParameters.setServerNames(List.copyOf(this.route.remoteServerNames()));
+    sslParameters.setServerNames(
+      this.route.remoteServerNames()
+        .stream()
+        .map(name -> new SNIHostName(name))
+        .collect(Collectors.toList()));
     sslEngine.setSSLParameters(sslParameters);
 
     // the TLS handler.

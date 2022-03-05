@@ -2,6 +2,8 @@ package io.rtcore.sip.channels.netty.codec;
 
 import com.google.common.collect.Iterables;
 
+import io.rtcore.sip.channels.connection.SipRequestFrame;
+import io.rtcore.sip.channels.connection.SipResponseFrame;
 import io.rtcore.sip.common.iana.SipStatusCodes;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
 

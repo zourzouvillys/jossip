@@ -14,4 +14,9 @@ public interface TcpConnectionConfig {
     return 8192;
   }
 
+  @Value.Default
+  default boolean proxyProtocol() {
+    return false;
+  }
+
 }

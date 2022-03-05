@@ -2,17 +2,25 @@ package io.rtcore.sip.channels.netty.tcp;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.ssl.SslContext;
 import io.reactivex.rxjava3.core.Flowable;
-import io.rtcore.sip.channels.netty.codec.SipFrame;
-import io.rtcore.sip.channels.netty.codec.SipRequestFrame;
+import io.rtcore.sip.channels.connection.SipClientExchange;
+import io.rtcore.sip.channels.connection.SipConnection;
+import io.rtcore.sip.channels.connection.SipFrame;
+import io.rtcore.sip.channels.connection.SipRequestFrame;
 
 public class SipConnectionPool implements SipConnectionProvider {
+
+  private static final Logger logger = LoggerFactory.getLogger(SipConnectionPool.class);
 
   private final SipConnectionProvider provider;
   private final Map<SipRoute, ManagedSipConnection> connections = new ConcurrentHashMap<>();
@@ -31,16 +39,30 @@ public class SipConnectionPool implements SipConnectionProvider {
   }
 
   private ManagedSipConnection _requestConnection(SipRoute route) {
-    return new ManagedSipConnection(this.provider.requestConnection(route));
+    logger.info("adding connection for route {}", route);
+    return new ManagedSipConnection(route, this.provider.requestConnection(route));
   }
 
   private class ManagedSipConnection {
 
-    private SipConnection conn;
-    private AtomicInteger refcnt = new AtomicInteger(0);
+    //
+    private final SipRoute route;
+    private final SipConnection conn;
+    private final AtomicInteger refcnt = new AtomicInteger(0);
 
-    public ManagedSipConnection(SipConnection conn) {
+    public ManagedSipConnection(SipRoute route, SipConnection conn) {
+
       this.conn = conn;
+      this.route = route;
+
+      this.conn
+        .closeFuture()
+        .handle((val, ex) -> {
+          logger.info("removing connection for {}", route);
+          connections.remove(route);
+          return null;
+        });
+
     }
 
     public SipConnection checkout() {
@@ -67,7 +89,7 @@ public class SipConnectionPool implements SipConnectionProvider {
       }
 
       @Override
-      public SipStreamClientExchange exchange(SipRequestFrame req) {
+      public SipClientExchange exchange(SipRequestFrame req) {
         return conn.exchange(req);
       }
 
@@ -86,6 +108,15 @@ public class SipConnectionPool implements SipConnectionProvider {
         if (this.closed.compareAndExchange(false, true) == false) {
           unref();
         }
+      }
+
+      /**
+       * called when the underlying checked out connection is closed.
+       */
+
+      @Override
+      public CompletionStage<?> closeFuture() {
+        return conn.closeFuture();
       }
 
     }

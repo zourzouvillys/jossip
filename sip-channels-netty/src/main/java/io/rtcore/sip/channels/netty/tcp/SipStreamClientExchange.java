@@ -6,8 +6,10 @@ import com.google.common.base.Verify;
 
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.processors.UnicastProcessor;
-import io.rtcore.sip.channels.netty.codec.SipRequestFrame;
-import io.rtcore.sip.channels.netty.codec.SipResponseFrame;
+import io.rtcore.sip.channels.connection.SipClientExchange;
+import io.rtcore.sip.channels.connection.SipConnection;
+import io.rtcore.sip.channels.connection.SipRequestFrame;
+import io.rtcore.sip.channels.connection.SipResponseFrame;
 import io.rtcore.sip.channels.netty.tcp.TlsSipConnection.ClientBranchId;
 import io.rtcore.sip.common.iana.SipMethods;
 
@@ -43,6 +45,12 @@ class SipStreamClientExchange implements SipClientExchange {
 
     // request the transport transmit this request.
     this.send = this.conn.send(this.req);
+
+    // then completing exceptionally, we 
+    this.send.exceptionally(ex -> {
+      this.receiver.onError(ex);
+      return null;
+    });
 
   }
 
