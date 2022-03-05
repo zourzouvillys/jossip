@@ -1,4 +1,4 @@
-package io.rtcore.sip.channels.netty.tcp;
+package io.rtcore.sip.channels.connection;
 
 import java.net.InetSocketAddress;
 import java.util.List;

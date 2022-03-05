@@ -1,9 +1,6 @@
-package io.rtcore.sip.channels.netty.tcp;
+package io.rtcore.sip.channels.connection;
 
 import java.util.concurrent.CompletionStage;
-
-import io.rtcore.sip.channels.connection.SipExchange;
-import io.rtcore.sip.channels.connection.SipResponseFrame;
 
 public interface SipServerExchange extends SipExchange {
 

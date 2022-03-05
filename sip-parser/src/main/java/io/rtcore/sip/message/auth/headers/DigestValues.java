@@ -114,7 +114,7 @@ public interface DigestValues {
 
   public class Builder extends ImmutableDigestValues.Builder {
   }
-  
+
   static Builder builder() {
     return new Builder();
   }

@@ -5,15 +5,13 @@
 - Call-ID (String)
 - CSeq (CSeq)
 
-
-- Via (ViaList)
+- Via (ViaValue[])
 - Contact (ContactSet)
 
 ## 
 
 - Route (RouteSet)
 - Record-Route (RouteSet)
-
 
 ## Request
 
@@ -28,3 +26,32 @@
 
 - Content-Length 
 - Content-Type
+
+
+
+```
+
+type CSeq {
+  sequence: Int
+  method: String
+}
+
+type Via {
+  transportProtocol: String
+  sentBy: String
+  branch: String
+}
+
+type SipUri {
+  
+}
+
+union Uri = SipUri | TelUri | UrnUri
+
+type NameAddr {
+  displayName: String
+  uri: Uri
+  parameters: Dictionary
+}
+
+````
