@@ -13,7 +13,7 @@ dependencies {
   api project(':sip-parser')
   api project(':sip-channels')
   
-  api 'com.google.guava:guava:30.1.1-jre'  
+  api 'com.google.guava:guava:31.1-jre'  
 
   implementation 'com.google.guava:guava:30.1.1-jre'
   api 'org.reactivestreams:reactive-streams:1.0.3'
