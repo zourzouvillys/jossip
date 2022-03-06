@@ -5,14 +5,14 @@ pluginManagement {
     id 'com.diffplug.eclipse.apt' version '3.31.0' 
     id 'com.diffplug.eclipse.excludebuildfolder' version '3.31.0'
     id 'com.diffplug.eclipse.resourcefilters' version '3.31.0'  
-    id 'com.github.spotbugs' version '4.7.2'
+    id 'com.github.spotbugs' version '5.0.6'
     id 'com.google.protobuf' version '0.8.17'
-    id "com.github.johnrengelman.shadow" version "6.1.0"
-    id "com.github.kt3k.coveralls" version "2.10.2"
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "com.github.kt3k.coveralls" version "2.12.0"
     id "com.google.osdetector" version "1.6.2"
     id "com.google.protobuf" version "0.8.17"
     id "me.champeau.gradle.japicmp" version "0.2.5"
-    id "me.champeau.gradle.jmh" version "0.5.2"
+    id "me.champeau.gradle.jmh" version "0.5.3"
     id "net.ltgt.errorprone" version "1.3.0"
   }
   
@@ -36,8 +36,6 @@ include('docs')
 include('bom')
 
 // ---
-
-enableFeaturePreview('VERSION_CATALOGS')
 
 dependencyResolutionManagement {
   defaultLibrariesExtensionName.set('deps')
