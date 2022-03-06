@@ -18,7 +18,7 @@ import io.rtcore.sip.message.message.SipRequest;
  *
  */
 
-public interface SipChannel {
+public interface SipChannelOLD {
 
   /**
    * start a client exchange, sending the request to a server for handling, and providing the

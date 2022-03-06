@@ -32,6 +32,8 @@ include('sip-parser')
 include('sip-channels')
 include('sip-channels-netty')
 
+include('dns-resolver')
+
 include('docs')
 include('bom')
 

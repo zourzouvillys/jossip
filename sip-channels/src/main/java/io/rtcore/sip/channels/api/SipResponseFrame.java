@@ -1,4 +1,4 @@
-package io.rtcore.sip.channels.connection;
+package io.rtcore.sip.channels.api;
 
 import java.util.List;
 import java.util.Optional;

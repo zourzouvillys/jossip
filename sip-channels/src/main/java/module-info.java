@@ -9,6 +9,7 @@ module io.rtcore.sip.channels {
   uses SipNameResolver.Provider;
 
   exports io.rtcore.sip.channels;
+  exports io.rtcore.sip.channels.api;
   exports io.rtcore.sip.channels.utils;
   exports io.rtcore.sip.channels.dispatch;
   exports io.rtcore.sip.channels.handlers;
@@ -27,5 +28,6 @@ module io.rtcore.sip.channels {
   requires static org.immutables.value.annotations;
   requires java.logging;
   requires com.github.akarnokd.rxjava3jdk9interop;
+  requires java.net.http;
 
 }

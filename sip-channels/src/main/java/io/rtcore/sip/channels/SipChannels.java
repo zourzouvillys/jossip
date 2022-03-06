@@ -6,7 +6,7 @@ import java.net.URISyntaxException;
 public final class SipChannels {
 
   /**
-   * create a {@link SipChannel} builder from a target and channel credentials.
+   * create a {@link SipChannelOLD} builder from a target and channel credentials.
    *
    * <p>
    * A {@code NameResolver}-compliant URI is an absolute hierarchical URI as defined by
