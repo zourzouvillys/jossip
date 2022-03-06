@@ -20,3 +20,4 @@ subprojects { project ->
   project.group = 'io.zrz.rtcore.sip'
   project.version = version = rootProject.property('version')
 }
+

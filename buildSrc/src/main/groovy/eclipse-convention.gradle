@@ -5,59 +5,46 @@ import org.gradle.plugins.ide.eclipse.model.SourceFolder
 plugins {
   id 'eclipse'
   id 'com.diffplug.eclipse.apt'
-  //id 'com.diffplug.eclipse.excludebuildfolder'
-  // id 'com.diffplug.eclipse.resourcefilters'
 }
 
-//task configureBuildship {
-  // empty, placeholder
-  // dependsOn gradle.includedBuilds*.task(':configureBuildship')  
-//}
 
-// eclipseFactorypath, eclipseJdtApt, eclipseJdt
-
-if (tasks.findByName('cleanEclipseFactorypath')) {
-  project.rootProject.tasks['configureBuildship'].dependsOn(
-    tasks['cleanEclipseClasspath'],
-    tasks['cleanEclipseFactorypath'],
-    tasks['cleanEclipseJdtApt'],
-    tasks['cleanEclipseJdt'],
-    tasks['eclipseClasspath'],
-    tasks['eclipseFactorypath'],
-    tasks['eclipseJdtApt'],
-    tasks['eclipseJdt'],
-  )  
+if (project.rootProject != project) {
+	if (tasks.findByName('cleanEclipseFactorypath')) {
+	  project.rootProject.tasks['configureBuildship'].dependsOn(
+	    tasks['cleanEclipseClasspath'],
+	    tasks['cleanEclipseFactorypath'],
+	    tasks['cleanEclipseJdtApt'],
+	    tasks['cleanEclipseJdt'],
+	    tasks['eclipseClasspath'],
+	    tasks['eclipseFactorypath'],
+	    tasks['eclipseJdtApt'],
+	    tasks['eclipseJdt'],
+	  )  
+	}
+	else if (tasks.findByName('eclipseFactorypath')) {
+	  project.rootProject.tasks['configureBuildship'].dependsOn(
+	    tasks['eclipseClasspath'],
+	    tasks['eclipseFactorypath'],
+	    tasks['eclipseJdtApt'],
+	    tasks['eclipseJdt'],
+	  )
+	}
+	else {
+	  project.rootProject.tasks['configureBuildship'].dependsOn(
+	    tasks['eclipseClasspath'],
+	    tasks['eclipseJdtApt'],
+	    tasks['eclipseJdt'],
+	  )
+	}
 }
-else if (tasks.findByName('eclipseFactorypath')) {
-  project.rootProject.tasks['configureBuildship'].dependsOn(
-    tasks['eclipseClasspath'],
-    tasks['eclipseFactorypath'],
-    tasks['eclipseJdtApt'],
-    tasks['eclipseJdt'],
-  )
-}
-else {
-  project.rootProject.tasks['configureBuildship'].dependsOn(
-    tasks['eclipseClasspath'],
-    tasks['eclipseJdtApt'],
-    tasks['eclipseJdt'],
-  )
-}
-
 
 
 eclipse {
-
-  // synchronizationTasks configureBuildship
   
   project {
     name = createProjectDisplayName()
   }
   
-  classpath {
-    containers 'org.eclipse.buildship.core.gradleclasspathcontainer'
-  }
-      
 }
 
 eclipse.classpath.file.whenMerged { classpath ->
@@ -71,38 +58,6 @@ eclipse.classpath.file.whenMerged { classpath ->
   //lib.entryAttributes['module'] = true
   classpath.entries.add(lib)  
 }
-
-
-
-eclipse.classpath.file.whenMerged { classpath ->
-
-  classpath.entries.findAll { it instanceof ProjectDependency }.each {
-    
-    // delete from original position
-	classpath.entries.remove(it)
-
-	// append to end of classpath	
-	def dep = new ProjectDependency(it.path) {
-	  @Override
-      public void appendNode(Node node) {
-        Map<String, Object> attrs = new HashMap<>();
-        attrs.put("combineaccessrules", "false")
-        addClasspathEntry(node, attrs);
-      }
-	}
-	
-	dep.entryAttributes['module'] = true
-	
-	//dep.entryAttributes['gradle_scope'] = 'main'
-	//dep.entryAttributes['gradle_used_by_scope'] = 'main,test'
-	//dep.entryAttributes['without_test_code'] = 'false' 
-	
-	classpath.entries.add(dep)
-	
-  }
-  
-}
-
 
 
 def createProjectDisplayName() {
