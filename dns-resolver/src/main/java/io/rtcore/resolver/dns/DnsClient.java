@@ -50,11 +50,11 @@ public final class DnsClient {
     return res.answer()
       .stream()
       .filter(e -> e.type() == type)
-      .map(e -> Maps.immutableEntry(Instant.now().plusSeconds(e.ttl()), parser.apply(e)))
+      .map(e -> Maps.immutableEntry(e.ttl(), parser.apply(e)))
       .collect(Collectors.collectingAndThen(
         Collectors.toUnmodifiableList(),
         entries -> ImmutableDnsRecord.<T>of(
-          entries.stream().map(e -> e.getKey()).min(Instant::compareTo).orElse(Instant.now()).truncatedTo(ChronoUnit.SECONDS),
+          entries.stream().mapToInt(e -> e.getKey()).min().orElse(0),
           Lists.transform(entries, Map.Entry::getValue))));
   }
 

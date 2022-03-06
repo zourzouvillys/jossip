@@ -1,6 +1,5 @@
 package io.rtcore.resolver.dns;
 
-import java.time.Instant;
 import java.util.List;
 
 import org.immutables.value.Value;
@@ -10,7 +9,7 @@ import org.immutables.value.Value;
 public interface DnsRecord<T> {
 
   @Value.Parameter
-  Instant validUntil();
+  int ttl();
 
   @Value.Parameter
   List<T> entries();
