@@ -1,6 +1,6 @@
 package io.rtcore.resolver.dns;
 
-import java.util.List;
+import java.util.Set;
 
 import org.immutables.value.Value;
 
@@ -12,6 +12,6 @@ public interface DnsRecord<T> {
   int ttl();
 
   @Value.Parameter
-  List<T> entries();
+  Set<T> entries();
 
 }

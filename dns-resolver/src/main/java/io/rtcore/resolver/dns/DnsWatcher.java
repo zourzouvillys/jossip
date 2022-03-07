@@ -1,18 +1,25 @@
 package io.rtcore.resolver.dns;
 
+import java.math.RoundingMode;
+import java.net.InetAddress;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.google.common.math.IntMath;
 import com.google.common.net.InternetDomainName;
 
 import io.reactivex.rxjava3.core.Flowable;
 
 public class DnsWatcher {
 
+  private static final int MIN_TTL = 15;
+  private static final int MAX_TTL = 300;
+
   private final Map<SrvKey, WatchedName> services = new HashMap<>();
+  private final Map<InternetDomainName, WatchedNameAddress> addresses = new HashMap<>();
 
   private final DnsClient resolver;
 
@@ -30,41 +37,44 @@ public class DnsWatcher {
     this.resolver = resolver;
   }
 
+  /**
+   * calculate how long until we refresh this value.
+   */
+
   private static int waiter(int ttl) {
-    return 5; // Math.max(15, Math.min(ttl - 15, ttl / 2));
+    return Math.min(MAX_TTL, Math.max(MIN_TTL, Math.min(ttl - MIN_TTL, IntMath.divide(ttl, 2, RoundingMode.UP))));
   }
 
-  public Flowable<List<SrvValue>> queryAsync(SrvKey watchKey) {
+  private Flowable<Set<SrvValue>> queryAsync(SrvKey watchKey) {
     return Flowable
       .fromCompletionStage(resolver.srv(watchKey.service.service, watchKey.service.protocol, watchKey.name))
-      .<List<SrvValue>>concatMap(
+      .<Set<SrvValue>>concatMap(
         i -> Flowable.concat(
           Flowable.just(i.entries()),
           Flowable.timer(waiter(i.ttl()), TimeUnit.SECONDS).ignoreElements().toFlowable()));
   }
 
-  public Flowable<List<SrvValue>> watchAsync(SrvKey watchKey) {
+  private Flowable<Set<SrvValue>> watchAsync(SrvKey watchKey) {
     return queryAsync(watchKey).concatWith(Flowable.defer(() -> watchAsync(watchKey)));
   }
 
-  public class WatchedName {
+  class WatchedName {
 
     private final AtomicInteger refcnt = new AtomicInteger();
     private final SrvKey watchKey;
-    // private final FlowableProcessor<List<SrvValue>> source = PublishProcessor.create();
-    private final Flowable<List<SrvValue>> value;
+    private final Flowable<Set<SrvValue>> value;
 
-    public WatchedName(SrvKey watchKey) {
+    WatchedName(SrvKey watchKey) {
       this.watchKey = watchKey;
       this.value = watchAsync(watchKey).distinctUntilChanged();
     }
 
-    public WatchedName ref() {
+    WatchedName ref() {
       refcnt.getAndIncrement();
       return this;
     }
 
-    public void unref() {
+    void unref() {
       if (refcnt.decrementAndGet() == 0) {
         System.err.println("removed subscriber");
         services.remove(watchKey);
@@ -73,7 +83,44 @@ public class DnsWatcher {
 
   }
 
-  public Flowable<List<SrvValue>> srv(ServiceId srv, String name) {
+  private Flowable<Set<InetAddress>> queryAsyncAddress(InternetDomainName watchKey) {
+    return Flowable
+      .fromCompletionStage(resolver.a(watchKey.toString()))
+      .<Set<InetAddress>>concatMap(
+        i -> Flowable.concat(
+          Flowable.just(i.entries()),
+          Flowable.timer(waiter(i.ttl()), TimeUnit.SECONDS).ignoreElements().toFlowable()));
+  }
+
+  private Flowable<Set<InetAddress>> watchAsyncAddress(InternetDomainName watchKey) {
+    return queryAsyncAddress(watchKey).concatWith(Flowable.defer(() -> watchAsyncAddress(watchKey)));
+  }
+
+  class WatchedNameAddress {
+
+    private final AtomicInteger refcnt = new AtomicInteger();
+    private final InternetDomainName watchKey;
+    private final Flowable<Set<InetAddress>> value;
+
+    WatchedNameAddress(InternetDomainName watchKey) {
+      this.watchKey = watchKey;
+      this.value = watchAsyncAddress(watchKey).distinctUntilChanged();
+    }
+
+    WatchedNameAddress ref() {
+      refcnt.getAndIncrement();
+      return this;
+    }
+
+    void unref() {
+      if (refcnt.decrementAndGet() == 0) {
+        addresses.remove(watchKey);
+      }
+    }
+
+  }
+
+  public Flowable<Set<SrvValue>> srv(ServiceId srv, String name) {
 
     srv = new ServiceId(srv.service.toLowerCase(), srv.protocol.toLowerCase());
 
@@ -81,6 +128,18 @@ public class DnsWatcher {
 
     return Flowable.using(
       () -> services.computeIfAbsent(watchKey, WatchedName::new).ref(),
+      w -> w.value,
+      w -> w.unref(),
+      false);
+
+  }
+
+  public Flowable<Set<InetAddress>> address(String name) {
+
+    var watchKey = InternetDomainName.from(name);
+
+    return Flowable.using(
+      () -> addresses.computeIfAbsent(watchKey, WatchedNameAddress::new).ref(),
       w -> w.value,
       w -> w.unref(),
       false);
