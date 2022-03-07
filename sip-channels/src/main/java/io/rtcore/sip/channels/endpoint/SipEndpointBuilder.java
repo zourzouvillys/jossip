@@ -2,9 +2,9 @@ package io.rtcore.sip.channels.endpoint;
 
 import java.net.InetSocketAddress;
 
-import io.rtcore.sip.channels.SipChannels;
-import io.rtcore.sip.channels.SipServerCallHandler;
-import io.rtcore.sip.channels.SipUdpSocket;
+import io.rtcore.sip.channels.internal.SipChannels;
+import io.rtcore.sip.channels.internal.SipServerCallHandler;
+import io.rtcore.sip.channels.internal.SipUdpSocket;
 
 public interface SipEndpointBuilder extends SipSdkBuilder<SipEndpointBuilder, SipEndpoint> {
 

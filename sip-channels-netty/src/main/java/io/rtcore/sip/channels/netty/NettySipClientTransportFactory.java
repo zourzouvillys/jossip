@@ -3,9 +3,9 @@ package io.rtcore.sip.channels.netty;
 
 import java.net.SocketAddress;
 
-import io.rtcore.sip.channels.SipClientTransport;
-import io.rtcore.sip.channels.SipClientTransportFactory;
-import io.rtcore.sip.channels.SipClientTransportOptions;
+import io.rtcore.sip.channels.internal.SipClientTransport;
+import io.rtcore.sip.channels.internal.SipClientTransportFactory;
+import io.rtcore.sip.channels.internal.SipClientTransportOptions;
 
 class NettySipClientTransportFactory implements SipClientTransportFactory {
 

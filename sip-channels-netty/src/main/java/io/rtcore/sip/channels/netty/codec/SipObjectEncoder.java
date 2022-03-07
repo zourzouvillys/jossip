@@ -7,7 +7,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.util.ReferenceCountUtil;
-import io.rtcore.sip.channels.connection.SipFrame;
+import io.rtcore.sip.channels.api.SipFrame;
 import io.rtcore.sip.common.SipHeaderLine;
 import io.rtcore.sip.common.SipInitialLine;
 import io.rtcore.sip.common.iana.StandardSipHeaders;

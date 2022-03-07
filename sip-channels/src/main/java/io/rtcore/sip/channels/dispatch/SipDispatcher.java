@@ -4,7 +4,7 @@ import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 
-import io.rtcore.sip.channels.SipServerCallHandler;
+import io.rtcore.sip.channels.internal.SipServerCallHandler;
 import io.rtcore.sip.message.message.SipRequest;
 
 /**

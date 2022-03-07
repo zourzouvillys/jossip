@@ -2,9 +2,9 @@ package io.rtcore.sip.channels.netty;
 
 import com.google.auto.service.AutoService;
 
-import io.rtcore.sip.channels.ManagedSipChannelBuilder;
-import io.rtcore.sip.channels.ManagedSipChannelProvider;
-import io.rtcore.sip.channels.SipChannelCredentials;
+import io.rtcore.sip.channels.internal.ManagedSipChannelBuilder;
+import io.rtcore.sip.channels.internal.ManagedSipChannelProvider;
+import io.rtcore.sip.channels.internal.SipChannelCredentials;
 
 @AutoService(ManagedSipChannelProvider.class)
 public final class NettySipChannelProvider implements ManagedSipChannelProvider {

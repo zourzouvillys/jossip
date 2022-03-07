@@ -7,9 +7,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import io.reactivex.rxjava3.core.Flowable;
-import io.rtcore.sip.channels.Metadata;
-import io.rtcore.sip.channels.SipServerCall;
-import io.rtcore.sip.channels.SipServerCallHandler;
+import io.rtcore.sip.channels.internal.Metadata;
+import io.rtcore.sip.channels.internal.SipServerCall;
+import io.rtcore.sip.channels.internal.SipServerCallHandler;
 import io.rtcore.sip.message.message.SipRequest;
 import io.rtcore.sip.message.message.SipResponse;
 

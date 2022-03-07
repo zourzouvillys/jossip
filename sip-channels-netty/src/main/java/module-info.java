@@ -1,6 +1,6 @@
-import io.rtcore.sip.channels.ManagedSipChannelProvider;
-import io.rtcore.sip.channels.ManagedSipUdpSocketProvider;
-import io.rtcore.sip.channels.SipNameResolver;
+import io.rtcore.sip.channels.internal.ManagedSipChannelProvider;
+import io.rtcore.sip.channels.internal.ManagedSipUdpSocketProvider;
+import io.rtcore.sip.channels.internal.SipNameResolver;
 import io.rtcore.sip.channels.netty.NettySipChannelProvider;
 import io.rtcore.sip.channels.netty.resolver.NettySipNameResolverProvider;
 import io.rtcore.sip.channels.netty.udp.NettyUdpSocketProvider;

@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscription;
 
-import io.rtcore.sip.channels.SipWirePacket;
-import io.rtcore.sip.channels.SipWireProducer;
+import io.rtcore.sip.channels.internal.SipWirePacket;
+import io.rtcore.sip.channels.internal.SipWireProducer;
 import io.rtcore.sip.message.message.SipMessage;
 
 public class TestPacketSubscriber implements Flow.Subscriber<SipWireProducer> {

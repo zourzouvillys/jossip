@@ -5,7 +5,7 @@ import static org.reactivestreams.FlowAdapters.toSubscriber;
 import java.util.concurrent.Flow.Subscriber;
 
 import io.reactivex.rxjava3.core.Flowable;
-import io.rtcore.sip.channels.SipNameResolver;
+import io.rtcore.sip.channels.internal.SipNameResolver;
 
 class StaticNameResolver implements SipNameResolver {
 

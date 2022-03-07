@@ -6,8 +6,8 @@ import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 
-import io.rtcore.sip.channels.SipClientTransport;
-import io.rtcore.sip.channels.SipClientTransportOptions;
+import io.rtcore.sip.channels.internal.SipClientTransport;
+import io.rtcore.sip.channels.internal.SipClientTransportOptions;
 import io.rtcore.sip.message.message.SipMessage;
 
 public class NettySipClientTransport implements SipClientTransport, Flow.Publisher<SipMessage> {

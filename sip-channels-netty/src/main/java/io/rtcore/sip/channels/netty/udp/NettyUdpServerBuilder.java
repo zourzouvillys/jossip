@@ -14,7 +14,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.ReflectiveChannelFactory;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.DatagramPacket;
-import io.rtcore.sip.channels.ManagedSipUdpSocketBuilder;
+import io.rtcore.sip.channels.internal.ManagedSipUdpSocketBuilder;
 
 public final class NettyUdpServerBuilder implements ManagedSipUdpSocketBuilder<NettyUdpServerBuilder> {
 

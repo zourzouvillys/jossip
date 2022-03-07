@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.netty.channel.ChannelOption;
-import io.rtcore.sip.channels.AbstractManagedSipChannelBuilder;
-import io.rtcore.sip.channels.ManagedSipChannel;
-import io.rtcore.sip.channels.SipChannelCredentials;
+import io.rtcore.sip.channels.internal.AbstractManagedSipChannelBuilder;
+import io.rtcore.sip.channels.internal.ManagedSipChannel;
+import io.rtcore.sip.channels.internal.SipChannelCredentials;
 
 public class NettySipChannelBuilder extends AbstractManagedSipChannelBuilder<NettySipChannelBuilder> {
 

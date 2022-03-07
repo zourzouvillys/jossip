@@ -1,6 +1,6 @@
 package io.rtcore.sip.channels.endpoint;
 
-import io.rtcore.sip.channels.SipChannelOLD;
+import io.rtcore.sip.channels.internal.SipChannelOLD;
 
 public interface SipEndpoint extends SipChannelOLD {
 

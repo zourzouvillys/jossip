@@ -6,7 +6,7 @@ import java.net.URI;
 import org.junit.jupiter.api.Test;
 
 import hu.akarnokd.rxjava3.jdk9interop.FlowInterop;
-import io.rtcore.sip.channels.SipNameResolver;
+import io.rtcore.sip.channels.internal.SipNameResolver;
 
 class NettySipNameResolverProviderTest {
 

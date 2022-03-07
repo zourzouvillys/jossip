@@ -4,10 +4,10 @@ import org.immutables.value.Value;
 import org.immutables.value.Value.Style.BuilderVisibility;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
-import io.rtcore.sip.channels.SipChannels;
-import io.rtcore.sip.channels.SipServerCallHandler;
-import io.rtcore.sip.channels.SipUdpSocket;
 import io.rtcore.sip.channels.handlers.FunctionServerCallHandler;
+import io.rtcore.sip.channels.internal.SipChannels;
+import io.rtcore.sip.channels.internal.SipServerCallHandler;
+import io.rtcore.sip.channels.internal.SipUdpSocket;
 import io.rtcore.sip.message.message.SipResponseStatus;
 import io.rtcore.sip.message.processor.rfc3261.MutableSipResponse;
 

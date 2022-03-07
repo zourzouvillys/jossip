@@ -2,7 +2,7 @@ package io.rtcore.sip.channels.endpoint;
 
 import java.util.concurrent.Flow.Subscriber;
 
-import io.rtcore.sip.channels.SipClientCall;
+import io.rtcore.sip.channels.internal.SipClientCall;
 import io.rtcore.sip.message.message.SipResponse;
 import io.rtcore.sip.message.message.api.Reason;
 
