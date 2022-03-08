@@ -2,6 +2,8 @@ package io.rtcore.sip.channels.internal;
 
 import java.util.concurrent.Flow;
 
+import io.rtcore.sip.channels.api.SipTransport;
+
 /**
  * a general transport interface which can be used
  */

@@ -3,6 +3,7 @@ package io.rtcore.sip.channels.netty.tcp;
 import static java.util.Objects.requireNonNull;
 
 import java.net.InetSocketAddress;
+import java.util.function.UnaryOperator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,9 @@ import io.netty.channel.ReflectiveChannelFactory;
 import io.netty.channel.WriteBufferWaterMark;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.ssl.SslContext;
+import io.rtcore.sip.channels.api.InterceptingSipServerExchangeHandler;
+import io.rtcore.sip.channels.api.SipServerExchangeHandler;
+import io.rtcore.sip.channels.interceptors.SipServerInterceptors;
 
 /**
  * service which provides incoming connection & stream oriented (TCP, TLS) connection handling. each
@@ -36,17 +40,14 @@ public class SipTlsServer extends AbstractService {
 
   private Channel ch;
   private ChannelHandler childHandler;
-
   private final DefaultMaxBytesRecvByteBufAllocator recvalloc;
-
   private final WriteBufferWaterMark writeWatermark;
-
-  private final ImmutableTcpConnectionConfig initialConnectionConfig;
-
   private final SslContext sslctx;
+  private final ImmutableTcpConnectionConfig initialTcpConfig;
+  private NettySocketServerConfig config;
 
-  public SipTlsServer(InetSocketAddress listen, EventLoopGroup group, SslContext sslctx, SipServerDispatcher dispatcher) {
-    this(listen, group, group, sslctx, dispatcher);
+  public SipTlsServer(UnaryOperator<ImmutableNettySocketServerConfig.Builder> b) {
+    this(NettySocketServerConfig.create(b));
   }
 
   /**
@@ -58,28 +59,37 @@ public class SipTlsServer extends AbstractService {
    * @param factory
    */
 
-  public SipTlsServer(InetSocketAddress listen, EventLoopGroup acceptGroup, EventLoopGroup childGroup, SslContext sslctx, SipServerDispatcher dispatcher) {
+  public SipTlsServer(NettySocketServerConfig config) {
 
-    this.listen = requireNonNull(listen);
+    this.config = config;
 
-    this.acceptGroup = requireNonNull(acceptGroup);
+    this.listen = requireNonNull(config.listenAddress());
 
-    this.childGroup = requireNonNull(childGroup);
+    this.initialTcpConfig = ImmutableTcpConnectionConfig.copyOf(config.tcpConfig());
 
-    this.initialConnectionConfig = ImmutableTcpConnectionConfig.builder().build();
+    this.acceptGroup = requireNonNull(config.acceptGroup());
+
+    this.childGroup = requireNonNull(config.childGroup());
 
     // calculate
     this.recvalloc = new DefaultMaxBytesRecvByteBufAllocator(8192, 8192);
 
     this.writeWatermark =
       new WriteBufferWaterMark(
-        Math.max(4096, initialConnectionConfig.sendBufferSize() - 4096),
-        Math.max(8192, initialConnectionConfig.sendBufferSize() + 4096));
+        Math.max(4096, initialTcpConfig.sendBufferSize() - 4096),
+        Math.max(8192, initialTcpConfig.sendBufferSize() + 4096));
 
-    this.sslctx = sslctx;
+    this.sslctx = config.sslctx().orElse(null);
 
     // the handler for initializing
-    this.childHandler = new TlsServerHandler(sslctx, ch -> new TlsSipConnection(ch, dispatcher));
+
+    this.childHandler =
+      new TlsServerHandler(
+        sslctx,
+        initialTcpConfig,
+        ch -> new TlsSipConnection(ch, SipServerInterceptors.interceptedHandler(config.serverHandler(), config.interceptors()))
+      //
+      );
 
   }
 
@@ -116,10 +126,10 @@ public class SipTlsServer extends AbstractService {
         // we are not going for high throughput here, keep recvbuf small to limit the speed
         // of attacks. for normal operation this is fine as round trips for small bursts will
         // just pace naturally.
-        .childOption(ChannelOption.SO_RCVBUF, this.initialConnectionConfig.recvBufferSize())
+        .childOption(ChannelOption.SO_RCVBUF, this.initialTcpConfig.recvBufferSize())
 
         //
-        .childOption(ChannelOption.SO_SNDBUF, this.initialConnectionConfig.sendBufferSize())
+        .childOption(ChannelOption.SO_SNDBUF, this.initialTcpConfig.sendBufferSize())
 
         // enable TCP keepalives.
         .childOption(ChannelOption.SO_KEEPALIVE, true)
@@ -150,12 +160,26 @@ public class SipTlsServer extends AbstractService {
     super.notifyStopped();
   }
 
-  public static SipTlsServer createDefault(EventLoopGroup group, SslContext sslctx, SipServerDispatcher dispatcher, InetSocketAddress listen) {
-    return new SipTlsServer(listen, group, sslctx, dispatcher);
+  public static
+      SipTlsServer
+      createDefault(EventLoopGroup group, SslContext sslctx, SipServerExchangeHandler dispatcher, InetSocketAddress listen, TcpConnectionConfig tcpConfig) {
+
+    return new SipTlsServer(
+      NettySocketServerConfig.create(b -> b
+        .acceptGroup(group)
+        .childGroup(group)
+        .sslctx(sslctx)
+        .listenAddress(listen)
+        .tcpConfig(tcpConfig)));
+
   }
 
   public InetSocketAddress localAddress() {
     return (InetSocketAddress) this.ch.localAddress();
+  }
+
+  public static SipTlsServer createServer(UnaryOperator<ImmutableNettySocketServerConfig.Builder> b) {
+    return new SipTlsServer(b);
   }
 
 }

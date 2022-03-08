@@ -10,6 +10,7 @@ import io.rtcore.sip.channels.api.SipClientExchange;
 import io.rtcore.sip.channels.api.SipRequestFrame;
 import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.channels.connection.SipConnection;
+import io.rtcore.sip.channels.internal.SipAttributes;
 import io.rtcore.sip.channels.netty.tcp.TlsSipConnection.ClientBranchId;
 import io.rtcore.sip.common.iana.SipMethods;
 
@@ -46,12 +47,17 @@ class SipStreamClientExchange implements SipClientExchange {
     // request the transport transmit this request.
     this.send = this.conn.send(this.req);
 
-    // then completing exceptionally, we 
+    // then completing exceptionally, we
     this.send.exceptionally(ex -> {
       this.receiver.onError(ex);
       return null;
     });
 
+  }
+
+  @Override
+  public SipAttributes attributes() {
+    return SipAttributes.of();
   }
 
   /**
@@ -104,7 +110,6 @@ class SipStreamClientExchange implements SipClientExchange {
    * the SipConnection which this exchange is happening over.
    */
 
-  @Override
   public SipConnection connection() {
     return this.conn;
   }

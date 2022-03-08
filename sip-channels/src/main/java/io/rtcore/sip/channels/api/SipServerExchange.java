@@ -27,7 +27,13 @@ public interface SipServerExchange extends SipExchange {
    * 
    */
 
-  void close(String status);
+  void onError(Throwable error);
+
+  /**
+   * mark this call as completed.
+   */
+
+  void onComplete();
 
   /**
    * 
@@ -40,6 +46,6 @@ public interface SipServerExchange extends SipExchange {
    * stage marked as done once network stack signals it in the socket rx queue.
    */
 
-  CompletionStage<?> sendResponse(SipResponseFrame response);
+  CompletionStage<?> onNext(SipResponseFrame response);
 
 }

@@ -3,7 +3,6 @@ package io.rtcore.sip.channels.netty.tcp;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
@@ -18,9 +17,11 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.rtcore.sip.channels.api.SipClientExchange.Event;
 import io.rtcore.sip.channels.api.SipRequestFrame;
+import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.connection.ImmutableSipRoute;
 import io.rtcore.sip.channels.connection.SipConnection;
 import io.rtcore.sip.channels.connection.SipConnectionProvider;
+import io.rtcore.sip.channels.interceptors.SipServerLogInterceptor;
 import io.rtcore.sip.channels.netty.codec.SipFrameUtils;
 import io.rtcore.sip.common.iana.SipMethods;
 import io.rtcore.sip.common.iana.SipStatusCodes;
@@ -39,25 +40,25 @@ class SipConnectionTests {
 
     try {
 
-      SipServerDispatcher dispatcher = call -> {
-        call.sendResponse(SipFrameUtils.createResponse(call.request(), SipStatusCodes.OK));
+      SipServerExchangeHandler dispatcher = call -> {
+        call.onNext(SipFrameUtils.createResponse(call.request(), SipStatusCodes.OK));
+        call.onComplete();
         return null;
       };
 
       // start TLS listener.
       SipTlsServer server =
-        SipTlsServer.createDefault(
-          loop,
-          SipTlsUtils.createServer(cert.key(), cert.cert()),
-          dispatcher,
-          new InetSocketAddress(0));
+        SipTlsServer.createServer(b -> b
+          .acceptGroup(loop)
+          .childGroup(loop)
+          .addInterceptor(new SipServerLogInterceptor())
+          .serverHandler(dispatcher)
+          .sslctx(SipTlsUtils.createServer(cert.key(), cert.cert())));
 
       server.startAsync().awaitRunning();
 
       // pool for outgoing connections
-      SipConnectionProvider provider =
-        SipConnectionPool
-          .createTlsPool(loop, SipTlsUtils.createClient());
+      SipConnectionProvider provider = SipConnectionPool.createTlsPool(loop, SipTlsUtils.createClient());
 
       try {
 

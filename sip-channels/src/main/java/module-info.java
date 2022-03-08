@@ -11,6 +11,7 @@ module io.rtcore.sip.channels {
   exports io.rtcore.sip.channels.internal;
   exports io.rtcore.sip.channels.api;
   exports io.rtcore.sip.channels.utils;
+  exports io.rtcore.sip.channels.interceptors;
   exports io.rtcore.sip.channels.dispatch;
   exports io.rtcore.sip.channels.handlers;
   exports io.rtcore.sip.channels.endpoint;
@@ -29,5 +30,6 @@ module io.rtcore.sip.channels {
   requires java.logging;
   requires com.github.akarnokd.rxjava3jdk9interop;
   requires java.net.http;
+  requires org.slf4j;
 
 }

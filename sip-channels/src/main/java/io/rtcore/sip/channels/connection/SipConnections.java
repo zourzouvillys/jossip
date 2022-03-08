@@ -1,13 +1,14 @@
-package io.rtcore.sip.channels.internal;
+package io.rtcore.sip.channels.connection;
 
 import java.net.SocketAddress;
 
 import javax.net.ssl.SSLSession;
 
+import io.rtcore.sip.channels.internal.SipAttributes;
 import io.rtcore.sip.common.ImmutableHostPort;
 import io.rtcore.sip.common.iana.StandardSipTransportName;
 
-public interface SipTransport {
+public class SipConnections {
 
   /**
    * the local address that received this packet.
@@ -16,7 +17,7 @@ public interface SipTransport {
    *
    */
 
-  SipAttributes.Key<SocketAddress> ATTR_LOCAL_ADDR = SipAttributes.Key.create("local-addr");
+  public static final SipAttributes.Key<SocketAddress> ATTR_LOCAL_ADDR = SipAttributes.Key.create("local-addr");
 
   /**
    * the address that we received this packet from. this may not be the underlying source IP
@@ -27,14 +28,14 @@ public interface SipTransport {
    *
    */
 
-  SipAttributes.Key<SocketAddress> ATTR_REMOTE_ADDR = SipAttributes.Key.create("remote-addr");
+  public static final SipAttributes.Key<SocketAddress> ATTR_REMOTE_ADDR = SipAttributes.Key.create("remote-addr");
 
   /**
    * any message transported over a TLS enabled session will include this to provide access to the
    * {@link SSLSession} that was used.
    */
 
-  SipAttributes.Key<SSLSession> ATTR_SSL_SESSION = SipAttributes.Key.create("ssl-session");
+  public static final SipAttributes.Key<SSLSession> ATTR_SSL_SESSION = SipAttributes.Key.create("ssl-session");
 
   // ---- [ STATEFUL LAYER ] ----
 
@@ -50,7 +51,7 @@ public interface SipTransport {
    *
    */
 
-  // SipAttributes.Key<Via> ATTR_VIA = SipAttributes.Key.create("local-via");
+  // public static final SipAttributes.Key<Via> ATTR_VIA = SipAttributes.Key.create("local-via");
 
   /**
    * the branch value (without magic cookie) set for incoming and outgoing messages. it is set by
@@ -61,7 +62,7 @@ public interface SipTransport {
    *
    */
 
-  SipAttributes.Key<String> ATTR_BRANCH_ID = SipAttributes.Key.create("branch-id");
+  public static final SipAttributes.Key<String> ATTR_BRANCH_ID = SipAttributes.Key.create("branch-id");
 
   /**
    * the top Via sent-by for both incoming and outgoing messages. it is set by the transport layer
@@ -72,7 +73,7 @@ public interface SipTransport {
    *
    */
 
-  SipAttributes.Key<ImmutableHostPort> ATTR_SENT_BY = SipAttributes.Key.create("sent-by");
+  public static final SipAttributes.Key<ImmutableHostPort> ATTR_SENT_BY = SipAttributes.Key.create("sent-by");
 
   /**
    * the top Via sent-by for both incoming and outgoing messages. it is set by the transport layer
@@ -83,12 +84,6 @@ public interface SipTransport {
    *
    */
 
-  SipAttributes.Key<StandardSipTransportName> ATTR_TRANSPORT = SipAttributes.Key.create("transport-protocol");
-
-  /**
-   * open a new logical stream for sending requests over.
-   */
-
-  SipClientStream newStream();
+  public static final SipAttributes.Key<StandardSipTransportName> ATTR_TRANSPORT = SipAttributes.Key.create("transport-protocol");
 
 }

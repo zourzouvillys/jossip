@@ -1,6 +1,6 @@
 package io.rtcore.sip.channels.api;
 
-import io.rtcore.sip.channels.connection.SipConnection;
+import io.rtcore.sip.channels.internal.SipAttributes;
 
 public interface SipExchange {
 
@@ -11,9 +11,9 @@ public interface SipExchange {
   SipRequestFrame request();
 
   /**
-   * the SipConnection which this request was sent over.
+   * attributes
    */
 
-  SipConnection connection();
+  SipAttributes attributes();
 
 }

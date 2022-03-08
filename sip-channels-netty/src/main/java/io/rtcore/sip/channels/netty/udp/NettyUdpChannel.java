@@ -32,8 +32,8 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.subjects.CompletableSubject;
 import io.reactivex.rxjava3.subscribers.ResourceSubscriber;
+import io.rtcore.sip.channels.connection.SipConnections;
 import io.rtcore.sip.channels.internal.SipAttributes;
-import io.rtcore.sip.channels.internal.SipTransport;
 import io.rtcore.sip.channels.internal.SipUdpSocket;
 import io.rtcore.sip.channels.internal.SipWirePacket;
 import io.rtcore.sip.channels.internal.SipWireProducer;
@@ -111,7 +111,6 @@ public class NettyUdpChannel extends SimpleChannelInboundHandler<DatagramPacket>
 
         @Override
         public void onStart() {
-          // add(Schedulers.single().scheduleDirect(() -> println("Time!"), 2, SECONDS));
           // todo: only request if we have some buffer space and flow is possible.
           this.request(1);
         }
@@ -203,14 +202,14 @@ public class NettyUdpChannel extends SimpleChannelInboundHandler<DatagramPacket>
 
           final SipAttributes.Builder ab =
             SipAttributes.newBuilder()
-              .set(SipTransport.ATTR_TRANSPORT, StandardSipTransportName.UDP)
-              .set(SipTransport.ATTR_LOCAL_ADDR, pkt.recipient())
-              .set(SipTransport.ATTR_REMOTE_ADDR, pkt.sender());
+              .set(SipConnections.ATTR_TRANSPORT, StandardSipTransportName.UDP)
+              .set(SipConnections.ATTR_LOCAL_ADDR, pkt.recipient())
+              .set(SipConnections.ATTR_REMOTE_ADDR, pkt.sender());
 
           msg.topVia().ifPresent(via -> {
-            ab.set(SipTransport.ATTR_SENT_BY, ImmutableHostPort.copyOf(via.sentBy()));
+            ab.set(SipConnections.ATTR_SENT_BY, ImmutableHostPort.copyOf(via.sentBy()));
             // set the branch ID if there is one.
-            via.branchWithoutCookie().ifPresent(branch -> ab.set(SipTransport.ATTR_BRANCH_ID, branch));
+            via.branchWithoutCookie().ifPresent(branch -> ab.set(SipConnections.ATTR_BRANCH_ID, branch));
           });
 
           return SipWirePacket.of(msg, ab.build());
