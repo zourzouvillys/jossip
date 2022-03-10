@@ -2,6 +2,7 @@ package io.rtcore.sip.channels.errors;
 
 import java.util.Objects;
 
+import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.message.message.SipResponse;
 import io.rtcore.sip.message.message.SipResponseStatus;
 
@@ -17,6 +18,10 @@ public class SipError extends RuntimeException {
 
   public SipError(SipResponse res) {
     this(res.getStatus());
+  }
+
+  public SipError(SipResponseFrame res) {
+    this(SipResponseStatus.of(res.initialLine()));
   }
 
   public SipResponseStatus status() {

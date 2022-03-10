@@ -16,6 +16,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.haproxy.HAProxyMessage;
 import io.netty.handler.codec.haproxy.HAProxyMessageDecoder;
+import io.netty.handler.ssl.SniHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslHandler;
 import io.rtcore.sip.channels.netty.codec.SipCodec;
@@ -105,17 +106,30 @@ class TlsServerHandler extends ChannelInitializer<NioSocketChannel> {
 
     ChannelPipeline p = ch.pipeline();
 
-    final SslHandler handler = createHandler(ch.alloc());
+    logger.info("initializing channel pipeline");
 
-    // enable endpoint identification.
-    SSLEngine sslEngine = handler.engine();
-    SSLParameters sslParameters = sslEngine.getSSLParameters();
-    sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
-    // sslParameters.setServerNames(List.copyOf(this.route.remoteServerNames()));
-    sslEngine.setSSLParameters(sslParameters);
+    p.addLast(new SniHandler(serverName -> {
+      logger.info("starting TLS with {}", serverName);
+      return this.sslctx;
+    }) {
 
-    // the TLS handler.
-    p.addLast(handler);
+      protected SslHandler newSslHandler(SslContext context, ByteBufAllocator allocator) {
+
+        final SslHandler handler = createHandler(ch.alloc());
+
+        // enable endpoint identification.
+        SSLEngine sslEngine = handler.engine();
+
+        SSLParameters sslParameters = sslEngine.getSSLParameters();
+        sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
+        // sslParameters.setServerNames(List.copyOf(this.route.remoteServerNames()));
+        sslEngine.setSSLParameters(sslParameters);
+
+        return handler;
+
+      }
+
+    });
 
     //
     // p.addLast(new IdleStateHandler(0, 5, 0));

@@ -70,9 +70,9 @@ public interface HostPort {
     return of(Host.fromString(host), port);
   }
 
-  static HostPort fromString(final String host) {
+  static HostPort fromString(final String hostPortString) {
     // strip optional brackets from IPv6 literals.
-    final HostAndPort parsedHost = HostAndPort.fromHost(host);
+    final HostAndPort parsedHost = HostAndPort.fromString(hostPortString);
     return fromParts(parsedHost.getHost(), parsedHost.getPortOrDefault(-1));
   }
 }

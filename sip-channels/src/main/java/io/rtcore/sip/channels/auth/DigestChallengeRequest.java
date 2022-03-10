@@ -21,6 +21,7 @@ public record DigestChallengeRequest(String realm) implements DigestChallengeRes
       .algorithm(StdDigestAlgo.MD5)
       .qop("auth") // ,auth-int
       .opaque(Long.toHexString(ts)));
+
     return res;
   }
 

@@ -60,11 +60,12 @@ public final class TlsSipConnection implements SipConnection {
   private final AtomicLong sequences = new AtomicLong(1);
 
   private UnicastProcessor<SipFrame> frames = UnicastProcessor.create(true);
-  private CompletableFuture<Channel> channel;
+  private CompletableFuture<Channel> _channel;
 
   private Map<ClientBranchId, SipStreamClientExchange> clientBranches = new ConcurrentHashMap<>();
   private SipRoute route;
   private SipServerExchangeHandler dispatcher;
+  private CompletableFuture<Channel> _ch;
 
   private TlsSipConnection(EventLoopGroup eventloopGroop, SslContext sslctx, SipRoute route, SipServerExchangeHandler dispatcher) {
 
@@ -72,6 +73,8 @@ public final class TlsSipConnection implements SipConnection {
     this.route = requireNonNull(route);
 
     this.dispatcher = dispatcher;
+
+    logger.info("new outgoing connection");
 
     //
     ChannelFuture f =
@@ -81,11 +84,13 @@ public final class TlsSipConnection implements SipConnection {
         .handler(new TlsClientHandler(route, sslctx, this::onFrame))
         .connect(route.remoteAddress(), route.localAddress().orElseGet(() -> new InetSocketAddress(0)));
 
-    this.channel =
-      toCompletableFuture(f)
-        .thenCompose(c -> toCompletableFuture(c.pipeline().get(SslHandler.class).handshakeFuture()));
+    // this.channel =
+    // toCompletableFuture(f)
+    // .thenCompose(c -> toCompletableFuture(c.pipeline().get(SslHandler.class).handshakeFuture()));
 
-    this.channel.handle((ch, err) -> {
+    this._ch = toCompletableFuture(f);
+
+    this.channel().handle((ch, err) -> {
       if (err != null) {
         logger.info("error opening channel: {}", err);
       }
@@ -102,15 +107,20 @@ public final class TlsSipConnection implements SipConnection {
   }
 
   TlsSipConnection(Channel ch, SipServerExchangeHandler dispatcher) {
+    logger.info("new incoming connection: {}", ch);
     this.dispatcher = dispatcher;
-    this.channel = toCompletableFuture(ch.pipeline().get(SslHandler.class).handshakeFuture());
+    this._ch = CompletableFuture.completedFuture(ch);
+  }
+
+  private CompletableFuture<Channel> channel() {
+    return this._ch.thenCompose(c -> toCompletableFuture(c.pipeline().get(SslHandler.class).handshakeFuture()));
   }
 
   SipAttributes.Builder attributesBuilder() {
 
     SipAttributes.Builder b = SipAttributes.newBuilder();
 
-    NioSocketChannel ch = (NioSocketChannel) this.channel.getNow(null);
+    NioSocketChannel ch = (NioSocketChannel) this.channel().getNow(null);
 
     if (ch != null) {
 
@@ -279,7 +289,7 @@ public final class TlsSipConnection implements SipConnection {
   public CompletableFuture<?> send(SipFrame frame) {
     logger.debug("sending {}", frame);
     // wait for the channel to become ready itself.
-    return this.channel
+    return this.channel()
       // then send.
       .thenComposeAsync(ch -> toCompletableFuture(ch.writeAndFlush(frame)))
     //
@@ -288,7 +298,7 @@ public final class TlsSipConnection implements SipConnection {
 
   @Override
   public CompletionStage<?> closeFuture() {
-    return this.channel.thenComposeAsync(ch -> toCompletableFuture(ch.closeFuture()));
+    return this.channel().thenComposeAsync(ch -> toCompletableFuture(ch.closeFuture()));
   }
 
   /**
@@ -369,7 +379,7 @@ public final class TlsSipConnection implements SipConnection {
   @Override
   public void close() {
     try {
-      this.channel.get().close();
+      this.channel().get().close();
     }
     catch (InterruptedException | ExecutionException e) {
       // TODO Auto-generated catch block
@@ -378,9 +388,9 @@ public final class TlsSipConnection implements SipConnection {
   }
 
   public String toString() {
-    if (this.channel.isDone()) {
+    if (this.channel().isDone()) {
       try {
-        return String.format("%s@%8x(%s, %s)", getClass().getSimpleName(), hashCode(), this.route, this.channel.get());
+        return String.format("%s@%8x(%s, %s)", getClass().getSimpleName(), hashCode(), this.route, this.channel().get());
       }
       catch (InterruptedException | ExecutionException e) {
         return String.format("%s@%8x(%s, [ERROR] %s)", getClass().getSimpleName(), hashCode(), this.route, e.getMessage());

@@ -1,0 +1,15 @@
+== Reliability
+
+:diagram-svg-type: inline
+:mermaid-format: svg
+:mermaid-config: mermaid.json
+
+=== Multiple Connections
+
+
+
+=== GRUU
+
+To be able to provide a URI in the Contact header which is reliable even when a flow breaks, a GRUU must be used.  Without GRUU, a UA will not be able to continue if their flow changes without a route refresh.
+
+
