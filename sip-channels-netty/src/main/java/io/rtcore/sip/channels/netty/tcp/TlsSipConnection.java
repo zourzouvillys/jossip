@@ -64,10 +64,14 @@ public final class TlsSipConnection implements SipConnection {
 
   private Map<ClientBranchId, SipStreamClientExchange> clientBranches = new ConcurrentHashMap<>();
   private SipRoute route;
-  private SipServerExchangeHandler dispatcher;
+  private SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> dispatcher;
   private CompletableFuture<Channel> _ch;
 
-  private TlsSipConnection(EventLoopGroup eventloopGroop, SslContext sslctx, SipRoute route, SipServerExchangeHandler dispatcher) {
+  private TlsSipConnection(
+      EventLoopGroup eventloopGroop,
+      SslContext sslctx,
+      SipRoute route,
+      SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> dispatcher) {
 
     //
     this.route = requireNonNull(route);
@@ -106,7 +110,7 @@ public final class TlsSipConnection implements SipConnection {
 
   }
 
-  TlsSipConnection(Channel ch, SipServerExchangeHandler dispatcher) {
+  TlsSipConnection(Channel ch, SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> dispatcher) {
     logger.info("new incoming connection: {}", ch);
     this.dispatcher = dispatcher;
     this._ch = CompletableFuture.completedFuture(ch);
@@ -355,8 +359,16 @@ public final class TlsSipConnection implements SipConnection {
    * create a new connection, which will start connecting immediately.
    */
 
-  public static TlsSipConnection create(EventLoopGroup eventloopGroop, SslContext sslctx, SipRoute route, SipServerExchangeHandler server) {
+  public static
+      TlsSipConnection
+      create(
+          EventLoopGroup eventloopGroop,
+          SslContext sslctx,
+          SipRoute route,
+          SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> server) {
+
     return new TlsSipConnection(eventloopGroop, sslctx, route, server);
+
   }
 
   public static TlsSipConnection create(EventLoopGroup eventloopGroop, SslContext sslctx, SipRoute route) {

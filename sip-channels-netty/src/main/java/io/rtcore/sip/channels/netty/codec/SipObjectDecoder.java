@@ -10,7 +10,6 @@ import io.netty.buffer.search.AbstractMultiSearchProcessorFactory;
 import io.netty.buffer.search.MultiSearchProcessor;
 import io.netty.buffer.search.MultiSearchProcessorFactory;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.CorruptedFrameException;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.rtcore.sip.message.message.SipMessage;
