@@ -3,10 +3,17 @@ package io.rtcore.sip.channels.internal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 public final class SipAttributes {
 
-  //
+  /**
+   * A unique key for a set of attributes. note that each key is unique by ref not value - two keys
+   * with the same debug string are not the same key.
+   * 
+   * @param <T>
+   */
+
   public static final class Key<T> {
 
     private final String debugString;
@@ -56,6 +63,11 @@ public final class SipAttributes {
       return this;
     }
 
+    public <T> Builder set(final Key<T> key, final Optional<T> value) {
+      value.ifPresentOrElse(existing -> set(key, existing), () -> discard(key));
+      return this;
+    }
+
     public <T> Builder discard(final Key<T> key) {
       this.data.remove(key);
       return this;
@@ -93,8 +105,15 @@ public final class SipAttributes {
   // unchecked because only ever accessible via the same key instance so can't break without
   // casting...
   @SuppressWarnings("unchecked")
-  public <T> T get(final Key<T> key) {
-    return (T) this.data.get(key);
+  public <T> Optional<T> get(final Key<T> key) {
+    return Optional.ofNullable((T) this.data.get(key));
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T> T getOrDefault(final Key<T> key, T defaultValue) {
+    if (this.data.containsKey(key))
+      return (T) this.data.get(key);
+    return defaultValue;
   }
 
   public Builder toBuilder() {

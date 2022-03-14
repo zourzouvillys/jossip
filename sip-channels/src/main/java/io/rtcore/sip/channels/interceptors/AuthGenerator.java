@@ -3,6 +3,7 @@ package io.rtcore.sip.channels.interceptors;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 import io.rtcore.sip.channels.api.SipChannel;
 import io.rtcore.sip.channels.api.SipRequestFrame;
@@ -35,13 +36,13 @@ class AuthGenerator implements Generator {
 
   @Override
   public Optional<Attempt> next(Throwable previous) {
-    if (previous instanceof ProxyAuthenticationRequired authRequired) {
-      return next(authRequired);
+    if (previous instanceof ProxyAuthenticationRequired) {
+      return nextWithAuth((ProxyAuthenticationRequired) previous);
     }
     return Optional.empty();
   }
 
-  private Optional<Attempt> next(ProxyAuthenticationRequired previous) {
+  private Optional<Attempt> nextWithAuth(ProxyAuthenticationRequired previous) {
 
     if (!challenges.isEmpty()) {
       return Optional.empty();
@@ -71,9 +72,7 @@ class AuthGenerator implements Generator {
   }
 
   private DigestCredentials createDigestChallengeResponse(DigestCredentials challenge) {
-
-    String cnonce = "dwedewdwed";
-
+    String cnonce = Long.toHexString(ThreadLocalRandom.current().nextLong());
     DigestCredentials digestChallengeResponse =
       DigestAuthUtils.createResponse(
         SipMethod.fromString(this.originalRequest.initialLine().method().token()),
@@ -83,8 +82,7 @@ class AuthGenerator implements Generator {
         1,
         username,
         password);
-
     return digestChallengeResponse;
-
   }
+
 }

@@ -26,10 +26,10 @@ public enum KnownDigestQualityOfProtection {
   }
 
   public String token() {
-    return switch (this) {
-      case NONE -> throw new IllegalArgumentException();
-      default -> this.token;
-    };
+    if (this == NONE) {
+      throw new IllegalArgumentException();
+    }
+    return token;
   }
 
   private final static Map<String, KnownDigestQualityOfProtection> lookup =

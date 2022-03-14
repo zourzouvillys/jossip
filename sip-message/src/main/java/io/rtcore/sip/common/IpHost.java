@@ -8,18 +8,24 @@ import com.google.common.net.InetAddresses;
 
 @Value.Immutable
 @Value.Style(jdkOnly = true, allowedClasspathAnnotations = { Override.class })
-public interface IpHost extends Host {
+public abstract class IpHost implements Host {
 
   @Value.Parameter
-  InetAddress inetAddress();
+  public abstract InetAddress inetAddress();
 
   @Value.Lazy
   @Override
-  default String toUriString() {
+  public String toUriString() {
     return InetAddresses.toUriString(this.inetAddress());
   }
 
-  static IpHost of(String address) {
+  @Value.Lazy
+  @Override
+  public String toAddrString() {
+    return InetAddresses.toAddrString(this.inetAddress());
+  }
+
+  public static IpHost of(String address) {
     return ImmutableIpHost.of(InetAddresses.forString(address));
   }
 

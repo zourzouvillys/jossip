@@ -2,7 +2,21 @@ package io.rtcore.sip.channels.api;
 
 import java.util.concurrent.CompletionStage;
 
-public interface SipServerExchange extends SipExchange {
+import io.rtcore.sip.channels.internal.SipAttributes;
+
+public interface SipServerExchange<ReqT, ResT> {
+
+  /**
+   * the request which is being sent over this connection.
+   */
+
+  ReqT request();
+
+  /**
+   * attributes
+   */
+
+  SipAttributes attributes();
 
   /**
    * implemented by the server handler for an incoming exchange over a socket.
@@ -24,6 +38,13 @@ public interface SipServerExchange extends SipExchange {
   }
 
   /**
+   * sends a response frame that will be responded to using standard SIP rules, and the completion
+   * stage marked as done once network stack signals it in the socket rx queue.
+   */
+
+  CompletionStage<?> onNext(ResT response);
+
+  /**
    * 
    */
 
@@ -40,12 +61,5 @@ public interface SipServerExchange extends SipExchange {
    */
 
   boolean isCancelled();
-
-  /**
-   * sends a response frame that will be responded to using standard SIP rules, and the completion
-   * stage marked as done once network stack signals it in the socket rx queue.
-   */
-
-  CompletionStage<?> onNext(SipResponseFrame response);
 
 }

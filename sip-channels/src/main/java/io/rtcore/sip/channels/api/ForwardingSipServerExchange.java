@@ -4,16 +4,16 @@ import java.util.concurrent.CompletionStage;
 
 import io.rtcore.sip.channels.internal.SipAttributes;
 
-public abstract class ForwardingSipServerExchange implements SipServerExchange {
+public abstract class ForwardingSipServerExchange<ReqT, ResT> implements SipServerExchange<ReqT, ResT> {
 
-  private final SipServerExchange delegate;
+  private final SipServerExchange<ReqT, ResT> delegate;
 
-  public ForwardingSipServerExchange(SipServerExchange delegate) {
+  public ForwardingSipServerExchange(SipServerExchange<ReqT, ResT> delegate) {
     this.delegate = delegate;
   }
 
   @Override
-  public SipRequestFrame request() {
+  public ReqT request() {
     return this.delegate.request();
   }
 
@@ -23,7 +23,7 @@ public abstract class ForwardingSipServerExchange implements SipServerExchange {
   }
 
   @Override
-  public CompletionStage<?> onNext(SipResponseFrame response) {
+  public CompletionStage<?> onNext(ResT response) {
     return this.delegate.onNext(response);
   }
 

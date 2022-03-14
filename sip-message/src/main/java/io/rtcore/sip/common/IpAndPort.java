@@ -4,22 +4,32 @@ import java.net.InetSocketAddress;
 
 import org.immutables.value.Value;
 
+import com.google.common.net.InetAddresses;
+
 @Value.Immutable
 @Value.Style(jdkOnly = true, allowedClasspathAnnotations = { Override.class })
-public interface IpAndPort {
+public abstract class IpAndPort {
 
   @Value.Parameter
-  IpHost inetAddress();
+  public abstract IpHost inetAddress();
 
   @Value.Parameter
-  int port();
+  public abstract int port();
 
-  default InetSocketAddress toSocketAddress() {
+  public InetSocketAddress toSocketAddress() {
     return new InetSocketAddress(this.inetAddress().inetAddress(), port());
   }
 
-  static IpAndPort fromParts(String address, int port) {
+  public static IpAndPort fromParts(String address, int port) {
     return ImmutableIpAndPort.of(IpHost.of(address), port);
+  }
+
+  public static IpAndPort of(InetSocketAddress sa) {
+    return ImmutableIpAndPort.of(IpHost.of(InetAddresses.toAddrString(sa.getAddress())), sa.getPort());
+  }
+
+  public String toString() {
+    return String.format("%s:%s", inetAddress().toUriString(), port());
   }
 
 }

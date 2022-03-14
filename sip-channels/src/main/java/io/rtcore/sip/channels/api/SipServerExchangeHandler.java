@@ -1,7 +1,9 @@
 package io.rtcore.sip.channels.api;
 
-public interface SipServerExchangeHandler {
+import io.rtcore.sip.channels.internal.SipAttributes;
 
-  SipServerExchange.Listener startExchange(SipServerExchange exchange);
+public interface SipServerExchangeHandler<ReqT, ResT> {
+
+  SipServerExchange.Listener startExchange(SipServerExchange<ReqT, ResT> exchange, SipAttributes attributes);
 
 }

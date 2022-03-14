@@ -21,6 +21,12 @@ public interface DnsHost extends Host {
     return this.domainName();
   }
 
+  @Value.Lazy
+  @Override
+  default String toAddrString() {
+    return this.domainName();
+  }
+
   static ImmutableDnsHost of(final String domain) {
     return ImmutableDnsHost.of(InternetDomainName.from(domain).toString());
   }

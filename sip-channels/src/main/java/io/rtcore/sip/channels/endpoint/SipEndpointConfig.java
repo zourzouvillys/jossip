@@ -4,22 +4,24 @@ import org.immutables.value.Value;
 import org.immutables.value.Value.Style.BuilderVisibility;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
+import io.rtcore.sip.channels.api.SipFrameUtils;
+import io.rtcore.sip.channels.api.SipRequestFrame;
+import io.rtcore.sip.channels.api.SipResponseFrame;
+import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.handlers.FunctionServerCallHandler;
 import io.rtcore.sip.channels.internal.SipChannels;
-import io.rtcore.sip.channels.internal.SipServerCallHandler;
 import io.rtcore.sip.channels.internal.SipUdpSocket;
-import io.rtcore.sip.message.message.SipResponseStatus;
-import io.rtcore.sip.message.processor.rfc3261.MutableSipResponse;
+import io.rtcore.sip.common.iana.SipStatusCodes;
 
 @Value.Immutable
 @Value.Style(
-  jdkOnly = true,
-  allowedClasspathAnnotations = { Override.class },
-  typeImmutable = "Default*",
-  build = "config",
-  defaultAsDefault = true,
-  visibility = ImplementationVisibility.PACKAGE,
-  builderVisibility = BuilderVisibility.PACKAGE)
+    jdkOnly = true,
+    allowedClasspathAnnotations = { Override.class },
+    typeImmutable = "Default*",
+    build = "config",
+    defaultAsDefault = true,
+    visibility = ImplementationVisibility.PACKAGE,
+    builderVisibility = BuilderVisibility.PACKAGE)
 public interface SipEndpointConfig {
 
   /**
@@ -34,9 +36,9 @@ public interface SipEndpointConfig {
    * the handler for processing incoming requests.
    */
 
-  default SipServerCallHandler requestHandler() {
+  default SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> requestHandler() {
     return FunctionServerCallHandler.create(
-      req -> MutableSipResponse.createResponse(req, SipResponseStatus.METHOD_NOT_ALLOWED).build(),
+      req -> SipFrameUtils.createResponse(req, SipStatusCodes.METHOD_NOT_ALLOWED),
       ack -> {
         // just drop ACKs.
       });

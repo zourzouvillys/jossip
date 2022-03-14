@@ -17,6 +17,8 @@ public interface Host {
 
   String toUriString();
 
+  String toAddrString();
+
   static Host fromString(String host) {
 
     // Verify that no port was specified, and strip optional brackets from

@@ -1,8 +1,13 @@
 package io.rtcore.sip.channels.api;
 
-@FunctionalInterface
-public interface SipServerExchangeInterceptor {
+import io.rtcore.sip.channels.internal.SipAttributes;
 
-  SipServerExchange.Listener interceptExchange(SipServerExchange exchange, SipServerExchangeHandler next);
+@FunctionalInterface
+public interface SipServerExchangeInterceptor<ReqT, ResT> {
+
+  SipServerExchange.Listener interceptExchange(
+      SipServerExchange<ReqT, ResT> exchange,
+      SipAttributes attributes,
+      SipServerExchangeHandler<ReqT, ResT> next);
 
 }

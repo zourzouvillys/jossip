@@ -15,7 +15,7 @@ import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.api.SipServerExchangeInterceptor;
 import io.rtcore.sip.channels.internal.SipAttributes;
 
-public final class SipServerLogInterceptor implements SipServerExchangeInterceptor {
+public final class SipServerLogInterceptor implements SipServerExchangeInterceptor<SipRequestFrame, SipResponseFrame> {
 
   private static final Logger LOG = LoggerFactory.getLogger(SipServerLogInterceptor.class);
 
@@ -23,7 +23,7 @@ public final class SipServerLogInterceptor implements SipServerExchangeIntercept
   }
 
   @Override
-  public Listener interceptExchange(SipServerExchange exchange, SipServerExchangeHandler next) {
+  public Listener interceptExchange(SipServerExchange<SipRequestFrame, SipResponseFrame> exchange, SipAttributes attrs, SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> next) {
 
     SipRequestFrame req = exchange.request();
 
@@ -33,7 +33,7 @@ public final class SipServerLogInterceptor implements SipServerExchangeIntercept
     LOG.info("");
     req.body().ifPresent(body -> LOG.info("{}", body));
 
-    var listener = new ForwardingSipServerExchange(exchange) {
+    var listener = new ForwardingSipServerExchange<>(exchange) {
 
       @Override
       public CompletionStage<?> onNext(SipResponseFrame res) {
@@ -57,9 +57,8 @@ public final class SipServerLogInterceptor implements SipServerExchangeIntercept
         super.onComplete();
       }
 
-
     };
-    return new ForwardingSipServerExchangeListener(next.startExchange(listener)) {};
+    return new ForwardingSipServerExchangeListener(next.startExchange(listener, attrs)) {};
   }
 
 }

@@ -1,6 +1,6 @@
 package io.rtcore.sip.channels.connection;
 
-import java.net.SocketAddress;
+import java.net.InetSocketAddress;
 
 import javax.net.ssl.SSLSession;
 
@@ -17,7 +17,7 @@ public class SipConnections {
    *
    */
 
-  public static final SipAttributes.Key<SocketAddress> ATTR_LOCAL_ADDR = SipAttributes.Key.create("local-addr");
+  public static final SipAttributes.Key<InetSocketAddress> ATTR_LOCAL_ADDR = SipAttributes.Key.create("local-addr");
 
   /**
    * the address that we received this packet from. this may not be the underlying source IP
@@ -28,7 +28,7 @@ public class SipConnections {
    *
    */
 
-  public static final SipAttributes.Key<SocketAddress> ATTR_REMOTE_ADDR = SipAttributes.Key.create("remote-addr");
+  public static final SipAttributes.Key<InetSocketAddress> ATTR_REMOTE_ADDR = SipAttributes.Key.create("remote-addr");
 
   /**
    * any message transported over a TLS enabled session will include this to provide access to the

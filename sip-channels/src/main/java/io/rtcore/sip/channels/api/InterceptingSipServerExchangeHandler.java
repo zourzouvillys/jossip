@@ -1,6 +1,7 @@
 package io.rtcore.sip.channels.api;
 
 import io.rtcore.sip.channels.api.SipServerExchange.Listener;
+import io.rtcore.sip.channels.internal.SipAttributes;
 
 public class InterceptingSipServerExchangeHandler implements SipServerExchangeHandler {
 
@@ -13,8 +14,8 @@ public class InterceptingSipServerExchangeHandler implements SipServerExchangeHa
   }
 
   @Override
-  public Listener startExchange(SipServerExchange exchange) {
-    return this.interceptor.interceptExchange(exchange, this.handler);
+  public Listener startExchange(SipServerExchange exchange, SipAttributes attrs) {
+    return this.interceptor.interceptExchange(exchange, attrs, this.handler);
   }
 
 }

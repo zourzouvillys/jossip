@@ -9,9 +9,11 @@ import org.immutables.value.Value;
 
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.ssl.SslContext;
+import io.rtcore.sip.channels.api.SipFrameUtils;
+import io.rtcore.sip.channels.api.SipRequestFrame;
+import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.api.SipServerExchangeInterceptor;
-import io.rtcore.sip.channels.netty.codec.SipFrameUtils;
 import io.rtcore.sip.common.iana.SipStatusCodes;
 
 @Value.Immutable
@@ -50,8 +52,8 @@ public interface NettySocketServerConfig {
    */
 
   @Value.Default
-  default SipServerExchangeHandler serverHandler() {
-    return exchange -> {
+  default SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> serverHandler() {
+    return (exchange, attributes) -> {
       exchange.onNext(SipFrameUtils.createResponse(exchange.request(), SipStatusCodes.OK));
       exchange.onComplete();
       return null;
@@ -62,7 +64,7 @@ public interface NettySocketServerConfig {
    * interceptors to apply to incoming exchanges.
    */
 
-  List<SipServerExchangeInterceptor> interceptors();
+  List<SipServerExchangeInterceptor<SipRequestFrame, SipResponseFrame>> interceptors();
 
   /**
    * 

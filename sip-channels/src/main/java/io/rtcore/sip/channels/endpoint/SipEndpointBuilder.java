@@ -3,7 +3,6 @@ package io.rtcore.sip.channels.endpoint;
 import java.net.InetSocketAddress;
 
 import io.rtcore.sip.channels.internal.SipChannels;
-import io.rtcore.sip.channels.internal.SipServerCallHandler;
 import io.rtcore.sip.channels.internal.SipUdpSocket;
 
 public interface SipEndpointBuilder extends SipSdkBuilder<SipEndpointBuilder, SipEndpoint> {
@@ -18,7 +17,7 @@ public interface SipEndpointBuilder extends SipSdkBuilder<SipEndpointBuilder, Si
    *
    */
 
-  SipEndpointBuilder requestHandler(SipServerCallHandler handler);
+  //  SipEndpointBuilder requestHandler(SipServerCallHandler handler);
 
   /**
    * build and return the newly created instance. it will need to be started.

@@ -7,8 +7,8 @@ import io.rtcore.sip.channels.api.SipServerExchangeInterceptor;
 
 public class SipServerInterceptors {
 
-  public static SipServerExchangeHandler interceptedHandler(SipServerExchangeInterceptor interceptor, SipServerExchangeHandler handler) {
-    return exchange -> interceptor.interceptExchange(exchange, handler);
+  public static <ReqT, ResT> SipServerExchangeHandler<ReqT, ResT> interceptedHandler(SipServerExchangeInterceptor<ReqT, ResT> interceptor, SipServerExchangeHandler<ReqT, ResT> handler) {
+    return (exchange, attrs) -> interceptor.interceptExchange(exchange, attrs, handler);
   }
 
   /**
@@ -19,8 +19,8 @@ public class SipServerInterceptors {
    * @return
    */
 
-  public static SipServerExchangeHandler interceptedHandler(SipServerExchangeHandler handler, List<SipServerExchangeInterceptor> interceptors) {
-    for (SipServerExchangeInterceptor interceptor : interceptors) {
+  public static <ReqT, ResT> SipServerExchangeHandler<ReqT, ResT> interceptedHandler(SipServerExchangeHandler<ReqT, ResT> handler, List<SipServerExchangeInterceptor<ReqT, ResT>> interceptors) {
+    for (SipServerExchangeInterceptor<ReqT, ResT> interceptor : interceptors) {
       handler = interceptedHandler(interceptor, handler);
     }
     return handler;

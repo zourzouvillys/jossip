@@ -16,13 +16,14 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.rtcore.sip.channels.api.SipClientExchange.Event;
+import io.rtcore.sip.channels.api.SipFrameUtils;
 import io.rtcore.sip.channels.api.SipRequestFrame;
+import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.connection.ImmutableSipRoute;
 import io.rtcore.sip.channels.connection.SipConnection;
 import io.rtcore.sip.channels.connection.SipConnectionProvider;
 import io.rtcore.sip.channels.interceptors.SipServerLogInterceptor;
-import io.rtcore.sip.channels.netty.codec.SipFrameUtils;
 import io.rtcore.sip.common.iana.SipMethods;
 import io.rtcore.sip.common.iana.SipStatusCodes;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
@@ -40,7 +41,7 @@ class SipConnectionTests {
 
     try {
 
-      SipServerExchangeHandler dispatcher = call -> {
+      SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> dispatcher = (call, attrs) -> {
         call.onNext(SipFrameUtils.createResponse(call.request(), SipStatusCodes.OK));
         call.onComplete();
         return null;
