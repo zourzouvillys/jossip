@@ -3,7 +3,6 @@ package io.rtcore.sip.channels.handlers;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import io.reactivex.rxjava3.core.Flowable;
 import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipFrameUtils;
 import io.rtcore.sip.channels.api.SipRequestFrame;
