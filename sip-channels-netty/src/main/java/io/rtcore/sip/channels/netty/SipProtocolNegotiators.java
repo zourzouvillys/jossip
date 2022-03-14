@@ -4,8 +4,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
-import io.rtcore.sip.channels.internal.SipChannelCredentials;
-import io.rtcore.sip.channels.internal.TlsChannelCredentials;
+import io.rtcore.sip.channels.auth.SipChannelCredentials;
+import io.rtcore.sip.channels.auth.TlsChannelCredentials;
 import io.rtcore.sip.channels.netty.codec.SipCodec;
 
 public final class SipProtocolNegotiators {

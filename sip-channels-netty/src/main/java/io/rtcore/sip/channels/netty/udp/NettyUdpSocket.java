@@ -9,7 +9,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.ReflectiveChannelFactory;
 import io.netty.channel.socket.DatagramChannel;
-import io.netty.channel.socket.DatagramChannelConfig;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.handler.codec.DatagramPacketDecoder;

@@ -7,13 +7,13 @@ import org.slf4j.LoggerFactory;
 
 import io.rtcore.sip.channels.api.ForwardingSipServerExchange;
 import io.rtcore.sip.channels.api.ForwardingSipServerExchangeListener;
+import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipRequestFrame;
 import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.channels.api.SipServerExchange;
 import io.rtcore.sip.channels.api.SipServerExchange.Listener;
 import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.api.SipServerExchangeInterceptor;
-import io.rtcore.sip.channels.internal.SipAttributes;
 
 public final class SipServerLogInterceptor implements SipServerExchangeInterceptor<SipRequestFrame, SipResponseFrame> {
 

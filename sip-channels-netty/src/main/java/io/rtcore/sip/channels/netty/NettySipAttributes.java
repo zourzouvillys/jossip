@@ -1,7 +1,7 @@
 package io.rtcore.sip.channels.netty;
 
 import io.netty.channel.Channel;
-import io.rtcore.sip.channels.internal.SipAttributes;
+import io.rtcore.sip.channels.api.SipAttributes;
 
 public class NettySipAttributes {
 

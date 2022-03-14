@@ -4,13 +4,13 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import io.reactivex.rxjava3.core.Flowable;
+import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipFrameUtils;
 import io.rtcore.sip.channels.api.SipRequestFrame;
 import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.channels.api.SipServerExchange;
 import io.rtcore.sip.channels.api.SipServerExchange.Listener;
 import io.rtcore.sip.channels.api.SipServerExchangeHandler;
-import io.rtcore.sip.channels.internal.SipAttributes;
 import io.rtcore.sip.common.iana.SipMethods;
 import io.rtcore.sip.common.iana.SipStatusCodes;
 

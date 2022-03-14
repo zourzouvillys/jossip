@@ -2,10 +2,10 @@ package io.rtcore.sip.channels.interceptors;
 
 import java.util.Optional;
 
+import io.rtcore.sip.channels.api.SipCallOptions;
 import io.rtcore.sip.channels.api.SipChannel;
 import io.rtcore.sip.channels.api.SipClientExchange;
 import io.rtcore.sip.channels.api.SipRequestFrame;
-import io.rtcore.sip.channels.internal.SipCallOptions;
 
 public class SipClientAuthInterceptor implements SipClientInterceptor {
 

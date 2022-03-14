@@ -2,8 +2,6 @@ package io.rtcore.sip.channels.api;
 
 import java.util.concurrent.CompletionStage;
 
-import io.rtcore.sip.channels.internal.SipAttributes;
-
 public abstract class ForwardingSipServerExchange<ReqT, ResT> implements SipServerExchange<ReqT, ResT> {
 
   private final SipServerExchange<ReqT, ResT> delegate;

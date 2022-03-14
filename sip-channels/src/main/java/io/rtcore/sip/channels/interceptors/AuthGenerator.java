@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
+import io.rtcore.sip.channels.api.SipCallOptions;
 import io.rtcore.sip.channels.api.SipChannel;
 import io.rtcore.sip.channels.api.SipRequestFrame;
 import io.rtcore.sip.channels.errors.ProxyAuthenticationRequired;
 import io.rtcore.sip.channels.interceptors.SipClientAuthInterceptor.Attempt;
 import io.rtcore.sip.channels.interceptors.SipClientAuthInterceptor.Generator;
-import io.rtcore.sip.channels.internal.SipCallOptions;
 import io.rtcore.sip.common.SipHeaderLine;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
 import io.rtcore.sip.message.auth.DigestAuthUtils;

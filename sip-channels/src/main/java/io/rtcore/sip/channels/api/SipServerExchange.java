@@ -2,8 +2,6 @@ package io.rtcore.sip.channels.api;
 
 import java.util.concurrent.CompletionStage;
 
-import io.rtcore.sip.channels.internal.SipAttributes;
-
 public interface SipServerExchange<ReqT, ResT> {
 
   /**

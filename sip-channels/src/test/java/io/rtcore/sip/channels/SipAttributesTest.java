@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import io.rtcore.sip.channels.internal.SipAttributes;
+import io.rtcore.sip.channels.api.SipAttributes;
 
 class SipAttributesTest {
 

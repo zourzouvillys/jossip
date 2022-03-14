@@ -1,4 +1,4 @@
-package io.rtcore.sip.channels.internal;
+package io.rtcore.sip.channels.api;
 
 import java.util.HashMap;
 import java.util.Map;

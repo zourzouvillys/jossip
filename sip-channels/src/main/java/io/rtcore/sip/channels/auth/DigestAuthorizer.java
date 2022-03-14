@@ -56,6 +56,8 @@ public class DigestAuthorizer implements DigestAuthService {
   @Override
   public CompletionStage<DigestChallengeResult> verifyResponse(DigestContext ctx, DigestChallengeResponse res) {
 
+    // require MD5 ...
+    @SuppressWarnings("deprecation")
     HashFunction hashFunction = Hashing.md5();
 
     //

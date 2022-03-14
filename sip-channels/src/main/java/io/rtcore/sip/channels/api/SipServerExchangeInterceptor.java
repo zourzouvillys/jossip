@@ -1,7 +1,5 @@
 package io.rtcore.sip.channels.api;
 
-import io.rtcore.sip.channels.internal.SipAttributes;
-
 @FunctionalInterface
 public interface SipServerExchangeInterceptor<ReqT, ResT> {
 

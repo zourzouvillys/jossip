@@ -4,7 +4,7 @@ import java.net.InetSocketAddress;
 
 import javax.net.ssl.SSLSession;
 
-import io.rtcore.sip.channels.internal.SipAttributes;
+import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.common.ImmutableHostPort;
 import io.rtcore.sip.common.iana.StandardSipTransportName;
 

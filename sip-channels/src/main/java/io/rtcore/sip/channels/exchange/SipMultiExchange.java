@@ -3,10 +3,10 @@ package io.rtcore.sip.channels.exchange;
 import java.util.function.Supplier;
 
 import io.reactivex.rxjava3.core.Flowable;
+import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipChannel;
 import io.rtcore.sip.channels.api.SipClientExchange;
 import io.rtcore.sip.channels.api.SipRequestFrame;
-import io.rtcore.sip.channels.internal.SipAttributes;
 
 /**
  * implementation of a SIP exchange which can attempt different targets in a serial pattern. It does

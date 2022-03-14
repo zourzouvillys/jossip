@@ -1,4 +1,4 @@
-package io.rtcore.sip.channels.internal;
+package io.rtcore.sip.channels.auth;
 
 public final class TlsChannelCredentials implements SipChannelCredentials {
 

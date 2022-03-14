@@ -1,20 +1,12 @@
-import io.rtcore.sip.channels.internal.ManagedSipChannelProvider;
-import io.rtcore.sip.channels.internal.ManagedSipUdpSocketProvider;
-import io.rtcore.sip.channels.internal.SipNameResolver;
 
 module io.rtcore.sip.channels {
 
-  uses ManagedSipUdpSocketProvider;
-  uses ManagedSipChannelProvider;
-  uses SipNameResolver.Provider;
-
   exports io.rtcore.sip.channels.internal;
+  exports io.rtcore.sip.channels.auth;
   exports io.rtcore.sip.channels.api;
-  exports io.rtcore.sip.channels.utils;
   exports io.rtcore.sip.channels.interceptors;
   exports io.rtcore.sip.channels.dispatch;
   exports io.rtcore.sip.channels.handlers;
-  exports io.rtcore.sip.channels.endpoint;
   exports io.rtcore.sip.channels.connection;
 
   requires transitive io.rtcore.sip.common;
