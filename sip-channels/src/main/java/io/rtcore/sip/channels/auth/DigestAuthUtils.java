@@ -1,53 +1,43 @@
 package io.rtcore.sip.channels.auth;
 
 import java.nio.charset.StandardCharsets;
-import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletionStage;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.common.collect.Lists;
 
+import io.rtcore.sip.channels.api.SipFrameUtils;
 import io.rtcore.sip.channels.api.SipRequestFrame;
+import io.rtcore.sip.channels.errors.ClientFailure;
+import io.rtcore.sip.common.iana.SipHeaderId;
 import io.rtcore.sip.message.auth.headers.DigestCredentials;
-import io.rtcore.sip.message.message.SipRequest;
+import io.rtcore.sip.message.message.SipResponseStatus;
 import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.AuthorizationParser;
 
-public interface DigestAuthService {
+public class DigestAuthUtils {
 
   /**
-   * 
-   * @param ctx
-   * 
-   * @return a digest challenge request
+   * a request can contain a single DigestChallengeResponse.
    */
 
-  CompletionStage<DigestChallengeRequest> calculateChallenge(DigestContext ctx);
+  public static Optional<DigestChallengeResponse> extractResponse(SipRequestFrame req, SipHeaderId header, String realm) {
 
-  /**
-   * 
-   * @param ctx
-   * @param res
-   * 
-   * @return
-   */
+    List<DigestChallengeResponse> res = extractDigestResponse(SipFrameUtils.headerValues(req.headerLines(), header), realm);
 
-  CompletionStage<Optional<SipPrinicpal>> verifyResponse(DigestContext ctx, DigestChallengeResponse res);
+    if (res.isEmpty()) {
+      return Optional.empty();
+    }
+    else if (res.size() > 1) {
+      throw new ClientFailure(SipResponseStatus.BAD_REQUEST.withReason("multiple Digest responses for same realm"));
+    }
 
-  /**
-   * 
-   */
+    return Optional.of(res.get(0));
 
-  static DigestContext createDigestContext(SipRequest req, String realm) {
-    return ImmutableDigestContext.builder()
-      .realm(realm)
-      .method(req.method().methodId())
-      .digestURI(req.uri().toString())
-      .entityHash(hashFunction -> hashFunction.hashBytes(Optional.ofNullable(req.body()).orElse(new byte[0])).toString())
-      .build();
   }
 
-  static DigestContext createDigestContext(SipRequestFrame req, String realm) {
+  public static DigestContext createDigestContext(SipRequestFrame req, String realm) {
     return ImmutableDigestContext.builder()
       .realm(realm)
       .method(req.initialLine().method())
@@ -68,7 +58,7 @@ public interface DigestAuthService {
    * @return
    */
 
-  public static Stream<DigestChallengeResponse> extractDigestResponse(Stream<String> headerValues, String realm) {
+  private static Stream<DigestChallengeResponse> extractDigestResponse(Stream<String> headerValues, String realm) {
     return headerValues
       .map(String::strip)
       .filter(value -> value.toLowerCase().startsWith("digest "))
@@ -80,15 +70,15 @@ public interface DigestAuthService {
         creds -> new DigestChallengeResponse(
           creds.username(),
           creds.realm(),
-          KnownDigestQualityOfProtection.fromToken(creds.qop()).orElseThrow(),
+          KnownDigestQualityOfProtection.fromToken(creds.qop()).orElseThrow(() -> new IllegalArgumentException(creds.qop())),
           creds.nc(),
           creds.response(),
           creds.nonce(),
           Optional.ofNullable(creds.cnonce())));
   }
 
-  public static Stream<DigestChallengeResponse> extractDigestResponse(Iterable<String> headerValues, String realm) {
-    return extractDigestResponse(Lists.newArrayList(headerValues), realm);
+  private static List<DigestChallengeResponse> extractDigestResponse(Iterable<String> headerValues, String realm) {
+    return extractDigestResponse(Lists.newArrayList(headerValues).stream(), realm).collect(Collectors.toUnmodifiableList());
   }
 
 }

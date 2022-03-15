@@ -1,7 +1,6 @@
 
 module io.rtcore.sip.channels {
 
-  exports io.rtcore.sip.channels.internal;
   exports io.rtcore.sip.channels.auth;
   exports io.rtcore.sip.channels.api;
   exports io.rtcore.sip.channels.interceptors;

@@ -12,7 +12,6 @@ import com.google.common.base.Joiner;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 
-import io.reactivex.rxjava3.core.Maybe;
 import io.rtcore.sip.message.auth.headers.Authorization;
 import io.rtcore.sip.message.auth.headers.DigestCredentials;
 import io.rtcore.sip.message.message.SipRequest;
@@ -54,16 +53,12 @@ public class DigestAuthorizer implements DigestAuthService {
    */
 
   @Override
-  public CompletionStage<DigestChallengeResult> verifyResponse(DigestContext ctx, DigestChallengeResponse res) {
+  public CompletionStage<Optional<SipPrinicpal>> verifyResponse(DigestContext ctx, DigestChallengeResponse res) {
 
     // require MD5 ...
     @SuppressWarnings("deprecation")
     HashFunction hashFunction = Hashing.md5();
 
-    //
-    Maybe<Credential> ha1 = store.ha1(res.username(), res.realm());
-
-    //
     String ha2 =
       ha2(
         ctx.method().token(),
@@ -72,7 +67,14 @@ public class DigestAuthorizer implements DigestAuthService {
         hashFunction,
         res.qop());
 
-    return CompletableFuture.failedStage(new IllegalArgumentException());
+    //
+    CompletionStage<Optional<SipPrinicpal>> result =
+      store
+        .ha1(res.username(), res.realm())
+        .thenApply(creds -> validate(ha2, hashFunction, res, creds)
+          .map(e -> new SipPrinicpal(e.username(), e.realm(), e.properties())));
+
+    return result;
 
   }
 
@@ -87,22 +89,53 @@ public class DigestAuthorizer implements DigestAuthService {
    * @return
    */
 
-  public boolean validate(String method, String digestURI, String entityHash, HashFunction hashFunction, DigestChallengeResponse res, Credential ha1s) {
+  public
+      Optional<Credential>
+      validate(
+          String method,
+          String digestURI,
+          String entityHash,
+          HashFunction hashFunction,
+          DigestChallengeResponse res,
+          CredentialSet ha1s) {
 
     String ha2 = ha2(method, digestURI, entityHash, hashFunction, res.qop());
 
-    for (String ha1 : ha1s.ha1s()) {
+    for (Credential credential : ha1s.credentials()) {
 
-      String response = calculateResponse(hashFunction, ha1, ha2, res);
+      String response =
+        calculateResponse(
+          hashFunction,
+          credential.ha1(),
+          ha2,
+          res);
 
       if (response.equals(res.response())) {
-        return true;
+        return Optional.of(credential);
+      }
+    }
+
+    return Optional.empty();
+
+  }
+
+  public Optional<Credential> validate(String ha2, HashFunction hashFunction, DigestChallengeResponse res, CredentialSet ha1s) {
+
+    for (Credential credential : ha1s.credentials()) {
+
+      String response =
+        calculateResponse(
+          hashFunction,
+          credential.ha1(),
+          ha2,
+          res);
+
+      if (response.equals(res.response())) {
+        return Optional.of(credential);
       }
 
     }
-
-    return false;
-
+    return Optional.empty();
   }
 
   private String calculateResponse(HashFunction hashFunction, String ha1, String ha2, DigestChallengeResponse res) {

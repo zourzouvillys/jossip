@@ -7,8 +7,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.google.common.base.Strings;
-
 public enum KnownDigestQualityOfProtection {
 
   NONE,
@@ -34,7 +32,7 @@ public enum KnownDigestQualityOfProtection {
 
   private final static Map<String, KnownDigestQualityOfProtection> lookup =
     Stream.of(KnownDigestQualityOfProtection.values())
-      .filter(e -> !Strings.isNullOrEmpty(e.token()))
+      .filter(e -> e != NONE)
       .collect(Collectors.toUnmodifiableMap(KnownDigestQualityOfProtection::token, Function.identity()));
 
   public static Optional<KnownDigestQualityOfProtection> fromToken(String token) {
