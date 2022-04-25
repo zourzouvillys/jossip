@@ -3,7 +3,7 @@ pluginManagement {
   plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'com.diffplug.eclipse.apt' version '3.31.0' 
-    id 'com.diffplug.eclipse.excludebuildfolder' version '3.31.0'
+    id 'com.diffplug.eclipse.excludebuildfolder' version '3.36.2'
     id 'com.diffplug.eclipse.resourcefilters' version '3.31.0'  
     id 'com.github.spotbugs' version '5.0.6'
     id 'com.google.protobuf' version '0.8.17'
