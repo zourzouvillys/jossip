@@ -119,4 +119,13 @@ public class NameAddrParser implements Parser<NameAddr> {
     return value;
   }
 
+  public static List<NameAddr> parseList(final String input) {
+    final ByteParserInput is = ByteParserInput.fromString(input);    
+    final List<NameAddr> value = ParserUtils.read(is, ParserUtils.commaSeparated(NameAddrParser.INSTANCE));
+    if (is.remaining() > 0) {
+      throw new RuntimeException("Trailing Garbage in NameAddr");
+    }
+    return value;
+  }
+
 }

@@ -95,10 +95,12 @@ public interface DigestValues {
       params = params.withParameter(OPAQUE, this.opaque().get());
     }
 
-    params =
-      params.withParameter(STALE,
-        this.stale() ? Token.TRUE
-                     : Token.FALSE);
+    if (this.stale()) {
+      params =
+        params.withParameter(STALE,
+          this.stale() ? Token.TRUE
+                       : Token.FALSE);
+    }
 
     if (this.qop().isPresent()) {
       params = params.withParameter(QOP, this.qop().get());

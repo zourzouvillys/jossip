@@ -11,7 +11,7 @@ import io.rtcore.sip.channels.api.SipClientExchange;
 import io.rtcore.sip.channels.api.SipRequestFrame;
 import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.channels.connection.SipConnection;
-import io.rtcore.sip.channels.netty.tcp.TlsSipConnection.ClientBranchId;
+import io.rtcore.sip.channels.netty.ClientBranchId;
 import io.rtcore.sip.common.iana.SipMethods;
 
 class SipStreamClientExchange implements SipClientExchange {

@@ -7,11 +7,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.common.collect.Lists;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
 
 import io.rtcore.sip.channels.api.SipFrameUtils;
 import io.rtcore.sip.channels.api.SipRequestFrame;
 import io.rtcore.sip.channels.errors.ClientFailure;
 import io.rtcore.sip.common.iana.SipHeaderId;
+import io.rtcore.sip.message.auth.StdDigestAlgo;
 import io.rtcore.sip.message.auth.headers.DigestCredentials;
 import io.rtcore.sip.message.message.SipResponseStatus;
 import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.AuthorizationParser;
@@ -79,6 +82,45 @@ public class DigestAuthUtils {
 
   private static List<DigestChallengeResponse> extractDigestResponse(Iterable<String> headerValues, String realm) {
     return extractDigestResponse(Lists.newArrayList(headerValues).stream(), realm).collect(Collectors.toUnmodifiableList());
+  }
+
+  public static Stream<DigestChallengeRequest> extractDigestRequest(Stream<String> headerValues, String realm) {
+
+    return headerValues
+      .map(String::strip)
+      .filter(value -> value.toLowerCase().startsWith("digest "))
+      .map(AuthorizationParser.INSTANCE::parseValue)
+      .map(auth -> auth.as(DigestCredentials.class).orElse(null))
+      .filter(auth -> auth != null)
+      .filter(creds -> creds.realm().equalsIgnoreCase(realm))
+      .map(
+        creds -> new DigestChallengeRequest(
+
+          // String realm,
+          creds.realm(),
+
+          // String nonce,
+          creds.nonce(),
+
+          // boolean stale,
+          creds.stale(),
+
+          // String opaque,
+          creds.opaque(),
+
+          // StdDigestAlgo algo,
+          StdDigestAlgo.valueOf(creds.algorithm()),
+
+          // KnownDigestQualityOfProtection qop
+          KnownDigestQualityOfProtection.fromToken(creds.qop()).orElse(KnownDigestQualityOfProtection.NONE)
+
+        //
+        ));
+  }
+
+  public static String ha1(String username, String realm, String password) {
+    HashFunction hashFunction = Hashing.md5();
+    return hashFunction.hashString(String.format("%s:%s:%s", username, realm, password), StandardCharsets.UTF_8).toString();
   }
 
 }

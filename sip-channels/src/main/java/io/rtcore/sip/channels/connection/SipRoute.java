@@ -1,5 +1,6 @@
 package io.rtcore.sip.channels.connection;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Optional;
@@ -57,5 +58,23 @@ public interface SipRoute {
    */
 
   List<InetSocketAddress> proxyChain();
+
+  /**
+   * 
+   */
+
+  static ImmutableSipRoute tcp(InetAddress addr) {
+    return ImmutableSipRoute.builder()
+      .transportProtocol(StandardSipTransportName.TCP)
+      .remoteAddress(new InetSocketAddress(addr, 5060))
+      .build();
+  }
+
+  static ImmutableSipRoute tcp(InetAddress addr, int port) {
+    return ImmutableSipRoute.builder()
+      .transportProtocol(StandardSipTransportName.TCP)
+      .remoteAddress(new InetSocketAddress(addr, port))
+      .build();
+  }
 
 }

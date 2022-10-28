@@ -6,9 +6,9 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.util.concurrent.Future;
 
-class NettyUtils {
+public class NettyUtils {
 
-  static final CompletableFuture<Channel> toCompletableFuture(ChannelFuture f) {
+  public static final CompletableFuture<Channel> toCompletableFuture(ChannelFuture f) {
 
     CompletableFuture<Channel> channelFuture = new CompletableFuture<>();
 
@@ -27,7 +27,7 @@ class NettyUtils {
     return channelFuture;
   }
 
-  static CompletableFuture<Channel> toCompletableFuture(Future<Channel> f) {
+  public static CompletableFuture<Channel> toCompletableFuture(Future<Channel> f) {
 
     CompletableFuture<Channel> channelFuture = new CompletableFuture<>();
 

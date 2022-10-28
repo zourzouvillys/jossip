@@ -24,7 +24,7 @@ public class DigestCredentials extends Authorization {
   protected static final SipParameterDefinition<String> QOP = ParameterUtils.createQuotedStringParameterDefinition("qop");
   protected static final SipParameterDefinition<Token> NONCE_COUNT = ParameterUtils.createTokenParameterDefinition("nc");
   protected static final SipParameterDefinition<String> DIGEST_URI = ParameterUtils.createQuotedStringParameterDefinition("uri");
-  protected static final SipParameterDefinition<Token> RESPONSE = ParameterUtils.createTokenParameterDefinition("response");
+  protected static final SipParameterDefinition<String> RESPONSE = ParameterUtils.createQuotedStringParameterDefinition("response");
   protected static final SipParameterDefinition<String> REALM = ParameterUtils.createQuotedStringParameterDefinition("realm");
   protected static final SipParameterDefinition<String> DOMAIN = ParameterUtils.createQuotedStringParameterDefinition("domain");
   protected static final SipParameterDefinition<Token> STALE = ParameterUtils.createTokenParameterDefinition("stale");

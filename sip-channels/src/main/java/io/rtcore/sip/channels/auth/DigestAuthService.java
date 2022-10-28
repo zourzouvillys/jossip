@@ -1,7 +1,6 @@
 package io.rtcore.sip.channels.auth;
 
 import java.nio.charset.StandardCharsets;
-import java.security.Principal;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 import java.util.stream.Stream;

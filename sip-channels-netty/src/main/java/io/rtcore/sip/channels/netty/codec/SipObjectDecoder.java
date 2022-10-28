@@ -44,7 +44,7 @@ public final class SipObjectDecoder extends MessageToMessageDecoder<ByteBuf> {
   }
 
   @Override
-  protected void decode(final ChannelHandlerContext ctx, final ByteBuf in, final List<Object> out) throws Exception {
+  public void decode(final ChannelHandlerContext ctx, final ByteBuf in, final List<Object> out) throws Exception {
 
     in.markReaderIndex();
 

@@ -19,6 +19,10 @@ public final class TelUri extends BaseParameterizedObject<TelUri> implements Uri
     this(number, DefaultParameters.EMPTY);
   }
 
+  public static final TelUri of(String number) {
+    return new TelUri(number);
+  }
+
   public TelUri(final String number, final Parameters parameters) {
     this.number = number;
     this.parameters = parameters;

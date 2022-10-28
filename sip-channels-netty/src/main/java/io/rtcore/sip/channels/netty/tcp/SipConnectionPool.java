@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.netty.channel.EventLoopGroup;
-import io.netty.handler.ssl.SslContext;
 import io.reactivex.rxjava3.core.Flowable;
 import io.rtcore.sip.channels.api.SipClientExchange;
 import io.rtcore.sip.channels.api.SipFrame;
@@ -31,8 +30,12 @@ public class SipConnectionPool implements SipConnectionProvider {
     this.provider = provider;
   }
 
-  public static SipConnectionPool createTlsPool(EventLoopGroup elg, SslContext sslctx) {
+  public static SipConnectionPool createTlsPool(EventLoopGroup elg, TlsContextProvider sslctx) {
     return new SipConnectionPool(SipTlsConnectionProvider.createProvider(elg, sslctx));
+  }
+
+  public static SipConnectionPool createTcpPool(EventLoopGroup elg) {
+    return new SipConnectionPool(SipTlsConnectionProvider.createProvider(elg, null));
   }
 
   @Override

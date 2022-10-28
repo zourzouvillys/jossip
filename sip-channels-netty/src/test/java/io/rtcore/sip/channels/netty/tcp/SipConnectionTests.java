@@ -59,7 +59,7 @@ class SipConnectionTests {
       server.startAsync().awaitRunning();
 
       // pool for outgoing connections
-      SipConnectionProvider provider = SipConnectionPool.createTlsPool(loop, SipTlsUtils.createClient());
+      SipConnectionProvider provider = SipConnectionPool.createTlsPool(loop, TlsContextProvider.of(SipTlsUtils.createClient()));
 
       try {
 

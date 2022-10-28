@@ -13,7 +13,6 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.proxy.Socks5ProxyHandler;
-import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.rtcore.sip.channels.api.SipFrame;
@@ -23,10 +22,10 @@ import io.rtcore.sip.channels.netty.codec.SipCodec;
 class TlsClientHandler extends ChannelInitializer<NioSocketChannel> {
 
   private final SipRoute route;
-  private final SslContext sslctx;
+  private final TlsContextProvider sslctx;
   private final Consumer<SipFrame> in;
 
-  public TlsClientHandler(SipRoute route, SslContext sslctx, Consumer<SipFrame> in) {
+  public TlsClientHandler(SipRoute route, TlsContextProvider sslctx, Consumer<SipFrame> in) {
     this.route = route;
     this.sslctx = sslctx;
     this.in = in;
@@ -41,21 +40,25 @@ class TlsClientHandler extends ChannelInitializer<NioSocketChannel> {
       p.addLast(new Socks5ProxyHandler(proxy));
     }
 
-    final SslHandler handler = createHandler(ch.alloc());
+    if (this.sslctx != null) {
 
-    // enable endpoint identification.
-    SSLEngine sslEngine = handler.engine();
-    SSLParameters sslParameters = sslEngine.getSSLParameters();
-    sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
-    sslParameters.setServerNames(
-      this.route.remoteServerNames()
-        .stream()
-        .map(name -> new SNIHostName(name))
-        .collect(Collectors.toList()));
-    sslEngine.setSSLParameters(sslParameters);
+      final SslHandler handler = createHandler(ch.alloc());
 
-    // the TLS handler.
-    p.addLast(handler);
+      // enable endpoint identification.
+      SSLEngine sslEngine = handler.engine();
+      SSLParameters sslParameters = sslEngine.getSSLParameters();
+      sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
+      sslParameters.setServerNames(
+        this.route.remoteServerNames()
+          .stream()
+          .map(name -> new SNIHostName(name))
+          .collect(Collectors.toList()));
+      sslEngine.setSSLParameters(sslParameters);
+
+      // the TLS handler.
+      p.addLast(handler);
+
+    }
 
     //
     p.addLast(new IdleStateHandler(0, 5, 0));
@@ -68,9 +71,7 @@ class TlsClientHandler extends ChannelInitializer<NioSocketChannel> {
   }
 
   private SslHandler createHandler(ByteBufAllocator alloc) {
-    return route.remoteAuthority()
-      .map(remoteName -> sslctx.newHandler(alloc, remoteName.toUriString(), route.remoteAddress().getPort()))
-      .orElseGet(() -> sslctx.newHandler(alloc));
+    return sslctx.newHandler(alloc, route);
   }
 
 }

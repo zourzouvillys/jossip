@@ -21,14 +21,14 @@ final class NettySupport {
   public static CompletionStage<?> send(final DatagramChannel ch, final DatagramPacket packet) {
     final CompletableFuture<Object> f = new CompletableFuture<>();
     ch.writeAndFlush(packet)
-    .addListener(future -> {
-      try {
-        f.complete(future.get());
-      }
-      catch (final Throwable ex) {
-        f.completeExceptionally(ex);
-      }
-    });
+      .addListener(future -> {
+        try {
+          f.complete(future.get());
+        }
+        catch (final Throwable ex) {
+          f.completeExceptionally(ex);
+        }
+      });
     return f;
   }
 

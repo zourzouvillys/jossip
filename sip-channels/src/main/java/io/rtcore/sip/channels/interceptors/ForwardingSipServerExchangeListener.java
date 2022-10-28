@@ -1,5 +1,6 @@
-package io.rtcore.sip.channels.api;
+package io.rtcore.sip.channels.interceptors;
 
+import io.rtcore.sip.channels.api.SipServerExchange;
 import io.rtcore.sip.channels.api.SipServerExchange.Listener;
 
 public class ForwardingSipServerExchangeListener implements SipServerExchange.Listener {

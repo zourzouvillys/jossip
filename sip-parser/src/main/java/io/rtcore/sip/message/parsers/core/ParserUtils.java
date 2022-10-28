@@ -1,6 +1,7 @@
 package io.rtcore.sip.message.parsers.core;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
@@ -12,6 +13,7 @@ import io.rtcore.sip.message.parsers.api.Parser;
 import io.rtcore.sip.message.parsers.api.ParserContext;
 import io.rtcore.sip.message.parsers.api.ParserInput;
 import io.rtcore.sip.message.parsers.api.ValueCollector;
+import io.rtcore.sip.message.parsers.api.ValueListener;
 import io.rtcore.sip.message.parsers.core.terminal.AndParser;
 import io.rtcore.sip.message.parsers.core.terminal.CharactersParser;
 import io.rtcore.sip.message.parsers.core.terminal.InputSizeEnforcer;
@@ -275,6 +277,46 @@ public class ParserUtils {
       ctx.position(ctx.position() + ctx.remaining());
 
       return true;
+    };
+
+  }
+
+  /**
+   * 
+   * @param <T>
+   * @param input
+   * @param parser
+   * @return
+   */
+
+  public static <T> Parser<List<T>> commaSeparated(final Parser<T> parser) {
+
+    return new Parser<List<T>>() {
+
+      @Override
+      public boolean find(ParserContext ctx, ValueListener<List<T>> value) {
+
+        List<T> items = new ArrayList<>();
+
+        do {
+
+          final ValueHolder<T> val = ValueHolder.create();
+
+          if (!parser.find(ctx, val)) {
+            break;
+          }
+
+          items.add(val.value());
+
+        }
+        while (ctx.skip(COMMA));
+
+        value.set(items);
+
+        return !items.isEmpty();
+
+      }
+
     };
 
   }

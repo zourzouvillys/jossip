@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.function.BiFunction;
 
+import com.google.common.hash.Hashing;
+
 import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipFrameUtils;
 import io.rtcore.sip.channels.api.SipRequestFrame;
@@ -14,6 +16,8 @@ import io.rtcore.sip.channels.api.SipServerExchange.Listener;
 import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.api.SipServerExchangeInterceptor;
 import io.rtcore.sip.common.iana.SipMethods;
+import io.rtcore.sip.common.iana.SipStatusCodes;
+import io.rtcore.sip.message.auth.StdDigestAlgo;
 
 public class DigestAuthServerInterceptor implements SipServerExchangeInterceptor<SipRequestFrame, SipResponseFrame> {
 
@@ -70,8 +74,18 @@ public class DigestAuthServerInterceptor implements SipServerExchangeInterceptor
 
     if (authres.isEmpty()) {
 
+      long ts = System.currentTimeMillis();
+      String nonce = Hashing.farmHashFingerprint64().hashLong(ts).toString();
+
       // we need to create a challenge.
-      DigestChallengeRequest challenge = new DigestChallengeRequest(authctx.realm());
+      DigestChallengeRequest challenge =
+        new DigestChallengeRequest(
+          authctx.realm(),
+          nonce,
+          false,
+          Long.toHexString(ts),
+          StdDigestAlgo.MD5,
+          KnownDigestQualityOfProtection.AUTH);
 
       exchange.onNext(
         SipFrameUtils.createResponse(
@@ -95,13 +109,19 @@ public class DigestAuthServerInterceptor implements SipServerExchangeInterceptor
 
       if (!authout.isPresent()) {
 
-        DigestChallengeRequest challenge = new DigestChallengeRequest(authctx.realm());
+        // DigestChallengeRequest challenge = new DigestChallengeRequest(authctx.realm());
 
         exchange.onNext(
           SipFrameUtils.createResponse(
             req,
-            role.statusCode(),
-            List.of(challenge.asHeader(role.challengeRequestHeader()))));
+            SipStatusCodes.UNAUTHORIZED,
+            List.of()));
+
+        // exchange.onNext(
+        // SipFrameUtils.createResponse(
+        // req,
+        // role.statusCode(),
+        // List.of(challenge.asHeader(role.challengeRequestHeader()))));
 
         exchange.onComplete();
 

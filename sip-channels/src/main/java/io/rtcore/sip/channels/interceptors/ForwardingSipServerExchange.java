@@ -1,6 +1,9 @@
-package io.rtcore.sip.channels.api;
+package io.rtcore.sip.channels.interceptors;
 
 import java.util.concurrent.CompletionStage;
+
+import io.rtcore.sip.channels.api.SipAttributes;
+import io.rtcore.sip.channels.api.SipServerExchange;
 
 public abstract class ForwardingSipServerExchange<ReqT, ResT> implements SipServerExchange<ReqT, ResT> {
 

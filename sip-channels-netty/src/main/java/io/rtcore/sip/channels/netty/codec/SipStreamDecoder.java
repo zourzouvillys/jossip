@@ -15,7 +15,6 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.CorruptedFrameException;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.TooLongFrameException;
-import io.netty.util.ByteProcessor;
 import io.netty.util.internal.AppendableCharSequence;
 import io.rtcore.sip.channels.api.ImmutableSipRequestFrame;
 import io.rtcore.sip.channels.api.ImmutableSipResponseFrame;
@@ -57,8 +56,8 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
   // current reader state.
   private State currentState = State.NONE;
 
-  private LineParser lineParser;
-  private HeaderParser headerParser;
+  private SipLineParser lineParser;
+  private SipHeaderParser headerParser;
   private String name = null;
   private String value = null;
   private SipInitialLine initialLine = null;
@@ -80,8 +79,8 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
     // should be large enough for most common headers.
     AppendableCharSequence seq = new AppendableCharSequence(256);
 
-    this.lineParser = new LineParser(seq, maxInitialLine);
-    this.headerParser = new HeaderParser(seq, maxHeaderBytes);
+    this.lineParser = new SipLineParser(seq, maxInitialLine);
+    this.headerParser = new SipHeaderParser(seq, maxHeaderBytes);
 
   }
 
@@ -376,98 +375,6 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
     name = p[0].trim();
     value = p[1].trim();
 
-  }
-
-  private static class HeaderParser implements ByteProcessor {
-
-    private final AppendableCharSequence seq;
-    private final int maxLength;
-    int size;
-
-    HeaderParser(AppendableCharSequence seq, int maxLength) {
-      this.seq = seq;
-      this.maxLength = maxLength;
-    }
-
-    public AppendableCharSequence parse(ByteBuf buffer) {
-      final int oldSize = size;
-      seq.reset();
-      int i = buffer.forEachByte(this);
-      if (i == -1) {
-        size = oldSize;
-        return null;
-      }
-      buffer.readerIndex(i + 1);
-      return seq;
-    }
-
-    public void reset() {
-      size = 0;
-    }
-
-    @Override
-    public boolean process(byte value) throws Exception {
-
-      char nextByte = (char) (value & 0xFF);
-
-      if (nextByte == '\n') {
-
-        int len = seq.length();
-
-        // Drop CR if we had a CRLF pair
-        if (len >= 1 && seq.charAtUnsafe(len - 1) == '\r') {
-          --size;
-          seq.setLength(len - 1);
-        }
-
-        return false;
-
-      }
-
-      increaseCount();
-
-      seq.append(nextByte);
-      return true;
-    }
-
-    protected final void increaseCount() {
-      if (++size > maxLength) {
-        // TODO: Respond with Bad Request and discard the traffic
-        // or close the connection?
-        // No need to notify the upstream handlers - just log.
-        // If decoding a response, just throw an exception.
-        throw newException(maxLength);
-      }
-    }
-
-    protected TooLongFrameException newException(int maxLength) {
-      return new TooLongFrameException("sip header is larger than " + maxLength + " bytes: " + seq.toString());
-    }
-
-  }
-
-  private final class LineParser extends HeaderParser {
-
-    LineParser(AppendableCharSequence seq, int maxLength) {
-      super(seq, maxLength);
-    }
-
-    @Override
-    public AppendableCharSequence parse(ByteBuf buffer) {
-      reset();
-      return super.parse(buffer);
-    }
-
-    @Override
-    public boolean process(byte value) throws Exception {
-      // we could read/skip CRLFs here?
-      return super.process(value);
-    }
-
-    @Override
-    protected TooLongFrameException newException(int maxLength) {
-      return new TooLongFrameException("initial SIP line is larger than " + maxLength + " bytes.");
-    }
   }
 
 }

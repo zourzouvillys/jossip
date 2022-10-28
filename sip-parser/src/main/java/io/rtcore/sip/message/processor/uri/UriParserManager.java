@@ -16,6 +16,7 @@ import io.rtcore.sip.message.uri.Uri;
  * 
  */
 public class UriParserManager implements UriSubParserManager<Uri> {
+
   private final Map<String, Parser<? extends Uri>> registry = Maps.newHashMap();
 
   public <T extends Uri> void register(UriParserDefintion<T> definition) {

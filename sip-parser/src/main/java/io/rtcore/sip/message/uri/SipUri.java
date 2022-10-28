@@ -14,6 +14,7 @@ import com.google.common.net.HostAndPort;
 import com.google.common.net.UrlEscapers;
 
 import io.rtcore.sip.common.Host;
+import io.rtcore.sip.common.iana.StandardSipTransportName;
 import io.rtcore.sip.message.base.api.RawHeader;
 import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.message.api.SipTransport;
@@ -207,6 +208,14 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
     return create(self.getHostString(), self.getPort());
   }
 
+  public static SipUri create(final Host hostname, final StandardSipTransportName transport) {
+    return new SipUri(
+      HostAndPort.fromString(hostname.toAddrString()))
+      .withParameter(
+        Token.from("transport"),
+        Token.from(transport.id().toLowerCase()));
+  }
+
   public static SipUri create(final String hostname, final int port) {
     return new SipUri(HostAndPort.fromParts(hostname, port));
   }
@@ -381,6 +390,5 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
     }
     return OptionalInt.empty();
   }
-
 
 }

@@ -20,6 +20,8 @@ import io.netty.channel.ReflectiveChannelFactory;
 import io.netty.channel.WriteBufferWaterMark;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.ssl.SslContext;
+import io.rtcore.sip.channels.api.SipRequestFrame;
+import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.interceptors.SipServerInterceptors;
 
@@ -88,7 +90,10 @@ public class SipTlsServer extends AbstractService {
       new TlsServerHandler(
         this.sslctx,
         initialTcpConfig,
-        ch -> new TlsSipConnection(ch, SipServerInterceptors.interceptedHandler(config.serverHandler(), config.interceptors()))
+        ch -> new TlsSipConnection(
+          ch,
+          config.connectionAttributes(),
+          SipServerInterceptors.interceptedHandler(config.serverHandler(), config.interceptors()))
       //
       );
 
@@ -163,7 +168,12 @@ public class SipTlsServer extends AbstractService {
 
   public static
       SipTlsServer
-      createDefault(EventLoopGroup group, SslContext sslctx, SipServerExchangeHandler dispatcher, InetSocketAddress listen, TcpConnectionConfig tcpConfig) {
+      createDefault(
+          EventLoopGroup group,
+          SslContext sslctx,
+          SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> dispatcher,
+          InetSocketAddress listen,
+          TcpConnectionConfig tcpConfig) {
 
     return new SipTlsServer(
       NettySocketServerConfig.create(b -> b

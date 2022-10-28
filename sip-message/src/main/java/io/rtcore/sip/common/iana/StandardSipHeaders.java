@@ -52,7 +52,9 @@ import java.net.URI;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
@@ -472,6 +474,7 @@ public enum StandardSipHeaders implements SipHeaderId {
   private final Spec spec;
   private final ImmutableSet<String> names;
   private final URI id;
+  private final Predicate<SipHeaderLine> typeMatcher;
 
   StandardSipHeaders(final String value, final Character compact, final Spec spec) {
     this.value = value;
@@ -483,6 +486,8 @@ public enum StandardSipHeaders implements SipHeaderId {
                       : ImmutableSet.of(value, compact.toString());
 
     this.id = URI.create(spec.urn() + ":" + this.normalized);
+
+    this.typeMatcher = line -> line.headerId() == this;
 
   }
 
@@ -544,6 +549,10 @@ public enum StandardSipHeaders implements SipHeaderId {
 
   public SipHeaderLine ofLine(String line) {
     return SipHeaderLine.of(this, line);
+  }
+
+  public Predicate<SipHeaderLine> typeMatcher() {
+    return this.typeMatcher;
   }
 
 }

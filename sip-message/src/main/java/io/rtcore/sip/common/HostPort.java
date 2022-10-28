@@ -35,19 +35,19 @@ public interface HostPort {
     return this.host().toUriString() + ":" + this.port().getAsInt();
   }
 
-  static HostPort of(final Host host) {
+  static ImmutableHostPort of(final Host host) {
     return ImmutableHostPort.of(host, OptionalInt.empty());
   }
 
-  static HostPort of(final Host host, final int port) {
+  static ImmutableHostPort of(final Host host, final int port) {
     return ImmutableHostPort.of(host, OptionalInt.of(port));
   }
 
-  static HostPort of(final Host host, final OptionalInt port) {
+  static ImmutableHostPort of(final Host host, final OptionalInt port) {
     return ImmutableHostPort.of(host, port);
   }
 
-  static HostPort fromHost(final String host) {
+  static ImmutableHostPort fromHost(final String host) {
     return of(Host.fromString(host));
   }
 

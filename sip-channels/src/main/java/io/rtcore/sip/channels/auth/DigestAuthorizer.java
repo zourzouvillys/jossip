@@ -12,6 +12,7 @@ import com.google.common.base.Joiner;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 
+import io.rtcore.sip.message.auth.StdDigestAlgo;
 import io.rtcore.sip.message.auth.headers.Authorization;
 import io.rtcore.sip.message.auth.headers.DigestCredentials;
 import io.rtcore.sip.message.message.SipRequest;
@@ -41,7 +42,16 @@ public class DigestAuthorizer implements DigestAuthService {
 
   @Override
   public CompletionStage<DigestChallengeRequest> calculateChallenge(DigestContext ctx) {
-    return CompletableFuture.completedStage(new DigestChallengeRequest(ctx.realm()));
+    long ts = System.currentTimeMillis();
+    String nonce = Hashing.farmHashFingerprint64().hashLong(ts).toString();
+    return CompletableFuture.completedStage(
+      new DigestChallengeRequest(
+        ctx.realm(),
+        nonce,
+        false,
+        Long.toHexString(ts),
+        StdDigestAlgo.MD5,
+        KnownDigestQualityOfProtection.AUTH));
   }
 
   /**
@@ -72,7 +82,7 @@ public class DigestAuthorizer implements DigestAuthService {
       store
         .ha1(res.username(), res.realm())
         .thenApply(creds -> validate(ha2, hashFunction, res, creds)
-          .map(e -> new SipPrinicpal(e.username(), e.realm(), e.properties())));
+          .map(e -> new SipPrinicpal(e.username(), e.realm(), e.attributes())));
 
     return result;
 
@@ -138,6 +148,89 @@ public class DigestAuthorizer implements DigestAuthService {
     return Optional.empty();
   }
 
+  public static final DigestChallengeResponse generateResponse(
+      DigestContext ctx,
+      DigestClientCredentials creds,
+      DigestChallengeRequest req) {
+
+    // require MD5 ...
+    @SuppressWarnings("deprecation")
+    HashFunction hashFunction = Hashing.md5();
+
+    String ha2 =
+      ha2(
+        ctx.method().token(),
+        ctx.digestURI(),
+        ctx.entityHash().apply(hashFunction),
+        hashFunction,
+        req.qop());
+
+    String username = creds.username();
+    String ha1 = creds.ha1();
+    String nonceCount = toNonceCountString(creds.nonceCount());
+    String clientNonce = creds.clientNonce();
+
+    String response =
+      calculateResponse(
+        hashFunction,
+        ha1,
+        ha2,
+        nonceCount,
+        clientNonce,
+        req.nonce(),
+        req.qop());
+
+    return new DigestChallengeResponse(
+      username,
+      ctx.realm(),
+      req.qop(),
+      nonceCount,
+      response,
+      req.nonce(),
+      Optional.ofNullable(clientNonce).filter(e -> !e.isEmpty()));
+
+  }
+
+  private static String toNonceCountString(long nonceCount) {
+    return String.format("%08x", nonceCount);
+  }
+
+  private static String calculateResponse(
+      HashFunction hashFunction,
+      String ha1,
+      String ha2,
+      String nonceCount,
+      String clientNonce,
+      String nonce,
+      KnownDigestQualityOfProtection qop) {
+
+    ArrayList<String> parts = new ArrayList<>();
+
+    parts.add(ha1);
+    parts.add(nonce);
+
+    switch (qop) {
+      case NONE:
+      case AUTH:
+      case AUTH_INT:
+        parts.add(nonceCount);
+        parts.add(clientNonce);
+        parts.add(qop.token());
+        break;
+    }
+
+    parts.add(ha2);
+
+    return digestHash(hashFunction, parts, "response");
+
+  }
+
+  private static String digestHash(HashFunction hashFunction, Iterable<String> parts, String label) {
+    String in = Joiner.on(':').join(parts);
+    String out = hashFunction.hashString(in, StandardCharsets.UTF_8).toString();
+    return out;
+  }
+
   private String calculateResponse(HashFunction hashFunction, String ha1, String ha2, DigestChallengeResponse res) {
 
     ArrayList<String> parts = new ArrayList<>();
@@ -163,12 +256,13 @@ public class DigestAuthorizer implements DigestAuthService {
 
   }
 
-  private String ha2(String method, String digestURI, String entityHash, HashFunction hashFunction, KnownDigestQualityOfProtection qop) {
+  private static String ha2(String method, String digestURI, String entityHash, HashFunction hashFunction, KnownDigestQualityOfProtection qop) {
     switch (qop) {
+      case NONE:
       case AUTH:
-        return hashFunction.hashString(String.format("%s:%s", method, digestURI), StandardCharsets.UTF_8).toString();
+        return digestHash(hashFunction, List.of(method, digestURI), "HA2");
       case AUTH_INT:
-        return hashFunction.hashString(String.format("%s:%s:%s", method, digestURI, entityHash), StandardCharsets.UTF_8).toString();
+        return digestHash(hashFunction, List.of(method, digestURI, entityHash), "HA2");
       default:
         throw new IllegalArgumentException();
     }

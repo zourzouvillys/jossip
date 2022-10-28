@@ -34,6 +34,10 @@ public interface SipInitialLine {
 
   }
 
+  static ImmutableRequestLine of(SipMethodId method, URI uri) {
+    return ImmutableRequestLine.of(method, uri);
+  }
+
   static ImmutableResponseLine of(SipStatusCodes status) {
     return ImmutableResponseLine.of(status.statusCode(), Optional.ofNullable(status.reasonPhrase()));
   }

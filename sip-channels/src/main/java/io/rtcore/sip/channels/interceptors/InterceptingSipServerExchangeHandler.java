@@ -1,5 +1,9 @@
-package io.rtcore.sip.channels.api;
+package io.rtcore.sip.channels.interceptors;
 
+import io.rtcore.sip.channels.api.SipAttributes;
+import io.rtcore.sip.channels.api.SipServerExchange;
+import io.rtcore.sip.channels.api.SipServerExchangeHandler;
+import io.rtcore.sip.channels.api.SipServerExchangeInterceptor;
 import io.rtcore.sip.channels.api.SipServerExchange.Listener;
 
 public class InterceptingSipServerExchangeHandler<ReqT, ResT> implements SipServerExchangeHandler<ReqT, ResT> {
@@ -7,9 +11,13 @@ public class InterceptingSipServerExchangeHandler<ReqT, ResT> implements SipServ
   private final SipServerExchangeInterceptor<ReqT, ResT> interceptor;
   private final SipServerExchangeHandler<ReqT, ResT> handler;
 
-  public InterceptingSipServerExchangeHandler(SipServerExchangeInterceptor<ReqT, ResT> interceptor, SipServerExchangeHandler<ReqT, ResT> handler) {
+  public InterceptingSipServerExchangeHandler(
+      SipServerExchangeInterceptor<ReqT, ResT> interceptor,
+      SipServerExchangeHandler<ReqT, ResT> handler) {
+
     this.interceptor = interceptor;
     this.handler = handler;
+
   }
 
   @Override

@@ -11,6 +11,7 @@ import javax.net.ssl.KeyManagerFactory;
 
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SslProtocols;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
 public class SipTlsUtils {
@@ -22,7 +23,7 @@ public class SipTlsUtils {
         .trustManager(InsecureTrustManagerFactory.INSTANCE)
         // .trustManager(FingerprintTrustManagerFactory.builder("SHA1").fingerprints(...).build())
         // .ciphers(List.of("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "AES256-SHA256"))
-        .protocols("TLSv1.3", "TLSv1.2")
+        .protocols(SslProtocols.TLS_v1_3, SslProtocols.TLS_v1_2, SslProtocols.TLS_v1_1, SslProtocols.TLS_v1)
         .build();
     }
     catch (IOException e) {

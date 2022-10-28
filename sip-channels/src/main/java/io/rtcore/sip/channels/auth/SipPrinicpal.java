@@ -1,20 +1,21 @@
 package io.rtcore.sip.channels.auth;
 
 import java.security.Principal;
-import java.util.Map;
 
 import com.google.common.base.MoreObjects;
+
+import io.rtcore.sip.channels.api.SipAttributes;
 
 public class SipPrinicpal implements Principal {
 
   private final String username;
   private final String realm;
-  private final Map<String, ? extends Object> properties;
+  private final SipAttributes attributes;
 
-  public SipPrinicpal(String username, String realm, Map<String, ? extends Object> properties) {
+  public SipPrinicpal(String username, String realm, SipAttributes attributes) {
     this.username = username;
     this.realm = realm;
-    this.properties = properties;
+    this.attributes = attributes;
   }
 
   /**
@@ -38,7 +39,7 @@ public class SipPrinicpal implements Principal {
     return MoreObjects.toStringHelper(this)
       .add("username", username)
       .add("realm", realm)
-      .add("properties", properties)
+      .add("attributes", attributes)
       .toString();
   }
 

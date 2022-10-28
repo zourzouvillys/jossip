@@ -9,6 +9,7 @@ import org.immutables.value.Value;
 
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.ssl.SslContext;
+import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipFrameUtils;
 import io.rtcore.sip.channels.api.SipRequestFrame;
 import io.rtcore.sip.channels.api.SipResponseFrame;
@@ -73,6 +74,15 @@ public interface NettySocketServerConfig {
   @Value.Default
   default TcpConnectionConfig tcpConfig() {
     return ImmutableTcpConnectionConfig.builder().build();
+  }
+
+  /**
+   * attributes to assign to the connection.
+   */
+
+  @Value.Default
+  default SipAttributes connectionAttributes() {
+    return SipAttributes.of();
   }
 
   /**

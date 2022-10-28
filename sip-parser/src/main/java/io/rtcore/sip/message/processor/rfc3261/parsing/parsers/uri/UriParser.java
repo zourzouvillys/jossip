@@ -12,6 +12,7 @@ import static io.rtcore.sip.message.parsers.core.ParserUtils.str;
 import io.rtcore.sip.message.parsers.api.Parser;
 import io.rtcore.sip.message.parsers.api.ParserContext;
 import io.rtcore.sip.message.parsers.api.ValueListener;
+import io.rtcore.sip.message.parsers.core.ByteParserInput;
 import io.rtcore.sip.message.parsers.core.ParseFailureException;
 import io.rtcore.sip.message.parsers.core.ParserHelper;
 import io.rtcore.sip.message.parsers.core.ParserUtils;
@@ -20,8 +21,9 @@ import io.rtcore.sip.message.processor.uri.RawUri;
 import io.rtcore.sip.message.uri.Uri;
 
 public class UriParser implements Parser<Uri> {
+
   private UriParser() {
-  };
+  }
 
   public static final Parser<CharSequence> SCHEME = chars(ALPHANUM_CHARS + "+-.");
 
@@ -159,6 +161,15 @@ public class UriParser implements Parser<Uri> {
       ctx.position(pos);
       return false;
     }
+  }
+
+  public static Uri fromString(String input) {
+    final ByteParserInput is = ByteParserInput.fromString(input);
+    final Uri value = ParserUtils.read(is, UriParser.URI);
+    if (is.remaining() != 0) {
+      throw new IllegalArgumentException(String.format("trailing URI characters"));
+    }
+    return value;
   }
 
 }

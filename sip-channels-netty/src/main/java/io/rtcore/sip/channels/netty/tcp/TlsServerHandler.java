@@ -108,28 +108,33 @@ class TlsServerHandler extends ChannelInitializer<NioSocketChannel> {
 
     logger.info("initializing channel pipeline");
 
-    p.addLast(new SniHandler(serverName -> {
-      logger.info("starting TLS with {}", serverName);
-      return this.sslctx;
-    }) {
+    if (this.sslctx != null) {
+      
+      p.addLast(new SniHandler(serverName -> {
+        
+        logger.info("starting TLS with {}", serverName);
+        return this.sslctx;
+        
+      }) {
 
-      protected SslHandler newSslHandler(SslContext context, ByteBufAllocator allocator) {
+        protected SslHandler newSslHandler(SslContext context, ByteBufAllocator allocator) {
 
-        final SslHandler handler = createHandler(ch.alloc());
+          final SslHandler handler = createHandler(ch.alloc());
 
-        // enable endpoint identification.
-        SSLEngine sslEngine = handler.engine();
+          // enable endpoint identification.
+          SSLEngine sslEngine = handler.engine();
 
-        SSLParameters sslParameters = sslEngine.getSSLParameters();
-        sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
-        // sslParameters.setServerNames(List.copyOf(this.route.remoteServerNames()));
-        sslEngine.setSSLParameters(sslParameters);
+          SSLParameters sslParameters = sslEngine.getSSLParameters();
+          sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
+          // sslParameters.setServerNames(List.copyOf(this.route.remoteServerNames()));
+          sslEngine.setSSLParameters(sslParameters);
 
-        return handler;
+          return handler;
 
-      }
+        }
 
-    });
+      });
+    }
 
     //
     // p.addLast(new IdleStateHandler(0, 5, 0));

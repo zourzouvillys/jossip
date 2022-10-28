@@ -105,4 +105,5 @@ public final class RawUri implements Uri {
                            : $opaque.hashCode());
     return result;
   }
+
 }

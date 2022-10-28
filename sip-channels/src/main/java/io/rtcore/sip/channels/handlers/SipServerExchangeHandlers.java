@@ -1,5 +1,9 @@
 package io.rtcore.sip.channels.handlers;
 
+import java.util.function.BiFunction;
+
+import org.reactivestreams.Publisher;
+
 import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipFrameUtils;
 import io.rtcore.sip.channels.api.SipRequestFrame;
@@ -11,6 +15,16 @@ import io.rtcore.sip.common.iana.SipMethods;
 import io.rtcore.sip.common.iana.SipStatusCodes;
 
 public class SipServerExchangeHandlers {
+
+  public static SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> createPublisher(
+      BiFunction<SipRequestFrame, SipAttributes, Publisher<SipResponseFrame>> handler) {
+    return new SipServerExchangeHandler<SipRequestFrame, SipResponseFrame>() {
+      @Override
+      public Listener startExchange(SipServerExchange<SipRequestFrame, SipResponseFrame> exchange, SipAttributes attributes) {
+        return new PublisherHandlerListener(exchange, handler.apply(exchange.request(), attributes));
+      }
+    };
+  }
 
   public static SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> staticErorHandler(Throwable error) {
     return new SipServerExchangeHandler<SipRequestFrame, SipResponseFrame>() {
