@@ -45,7 +45,7 @@ public interface SipHeaderLine extends WithSipHeaderLine {
    * 
    */
 
-  static SipHeaderLine of(StandardSipHeaders name, String value) {
+  static SipHeaderLine of(SipHeaderId name, String value) {
     return ImmutableSipHeaderLine.of(name.prettyName(), value);
   }
 

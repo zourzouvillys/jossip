@@ -7,7 +7,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.util.ReferenceCountUtil;
-import io.rtcore.sip.channels.connection.SipFrame;
+import io.rtcore.sip.channels.api.SipFrame;
 import io.rtcore.sip.common.SipHeaderLine;
 import io.rtcore.sip.common.SipInitialLine;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
@@ -45,13 +45,18 @@ public class SipObjectEncoder extends MessageToMessageEncoder<Object> {
 
       frame.body()
         .ifPresentOrElse(
-          body -> buf.writeCharSequence(StandardSipHeaders.CONTENT_LENGTH.prettyName() + ": " + body.getBytes(StandardCharsets.UTF_8) + "\r\n",
-            StandardCharsets.UTF_8),
-          () -> buf.writeCharSequence(StandardSipHeaders.CONTENT_LENGTH.prettyName() + ": 0\r\n", StandardCharsets.UTF_8));
+          body -> {
 
-      buf.writeCharSequence("\r\n", StandardCharsets.US_ASCII);
+            byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
 
-      frame.body().ifPresent(body -> buf.writeCharSequence(body, StandardCharsets.UTF_8));
+            buf.writeCharSequence(
+              String.format("Content-Length: %s\r\n\r\n", bytes.length),
+              StandardCharsets.UTF_8);
+
+            buf.writeBytes(bytes);
+
+          },
+          () -> buf.writeCharSequence("Content-Length: 0\r\n\r\n", StandardCharsets.UTF_8));
 
       out.add(buf);
 

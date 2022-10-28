@@ -98,6 +98,10 @@ public class DigestCredentials extends Authorization {
     return this.getParameter(QOP).orElse(null);
   }
 
+  public String opaque() {
+    return this.getParameter(OPAQUE).orElse(null);
+  }
+
   /**
    * null if not set.
    */

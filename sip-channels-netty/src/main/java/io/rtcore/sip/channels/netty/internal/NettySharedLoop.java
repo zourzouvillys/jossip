@@ -10,9 +10,9 @@ public final class NettySharedLoop {
 
   // todo: this is a hack, fix.
   private static final RefCounted<NioEventLoopGroup> defaultEventLoopGroup =
-      RefCounted.create(
-        NioEventLoopGroup::new,
-        NioEventLoopGroup::shutdownGracefully);
+    RefCounted.create(
+      NioEventLoopGroup::new,
+      NioEventLoopGroup::shutdownGracefully);
 
   public static EventLoopGroup allocate() {
     return defaultEventLoopGroup.get();

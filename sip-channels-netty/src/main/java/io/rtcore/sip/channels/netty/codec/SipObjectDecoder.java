@@ -10,14 +10,14 @@ import io.netty.buffer.search.AbstractMultiSearchProcessorFactory;
 import io.netty.buffer.search.MultiSearchProcessor;
 import io.netty.buffer.search.MultiSearchProcessorFactory;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.CorruptedFrameException;
+import io.netty.handler.codec.MessageToMessageDecoder;
 import io.rtcore.sip.message.message.SipMessage;
 import io.rtcore.sip.message.message.api.headers.MIMEType;
 import io.rtcore.sip.message.processor.rfc3261.DefaultSipMessage;
 import io.rtcore.sip.message.processor.rfc3261.RfcSipMessageManager;
 
-class SipObjectDecoder extends ByteToMessageDecoder {
+public final class SipObjectDecoder extends MessageToMessageDecoder<ByteBuf> {
 
   private final int maxMessageSize;
 
@@ -39,8 +39,8 @@ class SipObjectDecoder extends ByteToMessageDecoder {
   public SipObjectDecoder(final int maxMessageSize, final int initialBufferSize) {
     // super.setSingleDecode(false);
     // super.setDiscardAfterReads(4);
+    // super.setSingleDecode(true);
     this.maxMessageSize = maxMessageSize;
-    super.setSingleDecode(true);
   }
 
   @Override

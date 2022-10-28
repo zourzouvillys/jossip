@@ -1,9 +1,9 @@
 package io.rtcore.sip.channels.auth;
 
-import io.reactivex.rxjava3.core.Maybe;
+import java.util.concurrent.CompletionStage;
 
 public interface DigestCredentialsStore {
 
-  Maybe<Credential> ha1(String username, String realm);
+  CompletionStage<CredentialSet> ha1(String username, String realm);
 
 }

@@ -9,6 +9,7 @@ import java.util.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 
+import io.rtcore.sip.common.SipInitialLine.ResponseLine;
 import io.rtcore.sip.common.iana.SipStatusCategory;
 import io.rtcore.sip.common.iana.SipStatusCodes;
 import io.rtcore.sip.message.message.api.Reason;
@@ -181,6 +182,10 @@ public final class SipResponseStatus {
 
   public Optional<SipStatusCodes> asStandardCode() {
     return Optional.ofNullable(SipStatusCodes.forStatusCode(this.code));
+  }
+
+  public static SipResponseStatus of(ResponseLine response) {
+    return new SipResponseStatus(response.code(), response.reason().orElse(null));
   }
 
 }

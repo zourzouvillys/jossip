@@ -1,22 +1,12 @@
-import io.rtcore.sip.channels.ManagedSipChannelProvider;
-import io.rtcore.sip.channels.ManagedSipUdpSocketProvider;
-import io.rtcore.sip.channels.SipNameResolver;
-import io.rtcore.sip.channels.netty.NettySipChannelProvider;
-import io.rtcore.sip.channels.netty.resolver.NettySipNameResolverProvider;
-import io.rtcore.sip.channels.netty.udp.NettyUdpSocketProvider;
 
 module io.rtcore.sip.channels.netty {
 
   //
-  provides ManagedSipUdpSocketProvider with NettyUdpSocketProvider;
-  provides ManagedSipChannelProvider with NettySipChannelProvider;
-  provides SipNameResolver.Provider with NettySipNameResolverProvider;
 
   requires transitive io.rtcore.sip.channels;
 
   exports io.rtcore.sip.channels.netty.codec;
   exports io.rtcore.sip.channels.netty.udp;
-  exports io.rtcore.sip.channels.netty.resolver;
   exports io.rtcore.sip.channels.netty;
 
   requires static com.google.auto.service;
@@ -43,5 +33,6 @@ module io.rtcore.sip.channels.netty {
   requires io.netty.handler.proxy;
   requires io.netty.handler;
   requires org.slf4j;
+  requires io.netty.codec.haproxy;
   
 }

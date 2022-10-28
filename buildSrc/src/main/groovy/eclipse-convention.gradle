@@ -15,9 +15,11 @@ if (project.rootProject != project) {
 	    tasks['cleanEclipseFactorypath'],
 	    tasks['cleanEclipseJdtApt'],
 	    tasks['cleanEclipseJdt'],
+	    tasks['cleanEclipseProject'],
 	    tasks['eclipseClasspath'],
 	    tasks['eclipseFactorypath'],
 	    tasks['eclipseJdtApt'],
+	    tasks['eclipseProject'],
 	    tasks['eclipseJdt'],
 	  )  
 	}
@@ -26,6 +28,7 @@ if (project.rootProject != project) {
 	    tasks['eclipseClasspath'],
 	    tasks['eclipseFactorypath'],
 	    tasks['eclipseJdtApt'],
+	    tasks['eclipseProject'],
 	    tasks['eclipseJdt'],
 	  )
 	}
@@ -33,6 +36,7 @@ if (project.rootProject != project) {
 	  project.rootProject.tasks['configureBuildship'].dependsOn(
 	    tasks['eclipseClasspath'],
 	    tasks['eclipseJdtApt'],
+	    tasks['eclipseProject'],
 	    tasks['eclipseJdt'],
 	  )
 	}

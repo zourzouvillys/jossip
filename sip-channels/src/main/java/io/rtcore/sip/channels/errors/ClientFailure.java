@@ -1,5 +1,6 @@
 package io.rtcore.sip.channels.errors;
 
+import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.message.message.SipResponse;
 import io.rtcore.sip.message.message.SipResponseStatus;
 
@@ -12,6 +13,10 @@ public class ClientFailure extends SipError {
   }
 
   public ClientFailure(SipResponse res) {
+    super(res);
+  }
+
+  public ClientFailure(SipResponseFrame res) {
     super(res);
   }
 

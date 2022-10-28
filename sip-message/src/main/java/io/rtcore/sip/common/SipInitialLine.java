@@ -35,7 +35,7 @@ public interface SipInitialLine {
   }
 
   static ImmutableResponseLine of(SipStatusCodes status) {
-    return ImmutableResponseLine.of(status.statusCode(), Optional.empty());
+    return ImmutableResponseLine.of(status.statusCode(), Optional.ofNullable(status.reasonPhrase()));
   }
 
 }

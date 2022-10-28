@@ -1,46 +1,53 @@
 package io.rtcore.sip.channels.handlers;
 
-import static org.reactivestreams.FlowAdapters.toFlowPublisher;
-
-import java.util.concurrent.Flow.Publisher;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import io.reactivex.rxjava3.core.Flowable;
-import io.rtcore.sip.channels.Metadata;
-import io.rtcore.sip.channels.SipServerCall;
-import io.rtcore.sip.channels.SipServerCallHandler;
-import io.rtcore.sip.message.message.SipRequest;
-import io.rtcore.sip.message.message.SipResponse;
+import io.rtcore.sip.channels.api.SipAttributes;
+import io.rtcore.sip.channels.api.SipFrameUtils;
+import io.rtcore.sip.channels.api.SipRequestFrame;
+import io.rtcore.sip.channels.api.SipResponseFrame;
+import io.rtcore.sip.channels.api.SipServerExchange;
+import io.rtcore.sip.channels.api.SipServerExchange.Listener;
+import io.rtcore.sip.channels.api.SipServerExchangeHandler;
+import io.rtcore.sip.common.iana.SipMethods;
+import io.rtcore.sip.common.iana.SipStatusCodes;
 
-public final class FunctionServerCallHandler implements SipServerCallHandler {
+public final class FunctionServerCallHandler implements SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> {
 
-  private final Function<SipRequest, SipResponse> handler;
-  private final Consumer<SipRequest> acks;
+  private final Function<SipRequestFrame, SipResponseFrame> handler;
+  private final Consumer<SipRequestFrame> acks;
 
-  private FunctionServerCallHandler(final Function<SipRequest, SipResponse> handler, final Consumer<SipRequest> acks) {
+  private FunctionServerCallHandler(final Function<SipRequestFrame, SipResponseFrame> handler, final Consumer<SipRequestFrame> acks) {
     this.handler = handler;
     this.acks = acks;
   }
 
   @Override
-  public Publisher<SipResponse> startCall(final SipServerCall call, final Metadata metadata) {
-    if (call.request().method().isAck()) {
+  public Listener startExchange(SipServerExchange<SipRequestFrame, SipResponseFrame> call, SipAttributes attributes) {
+    if (call.request().initialLine().method().toStandard() == SipMethods.ACK) {
       this.acks.accept(call.request());
-      return toFlowPublisher(Flowable.empty());
+      call.onComplete();
+      return null;
     }
-    return toFlowPublisher(Flowable.just(this.handler.apply(call.request())));
+    call.onNext(handler.apply(call.request()));
+    call.onComplete();
+    return null;
   }
 
-  public static FunctionServerCallHandler create(final Function<SipRequest, SipResponse> requests, final Consumer<SipRequest> acks) {
+  public static FunctionServerCallHandler create(final Function<SipRequestFrame, SipResponseFrame> requests, final Consumer<SipRequestFrame> acks) {
     return new FunctionServerCallHandler(requests, acks);
   }
 
-  public static FunctionServerCallHandler create(final Function<SipRequest, SipResponse> requests) {
+  public static FunctionServerCallHandler create(final Function<SipRequestFrame, SipResponseFrame> requests) {
     return new FunctionServerCallHandler(
       requests,
       acks -> {
       });
+  }
+
+  public static FunctionServerCallHandler staticResponse(SipStatusCodes status) {
+    return create(req -> SipFrameUtils.createResponse(req, status));
   }
 
 }

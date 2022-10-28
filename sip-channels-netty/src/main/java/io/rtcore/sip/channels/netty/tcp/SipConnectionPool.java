@@ -13,11 +13,11 @@ import org.slf4j.LoggerFactory;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.ssl.SslContext;
 import io.reactivex.rxjava3.core.Flowable;
-import io.rtcore.sip.channels.connection.SipClientExchange;
+import io.rtcore.sip.channels.api.SipClientExchange;
+import io.rtcore.sip.channels.api.SipFrame;
+import io.rtcore.sip.channels.api.SipRequestFrame;
 import io.rtcore.sip.channels.connection.SipConnection;
 import io.rtcore.sip.channels.connection.SipConnectionProvider;
-import io.rtcore.sip.channels.connection.SipFrame;
-import io.rtcore.sip.channels.connection.SipRequestFrame;
 import io.rtcore.sip.channels.connection.SipRoute;
 
 public class SipConnectionPool implements SipConnectionProvider {

@@ -13,6 +13,7 @@ import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.parameters.api.BaseParameterizedObject;
 import io.rtcore.sip.message.parameters.api.FlagParameterValue;
 import io.rtcore.sip.message.parameters.api.Parameters;
+import io.rtcore.sip.message.parameters.api.QuotedString;
 import io.rtcore.sip.message.parameters.api.RawParameter;
 import io.rtcore.sip.message.parameters.api.SipParameterDefinition;
 import io.rtcore.sip.message.parameters.impl.DefaultParameters;
@@ -33,6 +34,10 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
   public static final NameAddr STAR = new NameAddr();
   public static final SipParameterDefinition<Token> PTag = ParameterUtils.createTokenParameterDefinition(Token.from("tag"));
   public static final SipParameterDefinition<Token> PExpires = ParameterUtils.createTokenParameterDefinition(Token.from("expires"));
+
+  public static final SipParameterDefinition<String> PSipInstance = ParameterUtils.createQuotedStringParameterDefinition("+sip.instance");
+  public static final SipParameterDefinition<Token> PRegId = ParameterUtils.createTokenParameterDefinition("reg-id");
+
   private static final Function<? super Token, String> TOKEN_TRANSFORMER = new Function<Token, String>() {
     @Override
     public String apply(Token input) {
