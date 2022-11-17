@@ -7,9 +7,8 @@ plugins {
   id 'com.diffplug.eclipse.apt'
 }
 
-
 if (project.rootProject != project) {
-	if (tasks.findByName('cleanEclipseFactorypath')) {
+	if (project.rootProject.tasks.findByName('cleanEclipseFactorypath')) {
 	  project.rootProject.tasks['configureBuildship'].dependsOn(
 	    tasks['cleanEclipseClasspath'],
 	    tasks['cleanEclipseFactorypath'],
@@ -23,7 +22,7 @@ if (project.rootProject != project) {
 	    tasks['eclipseJdt'],
 	  )  
 	}
-	else if (tasks.findByName('eclipseFactorypath')) {
+	else if (project.rootProject.tasks.findByName('eclipseFactorypath')) {
 	  project.rootProject.tasks['configureBuildship'].dependsOn(
 	    tasks['eclipseClasspath'],
 	    tasks['eclipseFactorypath'],
@@ -45,11 +44,22 @@ if (project.rootProject != project) {
 
 eclipse {
   
-  project {
-    name = createProjectDisplayName()
+  project.name = createProjectDisplayName()
+
+  classpath.file.whenMerged { classpath ->
+    classpath.entries.find { it.path == '.apt_generated' }.each {
+      classpath.entries.remove(it)
+    }
+    // ignore compilation warnings in the apt-generated code		
+    def lib = new org.gradle.plugins.ide.eclipse.model.SourceFolder('.apt_generated', null)
+    lib.entryAttributes['ignore_optional_problems'] = true
+    lib.entryAttributes['optional'] = true
+    //lib.entryAttributes['module'] = true
+    classpath.entries.add(lib)  
   }
   
 }
+
 
 def createProjectDisplayName() {
   if (project == project.rootProject) {
