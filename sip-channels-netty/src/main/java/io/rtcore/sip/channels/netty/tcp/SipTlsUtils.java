@@ -31,22 +31,6 @@ public class SipTlsUtils {
     }
   }
 
-  public static SslContext createClient(KeyManagerFactory keyManagerFactory) {
-    try {
-      return SslContextBuilder
-        .forClient()
-        .trustManager(InsecureTrustManagerFactory.INSTANCE)
-        .keyManager(keyManagerFactory)
-        // .trustManager(FingerprintTrustManagerFactory.builder("SHA1").fingerprints(...).build())
-        // .ciphers(List.of("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "AES256-SHA256"))
-        .protocols("TLSv1.3", "TLSv1.2")
-        .build();
-    }
-    catch (IOException e) {
-      throw new UncheckedIOException(e);
-    }
-  }
-
   public static SslContext createClient(File key, File certs) {
     try {
       return SslContextBuilder
@@ -69,22 +53,6 @@ public class SipTlsUtils {
         .forClient()
         .trustManager(InsecureTrustManagerFactory.INSTANCE)
         .keyManager(keyManagerFactory)
-        // .trustManager(FingerprintTrustManagerFactory.builder("SHA1").fingerprints(...).build())
-        // .ciphers(List.of("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "AES256-SHA256"))
-        .protocols("TLSv1.3", "TLSv1.2")
-        .build();
-    }
-    catch (IOException e) {
-      throw new UncheckedIOException(e);
-    }
-  }
-
-  public static SslContext createClient(File key, File certs) {
-    try {
-      return SslContextBuilder
-        .forClient()
-        .trustManager(InsecureTrustManagerFactory.INSTANCE)
-        .keyManager(certs, key)
         // .trustManager(FingerprintTrustManagerFactory.builder("SHA1").fingerprints(...).build())
         // .ciphers(List.of("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "AES256-SHA256"))
         .protocols("TLSv1.3", "TLSv1.2")

@@ -2,9 +2,9 @@ package io.rtcore.sip.channels.interceptors;
 
 import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipServerExchange;
+import io.rtcore.sip.channels.api.SipServerExchange.Listener;
 import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.api.SipServerExchangeInterceptor;
-import io.rtcore.sip.channels.api.SipServerExchange.Listener;
 
 public class InterceptingSipServerExchangeHandler<ReqT, ResT> implements SipServerExchangeHandler<ReqT, ResT> {
 

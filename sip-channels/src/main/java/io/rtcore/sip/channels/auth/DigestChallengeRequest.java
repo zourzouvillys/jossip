@@ -28,19 +28,6 @@ public record DigestChallengeRequest(
       .opaque(opaque));
   }
 
-  public SipHeaderLine asHeader(SipHeaderId header) {
-    ImmutableDigestValues values =
-      DigestCredentials.builder()
-        .realm(realm)
-        .nonce(nonce)
-        .stale(stale)
-        .algorithm(algo)
-        .qop(qop.token())
-        .opaque(opaque)
-        .build();
-    return SipHeaderLine.of(header, values.asCredentials().toString());
-  }
-
   public static DigestChallengeRequest from(DigestCredentials creds) {
 
     return new DigestChallengeRequest(
@@ -69,21 +56,15 @@ public record DigestChallengeRequest(
   }
 
   public SipHeaderLine asHeader(SipHeaderId header) {
-
-    long ts = System.currentTimeMillis();
-    String nonce = Hashing.farmHashFingerprint64().hashLong(ts).toString();
-    boolean stale = false;
-
     ImmutableDigestValues values =
       DigestCredentials.builder()
         .realm(realm)
         .nonce(nonce)
         .stale(stale)
-        .algorithm(StdDigestAlgo.MD5)
-        .qop("auth")
-        .opaque(Long.toHexString(ts))
+        .algorithm(algo)
+        .qop(qop.token())
+        .opaque(opaque)
         .build();
-
     return SipHeaderLine.of(header, values.asCredentials().toString());
   }
 
