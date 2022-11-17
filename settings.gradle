@@ -5,7 +5,7 @@ pluginManagement {
     id 'com.diffplug.eclipse.apt' version '3.40.0' 
     id 'com.diffplug.eclipse.excludebuildfolder' version '3.40.0'
     id 'com.diffplug.eclipse.resourcefilters' version '3.40.0'  
-    id 'com.github.spotbugs' version '5.0.6'
+    id 'com.github.spotbugs' version '5.0.13'
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id "com.github.kt3k.coveralls" version "2.12.0"
     id "com.google.osdetector" version "1.7.1"
