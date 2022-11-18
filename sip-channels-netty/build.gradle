@@ -23,7 +23,7 @@ dependencies {
   compileOnly 'org.eclipse.jdt:org.eclipse.jdt.annotation:2.2.600'
   
   //
-  implementation 'org.slf4j:slf4j-api:1.7.36'
+  implementation 'org.slf4j:slf4j-api:2.0.4'
   runtimeOnly 'org.slf4j:slf4j-simple:1.7.36'
   
   //  
