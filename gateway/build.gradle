@@ -49,7 +49,7 @@ dependencies {
   implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
   implementation 'com.sun.xml.bind:jaxb-osgi:3.0.2'
   
-  implementation platform('com.fasterxml.jackson:jackson-bom:2.14.0')
+  implementation platform('com.fasterxml.jackson:jackson-bom:2.14.1')
   implementation 'com.fasterxml.jackson.core:jackson-databind'
   implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-toml'
   implementation 'com.fasterxml.jackson.datatype:jackson-datatype-guava'
