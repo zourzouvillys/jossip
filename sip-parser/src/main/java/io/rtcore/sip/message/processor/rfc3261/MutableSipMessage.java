@@ -10,6 +10,7 @@ import java.time.temporal.Temporal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,7 @@ import com.google.common.collect.Lists;
 import com.google.common.net.HostAndPort;
 import com.google.common.primitives.UnsignedInteger;
 
+import io.rtcore.sip.common.iana.SipMethodId;
 import io.rtcore.sip.message.base.api.RawHeader;
 import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.message.SipMessage;
@@ -43,7 +45,7 @@ import io.rtcore.sip.message.uri.Uri;
 /**
  * Base class for building SIP requests and responses.
  *
- * 
+ *
  *
  * @param <T>
  */
@@ -95,7 +97,7 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
 
   public T allow(final Collection<SipMethod> methods) {
     return this.allow(TokenSet.fromList(methods.stream()
-      .map(m -> m.toString())
+      .map(SipMethod::toString)
       .collect(Collectors.toList())));
   }
 
@@ -122,7 +124,7 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
   public T allow(final SipMethod... methods) {
     return this.allow(TokenSet.fromList(Lists.newArrayList(methods)
       .stream()
-      .map(e -> e.toString())
+      .map(SipMethod::toString)
       .collect(Collectors.toList())));
   }
 
@@ -147,7 +149,7 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
     return (T) this;
   }
 
-  public T updateVia(int index, UnaryOperator<Via> handler) {
+  public T updateVia(final int index, final UnaryOperator<Via> handler) {
     this.vias.set(index, handler.apply(this.vias.get(index)));
     return (T) this;
   }
@@ -159,7 +161,7 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
 
   public T prependVia(final Via via) {
     if (this.vias != null) {
-      this.vias = Lists.newArrayList(vias);
+      this.vias = Lists.newArrayList(this.vias);
       this.vias.add(via);
     }
     else {
@@ -174,6 +176,14 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
 
   public T to(final Uri uri, final String tag) {
     NameAddr na = new NameAddr(uri);
+    if (!Strings.isNullOrEmpty(tag)) {
+      na = na.withParameter(Token.from("tag"), Token.from(tag));
+    }
+    return this.to(na);
+  }
+
+  public T to(final Optional<String> displayName, final Uri uri, final String tag) {
+    NameAddr na = new NameAddr(displayName.orElse(null), uri);
     if (!Strings.isNullOrEmpty(tag)) {
       na = na.withParameter(Token.from("tag"), Token.from(tag));
     }
@@ -208,13 +218,12 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
   }
 
   public T from(final Uri uri, final String name, final String tag) {
+    return this.from(Optional.ofNullable(name), uri, tag);
+  }
+
+  public T from(final Optional<String> displayName, final Uri uri, final String tag) {
     NameAddr na;
-    if (Strings.isNullOrEmpty(name)) {
-      na = new NameAddr(uri);
-    }
-    else {
-      na = new NameAddr(name, uri);
-    }
+    na = new NameAddr(displayName.orElse(null), uri);
     if (!Strings.isNullOrEmpty(tag)) {
       na = na.withParameter(Token.from("tag"), Token.from(tag));
     }
@@ -246,7 +255,7 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
     return (T) this;
   }
 
-  public T contacts(Iterable<NameAddr> values) {
+  public T contacts(final Iterable<NameAddr> values) {
     this.contact = ContactSet.from(ImmutableList.copyOf(values));
     return (T) this;
   }
@@ -271,6 +280,9 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
   }
 
   public T body(final String type, final String body) {
+    if (body == null) {
+      return (T) this;
+    }
     return this.body(type, body.getBytes(StandardCharsets.UTF_8));
   }
 
@@ -292,7 +304,7 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
   }
 
   public T route(final List<NameAddr> routeSet) {
-    if ((routeSet != null) && (routeSet.isEmpty() == false)) {
+    if ((routeSet != null) && !routeSet.isEmpty()) {
       this.route = Lists.newArrayList(routeSet);
     }
     return (T) this;
@@ -331,6 +343,11 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
     return this.route(Lists.newArrayList(new NameAddr(route)));
   }
 
+  public T cseq(final long seq, final SipMethodId method) {
+    this.cseq = new CSeq(seq, SipMethod.of(method));
+    return (T) this;
+  }
+
   public T cseq(final long seq, final SipMethod method) {
     this.cseq = new CSeq(seq, method);
     return (T) this;
@@ -361,7 +378,7 @@ public abstract class MutableSipMessage<T extends MutableSipMessage<T>> {
     return (T) this;
   }
 
-  public T date(Instant date) {
+  public T date(final Instant date) {
     this.date = date.atZone(ZoneId.of("GMT"));
     return (T) this;
   }

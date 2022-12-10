@@ -25,20 +25,20 @@ public interface SipMessageManager {
 
   /**
    * converts an incoming {@link RawMessage} to a parsed {@link SipMessage}.
-   * 
+   *
    * note: this only performs minimal syntactic checks, it doesn't do semantic ones (e.g, check
    * status codes).
    *
    * @param msg
    *          the raw message to parse.
-   * 
+   *
    * @return a parsed sip message.
    */
 
   SipMessage convert(final RawMessage msg);
 
   /**
-   * 
+   *
    * @param status
    * @return
    */
@@ -58,7 +58,7 @@ public interface SipMessageManager {
   SipRequest createRequest(final SipMethod method, final Uri ruri, final Iterable<RawHeader> headers, final byte[] body);
 
   /**
-   * 
+   *
    * @param status
    * @param build
    * @param body
@@ -77,7 +77,7 @@ public interface SipMessageManager {
   SipRequest createAck(final SipResponse res, final List<NameAddr> route);
 
   /**
-   * 
+   *
    * @param original
    * @param reason
    * @return
@@ -145,12 +145,14 @@ public interface SipMessageManager {
 
   SipMessage parseMessage(ByteBuffer buf);
 
-  default SipRequest parseRequest(String method, String uri, Iterable<RawHeader> headers, byte[] body) {
-    return this.createRequest(SipMethod.fromString(method), parseUri(uri), headers, body);
+  default SipRequest parseRequest(final String method, final String uri, final Iterable<RawHeader> headers, final byte[] body) {
+    return this.createRequest(SipMethod.fromString(method), this.parseUri(uri), headers, body);
   }
 
-  default SipResponse parseResponse(int statusCode, String reasonPhrase, Iterable<RawHeader> headers, byte[] body) {
+  default SipResponse parseResponse(final int statusCode, final String reasonPhrase, final Iterable<RawHeader> headers, final byte[] body) {
     return this.createResponse(SipResponseStatus.fromCode(statusCode).withReason(reasonPhrase), headers, body);
   }
+
+  RawMessage parseRawMessage(ByteBuffer buf);
 
 }

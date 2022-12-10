@@ -1,6 +1,6 @@
 package io.rtcore.sip.common.iana;
 
-public interface SipMethodId {
+public sealed interface SipMethodId permits SipMethods, UnknownSipMethod {
 
   String token();
 

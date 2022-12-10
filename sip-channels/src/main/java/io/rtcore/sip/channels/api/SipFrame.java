@@ -29,7 +29,11 @@ public interface SipFrame {
   Optional<String> body();
 
   static SipRequestFrame of(SipMethodId method, URI uri, Iterable<? extends SipHeaderLine> headerLines) {
-    return of(method, uri, headerLines, null);
+    return of(method, uri, headerLines, Optional.empty());
+  }
+
+  static SipRequestFrame of(SipMethodId method, URI uri, Iterable<? extends SipHeaderLine> headerLines, Optional<String> body) {
+    return ImmutableSipRequestFrame.of(SipInitialLine.of(method, uri), headerLines, body);
   }
 
   static SipRequestFrame of(SipMethodId method, URI uri, Iterable<? extends SipHeaderLine> headerLines, String body) {

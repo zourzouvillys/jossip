@@ -3,11 +3,11 @@ package io.rtcore.sip.message.message;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.function.UnaryOperator;
 
-import com.google.common.collect.Multimap;
 import com.google.common.primitives.UnsignedInteger;
 
-import io.rtcore.sip.common.iana.SipHeaderId;
+import io.rtcore.sip.common.iana.SipMethodId;
 import io.rtcore.sip.message.auth.headers.Authorization;
 import io.rtcore.sip.message.base.api.RawHeader;
 import io.rtcore.sip.message.message.api.EventSpec;
@@ -134,6 +134,10 @@ public interface SipRequest extends SipMessage {
   @Override
   SipRequest withTo(final NameAddr na);
 
+  SipRequest withTo(final UnaryOperator<NameAddr> na);
+
+  SipRequest withFrom(final UnaryOperator<NameAddr> na);
+
   SipRequest withRoute(final List<NameAddr> routeSet);
 
   SipRequest withContact(final NameAddr local);
@@ -174,6 +178,10 @@ public interface SipRequest extends SipMessage {
 
   default SipRequest withPrependedRecordRoute(final SipUri address) {
     return this.withPrependedRecordRoute(NameAddr.of(address));
+  }
+
+  default SipMethodId methodId() {
+    return this.method().methodId();
   }
 
 }

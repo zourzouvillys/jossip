@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package io.rtcore.sip.message.message.api;
 
@@ -9,31 +9,31 @@ import io.rtcore.sip.common.iana.SipMethodId;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManager;
 
 /**
- * 
+ *
  */
 public final class CSeq {
   private final UnsignedInteger sequence;
   private final SipMethod method;
 
-  public CSeq(long seq, SipMethod method) {
+  public CSeq(final long seq, final SipMethod method) {
     this(UnsignedInteger.valueOf(seq), method);
   }
 
-  public CSeq(UnsignedInteger seq, SipMethod method) {
+  public CSeq(final UnsignedInteger seq, final SipMethod method) {
     this.sequence = seq;
     this.method = method;
   }
 
   public long longValue() {
-    return sequence.longValue();
+    return this.sequence.longValue();
   }
 
-  public CSeq withNextSequence(SipMethod method) {
-    return new CSeq(sequence.plus(UnsignedInteger.ONE), method);
+  public CSeq withNextSequence(final SipMethod method) {
+    return new CSeq(this.sequence.plus(UnsignedInteger.ONE), method);
   }
 
   public CSeq withNextSequence() {
-    return withSequence(sequence().plus(UnsignedInteger.ONE));
+    return this.withSequence(this.sequence().plus(UnsignedInteger.ONE));
   }
 
   public UnsignedInteger sequence() {
@@ -50,21 +50,24 @@ public final class CSeq {
 
   @Override
   public boolean equals(final Object o) {
-    if (o == this)
+    if (o == this) {
       return true;
-    if (!(o instanceof CSeq))
+    }
+    if (!(o instanceof final CSeq other)) {
       return false;
-    final CSeq other = (CSeq) o;
+    }
     final Object this$sequence = this.sequence();
     final Object other$sequence = other.sequence();
     if (this$sequence == null ? other$sequence != null
-                              : !this$sequence.equals(other$sequence))
+                              : !this$sequence.equals(other$sequence)) {
       return false;
+    }
     final Object this$method = this.method();
     final Object other$method = other.method();
     if (this$method == null ? other$method != null
-                            : !this$method.equals(other$method))
+                            : !this$method.equals(other$method)) {
       return false;
+    }
     return true;
   }
 
@@ -78,11 +81,9 @@ public final class CSeq {
         + ($sequence == null ? 43
                              : $sequence.hashCode());
     final Object $method = this.method();
-    result =
-      (result * PRIME)
-        + ($method == null ? 43
-                           : $method.hashCode());
-    return result;
+    return (result * PRIME)
+      + ($method == null ? 43
+                         : $method.hashCode());
   }
 
   @Override
@@ -100,11 +101,11 @@ public final class CSeq {
                                  : new CSeq(this.sequence, method);
   }
 
-  public static CSeq of(String method) {
+  public static CSeq of(final String method) {
     return of(1, method);
   }
 
-  public static CSeq of(long sequenceNumber, String method) {
+  public static CSeq of(final long sequenceNumber, final String method) {
     return new CSeq(sequenceNumber, SipMethod.of(method));
   }
 
@@ -112,12 +113,20 @@ public final class CSeq {
     return RfcSerializerManager.defaultSerializer().writeValueAsString(this);
   }
 
-  public static CSeq of(long sequenceNumber, SipMethod method) {
+  public static CSeq of(final long sequenceNumber, final SipMethod method) {
     return new CSeq(sequenceNumber, method);
   }
 
-  public static CSeq of(SipMethod method) {
+  public static CSeq of(final SipMethod method) {
     return of(method.getMethod());
+  }
+
+  public static CSeq of(final SipMethodId method) {
+    return of(method.token());
+  }
+
+  public static CSeq of(final long sequenceNumber, final SipMethodId method) {
+    return of(sequenceNumber, method.token());
   }
 
 }

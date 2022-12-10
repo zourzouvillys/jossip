@@ -15,6 +15,8 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.rtcore.sip.channels.api.SipClientExchange;
 import io.rtcore.sip.channels.api.SipFrame;
 import io.rtcore.sip.channels.api.SipRequestFrame;
+import io.rtcore.sip.channels.api.SipResponseFrame;
+import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.connection.SipConnection;
 import io.rtcore.sip.channels.connection.SipConnectionProvider;
 import io.rtcore.sip.channels.connection.SipRoute;
@@ -30,12 +32,13 @@ public class SipConnectionPool implements SipConnectionProvider {
     this.provider = provider;
   }
 
-  public static SipConnectionPool createTlsPool(EventLoopGroup elg, TlsContextProvider sslctx) {
-    return new SipConnectionPool(SipTlsConnectionProvider.createProvider(elg, sslctx));
+  public static
+      SipConnectionPool createTlsPool(EventLoopGroup elg, TlsContextProvider sslctx, SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> handler) {
+    return new SipConnectionPool(SipTlsConnectionProvider.createProvider(elg, sslctx, handler));
   }
 
-  public static SipConnectionPool createTcpPool(EventLoopGroup elg) {
-    return new SipConnectionPool(SipTlsConnectionProvider.createProvider(elg, null));
+  public static SipConnectionPool createTcpPool(EventLoopGroup elg, SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> handler) {
+    return new SipConnectionPool(SipTlsConnectionProvider.createProvider(elg, null, handler));
   }
 
   @Override

@@ -3,8 +3,9 @@ package io.rtcore.sip.message.message;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalLong;
+import java.util.function.Function;
 
-import io.rtcore.sip.common.iana.SipStatusCodes;
+import io.rtcore.sip.common.iana.SipMethodId;
 import io.rtcore.sip.message.auth.headers.Authorization;
 import io.rtcore.sip.message.base.api.RawHeader;
 import io.rtcore.sip.message.message.api.NameAddr;
@@ -100,5 +101,13 @@ public interface SipResponse extends SipMessage {
   SipResponse withIncrementedCSeq(final SipMethod method);
 
   SipResponse withServer(final String string);
+
+  default <T> T applyResponse(final Function<SipResponse, T> applicator) {
+    return applicator.apply(this);
+  }
+
+  default SipMethodId methodId() {
+    return this.cseq().methodId();
+  }
 
 }

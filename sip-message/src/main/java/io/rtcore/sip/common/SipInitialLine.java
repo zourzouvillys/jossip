@@ -8,11 +8,11 @@ import org.immutables.value.Value;
 import io.rtcore.sip.common.iana.SipMethodId;
 import io.rtcore.sip.common.iana.SipStatusCodes;
 
-public interface SipInitialLine {
+public sealed interface SipInitialLine permits SipInitialLine.RequestLine, SipInitialLine.ResponseLine {
 
   @Value.Immutable(builder = false)
   @Value.Style(jdkOnly = true, allowedClasspathAnnotations = { Override.class }, attributeBuilderDetection = true, deepImmutablesDetection = true)
-  interface RequestLine extends SipInitialLine {
+  sealed interface RequestLine extends SipInitialLine permits ImmutableRequestLine {
 
     @Value.Parameter
     SipMethodId method();
@@ -24,7 +24,7 @@ public interface SipInitialLine {
 
   @Value.Immutable(builder = false)
   @Value.Style(jdkOnly = true, allowedClasspathAnnotations = { Override.class }, attributeBuilderDetection = true, deepImmutablesDetection = true)
-  interface ResponseLine extends SipInitialLine {
+  sealed interface ResponseLine extends SipInitialLine permits ImmutableResponseLine {
 
     @Value.Parameter
     int code();

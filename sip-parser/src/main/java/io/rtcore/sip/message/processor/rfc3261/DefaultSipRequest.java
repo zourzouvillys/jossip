@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Iterables;
@@ -105,7 +106,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   @Override
   public String toString() {
     if ((this.body != null) && (this.body.length > 0)) {
-      return String.format("%s %s [%s, %d bytes]", this.method(), this.uri(), this.contentType(), this.body.length);
+      return String.format("%s %s [%s, %d bytes]", this.method(), this.uri(), this.contentType().map(MIMEType::toString).orElse("<missing content-type>"), this.body.length);
     }
     return String.format("%s %s", this.method(), this.uri());
   }
@@ -175,7 +176,7 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
     try {
       visitor.visit(this);
     }
-    catch (IOException e) {
+    catch (final IOException e) {
       throw new UncheckedIOException(e);
     }
   }
@@ -317,6 +318,16 @@ public final class DefaultSipRequest extends DefaultSipMessage implements SipReq
   @Override
   public SipRequest withTo(final NameAddr na) {
     return this.withoutHeaders("To", "t").withPrepended("To", na);
+  }
+
+  @Override
+  public SipRequest withTo(final UnaryOperator<NameAddr> na) {
+    return this.withoutHeaders("To", "t").withPrepended("To", na.apply(this.to()));
+  }
+
+  @Override
+  public SipRequest withFrom(final UnaryOperator<NameAddr> na) {
+    return this.withoutHeaders("From", "f").withPrepended("From", na.apply(this.from()));
   }
 
   @Override

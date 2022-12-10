@@ -1,14 +1,19 @@
 package io.rtcore.sip.message.processor.rfc3261;
 
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import io.rtcore.sip.common.SipHeaderLine;
+import io.rtcore.sip.common.iana.SipMethodId;
 import io.rtcore.sip.message.base.api.RawHeader;
 import io.rtcore.sip.message.base.api.RawMessage;
 import io.rtcore.sip.message.message.SipMessage;
@@ -41,7 +46,7 @@ import io.rtcore.sip.message.uri.Uri;
 /**
  * Default internal implementation of the SIP message manager.
  *
- * 
+ *
  *
  */
 
@@ -85,6 +90,11 @@ public class RfcSipMessageManager implements SipMessageManager {
   public SipMessage parseMessage(final ByteBuffer buf) {
     final RawMessage raw = DEFAULT_MESSAGE_PARSER.parse(buf);
     return this.convert(raw, true);
+  }
+
+  @Override
+  public RawMessage parseRawMessage(final ByteBuffer buf) {
+    return DEFAULT_MESSAGE_PARSER.parse(buf);
   }
 
   @Override
@@ -331,6 +341,16 @@ public class RfcSipMessageManager implements SipMessageManager {
 
   public static RfcSipMessageManager defaultInstance() {
     return DEFAULT_INSTANCE;
+  }
+
+  public SipRequest parseRequest(final SipMethodId method, final URI ruri, final List<SipHeaderLine> headers, final Optional<String> body) {
+    return new DefaultSipRequest(
+      this,
+      SipMethod.fromString(method.token()),
+      this.parseUri(ruri.toString()),
+      SipMessage.VERSION,
+      Lists.transform(headers, h -> new RawHeader(h.headerName(), h.headerValues())),
+      body.map(String::getBytes).orElse(new byte[0]));
   }
 
 }

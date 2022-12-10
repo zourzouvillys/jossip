@@ -14,6 +14,7 @@ import com.google.common.net.HostAndPort;
 import com.google.common.primitives.Longs;
 import com.google.common.primitives.UnsignedInteger;
 
+import io.rtcore.sip.common.iana.SipMethodId;
 import io.rtcore.sip.message.auth.headers.Authorization;
 import io.rtcore.sip.message.base.api.RawHeader;
 import io.rtcore.sip.message.base.api.Token;
@@ -213,8 +214,16 @@ public class MutableSipRequest extends MutableSipMessage<MutableSipRequest> {
     return req;
   }
 
+  public static MutableSipRequest create(final SipMethodId method, final Uri ruri) {
+    return new MutableSipRequest(SipMethod.of(method), ruri);
+  }
+
   public static MutableSipRequest create(final SipMethod method) {
     return new MutableSipRequest(method);
+  }
+
+  public static MutableSipRequest create(final SipMethodId method) {
+    return new MutableSipRequest(SipMethod.of(method));
   }
 
   public MutableSipRequest userAgent(final String userAgent) {

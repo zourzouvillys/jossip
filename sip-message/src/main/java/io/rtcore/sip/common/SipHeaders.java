@@ -1,5 +1,6 @@
 package io.rtcore.sip.common;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -7,7 +8,7 @@ import io.rtcore.sip.common.iana.SipHeaderId;
 
 public interface SipHeaders {
 
-  final SipHeaders EMPTY_HEADERS = new SipHeaders() {
+  SipHeaders EMPTY_HEADERS = new SipHeaders() {
 
     @Override
     public Stream<SipHeaderId> headers() {
@@ -15,7 +16,7 @@ public interface SipHeaders {
     }
 
     @Override
-    public Stream<String> get(SipHeaderId header) {
+    public Stream<String> get(final SipHeaderId header) {
       return Stream.of();
     }
 
@@ -31,7 +32,7 @@ public interface SipHeaders {
    */
 
   default Stream<SipHeaderId> headers() {
-    return lines().stream().map(SipHeaderLine::headerId).distinct();
+    return this.lines().stream().map(SipHeaderLine::headerId).distinct();
   }
 
   /**
@@ -39,8 +40,8 @@ public interface SipHeaders {
    * smallest value - e.g a token set will contain one value per token.
    */
 
-  default Stream<String> get(SipHeaderId header) {
-    return lines().stream().filter(e -> header.equals(e.headerId())).map(SipHeaderLine::headerValues);
+  default Stream<String> get(final SipHeaderId header) {
+    return this.lines().stream().filter(e -> header.equals(e.headerId())).map(SipHeaderLine::headerValues);
   }
 
   /**
@@ -53,18 +54,11 @@ public interface SipHeaders {
     return EMPTY_HEADERS;
   }
 
-  static SipHeaders of(List<SipHeaderLine> in) {
+  static SipHeaders of(final Collection<SipHeaderLine> in) {
 
-    List<SipHeaderLine> headers = List.copyOf(in);
+    final List<SipHeaderLine> headers = List.copyOf(in);
 
-    return new SipHeaders() {
-
-      @Override
-      public List<SipHeaderLine> lines() {
-        return headers;
-      }
-
-    };
+    return () -> headers;
 
   }
 

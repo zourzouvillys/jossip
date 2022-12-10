@@ -13,7 +13,6 @@ import io.rtcore.sip.message.base.api.Token;
 import io.rtcore.sip.message.parameters.api.BaseParameterizedObject;
 import io.rtcore.sip.message.parameters.api.FlagParameterValue;
 import io.rtcore.sip.message.parameters.api.Parameters;
-import io.rtcore.sip.message.parameters.api.QuotedString;
 import io.rtcore.sip.message.parameters.api.RawParameter;
 import io.rtcore.sip.message.parameters.api.SipParameterDefinition;
 import io.rtcore.sip.message.parameters.impl.DefaultParameters;
@@ -23,8 +22,8 @@ import io.rtcore.sip.message.uri.Uri;
 
 /**
  * Represents a name and address
- * 
- * 
+ *
+ *
  */
 @SuppressWarnings("serial")
 public class NameAddr extends BaseParameterizedObject<NameAddr> implements Serializable, NameAddress {
@@ -38,15 +37,10 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
   public static final SipParameterDefinition<String> PSipInstance = ParameterUtils.createQuotedStringParameterDefinition("+sip.instance");
   public static final SipParameterDefinition<Token> PRegId = ParameterUtils.createTokenParameterDefinition("reg-id");
 
-  private static final Function<? super Token, String> TOKEN_TRANSFORMER = new Function<Token, String>() {
-    @Override
-    public String apply(Token input) {
-      return input.toString();
-    }
-  };
+  private static final Function<? super Token, String> TOKEN_TRANSFORMER = input -> input.toString();
   /**
    * The name.
-   * 
+   *
    * TODO: we need to keep track of this being a quoted string or not, as a serializaed version
    * should come out the same way it came in.
    */
@@ -94,21 +88,20 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
 
   @Override
   public String toString() {
-    String result =
-      this.name != null ? this.name + " "
-                        : "";
-    result += "<" + this.address.toString() + ">";
+    final StringBuilder result =
+      new StringBuilder().append(this.name != null ? this.name + " "
+                      : "");
+    result.append("<").append(this.address.toString()).append(">");
     if (this.parameters != null) {
       for (final RawParameter p : this.parameters.getRawParameters()) {
         // TODO: this doesn't keep quoted values ...
-        result +=
-          ";"
-            + p.name()
-            + ((p.value() == null) || (p.value() instanceof FlagParameterValue) ? ""
-                                                                                : "=" + p.value());
+        result.append(";")
+          .append(p.name())
+          .append((p.value() == null) || (p.value() instanceof FlagParameterValue) ? ""
+                                                                              : "=" + p.value());
       }
     }
-    return result;
+    return result.toString();
   }
 
   @Override
@@ -117,58 +110,76 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
   }
 
   public Optional<String> getTag() {
-    return getParameter(PTag).map(TOKEN_TRANSFORMER);
+    return this.getParameter(PTag).map(TOKEN_TRANSFORMER);
   }
 
-  public NameAddr withTag(String tag) {
-    return withoutParameter(PTag.name()).withParameter(PTag.name(), Token.from(tag));
+  public NameAddr withTag(final String tag) {
+    return this.withoutParameter(PTag.name()).withParameter(PTag.name(), Token.from(tag));
+  }
+
+  public NameAddr withTag(final Optional<String> tag) {
+    final NameAddr res = this.withoutParameter(PTag.name());
+    if (tag.filter(e -> !e.isBlank()).isPresent()) {
+      return res.withParameter(PTag.name(), Token.from(tag.get()));
+    }
+    return res;
   }
 
   public NameAddr withoutName() {
-    return new NameAddr(null, address, parameters);
+    return new NameAddr(null, this.address, this.parameters);
   }
 
-  public NameAddr withName(String name) {
-    return new NameAddr(name, address, parameters);
+  public NameAddr withName(final String name) {
+    return new NameAddr(name, this.address, this.parameters);
   }
 
-  public NameAddr withAddress(Uri address) {
-    return new NameAddr(name, address, parameters);
+  public NameAddr withAddress(final Uri address) {
+    return new NameAddr(this.name, address, this.parameters);
   }
 
   public Optional<Integer> getExpires() {
-    return getParameter(PExpires).map(val -> Integer.parseInt(val.toString()));
+    return this.getParameter(PExpires).map(val -> Integer.parseInt(val.toString()));
   }
 
   public OptionalInt expiresSeconds() {
-    return getParameter(PExpires).map(val -> OptionalInt.of(Integer.parseInt(val.toString()))).orElse(OptionalInt.empty());
+    return this.getParameter(PExpires).map(val -> OptionalInt.of(Integer.parseInt(val.toString()))).orElse(OptionalInt.empty());
   }
 
-  public NameAddr withExpires(int seconds) {
-    return withoutParameter(PExpires.name()).withParameter(PExpires.name(), Token.from(seconds));
+  public OptionalInt regId() {
+    return this.getParameter(PRegId).map(val -> OptionalInt.of(Integer.parseInt(val.toString()))).orElse(OptionalInt.empty());
+  }
+
+  public Optional<URI> instanceId() {
+    return this.getParameter(PSipInstance).map(val -> val.replaceAll("^<|>$", "")).map(URI::create);
+  }
+
+  public NameAddr withExpires(final int seconds) {
+    return this.withoutParameter(PExpires.name()).withParameter(PExpires.name(), Token.from(seconds));
   }
 
   @Override
   public boolean equals(final Object o) {
-    if (o == this)
+    if (o == this) {
       return true;
-    if (!(o instanceof NameAddr))
+    }
+    if (!(o instanceof NameAddr other)) {
       return false;
-    final NameAddr other = (NameAddr) o;
-    if (!other.canEqual((Object) this))
+    }
+    if (!other.canEqual(this) || !super.equals(o)) {
       return false;
-    if (!super.equals(o))
-      return false;
+    }
     final Object this$name = this.name;
     final Object other$name = other.name;
     if (this$name == null ? other$name != null
-                          : !this$name.equals(other$name))
+                          : !this$name.equals(other$name)) {
       return false;
+    }
     final Object this$address = this.address();
     final Object other$address = other.address();
     if (this$address == null ? other$address != null
-                             : !this$address.equals(other$address))
+                             : !this$address.equals(other$address)) {
       return false;
+    }
     return true;
   }
 
@@ -187,17 +198,16 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
         + ($name == null ? 43
                          : $name.hashCode());
     final Object $address = this.address();
-    result =
-      (result * PRIME)
-        + ($address == null ? 43
-                            : $address.hashCode());
-    return result;
+    return (result * PRIME)
+      + ($address == null ? 43
+                          : $address.hashCode());
   }
 
   /**
    * The Uri in this {@link NameAddr}. You may want to use the Uri apply() or adapt() methods to
    * convert it to the type you want.
    */
+  @Override
   public Uri address() {
     return this.address;
   }
@@ -206,7 +216,7 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
     return RfcSerializerManager.defaultSerializer().writeValueAsString(this);
   }
 
-  public static NameAddr of(Uri address) {
+  public static NameAddr of(final Uri address) {
     return new NameAddr(address);
   }
 
@@ -214,5 +224,6 @@ public class NameAddr extends BaseParameterizedObject<NameAddr> implements Seria
   public Optional<String> displayName() {
     return Optional.ofNullable(this.name);
   }
+
 
 }

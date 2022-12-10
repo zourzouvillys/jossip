@@ -10,6 +10,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import io.rtcore.sip.common.iana.SipHeaderId;
+import io.rtcore.sip.common.iana.SipMethodId;
 import io.rtcore.sip.message.base.api.RawHeader;
 import io.rtcore.sip.message.content.SipContent;
 import io.rtcore.sip.message.message.api.BranchId;
@@ -341,9 +342,7 @@ public interface SipMessage extends Serializable {
     if (this instanceof SipResponse) {
       return res.apply((SipResponse) this);
     }
-    else {
-      throw new IllegalArgumentException();
-    }
+    throw new IllegalArgumentException();
   }
 
   /**
@@ -369,8 +368,9 @@ public interface SipMessage extends Serializable {
     return RfcSerializerManager.defaultSerializer().serialize(this);
   }
 
-  default Stream<String> headerValues(SipHeaderId header) {
+  default Stream<String> headerValues(final SipHeaderId header) {
     return this.getHeaders(header.headerNames()).stream().map(RawHeader::value);
   }
 
+  SipMethodId methodId();
 }

@@ -59,7 +59,7 @@ artifacts {
 
 dependencies {
   // all java projects get this api.
-  implementation(libs.log4j.api)
+  // implementation(libs.slf4j.api)
 }
 
 dependencies {
@@ -70,9 +70,9 @@ dependencies {
 
 dependencies {
   modules {
-    module('javax.inject:javax.inject') {
-      replacedBy('jakarta.inject:jakarta.inject-api', 'Jakarta Inject API 1.x')
-    }
+    //module('javax.inject:javax.inject') {
+    //  replacedBy('jakarta.inject:jakarta.inject-api', 'Jakarta Inject API 1.x')
+    //}
     module('javax.annotation:jsr250-api') {
       replacedBy('jakarta.annotation:jakarta.annotation-api', 'Jakarta Annotations API 1.x')
     }
@@ -91,11 +91,6 @@ configurations.runtimeClasspath {
    exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
    exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
 }
-
-
-
-
-
 
 eclipse.classpath.file.whenMerged { classpath ->
   classpath.entries.find { it.path == '.apt_generated' }.each {

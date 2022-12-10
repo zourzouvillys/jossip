@@ -35,6 +35,7 @@ dependencies {
   api 'io.netty:netty-handler'
   api 'io.netty:netty-handler-proxy'
   api 'io.netty:netty-codec-haproxy'
+  api 'io.netty:netty-codec-http'
   
   // for DNS resolution
   implementation 'io.netty:netty-codec-dns'

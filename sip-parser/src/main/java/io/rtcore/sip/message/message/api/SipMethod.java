@@ -11,7 +11,7 @@ import io.rtcore.sip.message.base.api.Token;
 /**
  * Represents a SIP method.
  *
- * 
+ *
  */
 
 public final class SipMethod {
@@ -193,13 +193,17 @@ public final class SipMethod {
     return this.equals(SipMethod.OPTIONS);
   }
 
-  public boolean in(SipMethod... methods) {
-    for (SipMethod method : methods) {
+  public boolean in(final SipMethod... methods) {
+    for (final SipMethod method : methods) {
       if (method.getMethod().equals(this.method)) {
         return true;
       }
     }
     return false;
+  }
+
+  public static SipMethod of(final SipMethodId method) {
+    return SipMethod.fromString(method.token());
   }
 
 }

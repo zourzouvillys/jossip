@@ -4,12 +4,13 @@ import org.immutables.value.Value;
 
 @Value.Immutable
 @Value.Style(jdkOnly = true, allowedClasspathAnnotations = { Override.class })
-public interface UnknownSipMethod extends SipMethodId {
+public sealed interface UnknownSipMethod extends SipMethodId permits ImmutableUnknownSipMethod {
 
+  @Override
   @Value.Parameter
   String token();
 
-  static SipMethodId of(String methodToken) {
+  static SipMethodId of(final String methodToken) {
     return ImmutableUnknownSipMethod.of(methodToken);
   }
 

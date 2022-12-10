@@ -13,9 +13,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.net.ssl.SSLSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Verify;
 import com.google.common.hash.Hashing;
 
 import io.netty.bootstrap.Bootstrap;
@@ -39,6 +42,7 @@ import io.rtcore.sip.channels.netty.ClientBranchId;
 import io.rtcore.sip.channels.netty.NettySipAttributes;
 import io.rtcore.sip.common.HostPort;
 import io.rtcore.sip.common.SipHeaderLine;
+import io.rtcore.sip.common.iana.SipMethods;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
 import io.rtcore.sip.common.iana.StandardSipTransportName;
 import io.rtcore.sip.message.message.api.CSeq;
@@ -55,23 +59,23 @@ public final class TlsSipConnection implements SipConnection {
   private final long keyId = System.currentTimeMillis();
   private final AtomicLong sequences = new AtomicLong(1);
 
-  private UnicastProcessor<SipFrame> frames = UnicastProcessor.create(true);
+  private final UnicastProcessor<SipFrame> frames = UnicastProcessor.create(true);
   private CompletableFuture<Channel> _channel;
 
   private final SipAttributes attributes;
 
-  private Map<ClientBranchId, SipStreamClientExchange> clientBranches = new ConcurrentHashMap<>();
+  private final Map<ClientBranchId, SipStreamClientExchange> clientBranches = new ConcurrentHashMap<>();
   private SipRoute route;
   private SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> dispatcher;
   private CompletableFuture<Channel> _ch;
 
-  private StandardSipTransportName transportProtocol;
+  private final StandardSipTransportName transportProtocol;
 
   private TlsSipConnection(
-      EventLoopGroup eventloopGroop,
-      TlsContextProvider sslctx,
-      SipRoute route,
-      SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> dispatcher) {
+      final EventLoopGroup eventloopGroop,
+      final TlsContextProvider sslctx,
+      final SipRoute route,
+      final SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> dispatcher) {
 
     this.transportProtocol =
       sslctx == null ? StandardSipTransportName.TCP
@@ -87,7 +91,7 @@ public final class TlsSipConnection implements SipConnection {
     logger.info("new outgoing connection");
 
     //
-    ChannelFuture f =
+    final ChannelFuture f =
       new Bootstrap()
         .group(eventloopGroop)
         .channel(NioSocketChannel.class)
@@ -117,14 +121,18 @@ public final class TlsSipConnection implements SipConnection {
   }
 
   TlsSipConnection(
-      Channel ch,
-      SipAttributes connectionAttributes,
-      SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> dispatcher) {
+      final Channel ch,
+      final SipAttributes connectionAttributes,
+      final SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> dispatcher) {
 
     logger.info("new incoming connection: {}, {}", ch, connectionAttributes);
 
     this.attributes = connectionAttributes;
     this.dispatcher = dispatcher;
+
+    this.transportProtocol =
+      ch.pipeline().get(SslHandler.class) == null ? StandardSipTransportName.TCP
+                                                  : StandardSipTransportName.TLS;
 
     this._ch = CompletableFuture.completedFuture(ch);
 
@@ -133,7 +141,7 @@ public final class TlsSipConnection implements SipConnection {
   private CompletableFuture<Channel> channel() {
     return this._ch.thenCompose(c -> {
 
-      SslHandler handler = c.pipeline().get(SslHandler.class);
+      final SslHandler handler = c.pipeline().get(SslHandler.class);
 
       if (handler == null) {
         return CompletableFuture.completedStage(c);
@@ -147,23 +155,30 @@ public final class TlsSipConnection implements SipConnection {
 
   SipAttributes.Builder attributesBuilder() {
 
-    SipAttributes.Builder b = this.attributes.toBuilder();
+    final SipAttributes.Builder b = this.attributes.toBuilder();
 
-    NioSocketChannel ch = (NioSocketChannel) this.channel().getNow(null);
+    final NioSocketChannel ch = (NioSocketChannel) this.channel().getNow(null);
 
     if (ch != null) {
 
       b.set(NettySipAttributes.ATTR_CHANNEL, ch);
 
-      b.set(SipConnections.ATTR_LOCAL_ADDR, ch.localAddress());
-      b.set(SipConnections.ATTR_REMOTE_ADDR, ch.remoteAddress());
+      if (ch.localAddress() != null) {
+        b.set(SipConnections.ATTR_LOCAL_ADDR, ch.localAddress());
+      }
 
-      SslHandler sslhandler = ch.pipeline().get(SslHandler.class);
+      if (ch.remoteAddress() != null) {
+        b.set(SipConnections.ATTR_REMOTE_ADDR, ch.remoteAddress());
+      }
 
       b.set(SipConnections.ATTR_TRANSPORT, this.transportProtocol);
 
+      final SslHandler sslhandler = ch.pipeline().get(SslHandler.class);
       if (sslhandler != null) {
-        b.set(SipConnections.ATTR_SSL_SESSION, sslhandler.engine().getSession());
+        final SSLSession session = sslhandler.engine().getSession();
+        if (session != null) {
+          b.set(SipConnections.ATTR_SSL_SESSION, session);
+        }
       }
 
     }
@@ -179,12 +194,12 @@ public final class TlsSipConnection implements SipConnection {
     private final IncomingSipVias vias;
     private final SipAttributes attributes;
 
-    ServerCall(SipRequestFrame req) {
+    ServerCall(final SipRequestFrame req) {
       this.req = req;
       this.vias = new IncomingSipVias(req.headerLines());
-      this.attributes = attributesBuilder().build();
+      this.attributes = TlsSipConnection.this.attributesBuilder().build();
       // todo: refcnt?
-      this.handler = dispatcher.startExchange(this, this.attributes);
+      this.handler = TlsSipConnection.this.dispatcher.startExchange(this, this.attributes);
     }
 
     @Override
@@ -195,9 +210,9 @@ public final class TlsSipConnection implements SipConnection {
     }
 
     @Override
-    public CompletionStage<?> onNext(SipResponseFrame response) {
+    public CompletionStage<?> onNext(final SipResponseFrame response) {
       // todo: unref if needed
-      return connection().send(this.vias.apply(response));
+      return this.connection().send(this.vias.apply(response));
     }
 
     @Override
@@ -211,7 +226,7 @@ public final class TlsSipConnection implements SipConnection {
 
     //
     @Override
-    public void onError(Throwable err) {
+    public void onError(final Throwable err) {
       // todo: unref if needed
     }
 
@@ -227,11 +242,12 @@ public final class TlsSipConnection implements SipConnection {
       return false;
     }
 
+    @Override
     public String toString() {
       return String.format(
         "TlsSipConnection.ServerCall(%s %s, %s)",
-        request().initialLine().method(),
-        request().initialLine().uri(),
+        this.request().initialLine().method(),
+        this.request().initialLine().uri(),
         this.vias.topLine().map(line -> line.substring("SIP/2.0/TLS ".length())).orElse(""));
     }
 
@@ -241,17 +257,16 @@ public final class TlsSipConnection implements SipConnection {
    * apply a frame
    */
 
-  void onFrame(SipFrame frame) {
+  void onFrame(final SipFrame frame) {
 
-    if (frame instanceof SipRequestFrame req) {
+    if (frame instanceof final SipRequestFrame req) {
 
-      //
-      ServerCall call = new ServerCall(req);
+      new ServerCall(req);
 
     }
-    else if (frame instanceof SipResponseFrame res) {
+    else if (frame instanceof final SipResponseFrame res) {
 
-      Via topVia =
+      final Via topVia =
         res
           .headerLines()
           .stream()
@@ -271,9 +286,9 @@ public final class TlsSipConnection implements SipConnection {
         return;
       }
 
-      String branchId = topVia.branchWithoutCookie().orElse(null);
+      final String branchId = topVia.branchWithoutCookie().orElse(null);
 
-      CSeq cseq =
+      final CSeq cseq =
         res
           .headerLines()
           .stream()
@@ -288,9 +303,9 @@ public final class TlsSipConnection implements SipConnection {
         return;
       }
 
-      ClientBranchId clientKey = new ClientBranchId(topVia.sentBy(), cseq.methodId(), branchId);
+      final ClientBranchId clientKey = new ClientBranchId(topVia.sentBy(), cseq.methodId(), branchId);
 
-      SipStreamClientExchange exchange = this.clientBranches.get(clientKey);
+      final SipStreamClientExchange exchange = this.clientBranches.get(clientKey);
 
       if (exchange == null) {
         logger.warn("response for unknown sip exchange: {}", clientKey);
@@ -313,7 +328,7 @@ public final class TlsSipConnection implements SipConnection {
    */
 
   @Override
-  public CompletableFuture<?> send(SipFrame frame) {
+  public CompletableFuture<?> send(final SipFrame frame) {
     logger.debug("sending {}", frame);
     // wait for the channel to become ready itself.
     return this.channel()
@@ -330,18 +345,21 @@ public final class TlsSipConnection implements SipConnection {
 
   /**
    * perform a sip exchange over this connection.
-   * 
+   *
    * the request must be fully formed, including the Via header and branch identifier.
-   * 
+   *
    * a response may be received on a different connection (e.g, if no rport), so consumers must take
    * care to assign the context of the connection transaction if it wishes for responses received on
    * other connections to be used for responses to this request.
-   * 
+   *
    */
 
+  @Override
   public SipStreamClientExchange exchange(SipRequestFrame req) {
 
-    ClientBranchId branchId = makeKey(req);
+    Verify.verify(req.initialLine().method() != SipMethods.ACK);
+
+    final ClientBranchId branchId = this.makeKey(req);
 
     final LinkedList<SipHeaderLine> headers = new LinkedList<>();
 
@@ -359,24 +377,23 @@ public final class TlsSipConnection implements SipConnection {
 
     req = req.withHeaderLines(headers);
 
-    SipStreamClientExchange ex = new SipStreamClientExchange(this, req, branchId);
+    final SipStreamClientExchange ex = new SipStreamClientExchange(this, req, branchId);
 
-    clientBranches.put(branchId, ex);
-
-    System.err.println(req);
+    this.clientBranches.put(branchId, ex);
 
     return ex;
 
   }
 
   /**
-   * 
+   *
    */
 
-  private ClientBranchId makeKey(SipRequestFrame req) {
-    long seqId = sequences.getAndIncrement();
-    String key = Hashing.farmHashFingerprint64().newHasher().putLong(keyId).putLong(ThreadLocalRandom.current().nextLong()).putLong(seqId).hash().toString();
-    String branchId = String.format("%s-%06x", key, seqId);
+  private ClientBranchId makeKey(final SipRequestFrame req) {
+    final long seqId = this.sequences.getAndIncrement();
+    final String key =
+      Hashing.farmHashFingerprint64().newHasher().putLong(this.keyId).putLong(ThreadLocalRandom.current().nextLong()).putLong(seqId).hash().toString();
+    final String branchId = String.format("%s-%06x", key, seqId);
     return new ClientBranchId(HostPort.fromHost("invalid"), req.initialLine().method(), branchId);
   }
 
@@ -387,21 +404,17 @@ public final class TlsSipConnection implements SipConnection {
   public static
       TlsSipConnection
       create(
-          EventLoopGroup eventloopGroop,
-          TlsContextProvider sslctx,
-          SipRoute route,
-          SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> server) {
+          final EventLoopGroup eventloopGroop,
+          final TlsContextProvider sslctx,
+          final SipRoute route,
+          final SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> server) {
 
     return new TlsSipConnection(eventloopGroop, sslctx, route, server);
 
   }
 
-  public static TlsSipConnection create(EventLoopGroup eventloopGroop, TlsContextProvider sslctx, SipRoute route) {
-    return new TlsSipConnection(eventloopGroop, sslctx, route, null);
-  }
-
   /**
-   * 
+   *
    */
 
   @Override
@@ -410,7 +423,7 @@ public final class TlsSipConnection implements SipConnection {
   }
 
   /**
-   * 
+   *
    */
 
   @Override
@@ -424,16 +437,17 @@ public final class TlsSipConnection implements SipConnection {
     }
   }
 
+  @Override
   public String toString() {
     if (this.channel().isDone()) {
       try {
-        return String.format("%s@%8x(%s, %s)", getClass().getSimpleName(), hashCode(), this.route, this.channel().get());
+        return String.format("%s@%8x(%s, %s)", this.getClass().getSimpleName(), this.hashCode(), this.route, this.channel().get());
       }
       catch (InterruptedException | ExecutionException e) {
-        return String.format("%s@%8x(%s, [ERROR] %s)", getClass().getSimpleName(), hashCode(), this.route, e.getMessage());
+        return String.format("%s@%8x(%s, [ERROR] %s)", this.getClass().getSimpleName(), this.hashCode(), this.route, e.getMessage());
       }
     }
-    return String.format("%s@%8x(%s)", getClass().getSimpleName(), hashCode(), this.route, "[connecting]");
+    return String.format("%s@%8x(%s)", this.getClass().getSimpleName(), this.hashCode(), this.route, "[connecting]");
   }
 
 }

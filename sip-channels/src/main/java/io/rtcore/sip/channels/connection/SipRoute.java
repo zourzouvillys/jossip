@@ -23,16 +23,16 @@ public interface SipRoute {
 
   /**
    * the serverName to provide in TLS SNI (if any).
-   * 
+   *
    * if this is provided, then a connection can not be reused unless the value matches.
-   * 
+   *
    */
 
   Optional<DnsHost> remoteAuthority();
 
   /**
    * the remote transport address. this value must be an address, not an unresolved host name.
-   * 
+   *
    */
 
   InetSocketAddress remoteAddress();
@@ -60,21 +60,25 @@ public interface SipRoute {
   List<InetSocketAddress> proxyChain();
 
   /**
-   * 
+   *
    */
 
-  static ImmutableSipRoute tcp(InetAddress addr) {
+  static ImmutableSipRoute tcp(final InetAddress addr) {
     return ImmutableSipRoute.builder()
       .transportProtocol(StandardSipTransportName.TCP)
       .remoteAddress(new InetSocketAddress(addr, 5060))
       .build();
   }
 
-  static ImmutableSipRoute tcp(InetAddress addr, int port) {
+  static ImmutableSipRoute tcp(final InetAddress addr, final int port) {
     return ImmutableSipRoute.builder()
       .transportProtocol(StandardSipTransportName.TCP)
       .remoteAddress(new InetSocketAddress(addr, port))
       .build();
+  }
+
+  static ImmutableSipRoute tcp(final InetSocketAddress sockaddr) {
+    return tcp(sockaddr.getAddress(), sockaddr.getPort());
   }
 
 }

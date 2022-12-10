@@ -19,6 +19,7 @@ import io.rtcore.sip.channels.api.SipClientExchange.Event;
 import io.rtcore.sip.channels.api.SipFrameUtils;
 import io.rtcore.sip.channels.api.SipRequestFrame;
 import io.rtcore.sip.channels.api.SipResponseFrame;
+import io.rtcore.sip.channels.api.SipServerExchange.Listener;
 import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.connection.ImmutableSipRoute;
 import io.rtcore.sip.channels.connection.SipConnection;
@@ -59,7 +60,20 @@ class SipConnectionTests {
       server.startAsync().awaitRunning();
 
       // pool for outgoing connections
-      SipConnectionProvider provider = SipConnectionPool.createTlsPool(loop, TlsContextProvider.of(SipTlsUtils.createClient()));
+      SipConnectionProvider provider =
+        SipConnectionPool.createTlsPool(
+          loop,
+          TlsContextProvider.of(SipTlsUtils.createClient()),
+          (exchange, attrs) -> {
+            exchange.onComplete();
+            return new Listener() {
+              @Override
+              public void onCancel() {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented Method: Type1669147018026.onCancel invoked.");
+              }
+            };
+          });
 
       try {
 

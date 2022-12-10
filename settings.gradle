@@ -12,7 +12,12 @@ pluginManagement {
     id "com.google.protobuf" version "0.9.1"
     id "me.champeau.gradle.japicmp" version "0.4.1"
     id "me.champeau.gradle.jmh" version "0.5.3"
-    id "net.ltgt.errorprone" version "3.0.1"
+    id "net.ltgt.errorprone" version '3.0.1'
+    
+    id 'com.google.cloud.tools.jib' version '3.3.1'
+    id 'com.ryandens.javaagent-application' version '0.4.0'
+    id 'com.ryandens.javaagent-jib' version '0.4.0'
+    
   }
   
   repositories {
@@ -32,7 +37,13 @@ include('sip-channels')
 include('sip-channels-netty')
 include('sip-channels-proxy')
 
+// include('user-agent')
+
 include('dns-resolver')
+
+include('gateway')
+include('gateway-api')
+include('gateway-client')
 
 include('docs')
 include('bom')

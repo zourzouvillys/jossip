@@ -44,22 +44,31 @@ public final class MIMEType extends BaseParameterizedObject<MIMEType> {
 
   @Override
   public String toString() {
-    return "MIMEType(type=" + this.type() + ", subType=" + this.subType() + ")";
+    return String.format("%s/%s", this.type, this.subType());
+    // return "MIMEType(type=" + this.type() + ", subType=" + this.subType() + ")";
   }
 
   @Override
   public boolean equals(final Object o) {
-    if (o == this) return true;
-    if (!(o instanceof MIMEType)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof MIMEType))
+      return false;
     final MIMEType other = (MIMEType) o;
-    if (!other.canEqual((Object) this)) return false;
-    if (!super.equals(o)) return false;
+    if (!other.canEqual((Object) this))
+      return false;
+    if (!super.equals(o))
+      return false;
     final Object this$type = this.type();
     final Object other$type = other.type();
-    if (this$type == null ? other$type != null : !this$type.equals(other$type)) return false;
+    if (this$type == null ? other$type != null
+                          : !this$type.equals(other$type))
+      return false;
     final Object this$subType = this.subType();
     final Object other$subType = other.subType();
-    if (this$subType == null ? other$subType != null : !this$subType.equals(other$subType)) return false;
+    if (this$subType == null ? other$subType != null
+                             : !this$subType.equals(other$subType))
+      return false;
     return true;
   }
 
@@ -72,9 +81,15 @@ public final class MIMEType extends BaseParameterizedObject<MIMEType> {
     final int PRIME = 59;
     int result = super.hashCode();
     final Object $type = this.type();
-    result = result * PRIME + ($type == null ? 43 : $type.hashCode());
+    result =
+      result * PRIME
+        + ($type == null ? 43
+                         : $type.hashCode());
     final Object $subType = this.subType();
-    result = result * PRIME + ($subType == null ? 43 : $subType.hashCode());
+    result =
+      result * PRIME
+        + ($subType == null ? 43
+                            : $subType.hashCode());
     return result;
   }
 }

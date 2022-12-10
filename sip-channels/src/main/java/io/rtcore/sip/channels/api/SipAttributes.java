@@ -10,7 +10,7 @@ public final class SipAttributes {
   /**
    * A unique key for a set of attributes. note that each key is unique by ref not value - two keys
    * with the same debug string are not the same key.
-   * 
+   *
    * @param <T>
    */
 
@@ -59,12 +59,12 @@ public final class SipAttributes {
     }
 
     public <T> Builder set(final Key<T> key, final T value) {
-      this.data.put(key, value);
+      this.data.put(key, Objects.requireNonNull(value, key.toString()));
       return this;
     }
 
     public <T> Builder set(final Key<T> key, final Optional<T> value) {
-      value.ifPresentOrElse(existing -> set(key, existing), () -> discard(key));
+      value.ifPresentOrElse(existing -> this.set(key, existing), () -> this.discard(key));
       return this;
     }
 
@@ -110,9 +110,10 @@ public final class SipAttributes {
   }
 
   @SuppressWarnings("unchecked")
-  public <T> T getOrDefault(final Key<T> key, T defaultValue) {
-    if (this.data.containsKey(key))
+  public <T> T getOrDefault(final Key<T> key, final T defaultValue) {
+    if (this.data.containsKey(key)) {
       return (T) this.data.get(key);
+    }
     return defaultValue;
   }
 

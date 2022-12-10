@@ -34,5 +34,6 @@ module io.rtcore.sip.channels.netty {
   requires io.netty.handler;
   requires org.slf4j;
   requires io.netty.codec.haproxy;
+  requires io.netty.codec.http;
   
 }

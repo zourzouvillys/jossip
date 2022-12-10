@@ -3,6 +3,7 @@ package io.rtcore.sip.channels.netty.tcp;
 import static java.util.Objects.requireNonNull;
 
 import java.net.InetSocketAddress;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 import org.slf4j.Logger;
@@ -40,19 +41,19 @@ public class SipTlsServer extends AbstractService {
   private final EventLoopGroup childGroup;
 
   private Channel ch;
-  private ChannelHandler childHandler;
+  private final ChannelHandler childHandler;
   private final DefaultMaxBytesRecvByteBufAllocator recvalloc;
   private final WriteBufferWaterMark writeWatermark;
   private final SslContext sslctx;
   private final ImmutableTcpConnectionConfig initialTcpConfig;
-  private NettySocketServerConfig config;
+  private final NettySocketServerConfig config;
 
-  public SipTlsServer(UnaryOperator<ImmutableNettySocketServerConfig.Builder> b) {
+  public SipTlsServer(final UnaryOperator<ImmutableNettySocketServerConfig.Builder> b) {
     this(NettySocketServerConfig.create(b));
   }
 
   /**
-   * 
+   *
    * @param listen
    * @param acceptGroup
    * @param childGroup
@@ -60,7 +61,7 @@ public class SipTlsServer extends AbstractService {
    * @param factory
    */
 
-  public SipTlsServer(NettySocketServerConfig config) {
+  public SipTlsServer(final NettySocketServerConfig config) {
 
     this.config = config;
 
@@ -77,8 +78,8 @@ public class SipTlsServer extends AbstractService {
 
     this.writeWatermark =
       new WriteBufferWaterMark(
-        Math.max(4096, initialTcpConfig.sendBufferSize() - 4096),
-        Math.max(8192, initialTcpConfig.sendBufferSize() + 4096));
+        Math.max(4096, this.initialTcpConfig.sendBufferSize() - 4096),
+        Math.max(8192, this.initialTcpConfig.sendBufferSize() + 4096));
 
     this.sslctx = config.sslctx().orElse(null);
 
@@ -89,7 +90,7 @@ public class SipTlsServer extends AbstractService {
     this.childHandler =
       new TlsServerHandler(
         this.sslctx,
-        initialTcpConfig,
+        this.initialTcpConfig,
         ch -> new TlsSipConnection(
           ch,
           config.connectionAttributes(),
@@ -100,7 +101,7 @@ public class SipTlsServer extends AbstractService {
   }
 
   /**
-   * 
+   *
    */
 
   @Override
@@ -109,7 +110,7 @@ public class SipTlsServer extends AbstractService {
     this.ch =
       new ServerBootstrap()
 
-        .group(acceptGroup, childGroup)
+        .group(this.acceptGroup, this.childGroup)
 
         .channelFactory(new ReflectiveChannelFactory<>(NioServerSocketChannel.class))
 
@@ -144,21 +145,21 @@ public class SipTlsServer extends AbstractService {
         .childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, this.writeWatermark)
 
         // and the actual handler for new incoming channels.
-        .childHandler(childHandler)
+        .childHandler(this.childHandler)
 
         //
-        .bind(listen)
+        .bind(this.listen)
         .awaitUninterruptibly()
         .channel();
 
-    logger.info("listening on {}", ch.localAddress());
+    logger.info("listening on {}", this.ch.localAddress());
 
     super.notifyStarted();
 
   }
 
   /**
-   * 
+   *
    */
 
   @Override
@@ -169,18 +170,19 @@ public class SipTlsServer extends AbstractService {
   public static
       SipTlsServer
       createDefault(
-          EventLoopGroup group,
-          SslContext sslctx,
-          SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> dispatcher,
-          InetSocketAddress listen,
-          TcpConnectionConfig tcpConfig) {
+          final EventLoopGroup group,
+          final SslContext sslctx,
+          final SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> dispatcher,
+          final InetSocketAddress listen,
+          final TcpConnectionConfig tcpConfig) {
 
     return new SipTlsServer(
       NettySocketServerConfig.create(b -> b
         .acceptGroup(group)
         .childGroup(group)
-        .sslctx(sslctx)
+        .sslctx(Optional.ofNullable(sslctx))
         .listenAddress(listen)
+        .serverHandler(dispatcher)
         .tcpConfig(tcpConfig)));
 
   }
@@ -189,7 +191,7 @@ public class SipTlsServer extends AbstractService {
     return (InetSocketAddress) this.ch.localAddress();
   }
 
-  public static SipTlsServer createServer(UnaryOperator<ImmutableNettySocketServerConfig.Builder> b) {
+  public static SipTlsServer createServer(final UnaryOperator<ImmutableNettySocketServerConfig.Builder> b) {
     return new SipTlsServer(b);
   }
 
