@@ -7,8 +7,11 @@ import com.google.common.math.IntMath;
 
 public enum SipStatusCategory {
 
+  // 100: Trying
+  TRYING(100),
+
   // 1xx: Provisional
-  PROVISIONAL(100),
+  PROVISIONAL(180),
 
   // 2xx: Successful
   SUCCESSFUL(200),
@@ -39,7 +42,10 @@ public enum SipStatusCategory {
 
   public static SipStatusCategory forCode(final int status) {
     Verify.verify((status >= 100) && (status <= 699));
-    return values()[IntMath.divide(status, 100, RoundingMode.DOWN) - 1];
+    if (status == 100) {
+      return TRYING;
+    }
+    return values()[IntMath.divide(status, 100, RoundingMode.DOWN)];
   }
 
   public static boolean isSuccess(final int status) {
@@ -50,6 +56,11 @@ public enum SipStatusCategory {
   public static boolean isFinal(final int status) {
     Verify.verify((status >= 100) && (status <= 699));
     return (status >= 200);
+  }
+
+  public static boolean isTrying(final int status) {
+    Verify.verify((status >= 100) && (status <= 699));
+    return status == 100;
   }
 
   public static boolean isProvisional(final int status) {

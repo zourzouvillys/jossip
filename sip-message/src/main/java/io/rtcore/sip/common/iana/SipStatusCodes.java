@@ -285,6 +285,8 @@ public enum SipStatusCodes {
   private static SipStatusCategory defaultCategory(int status) {
     if (status < 100)
       throw new IllegalArgumentException();
+    if (status == 100)
+      return SipStatusCategory.TRYING;
     if (status < 200)
       return SipStatusCategory.PROVISIONAL;
     if (status < 300)

@@ -30,6 +30,7 @@ public final class SipErrors {
     }
 
     switch (res.getStatus().category()) {
+      case TRYING:
       case PROVISIONAL:
       case SUCCESSFUL:
         throw new IllegalArgumentException("can't generate an error from a non failure response code");
