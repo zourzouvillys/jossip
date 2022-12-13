@@ -16,7 +16,7 @@ dependencies {
   annotationProcessor 'com.google.dagger:dagger-compiler:2.44.2'
   implementation 'info.picocli:picocli:4.7.0'
   implementation 'com.google.guava:guava:31.1-jre'
-  implementation 'org.slf4j:slf4j-api:2.0.3'
+  implementation 'org.slf4j:slf4j-api:2.0.6'
   implementation project(':gateway-api')
   implementation project(':sip-channels')
   implementation project(':sip-channels-netty')
@@ -24,7 +24,7 @@ dependencies {
 }
 
 dependencies {
-  implementation 'org.slf4j:slf4j-api:2.0.3'
+  implementation 'org.slf4j:slf4j-api:2.0.6'
   implementation 'org.slf4j:jul-to-slf4j:2.0.3'
   runtimeOnly 'ch.qos.logback:logback-classic:1.4.4'
   runtimeOnly 'net.logstash.logback:logstash-logback-encoder:7.2'

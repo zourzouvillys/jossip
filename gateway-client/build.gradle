@@ -20,7 +20,7 @@ testing {
 dependencies {
 
   implementation 'com.google.guava:guava:31.1-jre'
-  implementation 'org.slf4j:slf4j-api:1.7.36'
+  implementation 'org.slf4j:slf4j-api:2.0.6'
   implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
 
   api project(':gateway-api')
