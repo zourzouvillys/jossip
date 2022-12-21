@@ -7,8 +7,7 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse.BodySubscriber;
 import java.net.http.HttpResponse.BodySubscribers;
 import java.net.http.HttpResponse.ResponseInfo;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 
@@ -17,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ValueNode;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -24,14 +24,11 @@ import com.google.common.net.MediaType;
 
 import io.rtcore.gateway.api.ImmutableNICTRequest;
 import io.rtcore.gateway.api.SipResponsePayload;
+import io.rtcore.gateway.engine.ServerTxnHandle;
 import io.rtcore.gateway.engine.SipHeaderMultimap;
 import io.rtcore.sip.channels.api.SipAttributes;
-import io.rtcore.sip.channels.api.SipFrameUtils;
 import io.rtcore.sip.channels.api.SipRequestFrame;
-import io.rtcore.sip.channels.api.SipResponseFrame;
-import io.rtcore.sip.channels.api.SipServerExchange;
 import io.rtcore.sip.common.SipHeaders;
-import io.rtcore.sip.common.iana.SipStatusCodes;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
 import io.rtcore.sip.message.message.api.NameAddr;
 import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.NameAddrParser;
@@ -53,9 +50,15 @@ public class InviteMapper implements HttpCallMapper {
   private final SipUri to;
   private final SipRequestFrame frame;
 
-  public InviteMapper(final SipRequestFrame request, final SipAttributes attrs) {
+  private final URI uri;
 
+  private final Map<String, ? extends ValueNode> properties;
+
+  public InviteMapper(final URI uri, final SipRequestFrame request, final SipAttributes attrs, final Map<String, ? extends ValueNode> properties) {
+
+    this.uri = uri;
     this.frame = request;
+    this.properties = Map.copyOf(properties);
 
     this.requestHeaders = SipHeaderMultimap.from(request.headerLines());
 
@@ -65,14 +68,14 @@ public class InviteMapper implements HttpCallMapper {
       this.requestHeaders.singleValue(StandardSipHeaders.TO)
         .map(NameAddrParser::parse)
         .map(NameAddr::address)
-        .map(uri -> uri.apply(SipUriExtractor.getInstance()))
+        .map(touri -> touri.apply(SipUriExtractor.getInstance()))
         .orElseThrow();
 
   }
 
   @Override
   public URI uri() {
-    return URI.create(String.format("http://localhost:8080/edge/invite"));
+    return this.uri;
   }
 
   private String body() {
@@ -83,6 +86,7 @@ public class InviteMapper implements HttpCallMapper {
           .uri(this.frame.initialLine().uri().toASCIIString())
           .headers(SipHeaders.of(this.frame.headerLines()))
           .body(this.frame.body())
+          .properties(this.properties)
           .build();
       return mapper.writeValueAsString(payload);
     }
@@ -112,11 +116,13 @@ public class InviteMapper implements HttpCallMapper {
 
   @Override
   public BodyPublisher bodyPublisher() {
-    return BodyPublishers.ofString(this.body());
+    final String body = this.body();
+    log.debug("BODY {}", body);
+    return BodyPublishers.ofString(body);
   }
 
   @Override
-  public BodySubscriber<Void> bodySubscriber(final ResponseInfo resInfo, final SipServerExchange<SipRequestFrame, SipResponseFrame> exchange) {
+  public BodySubscriber<Void> bodySubscriber(final ResponseInfo resInfo, final ServerTxnHandle handle) {
 
     final MediaType contentType =
       resInfo.headers()
@@ -124,11 +130,13 @@ public class InviteMapper implements HttpCallMapper {
         .map(MediaType::parse)
         .orElse(null);
 
-    System.err.println(contentType);
+    if (contentType == null) {
+      throw new IllegalArgumentException("missing content-type");
+    }
+
+    log.info("content-type: {}", contentType);
 
     return BodySubscribers.fromLineSubscriber(new Subscriber<String>() {
-
-      private final List<String> buffer = new LinkedList<>();
 
       @Override
       public void onSubscribe(final Subscription subscription) {
@@ -140,7 +148,7 @@ public class InviteMapper implements HttpCallMapper {
         if (item.length() == 0) {
           return;
         }
-        exchange.onNext(InviteMapper.this.makeResponse(item));
+        handle.respond(InviteMapper.this.parseResponse(item));
       }
 
       @Override
@@ -150,27 +158,11 @@ public class InviteMapper implements HttpCallMapper {
 
       @Override
       public void onComplete() {
-        System.err.println(" !!!!! COMPLETE ");
+        // don't complete
       }
 
     });
 
-    // final Function<String, Void> handler = (final String in) -> {
-    // System.err.println(in);
-    // exchange.onNext(this.makeResponse(in));
-    // exchange.onComplete();
-    // return null;
-    // };
-    //
-    // return BodySubscribers.mapping(BodySubscribers.ofString(StandardCharsets.UTF_8), handler);
-
   }
 
-  private SipResponseFrame makeResponse(final String res) {
-    final SipResponsePayload body = this.parseResponse(res);
-    log.info("generating response: {}, {}", res, body);
-    final SipStatusCodes status = SipStatusCodes.forStatusCode(body.statusCode());
-    log.info("mapped to SIP {}", status);
-    return SipFrameUtils.createResponse(this.frame, status, body.headers().lines());
-  }
 }

@@ -18,6 +18,7 @@ public interface SipResponseFrame extends SipFrame, WithSipResponseFrame {
    * the initial SIP header line. this will always be a request or response.
    */
 
+  @Override
   @Value.Parameter
   SipInitialLine.ResponseLine initialLine();
 
@@ -25,6 +26,7 @@ public interface SipResponseFrame extends SipFrame, WithSipResponseFrame {
    * each of the header lines.
    */
 
+  @Override
   @Value.Parameter
   List<SipHeaderLine> headerLines();
 
@@ -32,19 +34,24 @@ public interface SipResponseFrame extends SipFrame, WithSipResponseFrame {
    * the body, if content-length is not 0.
    */
 
+  @Override
   @Value.Parameter
   Optional<String> body();
 
-  static SipResponseFrame of(SipStatusCodes status) {
+  static SipResponseFrame of(final SipStatusCodes status) {
     return ImmutableSipResponseFrame.of(SipInitialLine.of(status), List.of(), Optional.empty());
   }
 
-  static SipResponseFrame of(SipStatusCodes status, Iterable<SipHeaderLine> headerLines) {
+  static SipResponseFrame of(final SipStatusCodes status, final Iterable<SipHeaderLine> headerLines) {
     return ImmutableSipResponseFrame.of(SipInitialLine.of(status), headerLines, Optional.empty());
   }
 
-  static SipResponseFrame of(SipStatusCodes status, Iterable<SipHeaderLine> headerLines, String body) {
+  static SipResponseFrame of(final SipStatusCodes status, final Iterable<SipHeaderLine> headerLines, final String body) {
     return ImmutableSipResponseFrame.of(SipInitialLine.of(status), headerLines, Optional.ofNullable(body).filter(val -> !val.isEmpty()));
+  }
+
+  static SipResponseFrame of(final SipStatusCodes status, final Iterable<SipHeaderLine> headerLines, final Optional<String> body) {
+    return ImmutableSipResponseFrame.of(SipInitialLine.of(status), headerLines, body.filter(val -> !val.isEmpty()));
   }
 
 }

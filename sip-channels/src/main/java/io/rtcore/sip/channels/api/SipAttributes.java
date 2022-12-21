@@ -86,7 +86,17 @@ public final class SipAttributes {
     return new Builder(of());
   }
 
+  public <T> SipAttributes withAttribute(final Key<T> key, final Optional<T> value) {
+    if (value.isEmpty()) {
+      return this.toBuilder().discard(key).build();
+    }
+    return this.toBuilder().set(key, value.get()).build();
+  }
+
   public <T> SipAttributes withAttribute(final Key<T> key, final T value) {
+    if (value == null) {
+      this.toBuilder().discard(key);
+    }
     return this.toBuilder().set(key, value).build();
   }
 

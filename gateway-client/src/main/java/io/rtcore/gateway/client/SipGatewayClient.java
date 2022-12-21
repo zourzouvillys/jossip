@@ -49,8 +49,12 @@ public final class SipGatewayClient implements SipGateway {
   private final URI endpointUrl;
 
   public SipGatewayClient(final URI endpoint) {
-    this.endpointUrl = endpoint;
-    this.httpClient = HttpClient.newBuilder().build();
+    this(HttpClient.newBuilder().build(), endpoint);
+  }
+
+  public SipGatewayClient(final HttpClient httpClient, final URI endpointUrl) {
+    this.endpointUrl = endpointUrl;
+    this.httpClient = httpClient;
   }
 
   @Override
@@ -171,7 +175,7 @@ public final class SipGatewayClient implements SipGateway {
         .uri(this.endpointUrl)
         .header("accept", "application/json, application/x-ndjson")
         .header("content-type", "application/json")
-        .PUT(BodyPublishers.ofString(reqbody))
+        .POST(BodyPublishers.ofString(reqbody))
         .build();
 
     }

@@ -5,9 +5,7 @@ import java.net.http.HttpRequest.BodyPublisher;
 import java.net.http.HttpResponse.BodySubscriber;
 import java.net.http.HttpResponse.ResponseInfo;
 
-import io.rtcore.sip.channels.api.SipRequestFrame;
-import io.rtcore.sip.channels.api.SipResponseFrame;
-import io.rtcore.sip.channels.api.SipServerExchange;
+import io.rtcore.gateway.engine.ServerTxnHandle;
 
 public interface HttpCallMapper {
 
@@ -17,6 +15,6 @@ public interface HttpCallMapper {
 
   BodyPublisher bodyPublisher();
 
-  BodySubscriber<Void> bodySubscriber(ResponseInfo resInfo, SipServerExchange<SipRequestFrame, SipResponseFrame> exchange);
+  BodySubscriber<Void> bodySubscriber(ResponseInfo resInfo, ServerTxnHandle handle);
 
 }

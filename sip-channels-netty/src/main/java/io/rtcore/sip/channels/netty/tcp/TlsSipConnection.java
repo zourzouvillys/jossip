@@ -450,4 +450,9 @@ public final class TlsSipConnection implements SipConnection {
     return String.format("%s@%8x(%s)", this.getClass().getSimpleName(), this.hashCode(), this.route, "[connecting]");
   }
 
+  @Override
+  public SipAttributes attributes() {
+    return this.attributesBuilder().build();
+  }
+
 }

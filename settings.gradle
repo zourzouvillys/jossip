@@ -27,7 +27,6 @@ pluginManagement {
   
 }
 
-
 rootProject.name = 'jossip'
 
 include('sip-message')

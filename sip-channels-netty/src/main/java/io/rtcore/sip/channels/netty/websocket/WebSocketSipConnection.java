@@ -3,16 +3,25 @@ package io.rtcore.sip.channels.netty.websocket;
 import static io.rtcore.sip.channels.netty.tcp.NettyUtils.toCompletableFuture;
 
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import javax.net.ssl.SSLSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Verify;
+import com.google.common.collect.Lists;
+import com.google.common.hash.Hashing;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
@@ -38,16 +47,27 @@ import io.rtcore.sip.channels.api.SipServerExchange;
 import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.connection.SipConnection;
 import io.rtcore.sip.channels.connection.SipConnections;
+import io.rtcore.sip.channels.netty.ClientBranchId;
 import io.rtcore.sip.channels.netty.NettySipAttributes;
 import io.rtcore.sip.channels.netty.codec.SipObjectEncoder;
 import io.rtcore.sip.channels.netty.codec.SipParsingUtils;
 import io.rtcore.sip.channels.netty.tcp.IncomingSipVias;
+import io.rtcore.sip.channels.netty.tcp.SipStreamClientExchange;
+import io.rtcore.sip.common.HostPort;
 import io.rtcore.sip.common.SipHeaderLine;
 import io.rtcore.sip.common.SipInitialLine;
+import io.rtcore.sip.common.iana.SipMethods;
 import io.rtcore.sip.common.iana.SipStatusCodes;
+import io.rtcore.sip.common.iana.StandardSipHeaders;
 import io.rtcore.sip.common.iana.StandardSipTransportName;
 import io.rtcore.sip.message.base.api.RawMessage;
+import io.rtcore.sip.message.message.api.CSeq;
+import io.rtcore.sip.message.message.api.Via;
+import io.rtcore.sip.message.message.api.ViaProtocol;
+import io.rtcore.sip.message.parameters.impl.DefaultParameters;
 import io.rtcore.sip.message.processor.rfc3261.SipMessageManager;
+import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.CSeqParser;
+import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.ViaParser;
 
 public class WebSocketSipConnection extends ChannelInboundHandlerAdapter implements SipConnection {
 
@@ -57,8 +77,11 @@ public class WebSocketSipConnection extends ChannelInboundHandlerAdapter impleme
   private final SipAttributes attributes;
   private final SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> dispatcher;
   private final StandardSipTransportName transportProtocol;
-
   private final WebSocketServerHandshaker handshaker;
+  private final Map<ClientBranchId, SipStreamClientExchange> clientBranches = new ConcurrentHashMap<>();
+
+  private final long keyId = System.currentTimeMillis();
+  private final AtomicLong sequences = new AtomicLong(1);
 
   WebSocketSipConnection(
       final WebSocketServerHandshaker handshaker,
@@ -205,9 +228,16 @@ public class WebSocketSipConnection extends ChannelInboundHandlerAdapter impleme
     }
 
     @Override
-    public CompletionStage<?> onNext(final SipResponseFrame response) {
+    public CompletionStage<?> onNext(SipResponseFrame response) {
+
+      response = this.vias.apply(response);
+
+      // normalize standard SIP header names.
+      response = response.withHeaderLines(Lists.transform(response.headerLines(), r -> r.withHeaderName(r.headerId().prettyName())));
+
       // todo: unref if needed
-      return this.connection().send(this.vias.apply(response));
+      return this.connection().send(response);
+
     }
 
     @Override
@@ -248,8 +278,56 @@ public class WebSocketSipConnection extends ChannelInboundHandlerAdapter impleme
 
   }
 
-  private void dispatchClientResponse(final SipResponseFrame withBody) {
-    throw new UnsupportedOperationException("Unimplemented Method: WebSocketSipConnection.dispatchClientResponse invoked.");
+  private void dispatchClientResponse(final SipResponseFrame res) {
+
+    final Via topVia =
+      res
+        .headerLines()
+        .stream()
+        .filter(hdr -> hdr.knownHeaderId().orElse(null) == StandardSipHeaders.VIA)
+        .map(SipHeaderLine::headerValues)
+        .findFirst()
+        .map(ViaParser.INSTANCE::parseFirstValue)
+        .orElse(null);
+
+    if (topVia == null) {
+      logger.warn("response without valid Via header: {}", res);
+      return;
+    }
+
+    if (!topVia.protocol().transport().equals(this.transportProtocol.id())) {
+      logger.warn("dropping response with invalid protocol transport: {}, expected {}", topVia.protocol(), this.transportProtocol);
+      return;
+    }
+
+    final String branchId = topVia.branchWithoutCookie().orElse(null);
+
+    final CSeq cseq =
+      res
+        .headerLines()
+        .stream()
+        .filter(hdr -> hdr.knownHeaderId().orElse(null) == StandardSipHeaders.CSEQ)
+        .map(SipHeaderLine::headerValues)
+        .findFirst()
+        .map(CSeqParser.INSTANCE::parseFirstValue)
+        .orElse(null);
+
+    if (cseq == null) {
+      logger.warn("response without valid CSeq header: {}", res);
+      return;
+    }
+
+    final ClientBranchId clientKey = new ClientBranchId(topVia.sentBy(), cseq.methodId(), branchId);
+
+    final SipStreamClientExchange exchange = this.clientBranches.get(clientKey);
+
+    if (exchange == null) {
+      logger.warn("response for unknown sip exchange: {}", clientKey);
+      return;
+    }
+
+    exchange.onResponseFrame(this, res);
+
   }
 
   /////
@@ -259,10 +337,47 @@ public class WebSocketSipConnection extends ChannelInboundHandlerAdapter impleme
     return this.channel().thenCompose(c -> toCompletableFuture(c.closeFuture()));
   }
 
+  /**
+   *
+   */
+
+  private ClientBranchId makeKey(final SipRequestFrame req) {
+    final long seqId = this.sequences.getAndIncrement();
+    final String key =
+      Hashing.farmHashFingerprint64().newHasher().putLong(this.keyId).putLong(ThreadLocalRandom.current().nextLong()).putLong(seqId).hash().toString();
+    final String branchId = String.format("%s-%06x", key, seqId);
+    return new ClientBranchId(HostPort.fromHost("invalid"), req.initialLine().method(), branchId);
+  }
+
   @Override
-  public SipClientExchange exchange(final SipRequestFrame req) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented Method: SipConnection.exchange invoked.");
+  public SipClientExchange exchange(SipRequestFrame req) {
+
+    Verify.verify(req.initialLine().method() != SipMethods.ACK);
+
+    final ClientBranchId branchId = this.makeKey(req);
+
+    final LinkedList<SipHeaderLine> headers = new LinkedList<>();
+
+    headers.add(
+      StandardSipHeaders.VIA
+        .ofLine(new Via(
+          ViaProtocol.forString(this.transportProtocol.id()),
+          branchId.sentBy(),
+          DefaultParameters.of()
+            .withParameter("rport")
+            .withToken("branch", "z9hG4bK" + branchId.branchId()))
+          .encode()));
+
+    headers.addAll(req.headerLines());
+
+    req = req.withHeaderLines(headers);
+
+    final SipStreamClientExchange ex = new SipStreamClientExchange(this, req, branchId);
+
+    this.clientBranches.put(branchId, ex);
+
+    return ex;
+
   }
 
   @Override
@@ -288,6 +403,11 @@ public class WebSocketSipConnection extends ChannelInboundHandlerAdapter impleme
   @Override
   public void close() {
     this.channel().thenApply(Channel::close);
+  }
+
+  @Override
+  public SipAttributes attributes() {
+    return this.attributesBuilder().build();
   }
 
 }

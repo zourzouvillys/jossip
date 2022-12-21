@@ -1,5 +1,6 @@
 package io.rtcore.gateway.api;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.immutables.value.Value;
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.node.ValueNode;
 
 import io.rtcore.sip.common.SipHeaders;
 import io.rtcore.sip.common.iana.SipMethodId;
@@ -58,5 +60,11 @@ public interface NICTRequest extends WithNICTRequest {
    */
 
   Optional<String> body();
+
+  /**
+   * properties related to this request, implementation specific.
+   */
+
+  Map<String, ValueNode> properties();
 
 }

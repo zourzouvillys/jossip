@@ -2,6 +2,7 @@ package io.rtcore.sip.common;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import io.rtcore.sip.common.iana.SipHeaderId;
@@ -60,6 +61,14 @@ public interface SipHeaders {
 
     return () -> headers;
 
+  }
+
+  default Optional<String> firstValue(final SipHeaderId header) {
+    return this.lines()
+      .stream()
+      .filter(e -> header.equals(e.headerId()))
+      .map(SipHeaderLine::headerValues)
+      .findAny();
   }
 
 }

@@ -6,6 +6,7 @@ package io.rtcore.sip.message.message.api;
 import com.google.common.primitives.UnsignedInteger;
 
 import io.rtcore.sip.common.iana.SipMethodId;
+import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.CSeqParser;
 import io.rtcore.sip.message.processor.rfc3261.serializing.RfcSerializerManager;
 
 /**
@@ -128,5 +129,10 @@ public final class CSeq {
   public static CSeq of(final long sequenceNumber, final SipMethodId method) {
     return of(sequenceNumber, method.token());
   }
+
+  public static CSeq parse(final String value) {
+    return CSeqParser.INSTANCE.parseValue(value);
+  }
+
 
 }

@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import com.google.common.net.HostAndPort;
@@ -51,17 +52,17 @@ public interface Parameters extends io.rtcore.sip.common.Parameters {
   <T> Parameters withParameter(SipParameterDefinition<T> def, HostAndPort value);
 
   default boolean isNotEmpty() {
-    return !isEmpty();
+    return !this.isEmpty();
   }
 
   boolean isEmpty();
 
-  default void encodeTo(RfcSerializerManager manager, Writer writer, String start, String separator) {
+  default void encodeTo(final RfcSerializerManager manager, final Writer writer, final String start, final String separator) {
     try {
       writer.append(start);
-      manager.serializeCollection(writer, getRawParameters(), separator);
+      manager.serializeCollection(writer, this.getRawParameters(), separator);
     }
-    catch (IOException ex) {
+    catch (final IOException ex) {
       throw new RuntimeException(ex);
     }
   }
@@ -74,5 +75,6 @@ public interface Parameters extends io.rtcore.sip.common.Parameters {
 
   Parameters withToken(String token, String value);
 
+  Parameters filter(Predicate<RawParameter> object);
 
 }

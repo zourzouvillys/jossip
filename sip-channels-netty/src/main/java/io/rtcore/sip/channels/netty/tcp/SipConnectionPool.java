@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import io.netty.channel.EventLoopGroup;
 import io.reactivex.rxjava3.core.Flowable;
+import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipClientExchange;
 import io.rtcore.sip.channels.api.SipFrame;
 import io.rtcore.sip.channels.api.SipRequestFrame;
@@ -28,25 +29,25 @@ public class SipConnectionPool implements SipConnectionProvider {
   private final SipConnectionProvider provider;
   private final Map<SipRoute, ManagedSipConnection> connections = new ConcurrentHashMap<>();
 
-  public SipConnectionPool(SipConnectionProvider provider) {
+  public SipConnectionPool(final SipConnectionProvider provider) {
     this.provider = provider;
   }
 
   public static
-      SipConnectionPool createTlsPool(EventLoopGroup elg, TlsContextProvider sslctx, SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> handler) {
+      SipConnectionPool createTlsPool(final EventLoopGroup elg, final TlsContextProvider sslctx, final SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> handler) {
     return new SipConnectionPool(SipTlsConnectionProvider.createProvider(elg, sslctx, handler));
   }
 
-  public static SipConnectionPool createTcpPool(EventLoopGroup elg, SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> handler) {
+  public static SipConnectionPool createTcpPool(final EventLoopGroup elg, final SipServerExchangeHandler<SipRequestFrame, SipResponseFrame> handler) {
     return new SipConnectionPool(SipTlsConnectionProvider.createProvider(elg, null, handler));
   }
 
   @Override
-  public SipConnection requestConnection(SipRoute route) {
+  public SipConnection requestConnection(final SipRoute route) {
     return this.connections.computeIfAbsent(route, this::_requestConnection).checkout();
   }
 
-  private ManagedSipConnection _requestConnection(SipRoute route) {
+  private ManagedSipConnection _requestConnection(final SipRoute route) {
     logger.info("adding connection for route {}", route);
     return new ManagedSipConnection(route, this.provider.requestConnection(route));
   }
@@ -58,7 +59,7 @@ public class SipConnectionPool implements SipConnectionProvider {
     private final SipConnection conn;
     private final AtomicInteger refcnt = new AtomicInteger(0);
 
-    public ManagedSipConnection(SipRoute route, SipConnection conn) {
+    public ManagedSipConnection(final SipRoute route, final SipConnection conn) {
 
       this.conn = conn;
       this.route = route;
@@ -67,14 +68,14 @@ public class SipConnectionPool implements SipConnectionProvider {
         .closeFuture()
         .handle((val, ex) -> {
           logger.info("removing connection for {}", route);
-          connections.remove(route);
+          SipConnectionPool.this.connections.remove(route);
           return null;
         });
 
     }
 
     public SipConnection checkout() {
-      ref();
+      this.ref();
       return new CheckedOutConnection();
     }
 
@@ -83,7 +84,7 @@ public class SipConnectionPool implements SipConnectionProvider {
     }
 
     void unref() {
-      if (refcnt.decrementAndGet() == 0) {
+      if (this.refcnt.decrementAndGet() == 0) {
         // release connection to unused pool.
         System.err.println("releasing connection");
       }
@@ -91,30 +92,30 @@ public class SipConnectionPool implements SipConnectionProvider {
 
     private class CheckedOutConnection implements SipConnection {
 
-      private AtomicBoolean closed = new AtomicBoolean(false);
+      private final AtomicBoolean closed = new AtomicBoolean(false);
 
       public CheckedOutConnection() {
       }
 
       @Override
-      public SipClientExchange exchange(SipRequestFrame req) {
-        return conn.exchange(req);
+      public SipClientExchange exchange(final SipRequestFrame req) {
+        return ManagedSipConnection.this.conn.exchange(req);
       }
 
       @Override
-      public CompletableFuture<?> send(SipFrame frame) {
-        return conn.send(frame);
+      public CompletableFuture<?> send(final SipFrame frame) {
+        return ManagedSipConnection.this.conn.send(frame);
       }
 
       @Override
       public Flowable<SipFrame> frames() {
-        return conn.frames();
+        return ManagedSipConnection.this.conn.frames();
       }
 
       @Override
       public void close() {
-        if (this.closed.compareAndExchange(false, true) == false) {
-          unref();
+        if (!this.closed.compareAndExchange(false, true)) {
+          ManagedSipConnection.this.unref();
         }
       }
 
@@ -124,7 +125,12 @@ public class SipConnectionPool implements SipConnectionProvider {
 
       @Override
       public CompletionStage<?> closeFuture() {
-        return conn.closeFuture();
+        return ManagedSipConnection.this.conn.closeFuture();
+      }
+
+      @Override
+      public SipAttributes attributes() {
+        return ManagedSipConnection.this.conn.attributes();
       }
 
     }

@@ -22,13 +22,10 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.rtcore.gateway.api.SipResponsePayload;
+import io.rtcore.gateway.engine.ServerTxnHandle;
 import io.rtcore.gateway.engine.SipHeaderMultimap;
 import io.rtcore.sip.channels.api.SipAttributes;
-import io.rtcore.sip.channels.api.SipFrameUtils;
 import io.rtcore.sip.channels.api.SipRequestFrame;
-import io.rtcore.sip.channels.api.SipResponseFrame;
-import io.rtcore.sip.channels.api.SipServerExchange;
-import io.rtcore.sip.common.iana.SipStatusCodes;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
 import io.rtcore.sip.message.message.api.NameAddr;
 import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.NameAddrParser;
@@ -121,22 +118,12 @@ public class RegisterMapper implements HttpCallMapper {
   }
 
   @Override
-  public BodySubscriber<Void> bodySubscriber(final ResponseInfo resInfo, final SipServerExchange<SipRequestFrame, SipResponseFrame> exchange) {
+  public BodySubscriber<Void> bodySubscriber(final ResponseInfo resInfo, final ServerTxnHandle handle) {
     final Function<String, Void> handler = (final String in) -> {
-      System.err.println(in);
-      exchange.onNext(this.makeResponse(in));
-      exchange.onComplete();
+      handle.respond(this.parseResponse(in));
       return null;
     };
     return BodySubscribers.mapping(BodySubscribers.ofString(StandardCharsets.UTF_8), handler);
-  }
-
-  private SipResponseFrame makeResponse(final String res) {
-    final SipResponsePayload body = this.parseResponse(res);
-    log.info("generating response: {}, {}", res, body);
-    final SipStatusCodes status = SipStatusCodes.forStatusCode(body.statusCode());
-    log.info("mapped to SIP {}", status);
-    return SipFrameUtils.createResponse(this.frame, status, body.headers().lines());
   }
 
 }

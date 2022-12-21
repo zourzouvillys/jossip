@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers;
 
@@ -27,7 +27,7 @@ public class CSeqParser implements Parser<CSeq> {
 
     final UnsignedInteger seq = ctx.read(ParserUtils.uint(1, 10), null);
 
-    if ((seq == null) || (ctx.skip(ParserUtils.LWS) == false)) {
+    if ((seq == null) || !ctx.skip(ParserUtils.LWS)) {
       ctx.position(pos);
       return false;
     }

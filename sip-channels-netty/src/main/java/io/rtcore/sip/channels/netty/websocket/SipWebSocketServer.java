@@ -69,13 +69,14 @@ public class SipWebSocketServer extends AbstractService {
       new WebSocketServerHandler(
         this.sslctx,
         this.initialTcpConfig,
-        (handshaker, ch) -> {
+        config.connectionAttributes(),
+        (handshaker, ch, attributes) -> {
 
           final WebSocketSipConnection conn =
             new WebSocketSipConnection(
               handshaker,
               ch,
-              config.connectionAttributes(),
+              attributes,
               SipServerInterceptors.interceptedHandler(config.serverHandler(), config.interceptors()));
 
           this.delegate.onNewConnection(conn);

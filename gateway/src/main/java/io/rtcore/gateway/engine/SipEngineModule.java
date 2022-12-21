@@ -1,5 +1,7 @@
 package io.rtcore.gateway.engine;
 
+import java.util.ServiceLoader;
+
 import dagger.Module;
 import dagger.Provides;
 import io.rtcore.sip.channels.connection.SipRoute;
@@ -14,8 +16,15 @@ public class SipEngineModule {
   }
 
   @Provides
-  SipEngine sipEngine() {
-    return new SipEngine(this.route);
+  SipEngine sipEngine(final BackendProvider backendProvider) {
+    return new SipEngine(backendProvider, this.route);
+  }
+
+  @Provides
+  BackendProvider backendProvider() {
+    return ServiceLoader.load(BackendProvider.class)
+      .findFirst()
+      .orElseThrow();
   }
 
 }

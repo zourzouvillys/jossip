@@ -14,7 +14,7 @@ import io.rtcore.sip.channels.connection.SipConnection;
 import io.rtcore.sip.channels.netty.ClientBranchId;
 import io.rtcore.sip.common.iana.SipMethods;
 
-class SipStreamClientExchange implements SipClientExchange {
+public class SipStreamClientExchange implements SipClientExchange {
 
   private final SipConnection conn;
   private final SipRequestFrame req;
@@ -34,7 +34,7 @@ class SipStreamClientExchange implements SipClientExchange {
    * @param branchId
    */
 
-  SipStreamClientExchange(SipConnection conn, SipRequestFrame req, ClientBranchId branchId) {
+  public SipStreamClientExchange(final SipConnection conn, final SipRequestFrame req, final ClientBranchId branchId) {
 
     // can't have an ACK for a transaction.
     Verify.verify(req.initialLine().method() != SipMethods.ACK);
@@ -61,12 +61,12 @@ class SipStreamClientExchange implements SipClientExchange {
   }
 
   /**
-   * 
+   *
    */
 
-  void onResponseFrame(TlsSipConnection conn, SipResponseFrame frame) {
+  public void onResponseFrame(final SipConnection conn, final SipResponseFrame frame) {
 
-    if (req.initialLine().method() == SipMethods.INVITE) {
+    if (this.req.initialLine().method() == SipMethods.INVITE) {
 
       this.receiver.onNext(new Event(conn, frame));
 

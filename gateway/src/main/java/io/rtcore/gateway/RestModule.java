@@ -7,6 +7,7 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJsonProvider;
 import org.glassfish.jersey.media.sse.SseFeature;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.zalando.problem.jackson.ProblemModule;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
@@ -19,7 +20,9 @@ import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.IntoSet;
 import io.rtcore.gateway.engine.SipEngine;
+import io.rtcore.gateway.rest.FlowResource;
 import io.rtcore.gateway.rest.NICTResource;
+import io.rtcore.gateway.rest.ServerTxnResource;
 
 @Module
 final class RestModule {
@@ -38,6 +41,7 @@ final class RestModule {
   @Provides
   static ObjectMapper defaultMapper() {
     return new ObjectMapper()
+      .registerModule(new ProblemModule())
       .registerModule(new JavaTimeModule())
       .registerModule(new GuavaModule())
       .registerModule(new Jdk8Module());
@@ -57,10 +61,14 @@ final class RestModule {
       }
     });
 
+    cfg.register(FlowResource.class);
     cfg.register(NICTResource.class);
+    cfg.register(ServerTxnResource.class);
 
     cfg.register(new JacksonJsonProvider(defaultMapper));
     cfg.register(SseFeature.class);
+
+    cfg.register(ProblemExceptionMapper.class);
 
     return cfg;
 

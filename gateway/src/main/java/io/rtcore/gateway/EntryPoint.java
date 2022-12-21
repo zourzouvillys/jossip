@@ -1,6 +1,5 @@
 package io.rtcore.gateway;
 
-import org.immutables.value.Value.Parameter;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import com.google.common.net.InetAddresses;
@@ -12,6 +11,7 @@ import io.rtcore.sip.common.HostPort;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.ITypeConverter;
+import picocli.CommandLine.Parameters;
 
 @Command(name = "Protocol Gateway", mixinStandardHelpOptions = true)
 public class EntryPoint {
@@ -35,7 +35,7 @@ public class EntryPoint {
    */
 
   @Command
-  public int server(@Parameter final HostPort targetSip) {
+  public int server(@Parameters(paramLabel = "SIP-PROXY") final HostPort targetSip) {
 
     final Server server =
       DaggerServer.builder()

@@ -86,4 +86,28 @@ public class SipConnections {
 
   public static final SipAttributes.Key<StandardSipTransportName> ATTR_TRANSPORT = SipAttributes.Key.create("transport-protocol");
 
+  /**
+   * if the transport is websocket, the URI of the request.
+   */
+
+  public static final SipAttributes.Key<String> ATTR_WEBSOCKET_PATH = SipAttributes.Key.create("websocket-path");
+
+  /**
+   * if the transport is websocket, the Origin header.
+   */
+
+  public static final SipAttributes.Key<String> ATTR_WEBSOCKET_ORIGIN = SipAttributes.Key.create("websocket-origin");
+
+  /**
+   * if the transport is websocket, the Host header.
+   */
+
+  public static final SipAttributes.Key<String> ATTR_WEBSOCKET_HOST = SipAttributes.Key.create("websocket-host");
+
+  /**
+   * if the transport is websocket, the User-Agent header.
+   */
+
+  public static final SipAttributes.Key<String> ATTR_WEBSOCKET_USER_AGENT = SipAttributes.Key.create("websocket-user-agent");
+
 }
