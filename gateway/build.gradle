@@ -76,7 +76,7 @@ testing {
 dependencies {
   testImplementation(platform('org.junit:junit-bom:5.9.1'))
   testImplementation('org.junit.jupiter:junit-jupiter')
-  testImplementation('org.assertj:assertj-core:3.23.1')
+  testImplementation('org.assertj:assertj-core:3.24.1')
   testImplementation('org.awaitility:awaitility:4.2.0')
   testImplementation 'io.reactivex.rxjava3:rxjava:3.1.5'
   testImplementation 'com.github.akarnokd:rxjava3-jdk9-interop:3.0.0'
