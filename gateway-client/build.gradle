@@ -42,7 +42,7 @@ dependencies {
 
 
 dependencies {
-  implementation 'ch.qos.logback:logback-classic:1.4.4'
+  implementation 'ch.qos.logback:logback-classic:1.4.8'
   testImplementation(platform(testLibs.junit.bom))
   testImplementation('org.junit.jupiter:junit-jupiter')
   testImplementation('org.assertj:assertj-core:3.22.0')
