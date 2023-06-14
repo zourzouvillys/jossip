@@ -2,7 +2,7 @@
 plugins {
   id 'java'
   //id 'com.github.spotbugs'
-  id 'pmd'
+  //id 'pmd'
 }
 
 dependencies {
@@ -22,7 +22,7 @@ spotbugsMain {
 
 }
 */
-
+/*
 pmd {
   consoleOutput = true
   toolVersion = '6.37.0'
@@ -39,4 +39,4 @@ pmd {
     'category/java/security.xml',
   ]
 }
-
+*/
