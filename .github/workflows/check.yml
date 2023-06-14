@@ -27,7 +27,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Run snapshot action
-      uses: mikepenz/gradle-dependency-submission@{latest}
+      uses: mikepenz/gradle-dependency-submission@v0.8.6
       with:
         sub-module-mode: COMBINED
 
