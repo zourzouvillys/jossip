@@ -12,12 +12,12 @@ dependencies {
   // common shared non parser related classes.
   api project(':sip-message')
   // todo: urgh, should only use as implementation...
-  api 'com.google.guava:guava:31.1-jre'
+  api libs.guava
   annotationProcessor 'com.google.auto.service:auto-service:1.0.1'
 }
 
 dependencies {
-  testImplementation(platform('org.junit:junit-bom:5.8.2'))
+  testImplementation(platform(testLibs.junit.bom))
   testImplementation('org.junit.jupiter:junit-jupiter')  
 }
 

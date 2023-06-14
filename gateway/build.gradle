@@ -12,11 +12,11 @@ description = 'RTCore SIP: Protocol Gateway'
 
 
 dependencies {
-  implementation 'com.google.dagger:dagger:2.44.2'
-  annotationProcessor 'com.google.dagger:dagger-compiler:2.44.2'
-  implementation 'info.picocli:picocli:4.7.0'
-  implementation 'com.google.guava:guava:31.1-jre'
-  implementation 'org.slf4j:slf4j-api:2.0.3'
+  implementation libs.dagger
+  annotationProcessor libs.dagger.compiler
+  implementation libs.picocli
+  implementation libs.guava
+  implementation libs.slf4j.api
   implementation project(':gateway-api')
   implementation project(':sip-channels')
   implementation project(':sip-channels-netty')
@@ -38,7 +38,7 @@ dependencies {
 
 dependencies {
 
-  implementation platform('org.glassfish.jersey:jersey-bom:3.1.0')
+  implementation platform(libs.jersey.bom)
 
   implementation 'org.glassfish.grizzly:grizzly-npn-api:2.0.0'
   implementation 'org.glassfish.grizzly:grizzly-websockets:4.0.0'
@@ -54,7 +54,7 @@ dependencies {
   implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
   implementation 'com.sun.xml.bind:jaxb-osgi:3.0.2'
   
-  implementation platform('com.fasterxml.jackson:jackson-bom:2.14.0')
+  implementation platform(libs.jackson.bom)
   implementation 'com.fasterxml.jackson.core:jackson-databind'
   implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-toml'
   implementation 'com.fasterxml.jackson.datatype:jackson-datatype-guava'
@@ -68,17 +68,17 @@ dependencies {
 testing {
   suites {
     test {
-      useJUnitJupiter('5.9.1')
+      useJUnitJupiter('5.9.3')
     }
   }
 }
 
 dependencies {
-  testImplementation(platform('org.junit:junit-bom:5.9.1'))
+  testImplementation(platform(testLibs.junit.bom))
   testImplementation('org.junit.jupiter:junit-jupiter')
   testImplementation('org.assertj:assertj-core:3.23.1')
   testImplementation('org.awaitility:awaitility:4.2.0')
-  testImplementation 'io.reactivex.rxjava3:rxjava:3.1.5'
+  testImplementation libs.rxjava3
   testImplementation 'com.github.akarnokd:rxjava3-jdk9-interop:3.0.0'
   testImplementation 'com.google.truth:truth:1.1.3'
   testImplementation 'com.google.truth.extensions:truth-java8-extension:1.1.3'

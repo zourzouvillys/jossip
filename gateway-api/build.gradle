@@ -11,6 +11,6 @@ description = 'RTCore SIP: Gateway API'
 
 dependencies {
   api project(':sip-message')
-  implementation platform('com.fasterxml.jackson:jackson-bom:2.14.0')
+  implementation platform(libs.jackson.bom)
   implementation 'com.fasterxml.jackson.core:jackson-databind'
 }

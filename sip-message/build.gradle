@@ -11,7 +11,7 @@ description = 'RTCore SIP: Message API'
 dependencies {
   api 'org.reactivestreams:reactive-streams:1.0.3'  
   // nothing from guava should leak this api.
-  implementation 'com.google.guava:guava:31.1-jre'
+  implementation libs.guava
 }
 
 dependencies {
@@ -19,7 +19,7 @@ dependencies {
 }
 
 dependencies {
-  testImplementation(platform('org.junit:junit-bom:5.8.2'))
+  testImplementation(platform(testLibs.junit.bom))
   testImplementation('org.junit.jupiter:junit-jupiter')
   testImplementation('org.assertj:assertj-core:3.22.0')
   testImplementation('org.awaitility:awaitility:4.2.0')

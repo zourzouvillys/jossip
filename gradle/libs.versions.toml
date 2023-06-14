@@ -2,24 +2,25 @@
 [versions]
 ########################################################################################
 
+jersey                = "3.1.2"
 immutables            = "2.9.2"
 autoService           = "1.0"
 netty                 = "4.1.68.Final"
-jackson               = "2.12.1"
-picocli               = "4.6.1"
+jackson               = "2.14.2"
+picocli               = "4.7.4"
 resilience4j          = "1.7.1"
 opentelemetry         = "1.4.1"
 opentelemetry-alpha   = "1.4.1-alpha"
-slf4j                 = "1.7.32"
+slf4j                 = "2.0.6"
 log4j                 = "2.14.1"
-dagger                = "2.38.1"
+dagger                = "2.46.1"
 eclipse-microprofile  = "4.1"
-guava                 = "30.1.1-jre"
+guava                 = "32.0.1-jre"
 rtsip                 = "3.1.0-SNAPSHOT"
 reactor               = "3.4.8"
 caffeine              = "3.0.3"
 awssdk                = "2.17.14"
-rxjava3               = "3.0.13"
+rxjava3               = "3.1.6"
 grpc                  = "1.39.0"
 protobuf              = "3.17.3"
 bouncycastle          = "1.69"
@@ -29,7 +30,7 @@ bouncycastle          = "1.69"
 ########################################################################################
 
 
-
+jersey-bom = { module = "org.glassfish.jersey:jersey-bom", version.ref = "jersey" }
 
 ##
 
