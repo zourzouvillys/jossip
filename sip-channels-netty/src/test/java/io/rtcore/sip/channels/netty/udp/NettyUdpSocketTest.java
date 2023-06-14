@@ -3,6 +3,7 @@ package io.rtcore.sip.channels.netty.udp;
 import java.net.InetSocketAddress;
 import java.util.UUID;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.net.InetAddresses;
@@ -19,6 +20,7 @@ import io.rtcore.sip.common.iana.StandardSipHeaders;
 class NettyUdpSocketTest {
 
   @Test
+  @Ignore
   void test() throws InterruptedException {
 
     NioEventLoopGroup sharedLoop = new NioEventLoopGroup();
@@ -29,11 +31,11 @@ class NettyUdpSocketTest {
 
       SipClientExchange exchange =
         socket.exchange(
-          new InetSocketAddress(InetAddresses.forString("35.83.240.193"), 5060),
-          SipRequestFrame.of(SipMethods.OPTIONS, "sip:35.83.240.193:5060")
+          new InetSocketAddress(InetAddresses.forString("127.0.0.1"), 5060),
+          SipRequestFrame.of(SipMethods.OPTIONS, "sip:127.0.0.1:5060")
             .withHeaderLines(
-              StandardSipHeaders.FROM.ofLine("<sip:67.183.73.143:5060>;tag=x"),
-              StandardSipHeaders.TO.ofLine("<sip:35.83.240.193:5060>"),
+              StandardSipHeaders.FROM.ofLine("<sip:127.0.0.1:5060>;tag=x"),
+              StandardSipHeaders.TO.ofLine("<sip:127.0.0.1:5060>"),
               StandardSipHeaders.CALL_ID.ofLine(UUID.randomUUID().toString()),
               StandardSipHeaders.CSEQ.ofLine("1 OPTIONS")),
           SipAttributes.newBuilder()
