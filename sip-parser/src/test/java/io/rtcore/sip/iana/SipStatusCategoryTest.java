@@ -1,6 +1,7 @@
 package io.rtcore.sip.iana;
 
 import static io.rtcore.sip.common.iana.SipStatusCategory.GLOBAL_FAILURE;
+import static io.rtcore.sip.common.iana.SipStatusCategory.TRYING;
 import static io.rtcore.sip.common.iana.SipStatusCategory.PROVISIONAL;
 import static io.rtcore.sip.common.iana.SipStatusCategory.REDIRECTION;
 import static io.rtcore.sip.common.iana.SipStatusCategory.REQUEST_FAILURE;
@@ -16,7 +17,7 @@ class SipStatusCategoryTest {
 
   @Test
   void test() {
-    assertEquals(PROVISIONAL, forCode(100));
+    assertEquals(TRYING, forCode(100));
     assertEquals(PROVISIONAL, forCode(101));
     assertEquals(PROVISIONAL, forCode(199));
     assertEquals(SUCCESSFUL, forCode(200));

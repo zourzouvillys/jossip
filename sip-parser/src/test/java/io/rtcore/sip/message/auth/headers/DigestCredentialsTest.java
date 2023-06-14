@@ -22,7 +22,7 @@ public class DigestCredentialsTest {
         .asCredentials();
 
     assertEquals(
-      "Digest algorithm=MD5,realm=\"example.com\",username=\"theo\",nonce=\"xxx\",stale=false,nc=00001234",
+      "Digest algorithm=MD5,realm=\"example.com\",username=\"theo\",nonce=\"xxx\",nc=00001234",
       creds.toString());
 
   }
