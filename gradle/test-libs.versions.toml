@@ -1,6 +1,10 @@
 [versions]
 junit = "5.9.3"
+assert4j  = "3.24.2"
 
 [libraries]
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+
+
+assert4j-core = { module = "org.assertj:assertj-core", version.ref = "assert4j" }

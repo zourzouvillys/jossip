@@ -13,7 +13,7 @@ description = 'RTCore SIP: Channels'
 dependencies {
   api project(':sip-message')
   api project(':sip-parser')
-  api 'org.reactivestreams:reactive-streams:1.0.3'
+  api libs.reactivestreams
   implementation libs.slf4j.api
   implementation libs.guava
   api libs.rxjava3
@@ -33,7 +33,7 @@ dependencies {
 dependencies {
   testImplementation(platform(testLibs.junit.bom))
   testImplementation('org.junit.jupiter:junit-jupiter')
-  testImplementation('org.assertj:assertj-core:3.22.0')
+  testImplementation testLibs.assert4j.core
   testImplementation('org.awaitility:awaitility:4.2.0')
   testImplementation libs.rxjava3
   testImplementation libs.rxjava3.jdk9interop

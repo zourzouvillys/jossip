@@ -26,11 +26,14 @@ grpc                    = "1.39.0"
 protobuf                = "3.17.3"
 bouncycastle            = "1.69"
 eclipse-jdt-annotations = "2.2.700"
+reactivestreams         = "1.0.4"
 
 ########################################################################################
 [libraries]
 ########################################################################################
 
+
+reactivestreams = { module = "org.reactivestreams:reactive-streams", version.ref = "reactivestreams" }
 
 eclipse-jdt-annotations = { module = "org.eclipse.jdt:org.eclipse.jdt.annotation", version.ref = "eclipse-jdt-annotations" }
 

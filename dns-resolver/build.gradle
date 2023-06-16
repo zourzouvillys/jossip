@@ -9,7 +9,7 @@ plugins {
 description = 'DNS Resolver'
 
 dependencies {
-  api 'org.reactivestreams:reactive-streams:1.0.3'
+  api libs.reactivestreams
   implementation libs.guava
   implementation libs.rxjava3
   implementation libs.rxjava3.jdk9interop
@@ -33,12 +33,8 @@ dependencies {
 
 dependencies {
   testImplementation(platform(testLibs.junit.bom))
-  testImplementation('org.junit.jupiter:junit-jupiter')
-  testImplementation('org.assertj:assertj-core:3.22.0')
-  testImplementation('org.awaitility:awaitility:4.2.0')
+  testImplementation 'org.junit.jupiter:junit-jupiter'
+  testImplementation testLibs.assert4j.core
   testImplementation libs.rxjava3
   testImplementation libs.rxjava3.jdk9interop
-  testImplementation 'com.google.truth:truth:1.1.3'
-  testImplementation 'com.google.truth.extensions:truth-java8-extension:1.1.3'
-  testImplementation 'com.google.truth.extensions:truth-re2j-extension:1.1.3' 
 }
