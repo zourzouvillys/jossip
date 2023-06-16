@@ -9,10 +9,11 @@ netty                 = "4.1.93.Final"
 jackson               = "2.15.2"
 picocli               = "4.7.4"
 resilience4j          = "1.7.1"
+logback               = "1.4.8"
 opentelemetry         = "1.4.1"
 opentelemetry-alpha   = "1.4.1-alpha"
-slf4j                 = "2.0.6"
-log4j                 = "2.14.1"
+slf4j                 = "2.0.7"
+log4j                 = "2.20.0"
 dagger                = "2.46.1"
 eclipse-microprofile  = "4.1"
 guava                 = "32.0.1-jre"
@@ -31,6 +32,8 @@ bouncycastle          = "1.69"
 
 
 jersey-bom = { module = "org.glassfish.jersey:jersey-bom", version.ref = "jersey" }
+
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
 ##
 

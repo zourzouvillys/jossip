@@ -42,13 +42,13 @@ dependencies {
 
 
 dependencies {
-  implementation 'ch.qos.logback:logback-classic:1.4.4'
+  implementation libs.logback.classic
   testImplementation(platform(testLibs.junit.bom))
   testImplementation('org.junit.jupiter:junit-jupiter')
   testImplementation('org.assertj:assertj-core:3.22.0')
   testImplementation('org.awaitility:awaitility:4.2.0')
   testImplementation libs.rxjava3
-  testImplementation 'com.github.akarnokd:rxjava3-jdk9-interop:3.0.0'
+  testImplementation libs.rxjava3.jdk9interop
   testImplementation 'com.google.truth:truth:1.1.3'
   testImplementation 'com.google.truth.extensions:truth-java8-extension:1.1.3'
   testImplementation 'com.google.truth.extensions:truth-re2j-extension:1.1.3'  
