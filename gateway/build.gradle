@@ -14,6 +14,7 @@ description = 'RTCore SIP: Protocol Gateway'
 dependencies {
   implementation libs.dagger
   annotationProcessor libs.dagger.compiler
+  annotationProcessor libs.guava
   implementation libs.picocli
   implementation libs.guava
   implementation libs.slf4j.api
