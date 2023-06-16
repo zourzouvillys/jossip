@@ -2,34 +2,37 @@
 [versions]
 ########################################################################################
 
-jersey                = "3.1.2"
-immutables            = "2.9.2"
-autoService           = "1.0"
-netty                 = "4.1.93.Final"
-jackson               = "2.15.2"
-picocli               = "4.7.4"
-resilience4j          = "1.7.1"
-logback               = "1.4.8"
-opentelemetry         = "1.4.1"
-opentelemetry-alpha   = "1.4.1-alpha"
-slf4j                 = "2.0.7"
-log4j                 = "2.20.0"
-dagger                = "2.46.1"
-eclipse-microprofile  = "4.1"
-guava                 = "32.0.1-jre"
-rtsip                 = "3.1.0-SNAPSHOT"
-reactor               = "3.4.8"
-caffeine              = "3.0.3"
-awssdk                = "2.17.14"
-rxjava3               = "3.1.6"
-grpc                  = "1.39.0"
-protobuf              = "3.17.3"
-bouncycastle          = "1.69"
+jersey                  = "3.1.2"
+immutables              = "2.9.2"
+autoService             = "1.0.1"
+netty                   = "4.1.93.Final"
+jackson                 = "2.15.2"
+picocli                 = "4.7.4"
+resilience4j            = "1.7.1"
+logback                 = "1.4.8"
+opentelemetry           = "1.4.1"
+opentelemetry-alpha     = "1.4.1-alpha"
+slf4j                   = "2.0.7"
+log4j                   = "2.20.0"
+dagger                  = "2.46.1"
+eclipse-microprofile    = "4.1"
+guava                   = "32.0.1-jre"
+rtsip                   = "3.1.0-SNAPSHOT"
+reactor                 = "3.4.8"
+caffeine                = "3.0.3"
+awssdk                  = "2.17.14"
+rxjava3                 = "3.1.6"
+grpc                    = "1.39.0"
+protobuf                = "3.17.3"
+bouncycastle            = "1.69"
+eclipse-jdt-annotations = "2.2.700"
 
 ########################################################################################
 [libraries]
 ########################################################################################
 
+
+eclipse-jdt-annotations = { module = "org.eclipse.jdt:org.eclipse.jdt.annotation", version.ref = "eclipse-jdt-annotations" }
 
 jersey-bom = { module = "org.glassfish.jersey:jersey-bom", version.ref = "jersey" }
 
@@ -92,6 +95,7 @@ opentelemetry-sdk = { module = "io.opentelemetry:opentelemetry-sdk", version.ref
 opentelemetry-sdk-extension-autoconfigure = { module = "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure", version.ref = "opentelemetry-alpha" }
 
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 
 log4j-bom = { module = "org.apache.logging.log4j:log4j-bom", version.ref = "log4j" }
 log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }

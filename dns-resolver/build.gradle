@@ -12,11 +12,11 @@ dependencies {
   api 'org.reactivestreams:reactive-streams:1.0.3'
   implementation libs.guava
   implementation libs.rxjava3
-  implementation 'com.github.akarnokd:rxjava3-jdk9-interop:3.0.0'
+  implementation libs.rxjava3.jdk9interop
 }
 
 dependencies {
-  compileOnly 'org.eclipse.jdt:org.eclipse.jdt.annotation:2.2.600'
+  compileOnly libs.eclipse.jdt.annotations
 }
   
   
@@ -26,9 +26,9 @@ dependencies {
 }  
   
 dependencies {
-  compileOnly 'org.immutables:value-annotations:2.9.2'
-  annotationProcessor 'org.immutables:value:2.9.2'
-  annotationProcessor 'com.google.auto.service:auto-service:1.0.1'
+  compileOnly libs.immutables.valueAnnotations
+  annotationProcessor libs.immutables.valueProcessor
+  annotationProcessor libs.autoService
 }
 
 dependencies {

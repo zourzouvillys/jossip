@@ -15,7 +15,7 @@ dependencies {
 }
 
 dependencies {
-  compileOnly 'org.eclipse.jdt:org.eclipse.jdt.annotation:2.2.600'
+  compileOnly libs.eclipse.jdt.annotations
 }
 
 dependencies {
