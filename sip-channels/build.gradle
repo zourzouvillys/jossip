@@ -37,7 +37,7 @@ dependencies {
   testImplementation('org.awaitility:awaitility:4.2.0')
   testImplementation libs.rxjava3
   testImplementation libs.rxjava3.jdk9interop
-  testImplementation 'com.google.truth:truth:1.1.3'
-  testImplementation 'com.google.truth.extensions:truth-java8-extension:1.1.3'
-  testImplementation 'com.google.truth.extensions:truth-re2j-extension:1.1.3' 
+  testImplementation 'com.google.truth:truth:1.1.5'
+  testImplementation 'com.google.truth.extensions:truth-java8-extension:1.1.5'
+  testImplementation 'com.google.truth.extensions:truth-re2j-extension:1.1.5' 
 }
