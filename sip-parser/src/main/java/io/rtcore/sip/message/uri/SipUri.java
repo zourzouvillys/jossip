@@ -132,7 +132,7 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
     try {
       return URI.create(this.toString()).parseServerAuthority();
     }
-    catch (URISyntaxException e) {
+    catch (final URISyntaxException e) {
       throw new RuntimeException(e);
     }
   }
@@ -241,9 +241,6 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
 
   /**
    * Creates a {@link SipUri} from a {@link TelUri} instance.
-   *
-   * @param tel
-   * @param string
    */
 
   public static SipUri fromTelUri(final TelUri tel, final HostAndPort host) {
@@ -257,7 +254,7 @@ public class SipUri extends BaseParameterizedObject<SipUri> implements Uri {
         Token.from("phone"));
   }
 
-  public static SipUri fromTelUri(TelUri tel, Host host) {
+  public static SipUri fromTelUri(final TelUri tel, final Host host) {
     return fromTelUri(tel, HostAndPort.fromHost(host.toUriString()));
   }
 

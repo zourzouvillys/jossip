@@ -197,7 +197,7 @@ public class SipSegment implements SipServerExchangeHandler<SipRequestFrame, Sip
     final SipConnection conn = this.clientProvider.requestConnection(this.route);
 
     if (req.initialLine().method() == SipMethods.ACK) {
-      conn.send(this.fixupRequest(req, conn))
+		conn.send(SipSegment.fixupRequest(req, conn))
         .handle((res, err) -> {
           if (err != null) {
             delegate.onError(err);
@@ -211,7 +211,7 @@ public class SipSegment implements SipServerExchangeHandler<SipRequestFrame, Sip
     }
 
     // perform the exchange over the connection.
-    conn.exchange(this.fixupRequest(req, conn))
+	conn.exchange(SipSegment.fixupRequest(req, conn))
       .responses()
       .subscribe(
         res -> delegate.onResponse(res.response()),

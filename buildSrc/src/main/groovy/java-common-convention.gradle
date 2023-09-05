@@ -26,7 +26,7 @@ javadoc {
 
 tasks.withType(JavaCompile) {
   options.warnings = true
-  options.compilerArgs = [ '-Xlint:all' ]   
+  options.compilerArgs = [ '-Xlint:all', '-Xlint:-processing', '-Xlint:-missing-explicit-ctor' ]   
 }
 
 tasks.withType(Javadoc) {

@@ -13,7 +13,6 @@ import io.rtcore.sip.message.parsers.api.Parser;
 import io.rtcore.sip.message.parsers.api.ParserContext;
 import io.rtcore.sip.message.parsers.api.ParserInput;
 import io.rtcore.sip.message.parsers.api.ValueCollector;
-import io.rtcore.sip.message.parsers.api.ValueListener;
 import io.rtcore.sip.message.parsers.core.terminal.AndParser;
 import io.rtcore.sip.message.parsers.core.terminal.CharactersParser;
 import io.rtcore.sip.message.parsers.core.terminal.InputSizeEnforcer;
@@ -108,7 +107,7 @@ public class ParserUtils {
   }
 
   public static Parser<CharSequence> charSize(final String bytes, final int minDigits, final int maxDigits) {
-    return new InputSizeEnforcer<CharSequence>(chars(bytes), Range.closed(minDigits, maxDigits));
+    return new InputSizeEnforcer<>(chars(bytes), Range.closed(minDigits, maxDigits));
   }
 
   public static Parser<UnsignedInteger> uint(final int minDigits, final int maxDigits) {
@@ -120,8 +119,8 @@ public class ParserUtils {
   }
 
   public static <T> Parser<T> name(final Parser<T> parser, final String name) {
-    return new NameParser<T>(parser, name);
-  };
+    return new NameParser<>(parser, name);
+  }
 
   /**
    * Matches one or more of the given items.
@@ -131,11 +130,11 @@ public class ParserUtils {
    */
 
   public static <T> Parser<List<T>> multi(final Parser<T> finder) {
-    return new MultiParser<T, List<T>>(finder, Range.atLeast(1), new CollectionValueCollector<T>());
+    return new MultiParser<>(finder, Range.atLeast(1), new CollectionValueCollector<>());
   }
 
   public static <T, R> Parser<R> multi(final Parser<T> finder, final ValueCollector<T, R> collector) {
-    return new MultiParser<T, R>(finder, Range.atLeast(1), collector);
+    return new MultiParser<>(finder, Range.atLeast(1), collector);
   }
 
   /**
@@ -149,30 +148,30 @@ public class ParserUtils {
 
   public static <T> Parser<List<T>> repeat(final Parser<T> finder, final int count) {
     Preconditions.checkArgument(count > 0);
-    return new MultiParser<T, List<T>>(finder, Range.singleton(count), new CollectionValueCollector<T>());
+    return new MultiParser<>(finder, Range.singleton(count), new CollectionValueCollector<>());
   }
 
   public static <T> Parser<T> repeat(final Parser<T> finder, final int count, final ValueCollector<T, T> collector) {
     Preconditions.checkArgument(count > 0);
-    return new MultiParser<T, T>(finder, Range.singleton(count), collector);
+    return new MultiParser<>(finder, Range.singleton(count), collector);
   }
 
   @SafeVarargs
   public static <T> Parser<T> or(final Parser<T>... finders) {
-    return new OrParser<T>(Lists.newArrayList(finders));
+    return new OrParser<>(Lists.newArrayList(finders));
   }
 
   @SafeVarargs
   public static <T> Parser<T> and(final Parser<T>... finders) {
-    return new AndParser<T>(Lists.newArrayList(finders));
+    return new AndParser<>(Lists.newArrayList(finders));
   }
 
   public static <T> Parser<T> optional(final Parser<T> finders) {
-    return new MultiParser<T, T>(finders, Range.atMost(1), new SingleValueCollector<T>());
+    return new MultiParser<>(finders, Range.atMost(1), new SingleValueCollector<>());
   }
 
   public static <T> Parser<T> not(final Parser<T> parser) {
-    return new NotPredicateParser<T>(parser);
+    return new NotPredicateParser<>(parser);
   }
 
   /**
@@ -283,39 +282,30 @@ public class ParserUtils {
 
   /**
    * 
-   * @param <T>
-   * @param input
-   * @param parser
-   * @return
    */
 
   public static <T> Parser<List<T>> commaSeparated(final Parser<T> parser) {
 
-    return new Parser<List<T>>() {
+    return (ctx, value) -> {
 
-      @Override
-      public boolean find(ParserContext ctx, ValueListener<List<T>> value) {
+      final List<T> items = new ArrayList<>();
 
-        List<T> items = new ArrayList<>();
+      do {
 
-        do {
+        final ValueHolder<T> val = ValueHolder.create();
 
-          final ValueHolder<T> val = ValueHolder.create();
-
-          if (!parser.find(ctx, val)) {
-            break;
-          }
-
-          items.add(val.value());
-
+        if (!parser.find(ctx, val)) {
+          break;
         }
-        while (ctx.skip(COMMA));
 
-        value.set(items);
-
-        return !items.isEmpty();
+        items.add(val.value());
 
       }
+      while (ctx.skip(COMMA));
+
+      value.set(items);
+
+      return !items.isEmpty();
 
     };
 

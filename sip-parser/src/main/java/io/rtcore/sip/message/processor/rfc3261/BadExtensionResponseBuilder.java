@@ -17,10 +17,6 @@ import io.rtcore.sip.message.message.api.TokenSet;
  */
 public class BadExtensionResponseBuilder extends DefaultResponseBuilder {
 
-  /**
-   * @param status
-   */
-
   public BadExtensionResponseBuilder(final TokenSet tokens) {
     super(SipResponseStatus.BAD_EXTENSION);
     final String value = Joiner.on(", ").join(tokens);

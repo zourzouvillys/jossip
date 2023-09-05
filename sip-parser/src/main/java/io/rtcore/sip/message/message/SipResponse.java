@@ -33,10 +33,6 @@ public interface SipResponse extends SipMessage {
   Optional<String> getServer();
 
   /**
-   *
-   * @param name
-   * @param fields
-   * @return
    */
 
   List<RValue> getAcceptResourcePriority();
@@ -106,6 +102,7 @@ public interface SipResponse extends SipMessage {
     return applicator.apply(this);
   }
 
+  @Override
   default SipMethodId methodId() {
     return this.cseq().methodId();
   }

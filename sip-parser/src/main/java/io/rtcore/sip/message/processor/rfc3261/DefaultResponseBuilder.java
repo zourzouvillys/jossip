@@ -13,8 +13,8 @@ import io.rtcore.sip.message.processor.rfc3261.message.api.ResponseBuilder;
 
 /**
  * A {@link ResponseBuilder} which always sends a provided status code.
- * 
- * 
+ *
+ *
  */
 public class DefaultResponseBuilder implements ResponseBuilder {
   private SipResponseStatus status;
@@ -23,17 +23,15 @@ public class DefaultResponseBuilder implements ResponseBuilder {
 
   /**
    * Constructs a {@link ResponseBuilder} instance which returns the given status code.
-   * 
-   * @param status
-   *          The status to send back.
    */
+
   public DefaultResponseBuilder() {
-    this.manager = (RfcSipMessageManager) new RfcSipMessageManagerBuilder().build();
+    this.manager = new RfcSipMessageManagerBuilder().build();
     this.status = SipResponseStatus.OK;
   }
 
   public DefaultResponseBuilder(final SipResponseStatus status) {
-    this.manager = (RfcSipMessageManager) new RfcSipMessageManagerBuilder().build();
+    this.manager = new RfcSipMessageManagerBuilder().build();
     this.status = status;
   }
 
@@ -43,7 +41,7 @@ public class DefaultResponseBuilder implements ResponseBuilder {
   }
 
   // TODO: this is a bit of a hac. fix.
-  private final String[] copy = new String[] {"From", "Call-ID", "CSeq", "Via", "To", "f", "i", "v", "t"};
+  private final String[] copy = { "From", "Call-ID", "CSeq", "Via", "To", "f", "i", "v", "t" };
 
   @Override
   public final SipResponse build(final SipRequest req, final SipMessageManager manager) {
@@ -65,7 +63,7 @@ public class DefaultResponseBuilder implements ResponseBuilder {
 
   @Override
   public SipResponse build(final SipRequest req) {
-    return build(req, null);
+    return this.build(req, null);
   }
 
   @Override
@@ -85,6 +83,7 @@ public class DefaultResponseBuilder implements ResponseBuilder {
     return this;
   }
 
+  @Override
   public SipResponseStatus status() {
     return this.status;
   }

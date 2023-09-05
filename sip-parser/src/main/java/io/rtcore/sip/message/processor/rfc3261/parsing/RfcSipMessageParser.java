@@ -20,9 +20,6 @@ public interface RfcSipMessageParser {
    * anything else. It purely ensures it's syntactically correct, and parses the fields into their
    * relevant places.
    *
-   * @param data
-   *          Bytes of data, must by a syntactically valid message.
-   * @return RawMessage
    * @throws SipMessageParseFailureException
    *           if data fails to parse.
    */

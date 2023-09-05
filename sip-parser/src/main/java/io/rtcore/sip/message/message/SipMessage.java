@@ -191,7 +191,6 @@ public interface SipMessage extends Serializable {
    *
    * This method will also not fold any headers, etc.
    *
-   * @param name
    * @return
    */
 

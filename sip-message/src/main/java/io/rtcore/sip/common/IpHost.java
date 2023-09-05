@@ -13,6 +13,9 @@ public abstract class IpHost implements Host {
   @Value.Parameter
   public abstract InetAddress inetAddress();
 
+  protected IpHost() {
+  }
+
   @Value.Lazy
   @Override
   public String toUriString() {
@@ -25,7 +28,7 @@ public abstract class IpHost implements Host {
     return InetAddresses.toAddrString(this.inetAddress());
   }
 
-  public static IpHost of(String address) {
+  public static IpHost of(final String address) {
     return ImmutableIpHost.of(InetAddresses.forString(address));
   }
 

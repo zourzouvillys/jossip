@@ -9,22 +9,21 @@ import io.rtcore.sip.message.parameters.impl.DefaultParameters;
 
 /**
  * A collection of SIP parameters.
- * 
- * 
- *
- * @param <T>
  */
+
 public abstract class BaseParameterizedObject<T> implements ParameterizedObject<T> {
+
   protected Parameters parameters;
+
+  protected BaseParameterizedObject() {
+  }
 
   @Override
   public <R> Optional<R> getParameter(final SipParameterDefinition<R> parameterDefinition) {
     if (this.parameters != null) {
       return parameterDefinition.parse(this.parameters);
     }
-    else {
-      return Optional.empty();
-    }
+    return Optional.empty();
   }
 
   @Override
@@ -62,9 +61,7 @@ public abstract class BaseParameterizedObject<T> implements ParameterizedObject<
     if ((this.parameters == null) || this.parameters.getRawParameters().isEmpty()) {
       return Optional.empty();
     }
-    else {
-      return Optional.ofNullable(this.parameters);
-    }
+    return Optional.ofNullable(this.parameters);
   }
 
   public Parameters parameters() {
@@ -74,27 +71,31 @@ public abstract class BaseParameterizedObject<T> implements ParameterizedObject<
     return this.parameters;
   }
 
-  public T replaceParameter(SipParameterDefinition<Token> def, Token value) {
-    Parameters val = this.parameters.withoutParameter(def.name());
-    return withParameters(val.withParameter(def.name(), value));
+  public T replaceParameter(final SipParameterDefinition<Token> def, final Token value) {
+    final Parameters val = this.parameters.withoutParameter(def.name());
+    return this.withParameters(val.withParameter(def.name(), value));
   }
 
   public abstract T withParameters(final Parameters parameters);
 
   @Override
   public boolean equals(final Object o) {
-    if (o == this)
+    if (o == this) {
       return true;
-    if (!(o instanceof BaseParameterizedObject))
+    }
+    if (!(o instanceof BaseParameterizedObject)) {
       return false;
+    }
     final BaseParameterizedObject<?> other = (BaseParameterizedObject<?>) o;
-    if (!other.canEqual((Object) this))
+    if (!other.canEqual(this)) {
       return false;
+    }
     final Object this$parameters = this.parameters;
     final Object other$parameters = other.parameters;
     if (this$parameters == null ? other$parameters != null
-                                : !this$parameters.equals(other$parameters))
+                                : !this$parameters.equals(other$parameters)) {
       return false;
+    }
     return true;
   }
 
@@ -108,7 +109,7 @@ public abstract class BaseParameterizedObject<T> implements ParameterizedObject<
     int result = 1;
     final Object $parameters = this.parameters;
     result =
-      result * PRIME
+      (result * PRIME)
         + ($parameters == null ? 43
                                : $parameters.hashCode());
     return result;

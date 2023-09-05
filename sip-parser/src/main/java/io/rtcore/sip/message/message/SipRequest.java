@@ -103,7 +103,7 @@ public interface SipRequest extends SipMessage {
   /**
    * Prepends a field to a collection header (e.g, one which is List<T>).
    *
-   * @param string
+   * @param name
    *          The header name
    * @param field
    *          The header field value, in parsed form.
@@ -180,6 +180,7 @@ public interface SipRequest extends SipMessage {
     return this.withPrependedRecordRoute(NameAddr.of(address));
   }
 
+  @Override
   default SipMethodId methodId() {
     return this.method().methodId();
   }

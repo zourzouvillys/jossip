@@ -21,7 +21,7 @@ dependencies {
   implementation project(':gateway-api')
   implementation project(':sip-channels')
   implementation project(':sip-channels-netty')
-  implementation 'jakarta.inject:jakarta.inject-api:1.0.5'
+  implementation 'jakarta.inject:jakarta.inject-api:1.0.5'  
 }
 
 dependencies {

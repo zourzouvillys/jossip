@@ -50,8 +50,6 @@ public interface SipMessageManager {
   /**
    * Creates a new INVITE message.
    *
-   * @param invite
-   * @param ruri
    * @return
    */
 
