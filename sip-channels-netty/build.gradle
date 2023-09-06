@@ -17,7 +17,7 @@ dependencies {
   implementation libs.guava
   
   api libs.reactivestreams
-  compileOnly 'com.google.auto.service:auto-service-annotations:1.0.1'
+  compileOnly 'com.google.auto.service:auto-service-annotations:1.1.1'
   annotationProcessor libs.autoService
   implementation libs.rxjava3
   compileOnly libs.eclipse.jdt.annotations
