@@ -113,7 +113,7 @@ dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 javax-inject = "jakarta.inject:jakarta.inject-api:1.0.3"
 
 ## the jakarta version 1 uses the javax package
-javax-annotation = "jakarta.annotation:jakarta.annotation-api:1.3.5"
+javax-annotation = "jakarta.annotation:jakarta.annotation-api:2.1.1"
 
 ## 
 eclipse-microprofile-bom = { module = "org.eclipse.microprofile:microprofile", version.ref = "eclipse-microprofile" }
