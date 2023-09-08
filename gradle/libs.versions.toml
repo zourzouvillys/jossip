@@ -130,7 +130,7 @@ awssdk-bom = { module = "software.amazon.awssdk:bom", version.ref = "awssdk" }
 
 ##
 rxjava3 = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava3" }
-rxjava3-jdk9interop = { module = "com.github.akarnokd:rxjava3-jdk9-interop", version = "3.0.0" }
+rxjava3-jdk9interop = { module = "com.github.akarnokd:rxjava3-jdk9-interop", version = "3.0.1" }
 
 
 ##
