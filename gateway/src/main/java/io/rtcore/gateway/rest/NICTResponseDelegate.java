@@ -1,7 +1,7 @@
 package io.rtcore.gateway.rest;
 
 import io.rtcore.gateway.engine.OutgoingRequestDelegate;
-import io.rtcore.sip.channels.api.SipResponseFrame;
+import io.rtcore.sip.frame.SipResponseFrame;
 import jakarta.ws.rs.container.AsyncResponse;
 import jakarta.ws.rs.core.Response;
 

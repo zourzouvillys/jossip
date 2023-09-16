@@ -5,10 +5,10 @@ import java.net.URI;
 import io.rtcore.gateway.api.ImmutableSipResponsePayload;
 import io.rtcore.gateway.api.NICTRequest;
 import io.rtcore.gateway.api.SipResponsePayload;
-import io.rtcore.sip.channels.api.SipRequestFrame;
-import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.common.SipHeaders;
 import io.rtcore.sip.common.iana.SipMethodId;
+import io.rtcore.sip.frame.SipRequestFrame;
+import io.rtcore.sip.frame.SipResponseFrame;
 
 final class FrameCreator {
 

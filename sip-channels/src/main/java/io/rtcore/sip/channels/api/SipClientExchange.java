@@ -2,6 +2,7 @@ package io.rtcore.sip.channels.api;
 
 import io.reactivex.rxjava3.core.Flowable;
 import io.rtcore.sip.channels.connection.SipConnection;
+import io.rtcore.sip.frame.SipResponseFrame;
 
 public interface SipClientExchange extends SipExchange {
 

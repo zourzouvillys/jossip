@@ -1,10 +1,10 @@
-package io.rtcore.sip.channels.netty.udp;
+package io.rtcore.sip.netty.codec.udp;
 
 import java.net.InetSocketAddress;
 
 import io.netty.channel.DefaultAddressedEnvelope;
 import io.netty.channel.socket.DatagramChannel;
-import io.rtcore.sip.channels.api.SipFrame;
+import io.rtcore.sip.frame.SipFrame;
 
 /**
  * The message container that is used for {@link DatagramChannel} to communicate with the remote

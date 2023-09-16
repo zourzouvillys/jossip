@@ -1,4 +1,4 @@
-package io.rtcore.sip.channels.netty.codec;
+package io.rtcore.sip.netty.codec;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -7,10 +7,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.util.ReferenceCountUtil;
-import io.rtcore.sip.channels.api.SipFrame;
 import io.rtcore.sip.common.SipHeaderLine;
 import io.rtcore.sip.common.SipInitialLine;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
+import io.rtcore.sip.frame.SipFrame;
 import io.rtcore.sip.message.message.SipMessage;
 
 public class SipObjectEncoder extends MessageToMessageEncoder<Object> {

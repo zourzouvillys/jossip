@@ -36,6 +36,8 @@ include('sip-channels')
 include('sip-channels-netty')
 include('sip-channels-proxy')
 
+include('netty-codec-sip')
+
 // include('user-agent')
 
 include('dns-resolver')

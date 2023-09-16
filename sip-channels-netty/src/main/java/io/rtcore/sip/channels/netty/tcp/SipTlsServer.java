@@ -21,10 +21,10 @@ import io.netty.channel.ReflectiveChannelFactory;
 import io.netty.channel.WriteBufferWaterMark;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.ssl.SslContext;
-import io.rtcore.sip.channels.api.SipRequestFrame;
-import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.interceptors.SipServerInterceptors;
+import io.rtcore.sip.frame.SipRequestFrame;
+import io.rtcore.sip.frame.SipResponseFrame;
 
 /**
  * service which provides incoming connection & stream oriented (TCP, TLS) connection handling. each

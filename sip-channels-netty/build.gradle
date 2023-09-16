@@ -11,6 +11,7 @@ description = 'RTCore SIP: Netty implementation'
 dependencies {
 
   api project(':sip-parser')
+  implementation project(':netty-codec-sip')
   api project(':sip-channels')
   
   api libs.guava  

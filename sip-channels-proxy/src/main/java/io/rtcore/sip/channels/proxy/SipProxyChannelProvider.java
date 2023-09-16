@@ -1,7 +1,7 @@
 package io.rtcore.sip.channels.proxy;
 
 import io.rtcore.sip.channels.api.SipChannel;
-import io.rtcore.sip.channels.api.SipRequestFrame;
+import io.rtcore.sip.frame.SipRequestFrame;
 
 public interface SipProxyChannelProvider {
 

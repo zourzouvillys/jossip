@@ -1,6 +1,6 @@
 package io.rtcore.sip.channels.errors;
 
-import io.rtcore.sip.channels.api.SipResponseFrame;
+import io.rtcore.sip.frame.SipResponseFrame;
 import io.rtcore.sip.message.message.SipResponse;
 import io.rtcore.sip.message.message.SipResponseStatus;
 

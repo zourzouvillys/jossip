@@ -1,4 +1,4 @@
-package io.rtcore.sip.channels.netty.udp;
+package io.rtcore.sip.netty.codec.udp;
 
 import static io.netty.util.internal.ObjectUtil.checkNotNull;
 
@@ -9,7 +9,7 @@ import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.handler.codec.MessageToMessageDecoder;
-import io.rtcore.sip.channels.api.SipFrame;
+import io.rtcore.sip.frame.SipFrame;
 
 @Sharable
 public class DatagramSipFrameDecoder extends MessageToMessageDecoder<DatagramPacket> {

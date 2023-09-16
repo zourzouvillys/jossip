@@ -12,9 +12,9 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.processors.UnicastProcessor;
 import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipClientExchange;
-import io.rtcore.sip.channels.api.SipRequestFrame;
-import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.channels.netty.ClientBranchId;
+import io.rtcore.sip.frame.SipRequestFrame;
+import io.rtcore.sip.frame.SipResponseFrame;
 
 class SipDatagramClientExchange implements SipClientExchange {
 

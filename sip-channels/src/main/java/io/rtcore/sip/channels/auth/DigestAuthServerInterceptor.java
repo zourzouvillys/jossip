@@ -8,15 +8,15 @@ import java.util.function.BiFunction;
 import com.google.common.hash.Hashing;
 
 import io.rtcore.sip.channels.api.SipAttributes;
-import io.rtcore.sip.channels.api.SipFrameUtils;
-import io.rtcore.sip.channels.api.SipRequestFrame;
-import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.channels.api.SipServerExchange;
 import io.rtcore.sip.channels.api.SipServerExchange.Listener;
 import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.api.SipServerExchangeInterceptor;
 import io.rtcore.sip.common.iana.SipMethods;
 import io.rtcore.sip.common.iana.SipStatusCodes;
+import io.rtcore.sip.frame.SipFrameUtils;
+import io.rtcore.sip.frame.SipRequestFrame;
+import io.rtcore.sip.frame.SipResponseFrame;
 import io.rtcore.sip.message.auth.StdDigestAlgo;
 
 public class DigestAuthServerInterceptor implements SipServerExchangeInterceptor<SipRequestFrame, SipResponseFrame> {

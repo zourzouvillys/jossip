@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 
 import com.google.common.base.Predicate;
 
-import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.common.SipHeaderLine;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
+import io.rtcore.sip.frame.SipResponseFrame;
 
 public class IncomingSipVias {
 

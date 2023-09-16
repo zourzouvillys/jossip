@@ -19,7 +19,7 @@ import io.netty.handler.codec.haproxy.HAProxyMessageDecoder;
 import io.netty.handler.ssl.SniHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslHandler;
-import io.rtcore.sip.channels.netty.codec.SipCodec;
+import io.rtcore.sip.netty.codec.SipCodec;
 
 class TlsServerHandler extends ChannelInitializer<NioSocketChannel> {
 

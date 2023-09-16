@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipChannel;
 import io.rtcore.sip.channels.api.SipClientExchange;
-import io.rtcore.sip.channels.api.SipRequestFrame;
+import io.rtcore.sip.frame.SipRequestFrame;
 
 /**
  * implementation of a SIP exchange which can attempt different targets in a serial pattern. It does

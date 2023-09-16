@@ -7,8 +7,8 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipChannel;
 import io.rtcore.sip.channels.api.SipClientExchange;
-import io.rtcore.sip.channels.api.SipFrame;
-import io.rtcore.sip.channels.api.SipRequestFrame;
+import io.rtcore.sip.frame.SipFrame;
+import io.rtcore.sip.frame.SipRequestFrame;
 
 public interface SipConnection extends SipChannel {
 

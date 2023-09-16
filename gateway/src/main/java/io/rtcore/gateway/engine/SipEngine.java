@@ -6,10 +6,10 @@ import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.rtcore.sip.channels.api.SipRequestFrame;
 import io.rtcore.sip.channels.connection.SipConnection;
 import io.rtcore.sip.channels.connection.SipRoute;
 import io.rtcore.sip.common.iana.SipMethods;
+import io.rtcore.sip.frame.SipRequestFrame;
 
 public class SipEngine {
 

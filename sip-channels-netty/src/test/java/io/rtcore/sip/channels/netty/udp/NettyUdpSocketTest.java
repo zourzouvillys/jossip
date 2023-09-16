@@ -11,11 +11,11 @@ import com.google.common.net.InetAddresses;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipClientExchange;
-import io.rtcore.sip.channels.api.SipRequestFrame;
 import io.rtcore.sip.channels.connection.SipConnections;
 import io.rtcore.sip.common.HostPort;
 import io.rtcore.sip.common.iana.SipMethods;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
+import io.rtcore.sip.frame.SipRequestFrame;
 
 class NettyUdpSocketTest {
 

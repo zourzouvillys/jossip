@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.Lists;
 
-import io.rtcore.sip.channels.api.SipRequestFrame;
+import io.rtcore.sip.frame.SipRequestFrame;
 import io.rtcore.sip.message.auth.headers.DigestCredentials;
 import io.rtcore.sip.message.message.SipRequest;
 import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.AuthorizationParser;

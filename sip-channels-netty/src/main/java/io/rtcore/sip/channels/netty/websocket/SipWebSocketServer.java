@@ -20,8 +20,6 @@ import io.netty.channel.ReflectiveChannelFactory;
 import io.netty.channel.WriteBufferWaterMark;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.ssl.SslContext;
-import io.rtcore.sip.channels.api.SipRequestFrame;
-import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.channels.api.SipServerConnectionDelegate;
 import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.interceptors.SipServerInterceptors;
@@ -29,6 +27,8 @@ import io.rtcore.sip.channels.netty.tcp.ImmutableNettySocketServerConfig;
 import io.rtcore.sip.channels.netty.tcp.ImmutableTcpConnectionConfig;
 import io.rtcore.sip.channels.netty.tcp.NettySocketServerConfig;
 import io.rtcore.sip.channels.netty.tcp.TcpConnectionConfig;
+import io.rtcore.sip.frame.SipRequestFrame;
+import io.rtcore.sip.frame.SipResponseFrame;
 
 public class SipWebSocketServer extends AbstractService {
 

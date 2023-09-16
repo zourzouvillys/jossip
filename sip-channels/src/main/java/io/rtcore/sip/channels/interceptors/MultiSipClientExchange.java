@@ -6,10 +6,10 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.processors.UnicastProcessor;
 import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipClientExchange;
-import io.rtcore.sip.channels.api.SipRequestFrame;
 import io.rtcore.sip.channels.errors.ProxyAuthenticationRequired;
 import io.rtcore.sip.channels.interceptors.SipClientAuthInterceptor.Attempt;
 import io.rtcore.sip.channels.interceptors.SipClientAuthInterceptor.Generator;
+import io.rtcore.sip.frame.SipRequestFrame;
 
 class MultiSipClientExchange implements SipClientExchange {
 

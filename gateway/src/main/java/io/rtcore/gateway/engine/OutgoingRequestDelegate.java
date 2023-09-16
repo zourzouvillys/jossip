@@ -1,6 +1,6 @@
 package io.rtcore.gateway.engine;
 
-import io.rtcore.sip.channels.api.SipResponseFrame;
+import io.rtcore.sip.frame.SipResponseFrame;
 
 public interface OutgoingRequestDelegate {
 

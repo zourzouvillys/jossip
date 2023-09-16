@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import io.rtcore.gateway.api.NICTRequest;
 import io.rtcore.gateway.engine.SipEngine;
-import io.rtcore.sip.channels.api.SipRequestFrame;
 import io.rtcore.sip.common.iana.SipMethods;
+import io.rtcore.sip.frame.SipRequestFrame;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;

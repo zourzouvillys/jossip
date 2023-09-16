@@ -1,4 +1,4 @@
-package io.rtcore.sip.channels.netty.codec;
+package io.rtcore.sip.netty.codec;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -16,12 +16,12 @@ import io.netty.handler.codec.CorruptedFrameException;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.TooLongFrameException;
 import io.netty.util.internal.AppendableCharSequence;
-import io.rtcore.sip.channels.api.ImmutableSipRequestFrame;
-import io.rtcore.sip.channels.api.ImmutableSipResponseFrame;
 import io.rtcore.sip.common.ImmutableSipHeaderLine;
 import io.rtcore.sip.common.SipHeaderLine;
 import io.rtcore.sip.common.SipInitialLine;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
+import io.rtcore.sip.frame.ImmutableSipRequestFrame;
+import io.rtcore.sip.frame.ImmutableSipResponseFrame;
 
 public class SipStreamDecoder extends ByteToMessageDecoder {
 
@@ -56,8 +56,8 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
   // current reader state.
   private State currentState = State.NONE;
 
-  private SipLineParser lineParser;
-  private SipHeaderParser headerParser;
+  private final SipLineParser lineParser;
+  private final SipHeaderParser headerParser;
   private String name = null;
   private String value = null;
   private SipInitialLine initialLine = null;
@@ -68,7 +68,7 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
     this(8192, 1024);
   }
 
-  public SipStreamDecoder(int maxMessageSize) {
+  public SipStreamDecoder(final int maxMessageSize) {
     this(maxMessageSize, 1024);
   }
 
@@ -77,10 +77,10 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
     super.setSingleDecode(true);
 
     // should be large enough for most common headers.
-    AppendableCharSequence seq = new AppendableCharSequence(256);
+    final AppendableCharSequence seq = new AppendableCharSequence(256);
 
-    this.lineParser = new SipLineParser(seq, maxInitialLine);
-    this.headerParser = new SipHeaderParser(seq, maxHeaderBytes);
+    this.lineParser = new SipLineParser(seq, this.maxInitialLine);
+    this.headerParser = new SipHeaderParser(seq, this.maxHeaderBytes);
 
   }
 
@@ -89,22 +89,22 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
     while (in.isReadable()) {
       switch (this.currentState) {
         case NONE:
-          if (!readNone(ctx, in, out)) {
+          if (!this.readNone(ctx, in, out)) {
             return;
           }
           break;
         case READING_INITIAL:
-          if (!readInitialLine(ctx, in, out)) {
+          if (!this.readInitialLine(ctx, in, out)) {
             return;
           }
           break;
         case READING_HEADERS:
-          if (!readHeaders(ctx, in, out)) {
+          if (!this.readHeaders(ctx, in, out)) {
             return;
           }
           break;
         case READING_BODY:
-          if (!readBody(ctx, in, out)) {
+          if (!this.readBody(ctx, in, out)) {
             return;
           }
           break;
@@ -114,11 +114,11 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
     }
   }
 
-  private boolean readNone(ChannelHandlerContext ctx, ByteBuf buffer, List<Object> out) {
+  private boolean readNone(final ChannelHandlerContext ctx, final ByteBuf buffer, final List<Object> out) {
 
     int count = 0;
 
-    while (buffer.isReadable(2) && buffer.getByte(buffer.readerIndex()) == '\r') {
+    while (buffer.isReadable(2) && (buffer.getByte(buffer.readerIndex()) == '\r')) {
 
       if (buffer.getByte(buffer.readerIndex() + 1) != '\n') {
         throw new DecoderException("cr followed by non lf");
@@ -152,9 +152,9 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
 
   }
 
-  private boolean readInitialLine(ChannelHandlerContext ctx, ByteBuf buffer, List<Object> out) {
+  private boolean readInitialLine(final ChannelHandlerContext ctx, final ByteBuf buffer, final List<Object> out) {
 
-    AppendableCharSequence line = lineParser.parse(buffer);
+    final AppendableCharSequence line = this.lineParser.parse(buffer);
 
     if (line == null) {
       // not enough data yet. wait, grasshopper.
@@ -168,9 +168,9 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
 
   }
 
-  private boolean readHeaders(ChannelHandlerContext ctx, ByteBuf buffer, List<Object> out) {
+  private boolean readHeaders(final ChannelHandlerContext ctx, final ByteBuf buffer, final List<Object> out) {
 
-    AppendableCharSequence line = headerParser.parse(buffer);
+    AppendableCharSequence line = this.headerParser.parse(buffer);
 
     if (line == null) {
       return false;
@@ -178,39 +178,39 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
 
     while (line.length() > 0) {
 
-      char firstChar = line.charAtUnsafe(0);
+      final char firstChar = line.charAtUnsafe(0);
 
-      if (name != null && (firstChar == ' ' || firstChar == '\t')) {
+      if ((this.name != null) && ((firstChar == ' ') || (firstChar == '\t'))) {
 
         // this is LWS.
 
         // please do not make one line from below code
         // as it breaks +XX:OptimizeStringConcat optimization
-        String trimmedLine = line.toString().trim();
-        String valueStr = String.valueOf(value);
-        value = valueStr + ' ' + trimmedLine;
+        final String trimmedLine = line.toString().trim();
+        final String valueStr = String.valueOf(this.value);
+        this.value = valueStr + ' ' + trimmedLine;
 
-        if (value.length() > this.maxHeaderBytes) {
+        if (this.value.length() > this.maxHeaderBytes) {
           throw new TooLongFrameException("header line too long");
         }
 
       }
       else {
 
-        if (name != null) {
-          commitHeader();
+        if (this.name != null) {
+          this.commitHeader();
         }
 
-        if (headers.size() >= maxHeaderCount) {
+        if (this.headers.size() >= this.maxHeaderCount) {
           // sanity, avoid too many SIP header lines.
           throw new TooLongFrameException("too many header lines");
         }
 
-        splitHeader(line);
+        this.splitHeader(line);
 
       }
 
-      line = headerParser.parse(buffer);
+      line = this.headerParser.parse(buffer);
 
       if (line == null) {
         // no line yet
@@ -220,12 +220,12 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
     }
 
     // Add the last header.
-    if (name != null) {
-      commitHeader();
+    if (this.name != null) {
+      this.commitHeader();
     }
 
     // we have a full set of headers, validate and check to see if we are expecting content.
-    processHeaders(ctx, buffer, out);
+    this.processHeaders(ctx, buffer, out);
 
     this.headerParser.reset();
 
@@ -237,7 +237,7 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
    * attempt to read any remaining bytes needed.
    */
 
-  private boolean readBody(ChannelHandlerContext ctx, ByteBuf buffer, List<Object> out) {
+  private boolean readBody(final ChannelHandlerContext ctx, final ByteBuf buffer, final List<Object> out) {
 
     Verify.verify(this.contentLength > 0);
 
@@ -246,13 +246,13 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
       return false;
     }
 
-    ByteBuf body = buffer.readSlice(this.contentLength);
+    final ByteBuf body = buffer.readSlice(this.contentLength);
 
-    if (initialLine instanceof SipInitialLine.RequestLine req) {
-      out.add(ImmutableSipRequestFrame.of(req, headers, Optional.of(body.toString(StandardCharsets.UTF_8))));
+    if (this.initialLine instanceof final SipInitialLine.RequestLine req) {
+      out.add(ImmutableSipRequestFrame.of(req, this.headers, Optional.of(body.toString(StandardCharsets.UTF_8))));
     }
-    else if (initialLine instanceof SipInitialLine.ResponseLine res) {
-      out.add(ImmutableSipResponseFrame.of(res, headers, Optional.of(body.toString(StandardCharsets.UTF_8))));
+    else if (this.initialLine instanceof final SipInitialLine.ResponseLine res) {
+      out.add(ImmutableSipResponseFrame.of(res, this.headers, Optional.of(body.toString(StandardCharsets.UTF_8))));
     }
     else {
       throw new IllegalArgumentException();
@@ -268,34 +268,34 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
   }
 
   /**
-   * 
+   *
    * @param name
    * @param value
    */
 
   private void commitHeader() {
 
-    headers.add(ImmutableSipHeaderLine.of(name, value));
+    this.headers.add(ImmutableSipHeaderLine.of(this.name, this.value));
     // reset name and value fields
-    name = null;
-    value = null;
+    this.name = null;
+    this.value = null;
 
   }
 
   /**
    * process the headers we have received.
-   * 
+   *
    * @param ctx
    * @param buffer
    * @param out
    */
 
-  private void processHeaders(ChannelHandlerContext ctx, ByteBuf buffer, List<Object> out) {
+  private void processHeaders(final ChannelHandlerContext ctx, final ByteBuf buffer, final List<Object> out) {
 
     //// content-length calculation.
 
-    Set<String> contentLengths =
-      headers.stream()
+    final Set<String> contentLengths =
+      this.headers.stream()
         .filter(e -> e.knownHeaderId().filter(id -> id == StandardSipHeaders.CONTENT_LENGTH).isPresent())
         .map(SipHeaderLine::headerValues)
         .collect(Collectors.toSet());
@@ -306,11 +306,11 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
       this.contentLength = 0;
 
       //
-      if (initialLine instanceof SipInitialLine.RequestLine req) {
-        out.add(ImmutableSipRequestFrame.of(req, headers, Optional.empty()));
+      if (this.initialLine instanceof final SipInitialLine.RequestLine req) {
+        out.add(ImmutableSipRequestFrame.of(req, this.headers, Optional.empty()));
       }
-      else if (initialLine instanceof SipInitialLine.ResponseLine res) {
-        out.add(ImmutableSipResponseFrame.of(res, headers, Optional.empty()));
+      else if (this.initialLine instanceof final SipInitialLine.ResponseLine res) {
+        out.add(ImmutableSipResponseFrame.of(res, this.headers, Optional.empty()));
       }
       else {
         throw new IllegalArgumentException();
@@ -319,7 +319,7 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
     }
     else if (contentLengths.size() == 1) {
 
-      String firstField = contentLengths.iterator().next();
+      final String firstField = contentLengths.iterator().next();
 
       if (!Character.isDigit(firstField.charAt(0))) {
         throw new CorruptedFrameException("content-length value is not a number: " + firstField);
@@ -329,11 +329,11 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
 
       if (value == 0) {
 
-        if (initialLine instanceof SipInitialLine.RequestLine req) {
-          out.add(ImmutableSipRequestFrame.of(req, headers, Optional.empty()));
+        if (this.initialLine instanceof final SipInitialLine.RequestLine req) {
+          out.add(ImmutableSipRequestFrame.of(req, this.headers, Optional.empty()));
         }
-        else if (initialLine instanceof SipInitialLine.ResponseLine res) {
-          out.add(ImmutableSipResponseFrame.of(res, headers, Optional.empty()));
+        else if (this.initialLine instanceof final SipInitialLine.ResponseLine res) {
+          out.add(ImmutableSipResponseFrame.of(res, this.headers, Optional.empty()));
         }
         else {
           throw new IllegalArgumentException();
@@ -348,7 +348,7 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
       else if (value < 0) {
         throw new CorruptedFrameException("invalid content-length value: " + value);
       }
-      else if (value > maxContentLength) {
+      else if (value > this.maxContentLength) {
         throw new CorruptedFrameException("content-length too large: " + value + " bytes");
       }
       else {
@@ -368,12 +368,12 @@ public class SipStreamDecoder extends ByteToMessageDecoder {
   }
 
   // split a full header.
-  private void splitHeader(AppendableCharSequence line) {
+  private void splitHeader(final AppendableCharSequence line) {
 
-    String[] p = line.toString().split(":", 2);
+    final String[] p = line.toString().split(":", 2);
 
-    name = p[0].trim();
-    value = p[1].trim();
+    this.name = p[0].trim();
+    this.value = p[1].trim();
 
   }
 

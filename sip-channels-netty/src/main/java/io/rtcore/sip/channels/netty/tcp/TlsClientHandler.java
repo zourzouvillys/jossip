@@ -15,9 +15,9 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.proxy.Socks5ProxyHandler;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.IdleStateHandler;
-import io.rtcore.sip.channels.api.SipFrame;
 import io.rtcore.sip.channels.connection.SipRoute;
-import io.rtcore.sip.channels.netty.codec.SipCodec;
+import io.rtcore.sip.frame.SipFrame;
+import io.rtcore.sip.netty.codec.SipCodec;
 
 class TlsClientHandler extends ChannelInitializer<NioSocketChannel> {
 

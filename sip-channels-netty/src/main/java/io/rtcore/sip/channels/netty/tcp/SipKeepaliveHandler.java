@@ -6,7 +6,7 @@ import io.netty.channel.SimpleUserEventChannelHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
-import io.rtcore.sip.channels.netty.codec.SipKeepalive;
+import io.rtcore.sip.netty.codec.SipKeepalive;
 
 public class SipKeepaliveHandler extends SimpleUserEventChannelHandler<Object> {
 

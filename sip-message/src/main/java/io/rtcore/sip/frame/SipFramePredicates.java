@@ -1,4 +1,4 @@
-package io.rtcore.sip.channels.api;
+package io.rtcore.sip.frame;
 
 import java.util.Set;
 import java.util.function.Predicate;

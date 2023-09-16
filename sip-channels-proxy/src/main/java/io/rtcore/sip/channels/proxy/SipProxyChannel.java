@@ -2,7 +2,7 @@ package io.rtcore.sip.channels.proxy;
 
 import io.rtcore.sip.channels.api.SipChannel;
 import io.rtcore.sip.channels.api.SipClientExchange;
-import io.rtcore.sip.channels.api.SipRequestFrame;
+import io.rtcore.sip.frame.SipRequestFrame;
 
 /**
  * a SIP channel which will proxy incoming exchange requests, to downstream instances based on

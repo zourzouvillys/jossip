@@ -1,4 +1,4 @@
-package io.rtcore.sip.channels.api;
+package io.rtcore.sip.frame;
 
 import java.net.URI;
 import java.util.Collection;
@@ -22,6 +22,7 @@ public interface SipRequestFrame extends SipFrame, WithSipRequestFrame {
    * the initial SIP header line. this will always be a request or response.
    */
 
+  @Override
   @Value.Parameter
   SipInitialLine.RequestLine initialLine();
 
@@ -29,6 +30,7 @@ public interface SipRequestFrame extends SipFrame, WithSipRequestFrame {
    * each of the header lines.
    */
 
+  @Override
   @Value.Parameter
   List<SipHeaderLine> headerLines();
 
@@ -36,18 +38,19 @@ public interface SipRequestFrame extends SipFrame, WithSipRequestFrame {
    * the body, if content-length is not 0.
    */
 
+  @Override
   @Value.Parameter
   Optional<String> body();
 
-  static SipRequestFrame of(SipMethodId method, String ruri) {
+  static SipRequestFrame of(final SipMethodId method, final String ruri) {
     return ImmutableSipRequestFrame.of(ImmutableRequestLine.of(method, URI.create(ruri)), List.of(), Optional.empty());
   }
 
-  static SipRequestFrame of(SipMethodId method, URI ruri, SipHeaders headers) {
+  static SipRequestFrame of(final SipMethodId method, final URI ruri, final SipHeaders headers) {
     return ImmutableSipRequestFrame.of(ImmutableRequestLine.of(method, ruri), List.copyOf(headers.lines()), Optional.empty());
   }
 
-  static SipRequestFrame of(SipMethodId method, URI ruri, Collection<SipHeaderLine> headers) {
+  static SipRequestFrame of(final SipMethodId method, final URI ruri, final Collection<SipHeaderLine> headers) {
     return ImmutableSipRequestFrame.of(ImmutableRequestLine.of(method, ruri), List.copyOf(headers), Optional.empty());
   }
 

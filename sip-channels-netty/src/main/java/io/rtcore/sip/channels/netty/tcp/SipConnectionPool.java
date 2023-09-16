@@ -14,13 +14,13 @@ import io.netty.channel.EventLoopGroup;
 import io.reactivex.rxjava3.core.Flowable;
 import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipClientExchange;
-import io.rtcore.sip.channels.api.SipFrame;
-import io.rtcore.sip.channels.api.SipRequestFrame;
-import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.connection.SipConnection;
 import io.rtcore.sip.channels.connection.SipConnectionProvider;
 import io.rtcore.sip.channels.connection.SipRoute;
+import io.rtcore.sip.frame.SipFrame;
+import io.rtcore.sip.frame.SipRequestFrame;
+import io.rtcore.sip.frame.SipResponseFrame;
 
 public class SipConnectionPool implements SipConnectionProvider {
 

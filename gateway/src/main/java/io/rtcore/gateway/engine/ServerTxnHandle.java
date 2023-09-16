@@ -1,10 +1,10 @@
 package io.rtcore.gateway.engine;
 
 import io.rtcore.gateway.api.SipResponsePayload;
-import io.rtcore.sip.channels.api.SipFrameUtils;
-import io.rtcore.sip.channels.api.SipRequestFrame;
-import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.common.iana.SipStatusCodes;
+import io.rtcore.sip.frame.SipFrameUtils;
+import io.rtcore.sip.frame.SipRequestFrame;
+import io.rtcore.sip.frame.SipResponseFrame;
 
 public interface ServerTxnHandle {
 

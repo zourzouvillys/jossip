@@ -1,4 +1,4 @@
-package io.rtcore.sip.channels.netty.codec;
+package io.rtcore.sip.netty.codec;
 
 import java.net.URI;
 import java.net.URISyntaxException;

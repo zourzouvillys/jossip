@@ -9,7 +9,6 @@ plugins {
 description = 'RTCore SIP: Message API'
 
 dependencies {
-  api libs.reactivestreams
   // nothing from guava should leak this api.
   implementation libs.guava
 }

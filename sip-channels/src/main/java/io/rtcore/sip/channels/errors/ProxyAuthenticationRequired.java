@@ -3,8 +3,8 @@ package io.rtcore.sip.channels.errors;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
+import io.rtcore.sip.frame.SipResponseFrame;
 import io.rtcore.sip.message.message.SipResponse;
 
 public class ProxyAuthenticationRequired extends ClientFailure {

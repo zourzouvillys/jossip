@@ -1,5 +1,7 @@
 package io.rtcore.sip.channels.api;
 
+import io.rtcore.sip.frame.SipRequestFrame;
+
 public interface SipExchange {
 
   /**

@@ -1,0 +1,49 @@
+
+plugins {
+  id 'java-library'
+  id 'io.rtcore.java'
+  id 'io.rtcore.immutables'
+  id 'io.rtcore.ossrh'
+}
+
+description = 'Netty Codec using jOSSip'
+
+dependencies {
+
+  api project(':sip-parser')
+  
+  api libs.guava  
+  implementation libs.guava
+  
+  compileOnly 'com.google.auto.service:auto-service-annotations:1.1.1'
+  annotationProcessor libs.autoService
+  compileOnly libs.eclipse.jdt.annotations
+  
+  //
+  implementation libs.slf4j.api
+  
+  //  
+  api platform(libs.netty.bom)
+  
+  api 'io.netty:netty-codec'
+  api 'io.netty:netty-transport'
+  api 'io.netty:netty-buffer'
+  api 'io.netty:netty-common'
+  api 'io.netty:netty-handler'
+  
+}
+
+dependencies {
+  testImplementation(platform(testLibs.junit.bom))
+  testImplementation('org.junit.jupiter:junit-jupiter')
+  testImplementation testLibs.assert4j.core
+  testImplementation('org.awaitility:awaitility:4.2.0')
+  testImplementation libs.rxjava3
+  testImplementation libs.rxjava3.jdk9interop
+  testImplementation 'com.google.truth:truth:1.1.5'
+  testImplementation 'com.google.truth.extensions:truth-java8-extension:1.1.5'
+  testImplementation 'com.google.truth.extensions:truth-re2j-extension:1.1.5' 
+  testRuntimeOnly(libs.bouncycastle.bcpkix)
+   
+}
+

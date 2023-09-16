@@ -2,12 +2,12 @@ package io.rtcore.sip.channels.netty.tcp;
 
 import java.io.PrintStream;
 
-import io.rtcore.sip.channels.api.SipFrame;
 import io.rtcore.sip.common.SipHeaderLine;
 import io.rtcore.sip.common.SipInitialLine;
 import io.rtcore.sip.common.SipInitialLine.RequestLine;
 import io.rtcore.sip.common.SipInitialLine.ResponseLine;
-import io.rtcore.sip.common.iana.SipStatusCodes;;
+import io.rtcore.sip.common.iana.SipStatusCodes;
+import io.rtcore.sip.frame.SipFrame;;
 
 public class SipChannelUtils {
 

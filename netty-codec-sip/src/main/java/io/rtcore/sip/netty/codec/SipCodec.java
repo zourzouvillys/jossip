@@ -1,4 +1,4 @@
-package io.rtcore.sip.channels.netty.codec;
+package io.rtcore.sip.netty.codec;
 
 import io.netty.channel.CombinedChannelDuplexHandler;
 

@@ -14,16 +14,12 @@ import org.slf4j.LoggerFactory;
 
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.rtcore.sip.channels.api.SipAttributes;
-import io.rtcore.sip.channels.api.SipFrameUtils;
-import io.rtcore.sip.channels.api.SipRequestFrame;
-import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.channels.api.SipServerConnectionDelegate;
 import io.rtcore.sip.channels.api.SipServerExchange;
 import io.rtcore.sip.channels.api.SipServerExchange.Listener;
 import io.rtcore.sip.channels.api.SipServerExchangeHandler;
 import io.rtcore.sip.channels.connection.SipConnection;
 import io.rtcore.sip.channels.connection.SipRoute;
-import io.rtcore.sip.channels.netty.codec.SipParsingUtils;
 import io.rtcore.sip.channels.netty.tcp.ImmutableTcpConnectionConfig;
 import io.rtcore.sip.channels.netty.tcp.SipTlsConnectionProvider;
 import io.rtcore.sip.channels.netty.tcp.SipTlsServer;
@@ -33,7 +29,11 @@ import io.rtcore.sip.channels.netty.websocket.WebSocketSipConnection;
 import io.rtcore.sip.common.iana.SipMethods;
 import io.rtcore.sip.common.iana.SipStatusCodes;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
+import io.rtcore.sip.frame.SipFrameUtils;
+import io.rtcore.sip.frame.SipRequestFrame;
+import io.rtcore.sip.frame.SipResponseFrame;
 import io.rtcore.sip.message.message.api.CSeq;
+import io.rtcore.sip.netty.codec.SipParsingUtils;
 
 public class SipSegment implements SipServerExchangeHandler<SipRequestFrame, SipResponseFrame>, SipServerConnectionDelegate<WebSocketSipConnection> {
 

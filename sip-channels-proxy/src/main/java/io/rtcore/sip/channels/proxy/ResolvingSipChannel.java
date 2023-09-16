@@ -3,7 +3,7 @@ package io.rtcore.sip.channels.proxy;
 import io.rtcore.resolver.dns.DnsClient;
 import io.rtcore.sip.channels.api.SipChannel;
 import io.rtcore.sip.channels.api.SipClientExchange;
-import io.rtcore.sip.channels.api.SipRequestFrame;
+import io.rtcore.sip.frame.SipRequestFrame;
 
 /**
  * a channel which resolves the next hop and opens a connection to it. all exchanges are then sent

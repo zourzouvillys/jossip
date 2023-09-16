@@ -12,12 +12,12 @@ import com.google.common.primitives.Longs;
 
 import io.rtcore.gateway.Base62;
 import io.rtcore.sip.channels.api.SipAttributes;
-import io.rtcore.sip.channels.api.SipRequestFrame;
-import io.rtcore.sip.channels.api.SipResponseFrame;
 import io.rtcore.sip.channels.api.SipServerExchange;
 import io.rtcore.sip.common.iana.SipMethodId;
 import io.rtcore.sip.common.iana.SipMethods;
 import io.rtcore.sip.common.iana.SipStatusCategory;
+import io.rtcore.sip.frame.SipRequestFrame;
+import io.rtcore.sip.frame.SipResponseFrame;
 
 final class ServerTxnStore {
 
