@@ -6,7 +6,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.rtcore.sip.channels.auth.SipChannelCredentials;
 import io.rtcore.sip.channels.auth.TlsChannelCredentials;
-import io.rtcore.sip.netty.codec.SipCodec;
+import io.rtcore.sip.netty.codec.SipStreamCodec;
 
 public final class SipProtocolNegotiators {
 
@@ -91,7 +91,7 @@ public final class SipProtocolNegotiators {
         @Override
         protected void initChannel(Channel ch) throws Exception {
           ChannelPipeline p = ch.pipeline();
-          p.addLast(new SipCodec());
+          p.addLast(new SipStreamCodec());
         }
       };
 

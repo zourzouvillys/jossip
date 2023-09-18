@@ -12,7 +12,7 @@ import io.rtcore.sip.common.iana.SipStatusCodes;
 @Value.Immutable(builder = false)
 @Value.Style(jdkOnly = true, allowedClasspathAnnotations = { Override.class }, attributeBuilderDetection = true, deepImmutablesDetection = true,
     strictBuilder = true)
-public interface SipResponseFrame extends SipFrame, WithSipResponseFrame {
+public sealed interface SipResponseFrame extends SipFrame, WithSipResponseFrame permits ImmutableSipResponseFrame {
 
   /**
    * the initial SIP header line. this will always be a request or response.

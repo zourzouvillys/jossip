@@ -17,7 +17,7 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.rtcore.sip.channels.connection.SipRoute;
 import io.rtcore.sip.frame.SipFrame;
-import io.rtcore.sip.netty.codec.SipCodec;
+import io.rtcore.sip.netty.codec.SipStreamCodec;
 
 class TlsClientHandler extends ChannelInitializer<NioSocketChannel> {
 
@@ -62,7 +62,7 @@ class TlsClientHandler extends ChannelInitializer<NioSocketChannel> {
 
     //
     p.addLast(new IdleStateHandler(0, 5, 0));
-    p.addLast(new SipCodec());
+    p.addLast(new SipStreamCodec());
     p.addLast(new SipKeepaliveHandler());
 
     //

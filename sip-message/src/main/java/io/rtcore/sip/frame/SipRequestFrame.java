@@ -16,7 +16,7 @@ import io.rtcore.sip.common.iana.SipMethodId;
 
 @Value.Immutable(builder = false)
 @Value.Style(jdkOnly = true, allowedClasspathAnnotations = { Override.class }, attributeBuilderDetection = true, deepImmutablesDetection = true)
-public interface SipRequestFrame extends SipFrame, WithSipRequestFrame {
+public sealed interface SipRequestFrame extends SipFrame, WithSipRequestFrame permits ImmutableSipRequestFrame {
 
   /**
    * the initial SIP header line. this will always be a request or response.

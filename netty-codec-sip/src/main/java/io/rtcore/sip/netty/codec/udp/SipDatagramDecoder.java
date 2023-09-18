@@ -12,11 +12,11 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import io.rtcore.sip.frame.SipFrame;
 
 @Sharable
-public class DatagramSipFrameDecoder extends MessageToMessageDecoder<DatagramPacket> {
+public class SipDatagramDecoder extends MessageToMessageDecoder<DatagramPacket> {
 
   private final SipFrameDecoder decoder;
 
-  public DatagramSipFrameDecoder(SipFrameDecoder decoder) {
+  public SipDatagramDecoder(SipFrameDecoder decoder) {
     this.decoder = checkNotNull(decoder, "decoder");
   }
 

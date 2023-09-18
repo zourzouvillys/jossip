@@ -40,22 +40,26 @@ public class SipConnections {
   // ---- [ STATEFUL LAYER ] ----
 
   /**
-   * a raw SIP transport will add a Via header when transmitting a request, and remove it from the
-   * response. it can be retrieved if needed using this attribute.
+   * Represents the Via field value associated with a SIP message. This value is added by the SIP
+   * transport when transmitting a request and removed from the response. It can be retrieved if
+   * needed using this attribute.
    *
-   * note that not all transports or response generators will have this attribute - locally
-   * generated responses, or those using an RPC mechanism instead of raw SIP encoding over the wire
-   * may not have one.
+   * <p>
+   * Note that not all transports or response generators will have this attribute. Locally generated
+   * responses or those using an RPC mechanism instead of raw SIP encoding over the wire may not
+   * have this attribute.
    *
-   * an incoming SIP request (over the network) will not remove the top Via.
-   *
+   * <p>
+   * When processing an incoming SIP request received over the network, the top Via field is not
+   * removed from the message, and its value is set using this attribute.
    */
 
   // public static final SipAttributes.Key<Via> ATTR_VIA = SipAttributes.Key.create("local-via");
 
   /**
    * the branch value (without magic cookie) set for incoming and outgoing messages. it is set by
-   * the transport layer before transmission, and extracted from responses.
+   * the transport layer before transmission, and extracted from responses. note that if the branch
+   * does not contain a magic cookie value, then it will not be set.
    *
    * this may also be used for sending a CANCEL, the sender must set the branch-id to the same value
    * as the original INVITE, which is available once a 1xx response has been received.

@@ -6,7 +6,9 @@ plugins {
   id 'com.ryandens.javaagent-application'
   id 'com.ryandens.javaagent-jib'
   id 'application'
+  id 'java-junit-convention'
 }
+
 
 description = 'RTCore SIP: Protocol Gateway'
 
@@ -21,6 +23,7 @@ dependencies {
   implementation project(':gateway-api')
   implementation project(':sip-channels')
   implementation project(':sip-channels-netty')
+  implementation project(':netty-codec-sip')
   implementation 'jakarta.inject:jakarta.inject-api:1.0.5'  
 }
 
@@ -30,8 +33,6 @@ dependencies {
   runtimeOnly libs.logback.classic
   runtimeOnly 'net.logstash.logback:logstash-logback-encoder:7.2'
   //javaagent 'com.datadoghq:dd-java-agent:0.115.0'
-  
-  //
   implementation 'org.zalando:problem:0.27.1'
   implementation 'org.zalando:jackson-datatype-problem:0.27.1'
   
@@ -75,16 +76,18 @@ testing {
 }
 
 dependencies {
+
   testImplementation(platform(testLibs.junit.bom))
   testImplementation('org.junit.jupiter:junit-jupiter')
-  testImplementation testLibs.assert4j.core
-  testImplementation('org.awaitility:awaitility:4.2.0')
-  testImplementation libs.rxjava3
-  testImplementation libs.rxjava3.jdk9interop
-  testImplementation 'com.google.truth:truth:1.1.5'
-  testImplementation 'com.google.truth.extensions:truth-java8-extension:1.1.5'
-  testImplementation 'com.google.truth.extensions:truth-re2j-extension:1.1.5'  
-  testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
+  
+  //testImplementation testLibs.assert4j.core
+  //testImplementation('org.awaitility:awaitility:4.2.0')
+  //testImplementation libs.rxjava3
+  //testImplementation libs.rxjava3.jdk9interop
+  //testImplementation 'com.google.truth:truth:1.1.5'
+  //testImplementation 'com.google.truth.extensions:truth-java8-extension:1.1.5'
+  //testImplementation 'com.google.truth.extensions:truth-re2j-extension:1.1.5'  
+  //testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
 }
 
 

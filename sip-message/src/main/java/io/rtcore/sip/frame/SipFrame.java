@@ -8,7 +8,7 @@ import io.rtcore.sip.common.SipHeaderLine;
 import io.rtcore.sip.common.SipInitialLine;
 import io.rtcore.sip.common.iana.SipMethodId;
 
-public interface SipFrame {
+public sealed interface SipFrame permits SipRequestFrame, SipResponseFrame {
 
   /**
    * the initial SIP header line. this will always be a request or response.

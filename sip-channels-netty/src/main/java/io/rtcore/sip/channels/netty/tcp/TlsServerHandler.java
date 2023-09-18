@@ -19,7 +19,7 @@ import io.netty.handler.codec.haproxy.HAProxyMessageDecoder;
 import io.netty.handler.ssl.SniHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslHandler;
-import io.rtcore.sip.netty.codec.SipCodec;
+import io.rtcore.sip.netty.codec.SipStreamCodec;
 
 class TlsServerHandler extends ChannelInitializer<NioSocketChannel> {
 
@@ -139,7 +139,7 @@ class TlsServerHandler extends ChannelInitializer<NioSocketChannel> {
     //
     // p.addLast(new IdleStateHandler(0, 5, 0));
 
-    p.addLast(new SipCodec());
+    p.addLast(new SipStreamCodec());
     // p.addLast(new SipKeepaliveHandler());
 
     TlsSipConnection conn = this.factory.createConnection(ch);

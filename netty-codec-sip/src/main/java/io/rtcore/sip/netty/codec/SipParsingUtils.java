@@ -27,7 +27,10 @@ import io.rtcore.sip.common.iana.SipMethods;
 import io.rtcore.sip.common.iana.SipStatusCodes;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
 import io.rtcore.sip.message.message.api.NameAddr;
+import io.rtcore.sip.message.message.api.Via;
+import io.rtcore.sip.message.parsers.core.ParseFailureException;
 import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.NameAddrParser;
+import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.ViaParser;
 
 public class SipParsingUtils {
 
@@ -223,6 +226,30 @@ public class SipParsingUtils {
       .map(SipHeaderLine::headerValues)
       .map(NameAddrParser::parse)
       .flatMap(NameAddr::getTag);
+  }
+
+  /**
+   * returns the first Via header field value, if one exists.
+   *
+   * if the Via header field value exists but is not valid, {@link ParseFailureException} is thrown.
+   *
+   * the Parser will stop after the first field value, so no guaruntee is made that the entire
+   * content of the field is valid.
+   *
+   * @param headerLines
+   * @return
+   *
+   * @throws ParseFailureException
+   *           if the first Via field could not be parsed.
+   */
+
+  public static Optional<Via> topVia(final List<SipHeaderLine> headerLines) {
+    return headerLines
+      .stream()
+      .filter(hdr -> hdr.knownHeaderId().orElse(null) == StandardSipHeaders.VIA)
+      .map(SipHeaderLine::headerValues)
+      .findFirst()
+      .map(ViaParser.INSTANCE::parseFirstValue);
   }
 
 }

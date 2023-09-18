@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
@@ -29,7 +28,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.handler.codec.DatagramPacketEncoder;
-import io.netty.util.HashedWheelTimer;
 import io.rtcore.sip.channels.api.SipAttributes;
 import io.rtcore.sip.channels.api.SipClientExchange;
 import io.rtcore.sip.channels.connection.SipConnections;
@@ -45,14 +43,14 @@ import io.rtcore.sip.message.message.api.Via;
 import io.rtcore.sip.message.message.api.ViaProtocol;
 import io.rtcore.sip.message.parameters.impl.DefaultParameters;
 import io.rtcore.sip.netty.codec.SipObjectEncoder;
-import io.rtcore.sip.netty.codec.udp.DatagramSipFrameDecoder;
+import io.rtcore.sip.netty.codec.udp.SipDatagramDecoder;
 import io.rtcore.sip.netty.codec.udp.SipDatagramPacket;
 import io.rtcore.sip.netty.codec.udp.SipFrameDecoder;
 
 public class NettyUdpSocket {
 
   private static final Logger logger = LoggerFactory.getLogger(NettyUdpSocket.class);
-  private final HashedWheelTimer timer = new HashedWheelTimer(50, TimeUnit.MILLISECONDS);
+  // private final HashedWheelTimer timer = new HashedWheelTimer(50, TimeUnit.MILLISECONDS);
 
   private final long keyId = System.currentTimeMillis();
   private final AtomicLong sequences = new AtomicLong(1);
@@ -64,19 +62,19 @@ public class NettyUdpSocket {
     @Override
     public void initChannel(final DatagramChannel channel) {
 
-      ChannelPipeline p = channel.pipeline();
+      final ChannelPipeline p = channel.pipeline();
 
-      p.addLast(new DatagramSipFrameDecoder(new SipFrameDecoder()));
+      p.addLast(new SipDatagramDecoder(new SipFrameDecoder()));
       p.addLast(new DatagramPacketEncoder<>(new SipObjectEncoder()));
 
-      p.addLast(new SimpleChannelInboundHandler<SipDatagramPacket>(SipDatagramPacket.class, true) {
+      p.addLast(new SimpleChannelInboundHandler<>(SipDatagramPacket.class, true) {
 
         @Override
-        protected void channelRead0(ChannelHandlerContext ctx, SipDatagramPacket pkt) throws Exception {
+        protected void channelRead0(final ChannelHandlerContext ctx, final SipDatagramPacket pkt) throws Exception {
           try {
-            listener.accept(pkt);
+            NettyUdpSocket.this.listener.accept(pkt);
           }
-          catch (Exception ex) {
+          catch (final Exception ex) {
             ex.printStackTrace();
           }
         }
@@ -88,11 +86,11 @@ public class NettyUdpSocket {
 
   private final DatagramChannel ch;
 
-  NettyUdpSocket(EventLoopGroup sharedLoop, InetSocketAddress bindAddress, Consumer<SipDatagramRequest> receiver) {
+  NettyUdpSocket(final EventLoopGroup sharedLoop, final InetSocketAddress bindAddress, final Consumer<SipDatagramRequest> receiver) {
 
     this.listener = new ClientBranchListener(receiver);
 
-    Bootstrap bootstrap = new Bootstrap();
+    final Bootstrap bootstrap = new Bootstrap();
 
     Objects.requireNonNull(bindAddress, "bindAddress");
 
@@ -119,7 +117,7 @@ public class NettyUdpSocket {
 
   }
 
-  public static NettyUdpSocket create(EventLoopGroup sharedLoop, InetSocketAddress bindAddress, Consumer<SipDatagramRequest> receiver) {
+  public static NettyUdpSocket create(final EventLoopGroup sharedLoop, final InetSocketAddress bindAddress, final Consumer<SipDatagramRequest> receiver) {
     return new NettyUdpSocket(sharedLoop, bindAddress, receiver);
   }
 
@@ -127,24 +125,24 @@ public class NettyUdpSocket {
     this.ch.close();
   }
 
-  public CompletionStage<?> send(InetSocketAddress recipient, SipFrame frame) {
-    return NettyUtils.toCompletableFuture(ch.writeAndFlush(new DefaultAddressedEnvelope<>(frame, recipient)));
+  public CompletionStage<?> send(final InetSocketAddress recipient, final SipFrame frame) {
+    return NettyUtils.toCompletableFuture(this.ch.writeAndFlush(new DefaultAddressedEnvelope<>(frame, recipient)));
   }
 
-  private ClientBranchId makeKey(SipRequestFrame req, SipAttributes attributes) {
+  private ClientBranchId makeKey(final SipRequestFrame req, final SipAttributes attributes) {
 
-    long seqId = sequences.getAndIncrement();
+    final long seqId = this.sequences.getAndIncrement();
 
-    String key =
+    final String key =
       Hashing.farmHashFingerprint64()
         .newHasher()
-        .putLong(keyId)
+        .putLong(this.keyId)
         .putLong(ThreadLocalRandom.current().nextLong())
         .putLong(seqId)
         .hash()
         .toString();
 
-    String branchId = String.format("%s-%06x", key, seqId);
+    final String branchId = String.format("%s-%06x", key, seqId);
 
     return new ClientBranchId(
       attributes.getOrDefault(SipConnections.ATTR_SENT_BY, HostPort.fromHost("invalid")),
@@ -153,11 +151,11 @@ public class NettyUdpSocket {
 
   }
 
-  public SipClientExchange exchange(InetSocketAddress recipient, SipRequestFrame req, SipAttributes attributes) {
+  public SipClientExchange exchange(final InetSocketAddress recipient, SipRequestFrame req, final SipAttributes attributes) {
 
-    ClientBranchId branchId = makeKey(req, attributes);
+    final ClientBranchId branchId = this.makeKey(req, attributes);
 
-    SipHeaderLine topVia =
+    final SipHeaderLine topVia =
       StandardSipHeaders.VIA
         .ofLine(new Via(
           ViaProtocol.UDP,
@@ -179,20 +177,17 @@ public class NettyUdpSocket {
 
   /**
    * transmit a frame to a recipient until cancelled following a timeout pattern.
-   * 
+   *
    * @return a runnable which should be called to cancel the retransmissions.
-   * 
+   *
    */
 
-  Runnable transmit(InetSocketAddress recipient, SipFrame frame, Iterator<Duration> retransmit) {
+  Runnable transmit(final InetSocketAddress recipient, final SipFrame frame, final Iterator<Duration> retransmit) {
 
     logger.info("transmitting to {}", recipient);
 
     this.send(recipient, frame)
-      .handle((res, err) -> {
-        //
-        return null;
-      });
+      .handle((res, err) -> null);
 
     // todo: actually retransmit...
 
