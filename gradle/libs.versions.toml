@@ -14,7 +14,6 @@ opentelemetry           = "1.30.1"
 slf4j                   = "2.0.9"
 log4j                   = "2.20.0"
 dagger                  = "2.48"
-eclipse-microprofile    = "4.1"
 guava                   = "32.1.2-jre"
 reactor                 = "3.5.10"
 caffeine                = "3.1.8"
@@ -108,10 +107,6 @@ javax-inject = "jakarta.inject:jakarta.inject-api:1.0.3"
 
 ## the jakarta version 1 uses the javax package
 javax-annotation = "jakarta.annotation:jakarta.annotation-api:1.3.5"
-
-## 
-eclipse-microprofile-bom = { module = "org.eclipse.microprofile:microprofile", version.ref = "eclipse-microprofile" }
-eclipse-microprofile-contextPropagation = { module = "org.eclipse.microprofile.context-propagation:microprofile-context-propagation-api", version = "1.3" }
 
 ##
 reactor-core = { module = "io.projectreactor:reactor-core", version.ref = "reactor" }
