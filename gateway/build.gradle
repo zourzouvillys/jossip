@@ -77,7 +77,7 @@ dependencies {
   implementation project(':sip-channels')
   implementation project(':sip-channels-netty')
   implementation project(':netty-codec-sip')
-  implementation 'jakarta.inject:jakarta.inject-api:1.0.5'  
+  implementation 'jakarta.inject:jakarta.inject-api:2.0.1'  
 }
 
 dependencies {
