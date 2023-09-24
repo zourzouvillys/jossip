@@ -16,7 +16,6 @@ log4j                   = "2.20.0"
 dagger                  = "2.48"
 eclipse-microprofile    = "4.1"
 guava                   = "32.1.2-jre"
-rtsip                   = "3.1.0-SNAPSHOT"
 reactor                 = "3.5.10"
 caffeine                = "3.1.8"
 awssdk                  = "2.20.152"
@@ -71,11 +70,6 @@ picocli = { module = "info.picocli:picocli", version.ref = "picocli" }
 ##
 
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
-
-##
-
-rtcore-sip-parser = { module = "io.zrz.rtcore.sip:sip-parser", version.ref = "rtsip" }
-rtcore-sip-channels = { module = "io.zrz.rtcore.sip:sip-channels", version.ref = "rtsip" }
 
 ##
 
