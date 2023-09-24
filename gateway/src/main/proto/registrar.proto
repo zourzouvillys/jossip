@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.rtcore.registrar.proto";
+option java_outer_classname = "RegistrarProto";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+package rtcore.registrar.v1;
+
+
+/**
+ * logical service which handles SIP registration.
+ */
+
+service SipRegistrar {
+
+  // called by a SIP edge instance which receives a REGISTER request.
+  rpc Register(SipRegisterRequest) returns (SipRegisterReply) {}
+
+}
+
+
+message SipBinding {
+  // the URI. this does not include the parameters on the Contact header.
+  string uri = 1;
+  string instance_id = 2;
+  uint32 reg_id = 3;
+  google.protobuf.Timestamp expires = 4;
+  repeated string path = 5;
+}
+
+message SipRegisterRequest {
+
+  // the AOR this REGISTER is for. this is normally in the form 
+  // sip:user@domain. (without port or transport, etc), but could also be a tel URI.
+  string aor = 1;
+
+  // the token for the flow over which the REGISTER was received.
+  string flow_token = 2;
+
+  // the SIP binding to add
+  SipBinding binding = 3;
+
+  // sip Call-ID header
+  string call_id = 11;
+
+  // SIP Cseq sequence header value
+  uint64 sequence = 10;
+
+}
+
+// reply to a REGISTER 
+message SipRegisterReply {
+
+  // all of the bindings for this AOR.
+  repeated SipBinding bindings = 1;
+
+}

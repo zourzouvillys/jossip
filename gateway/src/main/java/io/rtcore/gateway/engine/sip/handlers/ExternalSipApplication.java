@@ -2,6 +2,8 @@ package io.rtcore.gateway.engine.sip.handlers;
 
 import io.rtcore.gateway.engine.sip.SipApplication;
 import io.rtcore.gateway.engine.sip.SipRequestContext;
+import io.rtcore.sip.channels.api.SipAttributes;
+import io.rtcore.sip.frame.SipRequestFrame;
 
 /**
  * SIP application which defers to external handlers.
@@ -14,24 +16,26 @@ import io.rtcore.gateway.engine.sip.SipRequestContext;
 
 public class ExternalSipApplication implements SipApplication {
 
+  ExternalSipApplication() {
+
+  }
+
   /**
    * process the request externally.
-   *
-   * the endpoint handler can provide the response directly, or it can be provided later by
-   * submitting to the request endpoint. this allows for HTTP endpoints which return the response
-   * directly, or by sending a 202 and then POSTing to the request. the later allows SNS, kinesis,
-   * or other endpoints to receive a notification of the request, but trasnsmission of the responses
-   * happen directly between the external handler and us, not as part of the response to the
-   * notification. if async handlers are used, at very least a 100 response needs to be provided for
-   * INVITEs, that contains the endpoint to use for notifying of CANCEL. If it is not provided, a
-   * 100 will be sent by us, and the CANCEL responds with 200 OK, but nothing is done.
-   *
    */
 
   @Override
   public void handleRequest(final SipRequestContext ctx) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented Method: SipApplication.handleRequest invoked.");
+
+  }
+
+  /**
+   * we should only receive in-dialog ACKs, as any for a non-2xx are end-to-end, and thus we don't
+   * transmit them.
+   */
+
+  @Override
+  public void handleAck(final SipRequestFrame ack, final SipAttributes attrs) {
   }
 
 }

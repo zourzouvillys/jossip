@@ -27,6 +27,7 @@ protobuf                = "3.24.3"
 bouncycastle            = "1.70"
 eclipse-jdt-annotations = "2.2.700"
 reactivestreams         = "1.0.4"
+rxgrpc                  = "1.2.4"
 
 ########################################################################################
 [libraries]
@@ -136,11 +137,14 @@ rxjava3-jdk9interop = { module = "com.github.akarnokd:rxjava3-jdk9-interop", ver
 ##
 grpc-bom = { module = "io.grpc:grpc-bom", version.ref = "grpc" }
 grpc-protocGenRpcJava = { module = "io.grpc:protoc-gen-grpc-java", version.ref = "grpc" } 
+
       
 ##
 
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
+protobuf-java-util = { module = "com.google.protobuf:protobuf-java-util", version.ref = "protobuf" }
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
+
 
 
 ##

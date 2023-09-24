@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.rtcore.gateway.proto";
+option java_outer_classname = "GatewayProto";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+package rtcore.gateway.v1;
+
+
+// provides a way to send and receive SIP messages over SIP transports.
+service SipServer {
+
+  // trsansmits a stateful SIP INVITE request and streams the responses. will end once the INVITE transaction is complete.
+  rpc Invite(SipRequest) returns (stream SipResponse) {}  
+
+  // transmits a SIP request (non INVITE) and returns the response, or error.
+  rpc Exchange(SipRequest) returns (SipResponse) {}  
+
+  // transmits a SIP ACK message over a transport. will complete once flushed to the transport.
+  rpc Send(SipAck) returns (google.protobuf.Empty) {}  
+
+}
+
+message SipBody {
+  string content = 1;
+  google.protobuf.Struct attributes = 2;
+}
+
+message SipHeader {
+  string name = 1;
+  repeated string value = 2;
+}
+
+message SipRequest {
+  string method = 1;
+  string uri = 2;
+  repeated SipHeader header = 3;
+  SipBody body = 4;
+  google.protobuf.Struct attributes = 5;
+}
+
+message SipAck {
+  string uri = 1;
+  repeated SipHeader header = 2;
+  SipBody body = 3;
+  google.protobuf.Struct attributes = 4;
+}
+
+message SipResponse {
+  uint32 status_code = 1;
+  string reason_phrase = 2;
+  repeated SipHeader header = 3;
+  SipBody body = 4;
+  google.protobuf.Struct attributes = 5;
+}
+
+/**
+ * stub which provides authentication hanling and other token related operations
+ */
+
+// service AuthProvider {
+
+//   /**
+//    * given a SIP request, creates a session token which can be used to authenticate internal API calls.
+//    */
+
+//   rpc GetSessionToken (AuthRequest) returns (AuthReply) {}
+
+// }
+
+// message GetSessionTokenRequest {
+//   // the authorization headers
+//   repeated string authorization = 1;
+// }
+
+// message GetSessionTokenReply {
+
+//   // if the request was authenticated, this will contain a session token which can be used to authenticate internal API calls.
+//   string session_token = 1;
+
+//   // if the request was not authenticated, this will contain a list of challenges which can be used to authenticate the request.
+//   repeated string challenge = 1;
+
+// }
+
+/**
+ * keeps track of SIP flows, keepalives, and ensuring that flow failure is detected and handled.
+ */
+
+// service FlowManager {
+
+//   rpc CreateFlow(Flow) returns (Flow) {}
+//   rpc GetFlow(FlowId) returns (Flow) {}
+//   rpc DeleteFlow(FlowId) returns (google.protobuf.Empty) {}
+
+// }

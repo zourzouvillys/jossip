@@ -1,5 +1,6 @@
 
 plugins {
+  id 'com.google.protobuf'
   id 'io.rtcore.java'
   id 'io.rtcore.immutables'
   id 'com.google.cloud.tools.jib'
@@ -10,7 +11,59 @@ plugins {
 }
 
 
+protobuf {
+
+  protoc {
+    artifact = "com.google.protobuf:protoc:${libs.versions.protobuf.get()}"
+  }
+  
+  clean {
+    delete protobuf.generatedFilesBaseDir
+  }
+    
+  plugins {
+    grpc {
+      artifact = "io.grpc:protoc-gen-grpc-java:${libs.versions.grpc.get()}"
+    }
+    rxgrpc {
+      artifact = "com.salesforce.servicelibs:rx3grpc:${libs.versions.rxgrpc.get()}"
+    }
+    reactor {
+      artifact = "com.salesforce.servicelibs:reactor-grpc:${libs.versions.rxgrpc.get()}"
+    }
+  }
+  
+  generateProtoTasks {
+    all()*.plugins {
+      grpc {}
+      rxgrpc {}
+      reactor {}
+    }
+  }
+  
+}
+
+
+sourceSets.main.java.srcDir new File(buildDir, 'generated/source/proto/main/grpc')
+sourceSets.main.java.srcDir new File(buildDir, 'generated/source/proto/main/rxgrpc')
+sourceSets.main.java.srcDir new File(buildDir, 'generated/source/proto/main/reactor')
+sourceSets.main.java.srcDir new File(buildDir, 'generated/source/proto/main/java')
+
+
 description = 'RTCore SIP: Protocol Gateway'
+
+dependencies {
+  implementation libs.protobuf.java.util
+  implementation platform(libs.grpc.bom)
+  implementation "io.grpc:grpc-protobuf"
+  implementation "io.grpc:grpc-services"
+  implementation "io.grpc:grpc-stub"
+  implementation 'com.salesforce.servicelibs:rx3grpc-stub:1.2.4'
+  implementation 'com.salesforce.servicelibs:reactor-grpc-stub:1.2.4'
+  runtimeOnly "io.grpc:grpc-netty-shaded"
+  compileOnly "org.apache.tomcat:annotations-api:6.0.53"
+  testImplementation "io.grpc:grpc-testing"
+}
 
 
 dependencies {
@@ -25,6 +78,14 @@ dependencies {
   implementation project(':sip-channels-netty')
   implementation project(':netty-codec-sip')
   implementation 'jakarta.inject:jakarta.inject-api:1.0.5'  
+}
+
+dependencies {
+  // import a BOM
+  implementation platform('io.projectreactor:reactor-bom:2022.0.11') 
+  // define dependencies without versions
+  implementation 'io.projectreactor.netty:reactor-netty-core' 
+  implementation 'io.projectreactor.netty:reactor-netty-http'    
 }
 
 dependencies {

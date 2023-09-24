@@ -1,12 +1,15 @@
 package io.rtcore.gateway;
 
+import java.util.List;
+
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import com.google.common.net.InetAddresses;
 import com.google.common.util.concurrent.ServiceManager;
 
-import io.rtcore.gateway.engine.SipEngineModule;
-import io.rtcore.sip.channels.connection.SipRoute;
+import io.grpc.ServerBuilder;
+import io.rtcore.gateway.engine.grpc.SipGrpcServer;
+import io.rtcore.gateway.engine.grpc.SipServerBase;
+import io.rtcore.gateway.engine.http.server.HttpSipServer;
 import io.rtcore.sip.common.HostPort;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -37,13 +40,25 @@ public class EntryPoint {
   @Command
   public int server(@Parameters(paramLabel = "SIP-PROXY") final HostPort targetSip) {
 
-    final Server server =
-      DaggerServer.builder()
-        .restModule(new RestModule(1188))
-        .sipEngineModule(new SipEngineModule(SipRoute.tcp(InetAddresses.forString(targetSip.host().toAddrString()), targetSip.port().orElse(5060))))
-        .build();
+    // final Server server =
+    // DaggerServer.builder()
+    // .restModule(new RestModule(1188))
+    // .sipEngineModule(new
+    // SipEngineModule(SipRoute.tcp(InetAddresses.forString(targetSip.host().toAddrString()),
+    // targetSip.port().orElse(5060))))
+    // .build();
 
-    final ServiceManager mgr = server.serviceManager();
+    // final ServiceManager mgr = server.serviceManager();
+
+    final ServiceManager mgr =
+      new ServiceManager(
+        List.of(
+          new SipGrpcServer(
+            ServerBuilder.forPort(8881)
+              .directExecutor()
+              .addService(new SipServerBase())),
+          new HttpSipServer(new EmptyExternalSipServer(), 8888)));
+
     mgr.startAsync();
     mgr.awaitHealthy();
     mgr.awaitStopped();

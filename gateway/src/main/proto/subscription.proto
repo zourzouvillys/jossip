@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.rtcore.subscripton.proto";
+option java_outer_classname = "SubscriptionProto";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+package rtcore.subscription.v1;
+
+/**
+ * Handles SIP SUBSCRIBE requests.
+ *
+ * This API is only used for out-of-dialog subscriptions (e.g, not related to a call). 
+ * A SUBSCRIBE received within a SIP dialog is handled the same way as all other 
+ * requests within a dialog.
+ *
+ */
+
+service SubsriptionServer {
+
+  // Subscribe is used to create a new, out of dialog subscription.
+  rpc Subscribe(SubscribeRequest) returns (SubscribeReply) {}
+
+  // Unsubscribe is used to remove a subscription which was previously created.
+  rpc Unsubscribe(UnsubscribeRequest) returns (google.protobuf.Empty) {}
+
+}
+
+message SubscribeRequest {
+}
+
+message SubscribeReply {
+}
+
+message UnsubscribeRequest {
+}
