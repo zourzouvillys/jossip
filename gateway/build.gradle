@@ -115,7 +115,7 @@ dependencies {
   implementation 'org.glassfish.jersey.ext:jersey-bean-validation'
   
   implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
-  implementation 'com.sun.xml.bind:jaxb-osgi:3.0.2'
+  implementation 'com.sun.xml.bind:jaxb-osgi:4.0.3'
   
   implementation platform(libs.jackson.bom)
   implementation 'com.fasterxml.jackson.core:jackson-databind'
