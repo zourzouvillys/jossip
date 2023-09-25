@@ -1,4 +1,3 @@
-import static SourceSet.MAIN_SOURCE_SET_NAME
 
 plugins {
   id 'java-common-convention'
@@ -92,15 +91,15 @@ configurations.runtimeClasspath {
    exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
 }
 
-eclipse.classpath.file.whenMerged { classpath ->
-  classpath.entries.find { it.path == '.apt_generated' }.each {
-    classpath.entries.remove(it)
-  }
-  // ignore compilation warnings in the apt-generated code		
-  def lib = new org.gradle.plugins.ide.eclipse.model.SourceFolder('.apt_generated', null)
-  lib.entryAttributes['ignore_optional_problems'] = true
-  lib.entryAttributes['optional'] = true
-  //lib.entryAttributes['module'] = true
-  classpath.entries.add(lib)  
-}
+// eclipse.classpath.file.whenMerged { classpath ->
+//   classpath.entries.find { it.path == '.apt_generated' }.each {
+//     classpath.entries.remove(it)
+//   }
+//   // ignore compilation warnings in the apt-generated code		
+//   def lib = new org.gradle.plugins.ide.eclipse.model.SourceFolder('.apt_generated', null)
+//   lib.entryAttributes['ignore_optional_problems'] = true
+//   lib.entryAttributes['optional'] = true
+//   //lib.entryAttributes['module'] = true
+//   classpath.entries.add(lib)  
+// }
 

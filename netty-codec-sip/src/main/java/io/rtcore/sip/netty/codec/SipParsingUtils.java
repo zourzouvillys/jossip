@@ -26,15 +26,24 @@ import io.rtcore.sip.common.iana.SipMethodId;
 import io.rtcore.sip.common.iana.SipMethods;
 import io.rtcore.sip.common.iana.SipStatusCodes;
 import io.rtcore.sip.common.iana.StandardSipHeaders;
+import io.rtcore.sip.frame.SipFrameUtils;
+import io.rtcore.sip.message.message.api.CSeq;
 import io.rtcore.sip.message.message.api.NameAddr;
 import io.rtcore.sip.message.message.api.Via;
+import io.rtcore.sip.message.parsers.api.ParserContext;
+import io.rtcore.sip.message.parsers.api.ParserInput;
+import io.rtcore.sip.message.parsers.core.ByteParserInput;
+import io.rtcore.sip.message.parsers.core.DefaultParserContext;
 import io.rtcore.sip.message.parsers.core.ParseFailureException;
+import io.rtcore.sip.message.parsers.core.ParserUtils;
+import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.CSeqParser;
 import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.NameAddrParser;
 import io.rtcore.sip.message.processor.rfc3261.parsing.parsers.headers.ViaParser;
 
 public class SipParsingUtils {
 
-  private static final CharMatcher TOKEN_CHAR = CharMatcher.anyOf("-.!%*_+`'~abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+  private static final CharMatcher TOKEN_CHAR = CharMatcher
+      .anyOf("-.!%*_+`'~abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
   private static final CharMatcher DIGIT_CHAR = CharMatcher.inRange('0', '9');
 
   public static SipInitialLine parseInitialLine(String initialLine) {
@@ -62,8 +71,7 @@ public class SipParsingUtils {
       try {
         final URI uri = new URI(initialLine.substring(idx + 1));
         return ImmutableRequestLine.of(method, uri);
-      }
-      catch (final URISyntaxException e) {
+      } catch (final URISyntaxException e) {
         throw new DecoderException("invalid r-uri");
       }
 
@@ -92,12 +100,12 @@ public class SipParsingUtils {
       throw new DecoderException("missing space after initial response line status code");
     }
 
-    final Optional<String> reason =
-      Optional.ofNullable(initialLine)
+    final Optional<String> reason = Optional.ofNullable(initialLine)
         .filter(line -> line.length() > 4)
         .map(line -> line.substring(4).trim())
         .filter(e -> !e.isBlank())
-        .filter(line -> !Optional.ofNullable(SipStatusCodes.forStatusCode(status)).map(SipStatusCodes::reasonPhrase).orElse("").equals(line));
+        .filter(line -> !Optional.ofNullable(SipStatusCodes.forStatusCode(status)).map(SipStatusCodes::reasonPhrase)
+            .orElse("").equals(line));
 
     return ImmutableResponseLine.of(status, reason);
 
@@ -141,8 +149,7 @@ public class SipParsingUtils {
           throw new TooLongFrameException("header line too long");
         }
 
-      }
-      else {
+      } else {
 
         if (name != null) {
           headers.add(ImmutableSipHeaderLine.of(name, value));
@@ -177,7 +184,8 @@ public class SipParsingUtils {
       value = null;
     }
 
-    // we have a full set of headers, validate and check to see if we are expecting content.
+    // we have a full set of headers, validate and check to see if we are expecting
+    // content.
     // processHeaders(ctx, buffer, out);
 
     // this.headerParser.reset();
@@ -188,8 +196,7 @@ public class SipParsingUtils {
 
   public static OptionalInt readContentLength(final ArrayList<ImmutableSipHeaderLine> headers) {
 
-    final Set<String> contentLengths =
-      headers.stream()
+    final Set<String> contentLengths = headers.stream()
         .filter(e -> e.knownHeaderId().filter(id -> id == StandardSipHeaders.CONTENT_LENGTH).isPresent())
         .map(SipHeaderLine::headerValues)
         .collect(Collectors.toSet());
@@ -221,35 +228,99 @@ public class SipParsingUtils {
 
   public static Optional<String> toTag(final List<SipHeaderLine> headerLines) {
     return headerLines.stream()
-      .filter(e -> e.headerId() == StandardSipHeaders.TO)
-      .findAny()
-      .map(SipHeaderLine::headerValues)
-      .map(NameAddrParser::parse)
-      .flatMap(NameAddr::getTag);
+        .filter(e -> e.headerId() == StandardSipHeaders.TO)
+        .findAny()
+        .map(SipHeaderLine::headerValues)
+        .map(NameAddrParser::parse)
+        .flatMap(NameAddr::getTag);
   }
 
   /**
    * returns the first Via header field value, if one exists.
    *
-   * if the Via header field value exists but is not valid, {@link ParseFailureException} is thrown.
+   * if the Via header field value exists but is not valid,
+   * {@link ParseFailureException} is thrown.
    *
-   * the Parser will stop after the first field value, so no guaruntee is made that the entire
+   * the Parser will stop after the first field value, so no guaruntee is made
+   * that the entire
    * content of the field is valid.
    *
    * @param headerLines
    * @return
    *
    * @throws ParseFailureException
-   *           if the first Via field could not be parsed.
+   *                               if the first Via field could not be parsed.
    */
 
   public static Optional<Via> topVia(final List<SipHeaderLine> headerLines) {
     return headerLines
-      .stream()
-      .filter(hdr -> hdr.knownHeaderId().orElse(null) == StandardSipHeaders.VIA)
-      .map(SipHeaderLine::headerValues)
-      .findFirst()
-      .map(ViaParser.INSTANCE::parseFirstValue);
+        .stream()
+        .filter(hdr -> hdr.knownHeaderId().orElse(null) == StandardSipHeaders.VIA)
+        .map(SipHeaderLine::headerValues)
+        .findFirst()
+        .map(ViaParser.INSTANCE::parseFirstValue);
+  }
+
+  public static Optional<CSeq> cseq(List<SipHeaderLine> headerLines) {
+    return headerLines.stream()
+        .filter(e -> e.headerId() == StandardSipHeaders.CSEQ)
+        .findAny()
+        .map(SipHeaderLine::headerValues)
+        .map(CSeqParser.INSTANCE::parseValue);
+  }
+
+  public static record TopViaRemovalResult(Optional<Via> topVia, List<SipHeaderLine> headers) {
+  }
+
+  public static TopViaRemovalResult removeTopViaHeader(List<SipHeaderLine> headerLines) {
+
+    int topViaIndex = -1;
+
+    for (int i = 0; i < headerLines.size(); i++) {
+      if (headerLines.get(i).headerId() == StandardSipHeaders.VIA) {
+        topViaIndex = i;
+        break;
+      }
+    }
+
+    if (topViaIndex == -1) {
+      // there is no Via
+      return new TopViaRemovalResult(Optional.empty(), headerLines);
+    }
+
+    String topViaValue = headerLines.get(topViaIndex).headerValues();
+
+    final ParserInput input = ByteParserInput.fromString(topViaValue);
+    final ParserContext ctx = new DefaultParserContext(input);
+
+    Via topVia = ctx.read(ViaParser.INSTANCE);
+
+    if (ctx.skip(ParserUtils.COMMA)) {
+
+      // we have more ... so we need to modify this header line to include all except
+      // the first one we just extracted.
+
+      List<SipHeaderLine> mutated = new ArrayList<>(headerLines);
+
+      CharSequence remaining = ctx.subSequence(ctx.position(), ctx.length());
+      mutated.set(topViaIndex, StandardSipHeaders.VIA.ofLine(remaining.toString()));
+
+      return new TopViaRemovalResult(Optional.of(topVia), mutated);
+
+    } else if (ctx.remaining() > 0) {
+
+      // more bytes, but we didn't have a COMMA so this is broken value.
+      throw new ParseFailureException("invalid top Via header value");
+
+    } else {
+
+      // no more, so we can jsut remove the first value
+      List<SipHeaderLine> mutated = new ArrayList<>(headerLines);
+      mutated.remove(topViaIndex);
+      return new TopViaRemovalResult(Optional.of(topVia), mutated);
+
+    }
+
   }
 
 }

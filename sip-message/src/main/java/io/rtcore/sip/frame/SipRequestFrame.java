@@ -13,9 +13,9 @@ import io.rtcore.sip.common.SipHeaders;
 import io.rtcore.sip.common.SipInitialLine;
 import io.rtcore.sip.common.iana.SipMethodId;
 
-
 @Value.Immutable(builder = false)
-@Value.Style(jdkOnly = true, allowedClasspathAnnotations = { Override.class }, attributeBuilderDetection = true, deepImmutablesDetection = true)
+@Value.Style(jdkOnly = true, allowedClasspathAnnotations = {
+    Override.class }, attributeBuilderDetection = true, deepImmutablesDetection = true)
 public sealed interface SipRequestFrame extends SipFrame, WithSipRequestFrame permits ImmutableSipRequestFrame {
 
   /**
@@ -47,11 +47,17 @@ public sealed interface SipRequestFrame extends SipFrame, WithSipRequestFrame pe
   }
 
   static SipRequestFrame of(final SipMethodId method, final URI ruri, final SipHeaders headers) {
-    return ImmutableSipRequestFrame.of(ImmutableRequestLine.of(method, ruri), List.copyOf(headers.lines()), Optional.empty());
+    return ImmutableSipRequestFrame.of(ImmutableRequestLine.of(method, ruri), List.copyOf(headers.lines()),
+        Optional.empty());
   }
 
   static SipRequestFrame of(final SipMethodId method, final URI ruri, final Collection<SipHeaderLine> headers) {
     return ImmutableSipRequestFrame.of(ImmutableRequestLine.of(method, ruri), List.copyOf(headers), Optional.empty());
+  }
+
+  static SipRequestFrame of(final SipMethodId method, final URI ruri, final Collection<SipHeaderLine> headers,
+      Optional<String> body) {
+    return ImmutableSipRequestFrame.of(ImmutableRequestLine.of(method, ruri), List.copyOf(headers), body);
   }
 
 }

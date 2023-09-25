@@ -24,12 +24,12 @@ task immutables(type: JavaCompile, group: 'build', description: 'Generates the i
   classpath = configurations.compileClasspath
   options.annotationProcessorPath = configurations.immutablesAnnotationProcessor             
   options.compilerArgs = [ '-proc:only', '-implicit:none' ]    
-  destinationDirectory = file("$buildDir/generated/sources/immutables")
+  destinationDirectory = file("$buildDir/generated/sources/immutables-javadoc")
 }
 
 tasks.named('javadoc', Javadoc) {
   source = [
-    file("$buildDir/generated/sources/immutables"),
+    file("$buildDir/generated/sources/immutables-javadoc"),
     sourceSets.main.allJava,
   ]
   dependsOn immutables

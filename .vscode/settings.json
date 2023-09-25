@@ -1,3 +1,7 @@
 {
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.project.explorer.showNonJavaResources": false,
+  "java.dependency.autoRefresh": true,
+  "java.dependency.syncWithFolderExplorer": true
 }

@@ -63,6 +63,7 @@ dependencies {
   runtimeOnly "io.grpc:grpc-netty-shaded"
   compileOnly "org.apache.tomcat:annotations-api:6.0.53"
   testImplementation "io.grpc:grpc-testing"
+  implementation 'org.apache.commons:commons-rng-core:1.5'
 }
 
 
@@ -77,7 +78,7 @@ dependencies {
   implementation project(':sip-channels')
   implementation project(':sip-channels-netty')
   implementation project(':netty-codec-sip')
-  implementation 'jakarta.inject:jakarta.inject-api:1.0.5'  
+  implementation libs.javax.inject
 }
 
 dependencies {

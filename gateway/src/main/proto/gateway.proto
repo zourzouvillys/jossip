@@ -9,25 +9,49 @@ import "google/protobuf/struct.proto";
 
 package rtcore.gateway.v1;
 
+/**
+ * SIP exchange message.
+ */
+
+message SipExchangeRequest {
+
+  // the message to exchange.
+  SipRequest frame = 1;
+
+  // the connection ID this request was received on (for incoming), or that it should be sent on (for outgoing).
+  string connection_id = 2;
+
+}
+
+/**
+ * a SIP message exchange communicates the status of the exchange along with any responses or connection
+ * failures via a stream of SipExchangeEvent messages.  The SIP responses will follow the standard SIP 
+ * response logic, and will be sent in order.enum
+ * 
+ * The exchange will complete once the SIP transaction is complete.
+ */
+
+message SipExchangeReply {
+  oneof event {
+    SipResponse frame = 1;
+  }
+}
+
 
 // provides a way to send and receive SIP messages over SIP transports.
 service SipServer {
 
-  // trsansmits a stateful SIP INVITE request and streams the responses. will end once the INVITE transaction is complete.
-  rpc Invite(SipRequest) returns (stream SipResponse) {}  
-
   // transmits a SIP request (non INVITE) and returns the response, or error.
-  rpc Exchange(SipRequest) returns (SipResponse) {}  
-
-  // transmits a SIP ACK message over a transport. will complete once flushed to the transport.
-  rpc Send(SipAck) returns (google.protobuf.Empty) {}  
+  rpc Exchange(SipExchangeRequest) returns (stream SipExchangeReply) {}
 
 }
 
 message SipBody {
-  string content = 1;
-  google.protobuf.Struct attributes = 2;
+
+  bytes binary = 1;
+
 }
+
 
 message SipHeader {
   string name = 1;
@@ -39,15 +63,8 @@ message SipRequest {
   string uri = 2;
   repeated SipHeader header = 3;
   SipBody body = 4;
-  google.protobuf.Struct attributes = 5;
 }
 
-message SipAck {
-  string uri = 1;
-  repeated SipHeader header = 2;
-  SipBody body = 3;
-  google.protobuf.Struct attributes = 4;
-}
 
 message SipResponse {
   uint32 status_code = 1;
@@ -56,44 +73,3 @@ message SipResponse {
   SipBody body = 4;
   google.protobuf.Struct attributes = 5;
 }
-
-/**
- * stub which provides authentication hanling and other token related operations
- */
-
-// service AuthProvider {
-
-//   /**
-//    * given a SIP request, creates a session token which can be used to authenticate internal API calls.
-//    */
-
-//   rpc GetSessionToken (AuthRequest) returns (AuthReply) {}
-
-// }
-
-// message GetSessionTokenRequest {
-//   // the authorization headers
-//   repeated string authorization = 1;
-// }
-
-// message GetSessionTokenReply {
-
-//   // if the request was authenticated, this will contain a session token which can be used to authenticate internal API calls.
-//   string session_token = 1;
-
-//   // if the request was not authenticated, this will contain a list of challenges which can be used to authenticate the request.
-//   repeated string challenge = 1;
-
-// }
-
-/**
- * keeps track of SIP flows, keepalives, and ensuring that flow failure is detected and handled.
- */
-
-// service FlowManager {
-
-//   rpc CreateFlow(Flow) returns (Flow) {}
-//   rpc GetFlow(FlowId) returns (Flow) {}
-//   rpc DeleteFlow(FlowId) returns (google.protobuf.Empty) {}
-
-// }

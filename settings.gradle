@@ -29,25 +29,25 @@ pluginManagement {
 
 rootProject.name = 'jossip'
 
-include('sip-message')
-include('sip-parser')
+include(':sip-message')
+include(':sip-parser')
 
-include('sip-channels')
-include('sip-channels-netty')
-include('sip-channels-proxy')
+include(':sip-channels')
+include(':sip-channels-netty')
+include(':sip-channels-proxy')
 
-include('netty-codec-sip')
+include(':netty-codec-sip')
 
 // include('user-agent')
 
-include('dns-resolver')
+include(':dns-resolver')
 
-include('gateway')
-include('gateway-api')
-include('gateway-client')
+include(':gateway')
+include(':gateway-api')
+include(':gateway-client')
 
-include('docs')
-include('bom')
+include(':docs')
+include(':bom')
 
 // ---
 

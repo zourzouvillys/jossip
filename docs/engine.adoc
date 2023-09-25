@@ -1,0 +1,13 @@
+== Core Engine
+
+The Core Engine is the equvilent of a SIP transaction user in RFC 3261. It is responsible for handling incoming SIP messages and dispatching them to the appropriate SIP transaction. It is also responsible for creating SIP transactions and dispatching them to the appropriate SIP transport layer components.
+
+Although the core engine supports any SIP method, there are a common set of use cases outside of requests within a dialog (e.g, after initial INVITE):
+
+* REGISTER
+* Subscription Creation
+* Initial INVITE / CANCEL
+* Non-Invite SIP request/response
+
+The engine itself is not responsible for handling the SIP dialog state machine, as this is handled by the transport layer.  It uses the Exchange API to intiate outgoing SIP transactions.
+

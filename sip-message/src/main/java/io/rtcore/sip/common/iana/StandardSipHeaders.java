@@ -54,9 +54,9 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 
 import io.rtcore.sip.common.SipHeaderLine;
 
@@ -481,9 +481,8 @@ public enum StandardSipHeaders implements SipHeaderId {
     this.normalized = value.toLowerCase();
     this.compact = compact;
     this.spec = spec;
-    this.names =
-      compact == null ? ImmutableSet.of(value)
-                      : ImmutableSet.of(value, compact.toString());
+    this.names = compact == null ? ImmutableSet.of(value)
+        : ImmutableSet.of(value, compact.toString());
 
     this.id = URI.create(spec.urn() + ":" + this.normalized);
 
@@ -553,6 +552,12 @@ public enum StandardSipHeaders implements SipHeaderId {
 
   public Predicate<SipHeaderLine> typeMatcher() {
     return this.typeMatcher;
+  }
+
+  public Iterable<?> all(Iterable<SipHeaderLine> headers) {
+    return Iterables.transform(
+        Iterables.filter(headers, this.typeMatcher::test),
+        SipHeaderLine::headerValues);
   }
 
 }
