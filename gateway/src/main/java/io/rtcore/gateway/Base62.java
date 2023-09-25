@@ -96,8 +96,8 @@ public final class Base62 {
   public static byte[] base62Decode(final String s) {
     return IntStream.range(0, s.length())
       .mapToObj(s::charAt)
-      .map(Base62::indexOf)
-      .map(BigInteger::valueOf)
+      .map(c -> Base62.indexOf(c))
+      .map(c -> BigInteger.valueOf(c))
       .reduce(ZERO, (result, index) -> result.multiply(BASE).add(index))
       .toByteArray();
   }
