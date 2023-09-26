@@ -46,7 +46,7 @@ public class EntryPoint {
   }
 
   @Command
-  public int client() {
+  public int client(@Parameters(paramLabel = "SIP-PROXY") final HostPort target) {
 
     Channel ch = ManagedChannelBuilder.forAddress("localhost", 8881)
         .usePlaintext()
@@ -61,7 +61,7 @@ public class EntryPoint {
     List<SipHeaderLine> headers = new ArrayList<>();
 
     client
-        .exchange(SipRequestFrame.of(SipMethods.REGISTER, URI.create("sip:invalid"), headers))
+        .exchange(SipRequestFrame.of(SipMethods.REGISTER, URI.create("sip:invalid"), headers), target.toUriString())
         .blockingForEach(System.out::println);
 
     return 0;
@@ -73,7 +73,7 @@ public class EntryPoint {
    */
 
   @Command
-  public int server(@Parameters(paramLabel = "SIP-PROXY") final HostPort targetSip) {
+  public int server(@Parameters(paramLabel = "LISTEN", defaultValue = "0.0.0.0") final String listen) {
 
     // final Server server =
     // DaggerServer.builder()

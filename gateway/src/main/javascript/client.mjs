@@ -5,10 +5,10 @@ const packageDefinition = protoLoader.loadSync(
     '../proto/gateway.proto',
     {
         keepCase: false,
-        longs: String,
+        longs: Number,
         enums: String,
         defaults: true,
-        oneofs: true
+        oneofs: true,
     }
 );
 
@@ -31,7 +31,7 @@ export default class SipClient {
             call.on('data', data => message = data);
 
             call.on('end', function () {
-                console.log('END');
+                // console.log('END');
             });
 
             call.on('error', function (e) {

@@ -54,7 +54,7 @@ public class SipGrpcClient {
 
         // iterate over headerLines
         for (SipHeaderLine h : request.headerLines()) {
-            b.addHeader(SipHeader.newBuilder().setName(h.headerName()).addValue(h.headerValues()).build());
+            b.addHeaders(SipHeader.newBuilder().setName(h.headerName()).addValues(h.headerValues()).build());
         }
 
         return b.build();

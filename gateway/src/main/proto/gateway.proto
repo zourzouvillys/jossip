@@ -55,13 +55,13 @@ message SipBody {
 
 message SipHeader {
   string name = 1;
-  repeated string value = 2;
+  repeated string values = 2;
 }
 
 message SipRequest {
   string method = 1;
   string uri = 2;
-  repeated SipHeader header = 3;
+  repeated SipHeader headers = 3;
   SipBody body = 4;
 }
 
@@ -69,7 +69,7 @@ message SipRequest {
 message SipResponse {
   uint32 status_code = 1;
   string reason_phrase = 2;
-  repeated SipHeader header = 3;
+  repeated SipHeader headers = 3;
   SipBody body = 4;
   google.protobuf.Struct attributes = 5;
 }

@@ -18,13 +18,13 @@ async function main() {
 
   const client = new SipClient(server);
 
-  for (let i = 0; i < 1; ++i) {
+  for (let i = 0; i < 3; ++i) {
     performance.mark('A');
     const answer = await client.exchange(target, {
       method: 'REGISTER',
       uri: 'sip:test',
       headers: [
-        { key: 'Via', value: 'SIP/2.0/UDP' }
+        { name: 'via', values: ['SIP/2.0/UDP invalid;branch=xyz'] }
       ]
     });
     console.log(toSIP(answer.frame))

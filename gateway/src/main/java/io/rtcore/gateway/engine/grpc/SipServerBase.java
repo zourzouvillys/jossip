@@ -159,7 +159,7 @@ public class SipServerBase extends Rx3SipServerGrpc.SipServerImplBase {
     return SipRequestFrame.of(
         SipMethods.toMethodId(frame.getMethod()),
         URI.create(frame.getUri()),
-        makeHeaders(frame.getHeaderList()),
+        makeHeaders(frame.getHeadersList()),
         Optional.ofNullable(frame.getBody().getBinary()).map(b -> b.toString(StandardCharsets.UTF_8)));
   }
 
@@ -178,7 +178,7 @@ public class SipServerBase extends Rx3SipServerGrpc.SipServerImplBase {
     b.setStatusCode(frame.initialLine().code());
     frame.initialLine().reason().ifPresent(b::setReasonPhrase);
 
-    b.addAllHeader(toProto(frame.headerLines()));
+    b.addAllHeaders(toProto(frame.headerLines()));
 
     frame.body().ifPresent(body -> b.setBody(SipBody.newBuilder().setBinary(ByteString.copyFromUtf8(body))));
 
@@ -188,12 +188,12 @@ public class SipServerBase extends Rx3SipServerGrpc.SipServerImplBase {
 
   private Iterable<? extends SipHeader> toProto(List<SipHeaderLine> headerLines) {
     return headerLines.stream()
-        .map(h -> SipHeader.newBuilder().setName(h.headerName()).addValue(h.headerValues()).build())
+        .map(h -> SipHeader.newBuilder().setName(h.headerName()).addValues(h.headerValues()).build())
         .toList();
   }
 
   private List<SipHeaderLine> makeHeaders(List<SipHeader> headerList) {
-    Function<SipHeader, Stream<SipHeaderLine>> f = h -> h.getValueList().stream()
+    Function<SipHeader, Stream<SipHeaderLine>> f = h -> h.getValuesList().stream()
         .map(v -> SipHeaderLine.of(h.getName(), v));
     return headerList.stream().flatMap(f).toList();
   }

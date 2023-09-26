@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.rtcore.gateway.auth.proto";
+option java_outer_classname = "AuthProto";
+
+package rtcore.auth.v1;
+
+
+// provides verification and signing of SIP requests.
+// note: does not handle Auth-Info.  but does anyone even support sending it?!
+service DigestAuthService {
+
+    // calculates a challenge to send
+    rpc Challenge Authenticate(ChallengeContext);
+
+    // verify a challenge response
+    rpc VerifyReply GetCredentials(VerifyContext);
+
+}
+
+/**
+ * generate a authorization challenge for a request that will be included in the SIP response.
+ */
+
+message ChallengeContext {
+    // any Authorization/Proxy-Authorization headers we got in a request.
+    repeated string authorization = 1;
+    string method = 1;
+    string uri = 2;
+    string body = 3;
+}
+
+// will either be a success along with a principal, or a challenge to send.
+message Challenge {
+    message AuthSuccess {
+        repeated string principal = 1;
+    }
+    message AuthRequired {
+        // Proxy-Authenticate or WWW-Authenticate headers. 
+        repeated string authenticate = 1;
+    }
+    oneof result {
+        AuthSuccess success = 1;
+        AuthRequired unauthenticated = 2;
+    }
+
+}
+
+// when we need credentials, for example when we get a 401/407.
+message GetCredentials {
+    // the principal we're authenticating
+    string principal = 1;
+    // the Proxy-Authenticate or WWW-Authenticate headers received.
+    repeated string authenticate = 2;
+}
+
+// the Authorization/Proxy-Authorization headers to send.
+message VerifyReply {
+    string authorization = 1;
+}
