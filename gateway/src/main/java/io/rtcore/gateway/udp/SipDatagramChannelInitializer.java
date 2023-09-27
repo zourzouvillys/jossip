@@ -11,6 +11,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.handler.codec.DatagramPacketEncoder;
+import io.netty.handler.logging.LoggingHandler;
 import io.rtcore.sip.netty.codec.SipObjectEncoder;
 import io.rtcore.sip.netty.codec.udp.SipDatagramDecoder;
 import io.rtcore.sip.netty.codec.udp.SipDatagramPacket;
@@ -37,7 +38,8 @@ class SipDatagramChannelInitializer extends ChannelInitializer<DatagramChannel> 
   }
 
   /**
-   * the handler which gets added to the channel, to deliver the packets to the handler.
+   * the handler which gets added to the channel, to deliver the packets to the
+   * handler.
    */
 
   private class PacketHandler extends SimpleChannelInboundHandler<SipDatagramPacket> {
@@ -49,9 +51,10 @@ class SipDatagramChannelInitializer extends ChannelInitializer<DatagramChannel> 
     @Override
     protected void channelRead0(final ChannelHandlerContext ctx, final SipDatagramPacket pkt) throws Exception {
       try {
-        SipDatagramChannelInitializer.this.receiver.receiveDatagramFrame(SipDatagramChannelInitializer.this.socket, pkt);
-      }
-      catch (final Exception ex) {
+        SipDatagramChannelInitializer.this.receiver.receiveDatagramFrame(
+            SipDatagramChannelInitializer.this.socket,
+            pkt);
+      } catch (final Exception ex) {
         // it is an error for the handler to throw an exception.
         LOG.error("datagram handler {} threw unexpected error", SipDatagramChannelInitializer.this.receiver, ex);
       }

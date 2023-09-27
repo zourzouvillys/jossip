@@ -19,50 +19,56 @@ import io.rtcore.sip.common.SipHeaderLine;
 import io.rtcore.sip.common.SipInitialLine.RequestLine;
 import io.rtcore.sip.frame.SipRequestFrame;
 
-public class SipGrpcClient {
+public class SipGrpcClient
+{
 
-    private static final Logger LOG = LoggerFactory.getLogger(SipGrpcClient.class);
-    private final RxSipServerStub stub;
+  private static final Logger LOG = LoggerFactory.getLogger(SipGrpcClient.class);
+  private final RxSipServerStub stub;
 
-    private SipGrpcClient(Channel channel) {
-        this.stub = Rx3SipServerGrpc.newRxStub(channel);
+  private SipGrpcClient(Channel channel)
+  {
+    this.stub = Rx3SipServerGrpc.newRxStub(channel);
+  }
+
+  public Flowable<SipExchangeReply> exchange(SipRequestFrame request, String connectionId)
+  {
+    SipExchangeRequest req = SipExchangeRequest.newBuilder()
+        .setFrame(makeRequestFrame(request))
+        .setConnectionId(connectionId)
+        .build();
+    LOG.debug("exchanging SIP request: {}", req);
+    return this.stub
+        .exchange(Single.just(req))
+        .doOnEach(e -> LOG.info("response event", e));
+  }
+
+  private SipRequest makeRequestFrame(SipRequestFrame request)
+  {
+
+    SipRequest.Builder b = SipRequest.newBuilder();
+    RequestLine i = request.initialLine();
+
+    b.setMethod(i.method().token());
+    b.setUri(i.uri().toASCIIString());
+
+    // only set if we discxover a body ...
+    request.body().map(ByteString::copyFromUtf8)
+        .map(value -> SipBody.newBuilder().setBinary(value))
+        .ifPresent(b::setBody);
+
+    // iterate over headerLines
+    for (SipHeaderLine h : request.headerLines())
+    {
+      b.addHeaders(SipHeader.newBuilder().setName(h.headerName()).addValues(h.headerValues()).build());
     }
 
-    public Flowable<SipExchangeReply> exchange(SipRequestFrame request, String connectionId) {
-        SipExchangeRequest req = SipExchangeRequest.newBuilder()
-                .setFrame(makeRequestFrame(request))
-                .setConnectionId(connectionId)
-                .build();
-        LOG.debug("exchanging SIP request: {}", req);
-        return this.stub
-                .exchange(Single.just(req))
-                .doOnEach(e -> LOG.info("response event", e));
-    }
+    return b.build();
 
-    private SipRequest makeRequestFrame(SipRequestFrame request) {
+  }
 
-        SipRequest.Builder b = SipRequest.newBuilder();
-        RequestLine i = request.initialLine();
-
-        b.setMethod(i.method().token());
-        b.setUri(i.uri().toASCIIString());
-
-        // only set if we discxover a body ...
-        request.body().map(ByteString::copyFromUtf8)
-                .map(value -> SipBody.newBuilder().setBinary(value))
-                .ifPresent(b::setBody);
-
-        // iterate over headerLines
-        for (SipHeaderLine h : request.headerLines()) {
-            b.addHeaders(SipHeader.newBuilder().setName(h.headerName()).addValues(h.headerValues()).build());
-        }
-
-        return b.build();
-
-    }
-
-    public static SipGrpcClient create(Channel channel) {
-        return new SipGrpcClient(channel);
-    }
+  public static SipGrpcClient create(Channel channel)
+  {
+    return new SipGrpcClient(channel);
+  }
 
 }

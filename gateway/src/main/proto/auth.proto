@@ -12,10 +12,10 @@ package rtcore.auth.v1;
 service DigestAuthService {
 
     // calculates a challenge to send
-    rpc Challenge Authenticate(ChallengeContext);
+    // rpc Authenticate(ChallengeContext) returns (Challenge) {};
 
     // verify a challenge response
-    rpc VerifyReply GetCredentials(VerifyContext);
+    rpc GetAuthorizationToken(GetAuthorizationRequest) returns (AuthorizationToken) {};
 
 }
 
@@ -23,39 +23,54 @@ service DigestAuthService {
  * generate a authorization challenge for a request that will be included in the SIP response.
  */
 
-message ChallengeContext {
-    // any Authorization/Proxy-Authorization headers we got in a request.
-    repeated string authorization = 1;
-    string method = 1;
-    string uri = 2;
-    string body = 3;
-}
+// message ChallengeContext {
+//     // any Authorization/Proxy-Authorization headers we got in a request.
+//     repeated string authorization = 1;
+//     string method = 2;
+//     string uri = 3;
+//     string body = 4;
+// }
 
-// will either be a success along with a principal, or a challenge to send.
-message Challenge {
-    message AuthSuccess {
-        repeated string principal = 1;
-    }
-    message AuthRequired {
-        // Proxy-Authenticate or WWW-Authenticate headers. 
-        repeated string authenticate = 1;
-    }
-    oneof result {
-        AuthSuccess success = 1;
-        AuthRequired unauthenticated = 2;
-    }
+// // will either be a success along with a principal, or a challenge to send.
+// message Challenge {
+//     message AuthSuccess {
+//         repeated string principal = 1;
+//     }
+//     message AuthRequired {
+//         // Proxy-Authenticate or WWW-Authenticate headers. 
+//         repeated string authenticate = 1;
+//     }
+//     oneof result {
+//         AuthSuccess success = 1;
+//         AuthRequired unauthenticated = 2;
+//     }
 
-}
+// }
 
 // when we need credentials, for example when we get a 401/407.
-message GetCredentials {
-    // the principal we're authenticating
+message GetAuthorizationRequest {
+
+    // the principal we want authentication for
     string principal = 1;
+
     // the Proxy-Authenticate or WWW-Authenticate headers received.
-    repeated string authenticate = 2;
+    repeated string challenges = 2;
+
+    // optional, the authentication realm to allow.
+    string realm = 3;
+
+    // SIP method of our request.
+    string method = 4;
+
+    // the R-URI we're sending to.
+    string uri = 5;
+
+    // body we are sending, or empty string.
+    string body = 6;
+
 }
 
 // the Authorization/Proxy-Authorization headers to send.
-message VerifyReply {
-    string authorization = 1;
+message AuthorizationToken {
+    repeated string authorizations = 1;
 }

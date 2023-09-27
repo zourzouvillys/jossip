@@ -25,7 +25,6 @@ dependencies {
   
   //
   implementation libs.slf4j.api
-  runtimeOnly libs.slf4j.simple
   
   //  
   api platform(libs.netty.bom)

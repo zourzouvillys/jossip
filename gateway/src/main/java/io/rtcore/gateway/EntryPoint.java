@@ -7,18 +7,21 @@ import java.util.List;
 
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
+import com.google.common.base.Strings;
 import com.google.common.net.InetAddresses;
 import com.google.common.util.concurrent.ServiceManager;
 
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.ServerBuilder;
+import io.rtcore.gateway.engine.grpc.DigestCredentialsServer;
 import io.rtcore.gateway.engine.grpc.SipGrpcServer;
 import io.rtcore.gateway.engine.grpc.SipServerBase;
 import io.rtcore.gateway.engine.grpc.client.SipGrpcClient;
 import io.rtcore.gateway.engine.sip.NetworkSegment;
 import io.rtcore.gateway.udp.SipDatagramClientManager;
 import io.rtcore.gateway.udp.SipDatagramSocket;
+import io.rtcore.gateway.udp.SipSocketUtils;
 import io.rtcore.sip.common.HostPort;
 import io.rtcore.sip.common.SipHeaderLine;
 import io.rtcore.sip.common.iana.SipMethods;
@@ -48,21 +51,22 @@ public class EntryPoint {
   @Command
   public int client(@Parameters(paramLabel = "SIP-PROXY") final HostPort target) {
 
-    Channel ch = ManagedChannelBuilder.forAddress("localhost", 8881)
+    final Channel ch =
+      ManagedChannelBuilder.forAddress("localhost", 8881)
         .usePlaintext()
         .directExecutor()
         .maxInboundMessageSize(1024 * 1024 * 1024)
         .maxInboundMetadataSize(1024 * 1024 * 1024)
         .build();
 
-    SipGrpcClient client = SipGrpcClient.create(ch);
+    final SipGrpcClient client = SipGrpcClient.create(ch);
 
     // all the headers to add.
-    List<SipHeaderLine> headers = new ArrayList<>();
+    final List<SipHeaderLine> headers = new ArrayList<>();
 
     client
-        .exchange(SipRequestFrame.of(SipMethods.REGISTER, URI.create("sip:invalid"), headers), target.toUriString())
-        .blockingForEach(System.out::println);
+      .exchange(SipRequestFrame.of(SipMethods.REGISTER, URI.create("sip:invalid"), headers), target.toUriString())
+      .blockingForEach(System.out::println);
 
     return 0;
 
@@ -73,7 +77,11 @@ public class EntryPoint {
    */
 
   @Command
-  public int server(@Parameters(paramLabel = "LISTEN", defaultValue = "0.0.0.0") final String listen) {
+  public int server(@Parameters(paramLabel = "LISTEN", defaultValue = "") String listen) {
+
+    if (Strings.isNullOrEmpty(listen)) {
+      listen = SipSocketUtils.getDefaultAddress().map(InetAddresses::toAddrString).orElse(null);
+    }
 
     // final Server server =
     // DaggerServer.builder()
@@ -89,19 +97,24 @@ public class EntryPoint {
       System.err.println("got request" + ctx);
     });
 
-    SipDatagramSocket udp = SipDatagramSocket.create(b -> b
-        .bindAddress(new InetSocketAddress(InetAddresses.forString("0.0.0.0"), 0))
+    final InetSocketAddress bindAddress = new InetSocketAddress(InetAddresses.forString(listen), 12133);
+
+    final SipDatagramSocket udp =
+      SipDatagramSocket.create(b -> b
+        .bindAddress(bindAddress)
         .messageHandler(segment.new DatagramMessageReceiverAdapter()))
         .bindNow();
 
-    SipDatagramClientManager client = new SipDatagramClientManager(segment, udp);
+    final SipDatagramClientManager client = new SipDatagramClientManager(segment, udp);
 
-    final ServiceManager mgr = new ServiceManager(
+    final ServiceManager mgr =
+      new ServiceManager(
         List.of(
-            new SipGrpcServer(
-                ServerBuilder.forPort(8881)
-                    .directExecutor()
-                    .addService(new SipServerBase(client)))));
+          new SipGrpcServer(
+            ServerBuilder.forPort(8881)
+              .directExecutor()
+              .addService(new DigestCredentialsServer())
+              .addService(new SipServerBase(client)))));
 
     // new HttpSipServer(new EmptyExternalSipServer(), 8888)
 
@@ -123,7 +136,7 @@ public class EntryPoint {
 
   public static void main(final String[] args) {
     System.exit(
-        new CommandLine(new EntryPoint()).registerConverter(HostPort.class, new HostPortConverter()).execute(args));
+      new CommandLine(new EntryPoint()).registerConverter(HostPort.class, new HostPortConverter()).execute(args));
   }
 
 }

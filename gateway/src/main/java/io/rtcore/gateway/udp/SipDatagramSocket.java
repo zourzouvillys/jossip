@@ -20,17 +20,23 @@ import io.rtcore.sip.frame.SipFrame;
 import io.rtcore.sip.message.message.SipMessage;
 
 /**
- * UDP socket abstraction over Netty with a SIP codec for sending and receiving SIP frames.
+ * UDP socket abstraction over Netty with a SIP codec for sending and receiving
+ * SIP frames.
  *
- * This class provides an interface for working with frames of SIP packets over UDP sockets. It does
- * not internally manage SIP transactions. If transaction handling is required, it should be
+ * This class provides an interface for working with frames of SIP packets over
+ * UDP sockets. It does
+ * not internally manage SIP transactions. If transaction handling is required,
+ * it should be
  * implemented by the consumer of this API.
  *
- * This class does not perform any manipulation of SIP headers, such as adding or removing Via
- * headers. It also does not enforce strict header validation. Header manipulation and validation
+ * This class does not perform any manipulation of SIP headers, such as adding
+ * or removing Via
+ * headers. It also does not enforce strict header validation. Header
+ * manipulation and validation
  * should be handled externally as needed.
  *
- * @see <a href="https://www.ietf.org/rfc/rfc3261.txt">RFC 3261 - SIP: Session Initiation
+ * @see <a href="https://www.ietf.org/rfc/rfc3261.txt">RFC 3261 - SIP: Session
+ *      Initiation
  *      Protocol</a>
  */
 
@@ -62,14 +68,15 @@ public class SipDatagramSocket {
       bootstrap.channelFactory(new ReflectiveChannelFactory<>(NioDatagramChannel.class));
     }
 
-    this.bootstrap =
-      bootstrap
+    this.bootstrap = bootstrap
         .handler(new SipDatagramChannelInitializer(this, config))
         // we never auto-close on write failure, as a single write failure to one does
         // not imply permanent failure.
         .option(ChannelOption.AUTO_CLOSE, false)
-        // read automatically. might want to change this if we add more complex flow control,
-        // although with shared UDP socket it's pretty much impossible to flow control properly
+        // read automatically. might want to change this if we add more complex flow
+        // control,
+        // although with shared UDP socket it's pretty much impossible to flow control
+        // properly
         // and we need to accept packets can (and are) lost.
         .option(ChannelOption.AUTO_READ, true)
         .option(ChannelOption.SO_REUSEADDR, true);
@@ -81,9 +88,14 @@ public class SipDatagramSocket {
    */
 
   public SipDatagramSocket bindNow() {
-    this.channel = (DatagramChannel) this.bootstrap.bind(this.bindAddress).awaitUninterruptibly().channel();
+    this.channel = (DatagramChannel) this.bootstrap.bind(this.bindAddress).syncUninterruptibly().channel();
     this.localSocketAddress = this.channel.localAddress();
-    LOG.info("binding UDP socket to {} ({})", this.bindAddress, this.localSocketAddress);
+    LOG.info("bound UDP socket to {} ({})", this.bindAddress, this.localSocketAddress);
+
+    this.channel.closeFuture().addListener(f -> {
+      LOG.info("UDP socket closed");
+    });
+
     return this;
   }
 
@@ -95,8 +107,7 @@ public class SipDatagramSocket {
     try {
       this.channel.close().get();
       return this;
-    }
-    catch (InterruptedException | ExecutionException e) {
+    } catch (InterruptedException | ExecutionException e) {
       throw new RuntimeException(e);
     }
   }
@@ -116,7 +127,8 @@ public class SipDatagramSocket {
    */
 
   public CompletableFuture<?> transmit(final InetSocketAddress recipient, final SipMessage message) {
-    return NettyUtils.toCompletableFuture(this.channel.writeAndFlush(new DefaultAddressedEnvelope<>(message, recipient)));
+    return NettyUtils
+        .toCompletableFuture(this.channel.writeAndFlush(new DefaultAddressedEnvelope<>(message, recipient)));
   }
 
   /**

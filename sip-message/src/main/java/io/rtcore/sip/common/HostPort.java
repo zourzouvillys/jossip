@@ -1,5 +1,6 @@
 package io.rtcore.sip.common;
 
+import java.net.InetSocketAddress;
 import java.util.OptionalInt;
 
 import org.immutables.value.Value;
@@ -55,7 +56,7 @@ public interface HostPort {
    *
    * @param host
    * @param port
-   *          if -1, same as no port.
+   *             if -1, same as no port.
    * @return
    */
 

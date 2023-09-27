@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import io.rtcore.sip.common.SipHeaderLine;
 import io.rtcore.sip.common.iana.SipHeaderId;
+import io.rtcore.sip.message.auth.headers.DigestCredentials;
 import io.rtcore.sip.message.auth.headers.DigestValues;
 import io.rtcore.sip.message.auth.headers.ImmutableDigestValues;
 
@@ -16,23 +17,27 @@ public record DigestChallengeResponse(
     String nonce,
     Optional<String> clientNonce) {
 
-  public SipHeaderLine asHeader(DigestChallengeRequest req, String digestURI, SipHeaderId header) {
+  public SipHeaderLine asHeader(final DigestChallengeRequest req, final String digestURI, final SipHeaderId header) {
+    return SipHeaderLine.of(header, this.asCredentials(req, digestURI).toString());
+  }
 
-    ImmutableDigestValues values =
+  public DigestCredentials asCredentials(final DigestChallengeRequest req, final String digestURI) {
+
+    final ImmutableDigestValues values =
       DigestValues.builder()
-        .realm(realm)
-        .nonce(nonce)
+        .realm(this.realm)
+        .nonce(this.nonce)
         .algorithm(req.algo())
-        .qop(qop.token())
+        .qop(this.qop.token())
         .uri(digestURI)
         .opaque(req.opaque())
-        .username(username)
-        .cnonce(clientNonce)
-        .nonceCount(Integer.parseInt(nonceCount))
-        .response(response)
+        .username(this.username)
+        .cnonce(this.clientNonce)
+        .nonceCount(Integer.parseInt(this.nonceCount))
+        .response(this.response)
         .build();
 
-    return SipHeaderLine.of(header, values.asCredentials().toString());
+    return values.asCredentials();
   }
 
 }

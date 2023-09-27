@@ -9,7 +9,8 @@
   <logger name="ch.qos.logback" level="warn" />
   <logger name="org.jboss.logging" level="info" />
   <logger name="org.hibernate.validator" level="info" />
-  <logger name="io.netty" level="info" />
+  <logger name="io.grpc" level="info" />
+  <logger name="io.netty" level="trace" />
   
   <root level="debug">
     <appender-ref ref="STDOUT" />

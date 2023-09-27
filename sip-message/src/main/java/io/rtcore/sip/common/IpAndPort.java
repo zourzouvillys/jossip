@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 
 import org.immutables.value.Value;
 
+import com.google.common.net.HostAndPort;
 import com.google.common.net.InetAddresses;
 
 @Value.Immutable
@@ -35,5 +36,9 @@ public abstract class IpAndPort {
   public String toString() {
     return String.format("%s:%s", this.inetAddress().toUriString(), this.port());
   }
+
+public HostPort toHostPort() {
+    return HostPort.of(this.inetAddress(), this.port());
+}
 
 }

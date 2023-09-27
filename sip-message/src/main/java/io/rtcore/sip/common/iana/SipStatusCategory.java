@@ -48,6 +48,55 @@ public enum SipStatusCategory {
     return values()[IntMath.divide(status, 100, RoundingMode.DOWN)];
   }
 
+
+  public boolean isFinal() {
+    switch (this) {
+      case TRYING:
+      case PROVISIONAL:
+        return false;
+      case SUCCESSFUL:
+      case REDIRECTION:
+      case REQUEST_FAILURE:
+      case SERVER_FAILURE:
+      case GLOBAL_FAILURE:
+        return true;
+      default:
+        return false;
+    }
+  }
+  
+  public boolean isSuccess() {
+    switch (this) {
+      case TRYING:
+      case PROVISIONAL:
+        return false;
+      case SUCCESSFUL:
+        return true;
+      case REDIRECTION:
+      case REQUEST_FAILURE:
+      case SERVER_FAILURE:
+      case GLOBAL_FAILURE:
+      default:
+        return false;
+    }
+  }
+
+  public boolean isFailure() {
+    switch (this) {
+      case TRYING:
+      case PROVISIONAL:
+      case SUCCESSFUL:
+        return false;
+      case REDIRECTION:
+      case REQUEST_FAILURE:
+      case SERVER_FAILURE:
+      case GLOBAL_FAILURE:
+        return true;
+      default:
+        return false;
+    }
+  }
+
   public static boolean isSuccess(final int status) {
     Verify.verify((status >= 100) && (status <= 699));
     return (status >= 200) && (status < 300);
