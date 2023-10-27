@@ -107,7 +107,7 @@ dependencies {
 
   implementation 'org.glassfish.grizzly:grizzly-npn-api:2.0.0'
   implementation 'org.glassfish.grizzly:grizzly-websockets:4.0.0'
-  implementation 'org.glassfish.grizzly:grizzly-http2:4.0.0'
+  implementation 'org.glassfish.grizzly:grizzly-http2:4.0.1'
   
   
   implementation 'org.glassfish.jersey.containers:jersey-container-grizzly2-http'
