@@ -106,7 +106,7 @@ dependencies {
   implementation platform(libs.jersey.bom)
 
   implementation 'org.glassfish.grizzly:grizzly-npn-api:2.0.0'
-  implementation 'org.glassfish.grizzly:grizzly-websockets:4.0.0'
+  implementation 'org.glassfish.grizzly:grizzly-websockets:4.0.2'
   implementation 'org.glassfish.grizzly:grizzly-http2:4.0.0'
   
   
